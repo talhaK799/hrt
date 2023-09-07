@@ -3,19 +3,20 @@ import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/constants/strings.dart';
 import 'package:hart/core/others/screen_utils.dart';
 
-final bodyTextStyleRoboto = TextStyle(
-  fontSize: 16.sp,
-  fontFamily: nunitoFont,
-);
-final bodyTextStyleAssistant = TextStyle(
-  fontSize: 16.sp,
-  fontFamily: nunitoFont,
-);
+// final bodyTextStyleRoboto = TextStyle(
+//   fontSize: 16.sp,
+//   fontFamily: nunitoFont,
+// );
+// final bodyTextStyleAssistant = TextStyle(
+//   fontSize: 16.sp,
+//   fontFamily: nunitoFont,
+// );
 
 final headingText = TextStyle(
   fontSize: 24.sp,
   fontFamily: nunitoFont,
   fontWeight: FontWeight.w700,
+  color: whiteColor,
 );
 final onboardinDescription = TextStyle(
   fontSize: 16.sp,
@@ -23,16 +24,17 @@ final onboardinDescription = TextStyle(
   fontWeight: FontWeight.w600,
 );
 
-final subHeadingTextStyleRoboto = TextStyle(
-  fontSize: 18.sp,
+final subHeadingTextStyle = TextStyle(
+  fontSize: 16.sp,
   fontFamily: nunitoFont,
-  fontWeight: FontWeight.w600,
+  fontWeight: FontWeight.w700,
+  color: whiteColor,
 );
 final buttonTextStyle = TextStyle(
   fontSize: 14.sp,
   fontFamily: nunitoFont,
   fontWeight: FontWeight.w600,
-  color: blackColor
+  color: whiteColor,
 );
 
 final headingTextStyleRoboto = TextStyle(
