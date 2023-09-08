@@ -5,21 +5,20 @@ import 'package:hart/core/constants/strings.dart';
 import 'package:hart/core/constants/style.dart';
 import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/ui/custom_widgets/custom_text_feild.dart';
+import 'package:hart/ui/screens/auth_screens/forgot_password/phone_no_verification/phone_no_verification.dart';
+import 'package:hart/ui/screens/auth_screens/phone_login/phone_login_provider.dart';
+import 'package:hart/ui/screens/auth_screens/signup_email/signup_email_screen.dart';
 import 'package:hart/ui/screens/base_screen.dart';
-import 'package:hart/ui/screens/welcom_screen/welcome_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../../custom_widgets/custom_button.dart';
-import '../login/login_screen.dart';
-import 'signup_email_provider.dart';
 
-class SignUpWithEmail extends StatelessWidget {
+class PhoneLoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => SignUpwithEmailProvider(),
-      child:
-          Consumer<SignUpwithEmailProvider>(builder: (context, model, child) {
+      create: (context) => PhoneLoginProvider(),
+      child: Consumer<PhoneLoginProvider>(builder: (context, model, child) {
         return BaseScreen(
           body: Padding(
             padding: const EdgeInsets.fromLTRB(30, 40, 30, 0),
@@ -36,10 +35,26 @@ class SignUpWithEmail extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Sign Up', style: headingText),
-                    Text('We’re happy to see you here.',
+                    Padding(
+                      padding: const EdgeInsets.only(right: 60),
+                      child: Text(
+                        'Welcome back!',
+                        style: headingText.copyWith(
+                          fontSize: 40.sp,
+                        ),
+                      ),
+                    ),
+                    Text('Lovely to see you again!',
                         style: subHeadingTextStyle),
                   ],
+                ),
+                SizedBox(
+                  height: 40.h,
+                ),
+
+                Text(
+                  'Login',
+                  style: headingText,
                 ),
                 SizedBox(
                   height: 40.h,
@@ -49,31 +64,14 @@ class SignUpWithEmail extends StatelessWidget {
                 /// TextFields
                 ///
                 Form(
-                  key: model.formKey,
+                  key: model.fmkey,
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomTextField(
                         validator: (val) {
                           if (val.isEmpty) {
-                            return 'User Name is Required';
-                          } else {
-                            // model.appuser.name = val;
-                            return null;
-                          }
-                        },
-                        onChange: (val) {
-                          // model.appuser.name = val;
-                        },
-                        hintText: 'Name',
-                        prefixIcon: 'user.png',
-                      ),
-                      SizedBox(
-                        height: 10.h,
-                      ),
-                      CustomTextField(
-                        validator: (val) {
-                          if (val.isEmpty) {
-                            return 'Email is Required';
+                            return 'Phone No Required';
                           } else {
                             // model.appuser.email = val;
                             return null;
@@ -83,9 +81,9 @@ class SignUpWithEmail extends StatelessWidget {
                           // model.appuser.email = val;
                           // log('onchange ${val}');
                         },
-                        hintText: 'Email',
-                        prefixIcon: 'email.png',
-                        controller: model.emailController,
+                        hintText: 'Phone No',
+                        prefixIcon: 'Phone Icon.png',
+                        // controller: model.emailController,
                       ),
                       SizedBox(
                         height: 20.h,
@@ -93,7 +91,7 @@ class SignUpWithEmail extends StatelessWidget {
                       CustomTextField(
                         validator: (val) {
                           if (val.isEmpty) {
-                            return 'Password is Required';
+                            return 'Password Required';
                           } else {
                             // model.appuser.email = val;
                             return null;
@@ -105,28 +103,22 @@ class SignUpWithEmail extends StatelessWidget {
                         },
                         hintText: 'Password',
                         prefixIcon: 'password.png',
-                        controller: model.passwordController,
+                        // controller: model.passwordController,
                       ),
+
                       SizedBox(
-                        height: 20.h,
+                        height: 5.h,
                       ),
-                      CustomTextField(
-                        validator: (val) {
-                          if (val.isEmpty) {
-                            return 'Password is Required';
-                          } else {
-                            // model.appuser.email = val;
-                            return null;
-                          }
-                        },
-                        onChange: (val) {
-                          // model.appuser.email = val;
-                          // log('onchange ${val}');
-                        },
-                        hintText: 'Confirm Password',
-                        prefixIcon: 'password.png',
-                        controller: model.confirmPasswordController,
-                      ),
+                      GestureDetector(
+                          onTap: () {
+                            Get.to(
+                              PhoneNoVerificationScreen(),
+                            );
+                          },
+                          child: Text(
+                            'Forgot password?',
+                            style: buttonTextStyle,
+                          )),
                       SizedBox(
                         height: 40.h,
                       ),
@@ -135,14 +127,11 @@ class SignUpWithEmail extends StatelessWidget {
                       ///Sign Up BUTTON
                       ///
                       CustomButton(
-                        title: 'Sign Up',
+                        title: 'Login',
                         onTap: () {
-                          Get.to(
-                            WelcomeScreen(),
-                          );
-                          // if (model.formKey.currentState!.validate()) {
-                          //   // model.signUp();
-                          // }
+                          if (model.fmkey.currentState!.validate()) {
+                            // model.signUp();
+                          }
                         },
                       ),
                       SizedBox(
@@ -154,7 +143,7 @@ class SignUpWithEmail extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              'Already have an account? ',
+                              'Don\'t have an account? ',
                               style: subHeadingTextStyle.copyWith(
                                 color: blackColor,
                               ),
@@ -162,13 +151,14 @@ class SignUpWithEmail extends StatelessWidget {
                             GestureDetector(
                               onTap: () {
                                 Get.to(
-                                  LoginScreen(),
+                                  SignUpWithEmail(),
                                 );
                               },
                               child: Text(
-                                'Login',
+                                'Sign Up',
                                 style: subHeadingTextStyle.copyWith(
-                                    color: primaryColor),
+                                  color: primaryColor,
+                                ),
                               ),
                             ),
                           ],
@@ -187,19 +177,16 @@ class SignUpWithEmail extends StatelessWidget {
                       'Already have an account',
                       style: subHeadingTextStyle,
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(
-                          LoginScreen(),
-                        );
-                      },
-                      child: Text(
-                        'Login',
-                        style: buttonTextStyle.copyWith(
-                          decoration: TextDecoration.underline,
-                        ),
-                      ),
-                    )
+                    TextButton(
+                        onPressed: () {
+                          // Get.to(LoginScreen());
+                        },
+                        child: Text(
+                          'Login',
+                          style: buttonTextStyle.copyWith(
+                            decoration: TextDecoration.underline,
+                          ),
+                        ))
                   ],
                 ),
               ],
