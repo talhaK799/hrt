@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/constants/strings.dart';
 import 'package:hart/core/constants/style.dart';
 import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/ui/custom_widgets/custom_text_feild.dart';
+import 'package:hart/ui/screens/auth_screens/signup_email/signup_email_screen.dart';
 import 'package:hart/ui/screens/base_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../../custom_widgets/custom_button.dart';
+import '../forgot_password/email_verification/forgot_password_screen.dart';
 import 'login_provider.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -107,10 +110,15 @@ class LoginScreen extends StatelessWidget {
                         height: 5.h,
                       ),
                       GestureDetector(
+                          onTap: () {
+                            Get.to(
+                              ForgotPasswordScreen(),
+                            );
+                          },
                           child: Text(
-                        'Forgot password?',
-                        style: buttonTextStyle,
-                      )),
+                            'Forgot password?',
+                            style: buttonTextStyle,
+                          )),
                       SizedBox(
                         height: 40.h,
                       ),
@@ -141,11 +149,16 @@ class LoginScreen extends StatelessWidget {
                               ),
                             ),
                             GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                Get.to(
+                                  SignUpWithEmail(),
+                                );
+                              },
                               child: Text(
                                 'Sign Up',
                                 style: subHeadingTextStyle.copyWith(
-                                    color: primaryColor),
+                                  color: primaryColor,
+                                ),
                               ),
                             ),
                           ],

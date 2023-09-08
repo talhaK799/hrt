@@ -5,6 +5,7 @@ import 'package:hart/core/constants/style.dart';
 import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/ui/custom_widgets/custom_button.dart';
 import 'package:hart/ui/screens/auth_screens/login/login_screen.dart';
+import 'package:hart/ui/screens/auth_screens/phone_login/phone_login_screen.dart';
 import 'package:hart/ui/screens/auth_screens/signup_email/signup_email_screen.dart';
 
 import '../../../core/constants/colors.dart';
@@ -92,7 +93,13 @@ class AuthScreen extends StatelessWidget {
                 SizedBox(
                   height: 20.h,
                 ),
-                CustomButton(title: 'Sign Up With Phone no', onTap: () {}),
+                CustomButton(
+                    title: 'Sign Up With Phone no',
+                    onTap: () {
+                      Get.to(
+                        PhoneLoginScreen(),
+                      );
+                    }),
                 SizedBox(
                   height: 20.h,
                 ),
