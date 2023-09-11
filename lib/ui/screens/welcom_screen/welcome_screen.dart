@@ -6,7 +6,8 @@ import 'package:hart/core/constants/style.dart';
 import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/ui/custom_widgets/custom_button.dart';
 import 'package:hart/ui/screens/base_screen.dart';
-import 'package:hart/ui/screens/collect_info_screens/info_screen1.dart';
+import 'package:hart/ui/screens/buy_plan/buy_plan_screen.dart';
+import 'package:hart/ui/screens/collect_info_screens/add_phone_no.dart';
 
 class WelcomeScreen extends StatelessWidget {
   @override
@@ -61,7 +62,7 @@ class WelcomeScreen extends StatelessWidget {
               title: 'CONFIRM',
               onTap: () {
                 Get.to(
-                  InfoScreen1(),
+                  BuyPlanScreen(),
                 );
                 // if (model.formkey.currentState!.validate()) {
                 //   // model.signUp();

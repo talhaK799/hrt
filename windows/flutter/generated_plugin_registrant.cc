@@ -8,10 +8,13 @@
 
 #include <file_selector_windows/file_selector_windows.h>
 #include <modal_progress_hud_nsn/modal_progress_hud_nsn_plugin.h>
+#include <smart_auth/smart_auth_plugin.h>
 
 void RegisterPlugins(flutter::PluginRegistry* registry) {
   FileSelectorWindowsRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("FileSelectorWindows"));
   ModalProgressHudNsnPluginRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("ModalProgressHudNsnPlugin"));
+  SmartAuthPluginRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("SmartAuthPlugin"));
 }

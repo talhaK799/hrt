@@ -31,7 +31,7 @@ class CustomOnboardingCard extends StatelessWidget {
           padding: EdgeInsets.only(left: 30.w, right: 120),
           child: Text(
             onboarding!.description!,
-            style: onboardinDescription,
+            style: descriptionTextStyle,
             textAlign: TextAlign.start,
           ),
         ),
