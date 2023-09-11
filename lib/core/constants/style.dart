@@ -18,7 +18,7 @@ final headingText = TextStyle(
   fontWeight: FontWeight.w700,
   color: whiteColor,
 );
-final onboardinDescription = TextStyle(
+final descriptionTextStyle = TextStyle(
   fontSize: 16.sp,
   fontFamily: nunitoFont,
   fontWeight: FontWeight.w600,

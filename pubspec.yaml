@@ -53,6 +53,7 @@ dependencies:
   # heic_to_jpg: ^0.2.0
   image_picker: ^0.8.0+1
   file_picker: ^5.2.5
+  pinput: ^3.0.1
 
 dev_dependencies:
   flutter_test:
