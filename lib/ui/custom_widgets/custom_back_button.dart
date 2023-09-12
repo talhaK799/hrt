@@ -4,8 +4,9 @@ import 'package:get/get.dart';
 import '../../core/constants/strings.dart';
 
 class CustomBackButton extends StatelessWidget {
-  const CustomBackButton({
-    super.key,
+  bool? isWhite;
+  CustomBackButton({
+    this.isWhite = false,
   });
 
   @override
@@ -15,7 +16,7 @@ class CustomBackButton extends StatelessWidget {
         Get.back();
       },
       child: Image.asset(
-        '$staticAsset/Back.png',
+        isWhite == true ? '$staticAsset/back2.png' : '$staticAsset/Back.png',
         scale: 2.8,
       ),
     );

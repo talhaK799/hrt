@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hart/core/models/onboarding.dart';
-import 'package:hart/core/view_models.dart/base_view_model.dart';
+import 'package:hart/core/view_models/base_view_model.dart';
 
 class OnboardingViewModel extends BaseViewModel {
   // final Logger log = Logger();
