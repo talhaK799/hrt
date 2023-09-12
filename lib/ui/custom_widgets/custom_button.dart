@@ -6,12 +6,17 @@ import 'package:hart/core/others/screen_utils.dart';
 
 class CustomButton extends StatelessWidget {
   String? icon;
-  final title;
+  String title;
   final onTap;
+  Color? color;
+  Color? textColor;
+
   CustomButton({
     this.icon,
     required this.title,
     required this.onTap,
+    this.color,
+    this.textColor,
   });
 
   @override
@@ -22,7 +27,7 @@ class CustomButton extends StatelessWidget {
         alignment: Alignment.center,
         padding: EdgeInsets.symmetric(vertical: 10),
         decoration: BoxDecoration(
-          color: primaryColor,
+          color: color ?? primaryColor,
           borderRadius: BorderRadius.circular(
             32.r,
           ),
@@ -41,7 +46,7 @@ class CustomButton extends StatelessWidget {
                         width: 20.w,
                       ),
                       Text(
-                        title,
+                        title.toString(),
                         style: buttonTextStyle,
                       ),
                     ],
@@ -50,7 +55,9 @@ class CustomButton extends StatelessWidget {
                     padding: EdgeInsets.symmetric(vertical: 10),
                     child: Text(
                       title,
-                      style: buttonTextStyle,
+                      style: buttonTextStyle.copyWith(
+                        color: textColor ?? whiteColor,
+                      ),
                     ),
                   ),
           ],

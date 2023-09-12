@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hart/core/view_models.dart/base_view_model.dart';
+import 'package:hart/core/view_models/base_view_model.dart';
 
 class PhoneLoginProvider extends BaseViewModel {
   // final _authService = AuthService();

@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/models/app_user.dart';
-import '../../../../core/view_models.dart/base_view_model.dart';
+import '../../../../core/view_models/base_view_model.dart';
 
 class SignUpwithEmailProvider extends BaseViewModel {
   // bool isSelected = false;
