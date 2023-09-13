@@ -4,9 +4,9 @@ import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/ui/custom_widgets/custom_button.dart';
 import 'package:hart/ui/custom_widgets/custom_text_field_2.dart';
-import 'package:hart/ui/screens/collect_info_screens/code_confirmation_screen.dart';
+import 'package:hart/ui/screens/collect_info_screens/verifications/phone_no_screen/code_confirmation_screen.dart';
 
-import '../../../core/constants/style.dart';
+import '../../../../../core/constants/style.dart';
 
 class AddPhoneNumber extends StatelessWidget {
   const AddPhoneNumber({super.key});
@@ -50,7 +50,7 @@ class AddPhoneNumber extends StatelessWidget {
               title: 'CONTINUE',
               onTap: () {
                 Get.to(
-                  CodeConfirmationScreen(),
+                  PhoneCodeConfirmationScreen(),
                 );
               },
             ),

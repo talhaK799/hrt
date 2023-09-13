@@ -18,6 +18,12 @@ final headingText = TextStyle(
   fontWeight: FontWeight.w700,
   color: whiteColor,
 );
+final subHeadingText1 = TextStyle(
+  fontSize: 20.sp,
+  fontFamily: nunitoFont,
+  fontWeight: FontWeight.w700,
+  color: primaryColor,
+);
 final descriptionTextStyle = TextStyle(
   fontSize: 16.sp,
   fontFamily: nunitoFont,
@@ -35,6 +41,12 @@ final buttonTextStyle = TextStyle(
   fontFamily: nunitoFont,
   fontWeight: FontWeight.w600,
   color: whiteColor,
+);
+final buttonTextStyle2 = TextStyle(
+  fontSize: 12.sp,
+  fontFamily: nunitoFont,
+  fontWeight: FontWeight.w600,
+  color: blackColor,
 );
 
 final headingTextStyleRoboto = TextStyle(
