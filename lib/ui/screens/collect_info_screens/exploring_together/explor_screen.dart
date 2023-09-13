@@ -10,7 +10,6 @@ import 'package:provider/provider.dart';
 
 import '../../../../../core/constants/style.dart';
 import '../add_photo/add_photo_screen.dart';
-import '../add_photo/add_photo_screen.dart';
 import 'exploring_provider.dart';
 
 class ExploreScreen extends StatelessWidget {

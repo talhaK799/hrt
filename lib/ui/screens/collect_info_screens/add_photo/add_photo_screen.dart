@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/constants/strings.dart';
 import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/ui/custom_widgets/custom_back_button.dart';
 import 'package:hart/ui/custom_widgets/custom_button.dart';
+import 'package:hart/ui/screens/collect_info_screens/permissions/permission_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../core/constants/style.dart';
@@ -63,20 +65,31 @@ class AddPhotoScreen extends StatelessWidget {
                         crossAxisCount: 3,
                       ),
                       itemBuilder: (context, index) {
-                        return Container(
-                          width: 90.w,
-                          height: 90.h,
-                          decoration: BoxDecoration(
-                            color: greyColor,
-                            borderRadius: BorderRadius.circular(
-                              12.r,
+                        return GestureDetector(
+                          onTap: () {
+                            model.pickImge();
+                          },
+                          child: Container(
+                            width: 90.w,
+                            height: 90.h,
+                            decoration: BoxDecoration(
+                              color: greyColor,
+                              image: model.image != null
+                                  ? DecorationImage(
+                                      image: FileImage(model.image!),
+                                      fit: BoxFit.cover)
+                                  : null,
+                              borderRadius: BorderRadius.circular(
+                                12.r,
+                              ),
                             ),
-                          ),
-                          child: Center(
-                            child: Image.asset(
-                              '$staticAsset/Add.png',
-                              scale: 3,
-                            ),
+                            child: model.image == null
+                                ? Center(
+                                    child: Image.asset(
+                                    '$staticAsset/Add.png',
+                                    scale: 3,
+                                  ))
+                                : null,
                           ),
                         );
                       }),
@@ -85,7 +98,11 @@ class AddPhotoScreen extends StatelessWidget {
                   ),
                   CustomButton(
                     title: 'CONTINUE',
-                    onTap: () {},
+                    onTap: () {
+                      Get.to(
+                        PermissionScreen(),
+                      );
+                    },
                   ),
                   SizedBox(
                     height: 30.h,
@@ -99,5 +116,3 @@ class AddPhotoScreen extends StatelessWidget {
     );
   }
 }
-
-

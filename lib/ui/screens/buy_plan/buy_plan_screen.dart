@@ -4,7 +4,7 @@ import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/constants/strings.dart';
 import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/ui/custom_widgets/custom_button.dart';
-import 'package:hart/ui/screens/collect_info_screens/add_phone_no.dart';
+import 'package:hart/ui/screens/collect_info_screens/verifications/phone_no_screen/add_phone_no.dart';
 
 import '../../../core/constants/style.dart';
 

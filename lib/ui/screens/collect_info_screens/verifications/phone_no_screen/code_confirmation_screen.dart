@@ -6,10 +6,10 @@ import 'package:hart/ui/custom_widgets/custom_button.dart';
 import 'package:hart/ui/screens/collect_info_screens/dob_screen/dob_screen.dart';
 import 'package:pinput/pinput.dart';
 
-import '../../../core/constants/style.dart';
+import '../../../../../core/constants/style.dart';
 
-class CodeConfirmationScreen extends StatelessWidget {
-  const CodeConfirmationScreen({super.key});
+class PhoneCodeConfirmationScreen extends StatelessWidget {
+  const PhoneCodeConfirmationScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
