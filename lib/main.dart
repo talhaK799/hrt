@@ -6,6 +6,7 @@ import 'package:hart/core/services/localization_services.dart';
 import 'package:hart/core/services/locato_storage_service.dart';
 import 'package:hart/core/view_models/theme_provider.dart';
 import 'package:hart/locator.dart';
+import 'package:hart/ui/screens/home/home_provider.dart';
 import 'package:hart/ui/screens/splash_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -29,7 +30,8 @@ class MyApp extends StatelessWidget {
         providers: [
           ChangeNotifierProvider(
             create: (context) => ThemeProvider(),
-          )
+          ),
+          ChangeNotifierProvider(create: (context)=>HomeProvider(),)
         ],
         child: Consumer<ThemeProvider>(builder: (context,model,child){
           return GetMaterialApp(

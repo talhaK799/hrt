@@ -4,6 +4,7 @@ import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/constants/strings.dart';
 import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/ui/screens/auth_screens/auth_screens.dart';
+import 'package:hart/ui/screens/root_screen/root_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -15,9 +16,9 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   init() async {
     await Future.delayed(const Duration(seconds: 2));
-    Get.offAll(() => AuthScreen()
-    // OnboardingScreen(),
-    );
+    Get.offAll(() => RootScreen()
+        // OnboardingScreen(),
+        );
   }
 
   @override
