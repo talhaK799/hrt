@@ -5,8 +5,10 @@ import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/constants/strings.dart';
 import 'package:hart/core/constants/style.dart';
 import 'package:hart/core/others/screen_utils.dart';
+import 'package:hart/ui/custom_widgets/custom_button.dart';
 import 'package:hart/ui/screens/home/home_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -19,98 +21,435 @@ class HomeScreen extends StatelessWidget {
         return Scaffold(
             body: Stack(
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(24, 50, 24, 24),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Hart',
-                        style: subHeadingText1,
-                      ),
-                      Image.asset(
-                        '$staticAsset/Filter.png',
-                        scale: 3,
-                      ),
-                    ],
-                  ),
-                ),
-                _imageSlider(
-                  model,
-                ),
-                SizedBox(
-                  height: 20.h,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 24,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Sarah',
-                        style: subHeadingText1,
-                      ),
-                      SizedBox(
-                        height: 15.h,
-                      ),
-                      Row(
-                        children: [
-                          _interstsContainer('23 men straight'),
-                          SizedBox(
-                            width: 16.w,
+            SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(24, 50, 24, 24),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Hart',
+                          style: subHeadingText1,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            showModalBottomSheet(
+                                context: context,
+                                isScrollControlled: true,
+                                showDragHandle: true,
+                                builder: (context) {
+                                  return Consumer<HomeProvider>(
+                                    builder: (context, model, child) => Padding(
+                                      padding:
+                                          EdgeInsets.fromLTRB(24, 24, 24, 0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                'Reset',
+                                                style: miniText,
+                                              ),
+                                              Text(
+                                                'Filters',
+                                                style: subHeadingText1,
+                                              ),
+                                              Text(
+                                                'Done',
+                                                style: miniText,
+                                              ),
+                                            ],
+                                          ),
+                                          sizeBox30,
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                'Age Range',
+                                                style: subHeadingTextStyle2,
+                                              ),
+                                              Text(
+                                                '${model.ageValues.start.floor()} - ${model.ageValues.end.floor()}',
+                                                style: miniText,
+                                              ),
+                                            ],
+                                          ),
+                                          sizeBox10,
+                                          SfRangeSlider(
+                                            values: model.ageValues,
+                                            onChanged: (val) {
+                                              model.selectAge(val);
+                                            },
+                                            activeColor: primaryColor,
+                                            inactiveColor: greyColor,
+                                            showLabels: true,
+                                            max: 40.0,
+                                            endThumbIcon: thumbIcon(),
+                                            startThumbIcon: thumbIcon(),
+                                          ),
+                                          sizeBox20,
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                'Maximum Distance',
+                                                style: subHeadingTextStyle2,
+                                              ),
+                                              Text(
+                                                '${model.distanceValues.start.floor()} - ${model.distanceValues.end.floor()} KM',
+                                                style: miniText,
+                                              ),
+                                            ],
+                                          ),
+                                          sizeBox10,
+                                          SfRangeSlider(
+                                            values: model.distanceValues,
+                                            onChanged: (val) {
+                                              model.selectDistance(val);
+                                            },
+                                            activeColor: primaryColor,
+                                            inactiveColor: greyColor,
+                                            showLabels: true,
+                                            max: 20.0,
+                                            endThumbIcon: thumbIcon(),
+                                            startThumbIcon: thumbIcon(),
+                                          ),
+                                          sizeBox30,
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                'Looking For',
+                                                style: subHeadingTextStyle2,
+                                              ),
+                                              Text(
+                                                'Woman >',
+                                                style: miniText.copyWith(
+                                                    color: greyColor2),
+                                              ),
+                                            ],
+                                          ),
+                                          sizeBox20,
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                'Location',
+                                                style: subHeadingTextStyle2,
+                                              ),
+                                              Text(
+                                                'Current location >',
+                                                style: miniText.copyWith(
+                                                    color: greyColor2),
+                                              ),
+                                            ],
+                                          ),
+                                          sizeBox20,
+                                          Text(
+                                            'Search by',
+                                            style: subHeadingText1,
+                                          ),
+                                          sizeBox20,
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                'Location',
+                                                style: subHeadingTextStyle2
+                                                    .copyWith(
+                                                  color: primaryColor,
+                                                ),
+                                              ),
+                                              Text(
+                                                'Any >',
+                                                style: miniText.copyWith(
+                                                  color: primaryColor,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          sizeBox20,
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                'Recently online',
+                                                style: buttonTextStyle.copyWith(
+                                                  color: primaryColor,
+                                                ),
+                                              ),
+                                              Switch(
+                                                activeColor: primaryColor,
+                                                value: true,
+                                                onChanged: (val) {},
+                                              ),
+                                            ],
+                                          ),
+                                          sizeBox30,
+                                          CustomButton(
+                                            title: 'CONTINUE',
+                                            onTap: () {},
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                });
+                          },
+                          child: Image.asset(
+                            '$staticAsset/Filter.png',
+                            scale: 3,
                           ),
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                              vertical: 8,
-                              horizontal: 12,
+                        ),
+                      ],
+                    ),
+                  ),
+                  _imageSlider(
+                    model,
+                  ),
+                  SizedBox(
+                    height: 20.h,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Sarah',
+                          style: subHeadingText1,
+                        ),
+                        SizedBox(
+                          height: 15.h,
+                        ),
+                        Row(
+                          children: [
+                            _interstsContainer('23 men straight'),
+                            SizedBox(
+                              width: 16.w,
                             ),
-                            decoration: BoxDecoration(
-                              border: Border.all(color: greyColor),
-                              borderRadius: BorderRadius.circular(24.r),
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                vertical: 8,
+                                horizontal: 12,
+                              ),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: greyColor),
+                                borderRadius: BorderRadius.circular(24.r),
+                              ),
+                              child: Row(
+                                children: [
+                                  Image.asset(
+                                    '$staticAsset/location2.png',
+                                    scale: 3,
+                                  ),
+                                  SizedBox(
+                                    width: 5.w,
+                                  ),
+                                  Text(
+                                    '6.4 km',
+                                    style: buttonTextStyle2,
+                                  ),
+                                ],
+                              ),
                             ),
-                            child: Row(
-                              children: [
-                                Image.asset(
-                                  '$staticAsset/location2.png',
-                                  scale: 3,
-                                ),
-                                SizedBox(
-                                  width: 5.w,
-                                ),
-                                Text(
-                                  '6.4 km',
-                                  style: buttonTextStyle2,
-                                ),
-                              ],
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                        Row(
+                          children: [
+                            _interstsContainer('Madrid, Spain'),
+                            SizedBox(
+                              width: 16.w,
                             ),
+                            _interstsContainer('3 hours ago'),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20.h,
+                        ),
+                        Text(
+                          'Desire',
+                          style: subHeadingText1,
+                        ),
+                        SizedBox(
+                          height: 15.h,
+                        ),
+                        Row(
+                          children: [
+                            _interstsContainer('Friendship'),
+                            SizedBox(
+                              width: 16.w,
+                            ),
+                            _interstsContainer('Marriage'),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20.h,
+                        ),
+                        Text(
+                          'Interests',
+                          style: subHeadingText1,
+                        ),
+                        SizedBox(
+                          height: 15.h,
+                        ),
+                        Row(
+                          children: [
+                            _interstsContainer('Art'),
+                            SizedBox(
+                              width: 16.w,
+                            ),
+                            _interstsContainer('Music'),
+                            SizedBox(
+                              width: 16.w,
+                            ),
+                            _interstsContainer('Hiking'),
+                            SizedBox(
+                              width: 16.w,
+                            ),
+                            _interstsContainer('Real connection'),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 15.h,
+                        ),
+                        Text(
+                          'About Me',
+                          style: subHeadingText1,
+                        ),
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 50),
+                          child: Text(
+                            'Lorem ipsum dolor sit amet consectetur. Nulla ut proin diam est ac quam pretium lacus mollis. Pretium quam ac nibh nibh. Nec neque pulvinar risus sit consectetur cursus ut etiam risus...',
+                            style: buttonTextStyle2,
                           ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Align(
+                alignment: Alignment.bottomLeft,
+                child: Row(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: whiteColor,
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: greyColor,
+                            offset: const Offset(
+                              3.0,
+                              3.0,
+                            ),
+                            blurRadius: 10.0,
+                            spreadRadius: 2.0,
+                          ), //BoxShadow
+                          BoxShadow(
+                            color: Colors.white,
+                            offset: const Offset(0.0, 0.0),
+                            blurRadius: 0.0,
+                            spreadRadius: 0.0,
+                          ), //BoxShadow
                         ],
                       ),
-                      SizedBox(
-                        height: 10.h,
+                      child: Image.asset(
+                        '$staticAsset/cross.png',
+                        scale: 3.5,
                       ),
-                      Row(
-                        children: [
-                          _interstsContainer('Madrid, Spain'),
-                          SizedBox(
-                            width: 16.w,
-                          ),
-                          _interstsContainer('3 hours ago'),
-                        ],
+                    ),
+                    SizedBox(
+                      width: 15.w,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        model.like();
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: model.isLiked ? primaryColor : whiteColor,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: greyColor,
+                              offset: const Offset(
+                                3.0,
+                                3.0,
+                              ),
+                              blurRadius: 10.0,
+                              spreadRadius: 2.0,
+                            ), //BoxShadow
+                            BoxShadow(
+                              color: Colors.white,
+                              offset: const Offset(0.0, 0.0),
+                              blurRadius: 0.0,
+                              spreadRadius: 0.0,
+                            ), //BoxShadow
+                          ],
+                        ),
+                        child: model.isLiked
+                            ? Image.asset(
+                                '$staticAsset/likeWhite.png',
+                                scale: 3.5,
+                              )
+                            : Image.asset(
+                                '$staticAsset/Like.png',
+                                scale: 3.5,
+                              ),
                       ),
-                    ],
-                  ),
-                )
-              ],
+                    )
+                  ],
+                ),
+              ),
             )
           ],
         ));
       }),
+    );
+  }
+
+  Container thumbIcon() {
+    return Container(
+      width: 12.w,
+      height: 12.h,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: whiteColor,
+        border: Border.all(
+          width: 3,
+          color: primaryColor,
+        ),
+      ),
     );
   }
 
@@ -151,7 +490,7 @@ _imageSlider(HomeProvider model) {
           onPageChanged: (index, reason) {
             model.updateIndex(index);
           },
-          height: 400,
+          height: 0.4.sh,
           aspectRatio: 16 / 9,
           viewportFraction: 1,
           initialPage: model.currentIndex,

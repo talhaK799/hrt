@@ -36,6 +36,12 @@ final subHeadingTextStyle = TextStyle(
   fontWeight: FontWeight.w700,
   color: whiteColor,
 );
+final subHeadingTextStyle2 = TextStyle(
+  fontSize: 16.sp,
+  fontFamily: nunitoFont,
+  fontWeight: FontWeight.w700,
+  color: blackColor,
+);
 final buttonTextStyle = TextStyle(
   fontSize: 14.sp,
   fontFamily: nunitoFont,
@@ -49,14 +55,25 @@ final buttonTextStyle2 = TextStyle(
   color: blackColor,
 );
 
-final headingTextStyleRoboto = TextStyle(
-  fontSize: 20.sp,
+final miniText = TextStyle(
+  fontSize: 10.sp,
   fontFamily: nunitoFont,
-  fontWeight: FontWeight.bold,
+  fontWeight: FontWeight.w600,
+  color: blackColor,
 );
 
 final headingTextStyleFutura = TextStyle(
   fontSize: 20.sp,
   fontFamily: nunitoFont,
   fontWeight: FontWeight.bold,
+);
+
+final sizeBox30 = SizedBox(
+  height: 30.h,
+);
+final sizeBox10 = SizedBox(
+  height: 10.h,
+);
+final sizeBox20 = SizedBox(
+  height: 20.h,
 );
