@@ -7,7 +7,6 @@ import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/ui/custom_widgets/custom_text_feild.dart';
 import 'package:hart/ui/screens/auth_screens/signup_email/signup_email_screen.dart';
 import 'package:hart/ui/screens/base_screen.dart';
-import 'package:hart/ui/screens/home/home_screen.dart';
 import 'package:hart/ui/screens/root_screen/root_screen.dart';
 import 'package:provider/provider.dart';
 
