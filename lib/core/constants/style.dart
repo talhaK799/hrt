@@ -24,6 +24,12 @@ final subHeadingText1 = TextStyle(
   fontWeight: FontWeight.w700,
   color: primaryColor,
 );
+final subHeadingTextWhite = TextStyle(
+  fontSize: 20.sp,
+  fontFamily: nunitoFont,
+  fontWeight: FontWeight.w700,
+  color: whiteColor,
+);
 final descriptionTextStyle = TextStyle(
   fontSize: 16.sp,
   fontFamily: nunitoFont,
@@ -62,10 +68,10 @@ final miniText = TextStyle(
   color: blackColor,
 );
 
-final headingTextStyleFutura = TextStyle(
-  fontSize: 20.sp,
+final subtitleText = TextStyle(
+  fontSize: 14.sp,
   fontFamily: nunitoFont,
-  fontWeight: FontWeight.bold,
+  fontWeight: FontWeight.w400,
 );
 
 final sizeBox30 = SizedBox(
@@ -73,6 +79,9 @@ final sizeBox30 = SizedBox(
 );
 final sizeBox10 = SizedBox(
   height: 10.h,
+);
+final sizeBoxw10 = SizedBox(
+  width: 10.w,
 );
 final sizeBox20 = SizedBox(
   height: 20.h,
