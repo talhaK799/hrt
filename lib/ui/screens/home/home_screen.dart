@@ -267,11 +267,12 @@ class HomeScreen extends StatelessWidget {
 
   showFilter(BuildContext context) {
     return showModalBottomSheet(
+        backgroundColor: Colors.transparent,
         context: context,
         clipBehavior: Clip.antiAlias,
         isScrollControlled: true,
         useSafeArea: true,
-        showDragHandle: true,
+        // showDragHandle: true,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             top: Radius.circular(20),
@@ -279,173 +280,199 @@ class HomeScreen extends StatelessWidget {
         ),
         builder: (context) {
           return Consumer<HomeProvider>(
-            builder: (context, model, child) => Padding(
-              padding: EdgeInsets.fromLTRB(24, 24, 24, 0),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Reset',
-                          style: miniText,
-                        ),
-                        Text(
-                          'Filters',
-                          style: subHeadingText1,
-                        ),
-                        Text(
-                          'Done',
-                          style: miniText,
-                        ),
-                      ],
+            builder: (context, model, child) => Stack(
+              children: [
+                Container(
+                  height: 1.sh,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage(
+                        '$staticAsset/bottom_sheet.png',
+                      ),
+                      fit: BoxFit.fill,
                     ),
-                    sizeBox20,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Age Range',
-                          style: subHeadingTextStyle2,
-                        ),
-                        Text(
-                          '${model.ageValues.start.floor()} - ${model.ageValues.end.floor()}',
-                          style: miniText,
-                        ),
-                      ],
-                    ),
-                    // sizeBox10,
-                    SfRangeSlider(
-                      values: model.ageValues,
-                      onChanged: (val) {
-                        model.selectAge(val);
-                      },
-                      activeColor: primaryColor,
-                      inactiveColor: greyColor,
-                      showLabels: true,
-                      max: 40.0,
-                      endThumbIcon: thumbIcon(),
-                      startThumbIcon: thumbIcon(),
-                    ),
-                    sizeBox20,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Maximum Distance',
-                          style: subHeadingTextStyle2,
-                        ),
-                        Text(
-                          '${model.distanceValues.start.floor()} - ${model.distanceValues.end.floor()} KM',
-                          style: miniText,
-                        ),
-                      ],
-                    ),
-                    // sizeBox10,
-                    SfRangeSlider(
-                      values: model.distanceValues,
-                      onChanged: (val) {
-                        model.selectDistance(val);
-                      },
-                      activeColor: primaryColor,
-                      inactiveColor: greyColor,
-                      showLabels: true,
-                      max: 20.0,
-                      endThumbIcon: thumbIcon(),
-                      startThumbIcon: thumbIcon(),
-                    ),
-                    sizeBox30,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Looking For',
-                          style: subHeadingTextStyle2,
-                        ),
-                        Text(
-                          'Woman >',
-                          style: miniText.copyWith(color: greyColor2),
-                        ),
-                      ],
-                    ),
-                    sizeBox20,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Location',
-                          style: subHeadingTextStyle2,
-                        ),
-                        Text(
-                          'Current location >',
-                          style: miniText.copyWith(color: greyColor2),
-                        ),
-                      ],
-                    ),
-                    sizeBox20,
-                    Text(
-                      'Search by',
-                      style: subHeadingText1,
-                    ),
-                    sizeBox20,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Location',
-                          style: subHeadingTextStyle2.copyWith(
-                            color: primaryColor,
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(24, 24, 24, 0),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Reset',
+                                style: miniText,
+                              ),
+                              Text(
+                                'Filters',
+                                style: subHeadingText1,
+                              ),
+                              Text(
+                                'Done',
+                                style: miniText,
+                              ),
+                            ],
                           ),
-                        ),
-                        Text(
-                          'Any >',
-                          style: miniText.copyWith(
-                            color: primaryColor,
+                          sizeBox20,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Age Range',
+                                style: subHeadingTextStyle2,
+                              ),
+                              Text(
+                                '${model.ageValues.start.floor()} - ${model.ageValues.end.floor()}',
+                                style: miniText,
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
-                    ),
-                    sizeBox20,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Recently online',
-                          style: buttonTextStyle.copyWith(
-                            color: primaryColor,
+                          // sizeBox10,
+                          SfRangeSlider(
+                            values: model.ageValues,
+                            onChanged: (val) {
+                              model.selectAge(val);
+                            },
+                            activeColor: primaryColor,
+                            inactiveColor: greyColor,
+                            showLabels: true,
+                            max: 40.0,
+                            endThumbIcon: thumbIcon(),
+                            startThumbIcon: thumbIcon(),
                           ),
-                        ),
-                        Switch(
-                          activeColor: primaryColor,
-                          value: model.isRecent,
-                          onChanged: (val) {
-                            model.recent(val);
-                          },
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      'Only show people active in the last 7 days',
-                      style: buttonTextStyle2.copyWith(
-                        color: Color(0xFFc48184),
+                          sizeBox20,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Maximum Distance',
+                                style: subHeadingTextStyle2,
+                              ),
+                              Text(
+                                '${model.distanceValues.start.floor()} - ${model.distanceValues.end.floor()} KM',
+                                style: miniText,
+                              ),
+                            ],
+                          ),
+                          // sizeBox10,
+                          SfRangeSlider(
+                            values: model.distanceValues,
+                            onChanged: (val) {
+                              model.selectDistance(val);
+                            },
+                            activeColor: primaryColor,
+                            inactiveColor: greyColor,
+                            showLabels: true,
+                            max: 20.0,
+                            endThumbIcon: thumbIcon(),
+                            startThumbIcon: thumbIcon(),
+                          ),
+                          sizeBox30,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Looking For',
+                                style: subHeadingTextStyle2,
+                              ),
+                              Text(
+                                'Woman >',
+                                style: miniText.copyWith(color: greyColor2),
+                              ),
+                            ],
+                          ),
+                          sizeBox20,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Location',
+                                style: subHeadingTextStyle2,
+                              ),
+                              Text(
+                                'Current location >',
+                                style: miniText.copyWith(color: greyColor2),
+                              ),
+                            ],
+                          ),
+                          sizeBox20,
+                          Text(
+                            'Search by',
+                            style: subHeadingText1,
+                          ),
+                          sizeBox20,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Location',
+                                style: subHeadingTextStyle2.copyWith(
+                                  color: primaryColor,
+                                ),
+                              ),
+                              Text(
+                                'Any >',
+                                style: miniText.copyWith(
+                                  color: primaryColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                          sizeBox20,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Recently online',
+                                style: buttonTextStyle.copyWith(
+                                  color: primaryColor,
+                                ),
+                              ),
+                              Switch(
+                                activeColor: primaryColor,
+                                value: model.isRecent,
+                                onChanged: (val) {
+                                  model.recent(val);
+                                },
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            'Only show people active in the last 7 days',
+                            style: buttonTextStyle2.copyWith(
+                              color: Color(0xFFc48184),
+                            ),
+                          ),
+                          sizeBox30,
+                          CustomButton(
+                            title: 'CONTINUE',
+                            onTap: () {},
+                          ),
+
+                          sizeBox30,
+                        ],
                       ),
                     ),
-                    sizeBox30,
-                    CustomButton(
-                      title: 'CONTINUE',
-                      onTap: () {},
-                    ),
-
-                    sizeBox30,
-                  ],
+                  ),
                 ),
-              ),
+
+                ///
+                /// drag Handle
+                ///
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: Image.asset(
+                    '$staticAsset/handle.png',
+                    scale: 3,
+                  ),
+                )
+              ],
             ),
           );
         });
