@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/constants/style.dart';
 
-import '../../core/constants/strings.dart';
 
 class CustomTextField2 extends StatelessWidget {
   String? hintText;

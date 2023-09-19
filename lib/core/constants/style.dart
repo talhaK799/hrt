@@ -7,10 +7,12 @@ import 'package:hart/core/others/screen_utils.dart';
 //   fontSize: 16.sp,
 //   fontFamily: nunitoFont,
 // );
-// final bodyTextStyleAssistant = TextStyle(
-//   fontSize: 16.sp,
-//   fontFamily: nunitoFont,
-// );
+final bodyTextStyle = TextStyle(
+  fontSize: 18.sp,
+  fontFamily: nunitoFont,
+  fontWeight: FontWeight.w600,
+  color: blackColor,
+);
 
 final headingText = TextStyle(
   fontSize: 24.sp,

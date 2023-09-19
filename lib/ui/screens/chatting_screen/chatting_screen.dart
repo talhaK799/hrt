@@ -37,7 +37,7 @@ class ChattingScreen extends StatelessWidget {
               padding: const EdgeInsets.only(top: 100),
               child: Container(
                 padding: EdgeInsets.all(24),
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: whiteColor,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(32),
