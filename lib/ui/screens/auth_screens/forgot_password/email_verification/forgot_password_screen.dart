@@ -35,7 +35,8 @@ class ForgotPasswordScreen extends StatelessWidget {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(right: 60),
-                      child: Text('Forgot password', style: headingText),
+                      child:
+                          Text(' Forgot your password? ', style: headingText),
                     ),
                     SizedBox(
                       height: 15.h,

@@ -26,11 +26,7 @@ class GroupChattingScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.fromLTRB(60, 72, 24, 16),
                 child: ListTile(
-                  onTap: () {
-                    Get.to(
-                      GroupDetailScreen(),
-                    );
-                  },
+                  contentPadding: EdgeInsets.zero,
                   title: Text(
                     'Group',
                     style: subHeadingTextStyle,
@@ -42,7 +38,11 @@ class GroupChattingScreen extends StatelessWidget {
                     ),
                   ),
                   trailing: GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Get.to(
+                        GroupDetailScreen(),
+                      );
+                    },
                     child: Image.asset(
                       '$staticAsset/more.png',
                       scale: 3.5,

@@ -27,7 +27,9 @@ class CreateGroupScreen extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CustomAppBar(title: 'Create Group Chat',),
+                    CustomAppBar(
+                      title: 'Create Group Chat',
+                    ),
                     sizeBox30,
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -89,14 +91,21 @@ class CreateGroupScreen extends StatelessWidget {
                   alignment: Alignment.bottomCenter,
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 15),
-                    child: CustomButton(
-                      title: 'Continue',
-                      onTap: () {
-                        Get.to(
-                          MembersScreen(),
-                        );
-                      },
-                    ),
+                    child: model.isEnable
+                        ? CustomButton(
+                            title: 'Continue',
+                            onTap: () {
+                              Get.to(
+                                MembersScreen(),
+                              );
+                            },
+                          )
+                        : CustomButton(
+                            title: 'Continue',
+                            onTap: null,
+                            textColor: primaryColor,
+                            color: pinkColor,
+                          ),
                   ),
                 ),
               ],

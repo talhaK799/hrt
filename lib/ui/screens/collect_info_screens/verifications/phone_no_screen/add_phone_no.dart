@@ -28,7 +28,7 @@ class AddPhoneNumber extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Add Phone no',
+                  'Add your phone number',
                   style: headingText.copyWith(
                     color: blackColor,
                     fontSize: 20.sp,
@@ -39,13 +39,11 @@ class AddPhoneNumber extends StatelessWidget {
                 ),
                 CustomTextField2(
                     onChange: (val) {},
-                    hintText: 'Phone no',
+                    hintText: 'Example: +3933144….',
                     validator: (val) {}),
               ],
             ),
-            SizedBox(
-              height: 20.h,
-            ),
+            Spacer(),
             CustomButton(
               title: 'CONTINUE',
               onTap: () {

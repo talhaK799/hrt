@@ -26,11 +26,6 @@ class ConversationScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.fromLTRB(60, 72, 24, 16),
                 child: ListTile(
-                  onTap: () {
-                    Get.to(
-                      ChatInfoScreen(),
-                    );
-                  },
                   leading: CircleAvatar(
                     radius: 35.r,
                     backgroundImage: AssetImage('$dynamicAsset/profile.png'),
@@ -46,7 +41,11 @@ class ConversationScreen extends StatelessWidget {
                     ),
                   ),
                   trailing: GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Get.to(
+                        ChatInfoScreen(),
+                      );
+                    },
                     child: Image.asset(
                       '$staticAsset/more.png',
                       scale: 3.5,

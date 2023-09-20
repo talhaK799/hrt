@@ -68,35 +68,29 @@ class HomeScreen extends StatelessWidget {
                         ),
                         Row(
                           children: [
-                            _interstsContainer('23 men straight'),
-                            SizedBox(
-                              width: 16.w,
+                            // _infoContainer('23 men straight'),
+                            Text(
+                              '23 Women Straight',
+                              style: buttonTextStyle2,
                             ),
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                vertical: 8,
-                                horizontal: 12,
-                              ),
-                              decoration: BoxDecoration(
-                                border: Border.all(color: greyColor),
-                                borderRadius: BorderRadius.circular(24.r),
-                              ),
-                              child: Row(
-                                children: [
-                                  Image.asset(
-                                    '$staticAsset/location2.png',
-                                    scale: 3,
-                                  ),
-                                  SizedBox(
-                                    width: 5.w,
-                                  ),
-                                  Text(
-                                    '6.4 km',
-                                    style: buttonTextStyle2,
-                                  ),
-                                ],
-                              ),
-                            ),
+                            // SizedBox(
+                            //   width: 16.w,
+                            // ),
+                            // Row(
+                            //   children: [
+                            //     Image.asset(
+                            //       '$staticAsset/location2.png',
+                            //       scale: 3,
+                            //     ),
+                            //     SizedBox(
+                            //       width: 5.w,
+                            //     ),
+                            //     Text(
+                            //       '6.4 km',
+                            //       style: buttonTextStyle2,
+                            //     ),
+                            //   ],
+                            // ),
                           ],
                         ),
                         SizedBox(
@@ -104,11 +98,19 @@ class HomeScreen extends StatelessWidget {
                         ),
                         Row(
                           children: [
-                            _interstsContainer('Madrid, Spain'),
+                            // _infoContainer('Madrid, Spain'),
+                            Text(
+                              'Single, 10 km away,',
+                              style: buttonTextStyle2,
+                            ),
                             SizedBox(
                               width: 16.w,
                             ),
-                            _interstsContainer('3 hours ago'),
+                            // _infoContainer('3 hours ago'),
+                            Text(
+                              '3 hours ago',
+                              style: buttonTextStyle2,
+                            ),
                           ],
                         ),
                         SizedBox(
@@ -123,11 +125,11 @@ class HomeScreen extends StatelessWidget {
                         ),
                         Row(
                           children: [
-                            _interstsContainer('Friendship'),
+                            _infoContainer('Friendship'),
                             SizedBox(
                               width: 16.w,
                             ),
-                            _interstsContainer('Marriage'),
+                            _infoContainer('Marriage'),
                           ],
                         ),
                         SizedBox(
@@ -142,19 +144,19 @@ class HomeScreen extends StatelessWidget {
                         ),
                         Row(
                           children: [
-                            _interstsContainer('Art'),
+                            _infoContainer('Art'),
                             SizedBox(
                               width: 16.w,
                             ),
-                            _interstsContainer('Music'),
+                            _infoContainer('Music'),
                             SizedBox(
                               width: 16.w,
                             ),
-                            _interstsContainer('Hiking'),
+                            _infoContainer('Hiking'),
                             SizedBox(
                               width: 16.w,
                             ),
-                            _interstsContainer('Real connection'),
+                            _infoContainer('Real connection'),
                           ],
                         ),
                         SizedBox(
@@ -191,23 +193,7 @@ class HomeScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: whiteColor,
                         shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: greyColor,
-                            offset: const Offset(
-                              3.0,
-                              3.0,
-                            ),
-                            blurRadius: 10.0,
-                            spreadRadius: 2.0,
-                          ), //BoxShadow
-                          BoxShadow(
-                            color: Colors.white,
-                            offset: const Offset(0.0, 0.0),
-                            blurRadius: 0.0,
-                            spreadRadius: 0.0,
-                          ), //BoxShadow
-                        ],
+                        boxShadow: boxShadow,
                       ),
                       child: Image.asset(
                         '$staticAsset/cross.png',
@@ -226,23 +212,7 @@ class HomeScreen extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: model.isLiked ? primaryColor : whiteColor,
                           shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                              color: greyColor,
-                              offset: const Offset(
-                                3.0,
-                                3.0,
-                              ),
-                              blurRadius: 10.0,
-                              spreadRadius: 2.0,
-                            ), //BoxShadow
-                            BoxShadow(
-                              color: Colors.white,
-                              offset: const Offset(0.0, 0.0),
-                              blurRadius: 0.0,
-                              spreadRadius: 0.0,
-                            ), //BoxShadow
-                          ],
+                          boxShadow: boxShadow,
                         ),
                         child: model.isLiked
                             ? Image.asset(
@@ -330,7 +300,10 @@ class HomeScreen extends StatelessWidget {
                               ),
                             ],
                           ),
-                          // sizeBox10,
+
+                          ///
+                          /// Age slider
+                          ///
                           SfRangeSlider(
                             values: model.ageValues,
                             onChanged: (val) {
@@ -339,6 +312,7 @@ class HomeScreen extends StatelessWidget {
                             activeColor: primaryColor,
                             inactiveColor: greyColor,
                             showLabels: true,
+                            min: 18,
                             max: 40.0,
                             endThumbIcon: thumbIcon(),
                             startThumbIcon: thumbIcon(),
@@ -366,7 +340,7 @@ class HomeScreen extends StatelessWidget {
                             activeColor: primaryColor,
                             inactiveColor: greyColor,
                             showLabels: true,
-                            max: 20.0,
+                            max: 150.0,
                             endThumbIcon: thumbIcon(),
                             startThumbIcon: thumbIcon(),
                           ),
@@ -493,7 +467,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  _interstsContainer(text) {
+  _infoContainer(text) {
     return Container(
       padding: EdgeInsets.symmetric(
         vertical: 8,

@@ -4,7 +4,6 @@ import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/constants/strings.dart';
 import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/ui/screens/onboarding/onboarding_screen.dart';
-import 'package:hart/ui/screens/root_screen/root_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);

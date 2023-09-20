@@ -5,7 +5,7 @@ class HomeProvider extends BaseViewModel {
   int currentIndex = 0;
   bool isLiked = false;
   bool isRecent = false;
-  SfRangeValues ageValues = SfRangeValues(18, 30);
+  SfRangeValues ageValues = SfRangeValues(18, 70);
   SfRangeValues distanceValues = SfRangeValues(3, 10);
 
   updateIndex(index) {

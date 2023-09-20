@@ -1,4 +1,7 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/constants/strings.dart';
 import 'package:hart/core/others/screen_utils.dart';
@@ -88,3 +91,21 @@ final sizeBoxw10 = SizedBox(
 final sizeBox20 = SizedBox(
   height: 20.h,
 );
+
+final boxShadow = [
+   BoxShadow(
+    color: greyColor,
+    offset: Offset(
+      3.0,
+      3.0,
+    ),
+    blurRadius: 10.0,
+    spreadRadius: 2.0,
+  ), //BoxShadow
+  BoxShadow(
+    color: Colors.white,
+    offset: const Offset(0.0, 0.0),
+    blurRadius: 0.0,
+    spreadRadius: 0.0,
+  ), //BoxShadow
+];

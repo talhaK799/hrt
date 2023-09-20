@@ -57,6 +57,7 @@ class AddPhotoScreen extends StatelessWidget {
                     ],
                   ),
                   GridView.builder(
+                      primary: false,
                       itemCount: 9,
                       shrinkWrap: true,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -66,9 +67,6 @@ class AddPhotoScreen extends StatelessWidget {
                       ),
                       itemBuilder: (context, index) {
                         return GestureDetector(
-                          onTap: () {
-                            model.pickImge();
-                          },
                           child: Container(
                             width: 90.w,
                             height: 90.h,
@@ -96,6 +94,15 @@ class AddPhotoScreen extends StatelessWidget {
                   SizedBox(
                     height: 30.h,
                   ),
+                  CustomButton(
+                    title: 'Add Photos',
+                    onTap: () {
+                      model.pickImge();
+                    },
+                    color: pinkColor,
+                    textColor: primaryColor,
+                  ),
+                  sizeBox20,
                   CustomButton(
                     title: 'CONTINUE',
                     onTap: () {

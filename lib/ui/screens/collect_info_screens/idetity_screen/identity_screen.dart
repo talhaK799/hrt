@@ -20,68 +20,64 @@ class IdentityScreen extends StatelessWidget {
       create: (context) => IdentityProvider(),
       child: Consumer<IdentityProvider>(builder: (context, model, child) {
         return Scaffold(
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.only(
-                left: 40,
-                right: 50,
-                top: 50,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CustomBackButton(
-                        isWhite: true,
+          body: Padding(
+            padding: EdgeInsets.only(
+              left: 40,
+              right: 50,
+              top: 50,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomBackButton(
+                      isWhite: true,
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    Text(
+                      'Your identify as...',
+                      style: headingText.copyWith(
+                        color: blackColor,
+                        fontSize: 20.sp,
                       ),
-                      SizedBox(
-                        height: 20.h,
-                      ),
-                      Text(
-                        'Your identify as...',
-                        style: headingText.copyWith(
-                          color: blackColor,
-                          fontSize: 20.sp,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20.h,
-                      ),
-                      CustomProgressIndicator(
-                        value: 3,
-                      ),
-                      SizedBox(
-                        height: 40.h,
-                      ),
-                      CustomButton(
-                        title: 'Straight',
-                        onTap: () {
-                          model.select();
-                        },
-                        color: model.isClicked ? primaryColor : pinkColor,
-                        textColor: model.isClicked ? whiteColor : primaryColor,
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    height: 200.h,
-                  ),
-                  CustomButton(
-                    title: 'CONTINUE',
-                    onTap: () {
-                      Get.to(
-                        SelectGenderScreen(),
-                      );
-                    },
-                  ),
-                  SizedBox(
-                    height: 30.h,
-                  ),
-                ],
-              ),
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    CustomProgressIndicator(
+                      value: 3,
+                    ),
+                    SizedBox(
+                      height: 40.h,
+                    ),
+                    CustomButton(
+                      title: 'Straight',
+                      onTap: () {
+                        model.select();
+                      },
+                      color: model.isClicked ? primaryColor : pinkColor,
+                      textColor: model.isClicked ? whiteColor : primaryColor,
+                    )
+                  ],
+                ),
+                Spacer(),
+                CustomButton(
+                  title: 'CONTINUE',
+                  onTap: () {
+                    Get.to(
+                      SelectGenderScreen(),
+                    );
+                  },
+                ),
+                SizedBox(
+                  height: 30.h,
+                ),
+              ],
             ),
           ),
         );
@@ -89,5 +85,3 @@ class IdentityScreen extends StatelessWidget {
     );
   }
 }
-
-

@@ -16,67 +16,63 @@ class NickNameScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.only(
-            left: 40,
-            right: 50,
-            top: 50,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomBackButton(
-                    isWhite: true,
+      body: Padding(
+        padding: EdgeInsets.only(
+          left: 40,
+          right: 50,
+          top: 50,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CustomBackButton(
+                  isWhite: true,
+                ),
+                SizedBox(
+                  height: 20.h,
+                ),
+                Text(
+                  'Choose your nickname',
+                  style: headingText.copyWith(
+                    color: blackColor,
+                    fontSize: 20.sp,
                   ),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  Text(
-                    'Call me by...',
-                    style: headingText.copyWith(
-                      color: blackColor,
-                      fontSize: 20.sp,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  CustomProgressIndicator(
-                    value: 2,
-                  ),
-                  SizedBox(
-                    height: 40.h,
-                  ),
-                  CustomTextField2(
-                    onChange: (val) {},
-                    validator: (val) {},
-                    hintText: 'Nickname..',
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 200.h,
-              ),
-              CustomButton(
-                title: 'CONTINUE',
-                onTap: () {
-                  Get.to(IdentityScreen(),);
-                },
-              ),
-              SizedBox(
-                height: 30.h,
-              ),
-            ],
-          ),
+                ),
+                SizedBox(
+                  height: 20.h,
+                ),
+                CustomProgressIndicator(
+                  value: 2,
+                ),
+                SizedBox(
+                  height: 40.h,
+                ),
+                CustomTextField2(
+                  onChange: (val) {},
+                  validator: (val) {},
+                  hintText: 'Example: James',
+                ),
+              ],
+            ),
+            Spacer(),
+            CustomButton(
+              title: 'CONTINUE',
+              onTap: () {
+                Get.to(
+                  IdentityScreen(),
+                );
+              },
+            ),
+            SizedBox(
+              height: 30.h,
+            ),
+          ],
         ),
       ),
     );
   }
 }
-
-
