@@ -2,6 +2,7 @@ import 'package:hart/core/models/group_members.dart';
 import 'package:hart/core/view_models/base_view_model.dart';
 
 class CreateGroupProvider extends BaseViewModel {
+  bool isEnable = false;
   List<GroupMembers> memebers = [
     GroupMembers(
       name: 'laiba',
@@ -30,6 +31,14 @@ class CreateGroupProvider extends BaseViewModel {
   ];
   check(ind) {
     memebers[ind].isChecked = !memebers[ind].isChecked!;
+    for (var i = 0; i < memebers.length; i++) {
+      if (memebers[ind].isChecked == true) {
+        isEnable = true;
+        break;
+      } else {
+        isEnable = false;
+      }
+    }
     notifyListeners();
   }
 }

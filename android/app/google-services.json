@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "674419690889",
+    "project_id": "hart-68bb3",
+    "storage_bucket": "hart-68bb3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:674419690889:android:efb78ac4ed88bae4326558",
+        "android_client_info": {
+          "package_name": "com.example.hart"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDC5vKNEVg_UA-Es4h_CrxbL89fcdxOWvQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -20,103 +20,98 @@ class FantasiesScreen extends StatelessWidget {
       create: (context) => FantasiesProvider(),
       child: Consumer<FantasiesProvider>(builder: (context, model, child) {
         return Scaffold(
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.only(
-                left: 40,
-                right: 50,
-                top: 50,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CustomBackButton(
-                        isWhite: true,
+          body: Padding(
+            padding: EdgeInsets.only(
+              left: 40,
+              right: 50,
+              top: 50,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomBackButton(
+                      isWhite: true,
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    Text(
+                      'What are your desire & fantasies.',
+                      style: headingText.copyWith(
+                        color: blackColor,
+                        fontSize: 20.sp,
                       ),
-                      SizedBox(
-                        height: 20.h,
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    CustomProgressIndicator(
+                      value: 5,
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    Text(
+                      'Selected tags will appear publicaly  on  your  profile. You can edit them in setting.',
+                      style: descriptionTextStyle.copyWith(
+                        color: blackColor,
+                        fontSize: 12.sp,
                       ),
-                      Text(
-                        'What are your desire & fantasies.',
-                        style: headingText.copyWith(
-                          color: blackColor,
-                          fontSize: 20.sp,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20.h,
-                      ),
-                      CustomProgressIndicator(
-                        value: 5,
-                      ),
-                      SizedBox(
-                        height: 20.h,
-                      ),
-                      Text(
-                        'Selected tags will appear publicaly  on  your  profile. You can edit them in setting.',
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: Text(
+                        'Selected ${model.selections}',
                         style: descriptionTextStyle.copyWith(
                           color: blackColor,
                           fontSize: 12.sp,
                         ),
                       ),
-                      SizedBox(
-                        height: 20.h,
-                      ),
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: Text(
-                          'Selected ${model.selections}',
-                          style: descriptionTextStyle.copyWith(
-                            color: blackColor,
-                            fontSize: 12.sp,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 40.h,
-                      ),
-                      CustomButton(
-                        title: 'Friendship',
-                        onTap: () {
-                          model.selectMan();
-                        },
-                        color: model.isFreindship ? primaryColor : pinkColor,
-                        textColor:
-                            model.isFreindship ? whiteColor : primaryColor,
-                      ),
-                      SizedBox(
-                        height: 20.h,
-                      ),
-                      CustomButton(
-                        title: 'Marriage',
-                        onTap: () {
-                          model.selectWoman();
-                        },
-                        color: model.isMarriage ? primaryColor : pinkColor,
-                        textColor: model.isMarriage ? whiteColor : primaryColor,
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    height: 200.h,
-                  ),
-                  CustomButton(
-                    title: 'CONTINUE',
-                    onTap: () {
-                      Get.to(
-                        ExploreScreen(),
-                      );
-                    },
-                  ),
-                  SizedBox(
-                    height: 30.h,
-                  ),
-                ],
-              ),
+                    ),
+                    SizedBox(
+                      height: 40.h,
+                    ),
+                    ListView.separated(
+                      itemCount: model.items.length,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return CustomButton(
+                          title: model.items[index].title!,
+                          onTap: () {
+                            model.select(index);
+                          },
+                          color: model.items[index].isSelected == true
+                              ? primaryColor
+                              : pinkColor,
+                          textColor: model.items[index].isSelected == true
+                              ? whiteColor
+                              : primaryColor,
+                        );
+                      },
+                      separatorBuilder: (context, index) => sizeBox20,
+                    ),
+                  ],
+                ),
+                Spacer(),
+                CustomButton(
+                  title: 'CONTINUE',
+                  onTap: () {
+                    Get.to(
+                      ExploreScreen(),
+                    );
+                  },
+                ),
+                SizedBox(
+                  height: 30.h,
+                ),
+              ],
             ),
           ),
         );
@@ -124,5 +119,3 @@ class FantasiesScreen extends StatelessWidget {
     );
   }
 }
-
-

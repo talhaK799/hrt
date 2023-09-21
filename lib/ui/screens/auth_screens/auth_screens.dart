@@ -94,7 +94,7 @@ class AuthScreen extends StatelessWidget {
                   height: 20.h,
                 ),
                 CustomButton(
-                    title: 'Sign Up With Phone no',
+                    title: 'Sign Up With Telephone Phone number',
                     onTap: () {
                       Get.to(
                         PhoneLoginScreen(),

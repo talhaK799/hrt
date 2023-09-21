@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/constants/style.dart';
 
-
+// ignore: must_be_immutable
 class CustomTextField2 extends StatelessWidget {
   String? hintText;
   final validator;
@@ -35,22 +35,26 @@ class CustomTextField2 extends StatelessWidget {
               border: Border.all(color: pinkColor2)),
         ),
         Padding(
-          padding: EdgeInsets.only(left: 40, top: 10),
+          padding: EdgeInsets.only(left: 0, top: 10),
           child: TextFormField(
             validator: validator,
             controller: controller,
             // obscureText: obscure ?? false,
             obscuringCharacter: '*',
             cursorColor: primaryColor,
-            style: subHeadingTextStyle,
+            style: subHeadingTextStyle.copyWith(
+              color: primaryColor,
+            ),
             textAlign: TextAlign.center,
             decoration: InputDecoration(
                 contentPadding: EdgeInsets.zero,
                 hintText: hintText,
                 hintStyle: subHeadingTextStyle.copyWith(
+                  color: greyColor,
+                ),
+                errorStyle: subHeadingTextStyle.copyWith(
                   color: primaryColor,
                 ),
-                errorStyle: subHeadingTextStyle,
                 // suffix: suffex,
                 border: InputBorder.none),
           ),

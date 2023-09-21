@@ -87,7 +87,7 @@ class MembersScreen extends StatelessWidget {
                     child: CustomButton(
                       title: 'CREATE',
                       onTap: () {
-                        Get.to(
+                        Get.off(
                           GroupChattingScreen(),
                         );
                       },

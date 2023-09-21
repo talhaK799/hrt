@@ -20,79 +20,75 @@ class SelectGenderScreen extends StatelessWidget {
       create: (context) => SelectGenderProvider(),
       child: Consumer<SelectGenderProvider>(builder: (context, model, child) {
         return Scaffold(
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.only(
-                left: 40,
-                right: 50,
-                top: 50,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CustomBackButton(
-                        isWhite: true,
+          body: Padding(
+            padding: EdgeInsets.only(
+              left: 40,
+              right: 50,
+              top: 50,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomBackButton(
+                      isWhite: true,
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    Text(
+                      'Who are you looking for?',
+                      style: headingText.copyWith(
+                        color: blackColor,
+                        fontSize: 20.sp,
                       ),
-                      SizedBox(
-                        height: 20.h,
-                      ),
-                      Text(
-                        'Who are you looking for?',
-                        style: headingText.copyWith(
-                          color: blackColor,
-                          fontSize: 20.sp,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20.h,
-                      ),
-                      CustomProgressIndicator(
-                        value: 4,
-                      ),
-                      SizedBox(
-                        height: 40.h,
-                      ),
-                      CustomButton(
-                        title: 'Man',
-                        onTap: () {
-                          model.selectMan();
-                        },
-                        color: model.isMan ? primaryColor : pinkColor,
-                        textColor: model.isMan ? whiteColor : primaryColor,
-                      ),
-                      SizedBox(
-                        height: 20.h,
-                      ),
-                      CustomButton(
-                        title: 'Woman',
-                        onTap: () {
-                          model.selectWoman();
-                        },
-                        color: model.isWoman ? primaryColor : pinkColor,
-                        textColor: model.isWoman ? whiteColor : primaryColor,
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    height: 200.h,
-                  ),
-                  CustomButton(
-                    title: 'CONTINUE',
-                    onTap: () {
-                      Get.to(
-                        FantasiesScreen(),
-                      );
-                    },
-                  ),
-                  SizedBox(
-                    height: 30.h,
-                  ),
-                ],
-              ),
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    CustomProgressIndicator(
+                      value: 4,
+                    ),
+                    SizedBox(
+                      height: 40.h,
+                    ),
+                    CustomButton(
+                      title: 'Man',
+                      onTap: () {
+                        model.selectMan();
+                      },
+                      color: model.isMan ? primaryColor : pinkColor,
+                      textColor: model.isMan ? whiteColor : primaryColor,
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    CustomButton(
+                      title: 'Woman',
+                      onTap: () {
+                        model.selectWoman();
+                      },
+                      color: model.isWoman ? primaryColor : pinkColor,
+                      textColor: model.isWoman ? whiteColor : primaryColor,
+                    )
+                  ],
+                ),
+                Spacer(),
+                CustomButton(
+                  title: 'CONTINUE',
+                  onTap: () {
+                    Get.to(
+                      FantasiesScreen(),
+                    );
+                  },
+                ),
+                SizedBox(
+                  height: 30.h,
+                ),
+              ],
             ),
           ),
         );
@@ -100,5 +96,3 @@ class SelectGenderScreen extends StatelessWidget {
     );
   }
 }
-
-

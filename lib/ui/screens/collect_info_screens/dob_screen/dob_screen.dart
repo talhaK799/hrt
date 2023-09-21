@@ -20,68 +20,66 @@ class DOBScreen extends StatelessWidget {
       create: (context) => DobProvider(),
       child: Consumer<DobProvider>(builder: (context, model, child) {
         return Scaffold(
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.only(
-                left: 50,
-                right: 50,
-                top: 80,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Add date of birth',
-                        style: headingText.copyWith(
-                          color: blackColor,
-                          fontSize: 20.sp,
-                        ),
+          body: Padding(
+            padding: EdgeInsets.only(
+              left: 50,
+              right: 50,
+              top: 80,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Add date of birth',
+                      style: headingText.copyWith(
+                        color: blackColor,
+                        fontSize: 20.sp,
                       ),
-                      SizedBox(
-                        height: 20.h,
-                      ),
-                      CustomProgressIndicator(
-                        value: 1,
-                      ),
-                      SizedBox(
-                        height: 40.h,
-                      ),
-                      CustomButton(
-                        title: model.pickedDate == null
-                            ? 'Date of Birth'
-                            : monthNameDate.format(model.pickedDate!),
-                        color: pinkColor,
-                        textColor: primaryColor,
-                        onTap: () {
-                          model.pickDate(context);
-                        },
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 200.h,
-                  ),
-                  CustomButton(
-                    title: 'CONTINUE',
-                    onTap: () {
-                      if (model.age < 18) {
-                        Get.snackbar('Alert!!', 'Age must be 18 or above');
-                      } else {
-                        Get.to(
-                          NickNameScreen(),
-                        );
-                      }
-                    },
-                  ),
-                  SizedBox(
-                    height: 30.h,
-                  ),
-                ],
-              ),
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    CustomProgressIndicator(
+                      value: 1,
+                    ),
+                    SizedBox(
+                      height: 40.h,
+                    ),
+                    CustomButton(
+                      title: model.pickedDate == null
+                          ? 'Example: 12/03/1985'
+                          : monthNameDate.format(model.pickedDate!),
+                      color: pinkColor,
+                      textColor: greyColor,
+                      onTap: () {
+                        model.pickDate(context);
+                      },
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 200.h,
+                ),
+                CustomButton(
+                  title: 'CONTINUE',
+                  onTap: () {
+                    if (model.age < 18) {
+                      Get.snackbar('Alert!!', 'Age must be 18 or above');
+                    } else {
+                      Get.to(
+                        NickNameScreen(),
+                      );
+                    }
+                  },
+                ),
+                SizedBox(
+                  height: 30.h,
+                ),
+              ],
             ),
           ),
         );
@@ -89,5 +87,3 @@ class DOBScreen extends StatelessWidget {
     );
   }
 }
-
-

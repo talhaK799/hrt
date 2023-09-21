@@ -63,7 +63,7 @@ class BuyPlanScreen extends StatelessWidget {
                     SizedBox(
                       height: 20.h,
                     ),
-                    CustomButton(title: 'BY PLAN', onTap: () {}),
+                    CustomButton(title: 'BECOME A MAESTRO', onTap: () {}),
                     SizedBox(
                       height: 30.h,
                     ),
@@ -219,7 +219,7 @@ class BuyPlanScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'PREMIUM',
+                  'MAESTRO',
                   style: subHeadingTextStyle.copyWith(
                     color: primaryColor,
                   ),
