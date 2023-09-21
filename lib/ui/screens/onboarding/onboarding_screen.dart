@@ -111,7 +111,7 @@ class OnboardingScreen extends StatelessWidget {
                                           child: Text(
                                             "Next",
                                             style: buttonTextStyle.copyWith(
-                                              // color: orangeColor,
+                                              color: blackColor,
                                               fontSize: 16.sp,
                                               fontWeight: FontWeight.w600,
                                             ),

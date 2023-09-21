@@ -78,25 +78,25 @@ class FantasiesScreen extends StatelessWidget {
                     SizedBox(
                       height: 40.h,
                     ),
-                    CustomButton(
-                      title: 'Friendship',
-                      onTap: () {
-                        model.selectMan();
+                    ListView.separated(
+                      itemCount: model.items.length,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return CustomButton(
+                          title: model.items[index].title!,
+                          onTap: () {
+                            model.select(index);
+                          },
+                          color: model.items[index].isSelected == true
+                              ? primaryColor
+                              : pinkColor,
+                          textColor: model.items[index].isSelected == true
+                              ? whiteColor
+                              : primaryColor,
+                        );
                       },
-                      color: model.isFreindship ? primaryColor : pinkColor,
-                      textColor: model.isFreindship ? whiteColor : primaryColor,
+                      separatorBuilder: (context, index) => sizeBox20,
                     ),
-                    SizedBox(
-                      height: 20.h,
-                    ),
-                    CustomButton(
-                      title: 'Marriage',
-                      onTap: () {
-                        model.selectWoman();
-                      },
-                      color: model.isMarriage ? primaryColor : pinkColor,
-                      textColor: model.isMarriage ? whiteColor : primaryColor,
-                    )
                   ],
                 ),
                 Spacer(),

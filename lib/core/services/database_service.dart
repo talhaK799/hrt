@@ -1,50 +1,84 @@
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:flutter/cupertino.dart';
-// import 'package:hart/core/models/app_user.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:hart/core/models/app_user.dart';
+import 'package:hart/core/models/info_item.dart';
 
-// class DatabaseService {
-//   final _db = FirebaseFirestore.instance;
-//   static final DatabaseService _singleton = DatabaseService._internal();
+class DatabaseService {
+  final _db = FirebaseFirestore.instance;
+  static final DatabaseService _singleton = DatabaseService._internal();
 
-//   factory DatabaseService() {
-//     return _singleton;
-//   }
+  factory DatabaseService() {
+    return _singleton;
+  }
 
-//   DatabaseService._internal();
+  DatabaseService._internal();
 
-//   /// Register app user
-//   registerAppUser(AppUser user) async {
-//     debugPrint("User @Id => ${user.id}");
-//     try {
-//       await _db
-//           .collection('app_user')
-//           .doc(user.id)
-//           .set(user.toJson())
-//           .then(( value) => debugPrint('user registered successfully'));
-//     } catch (e, s) {
-//       debugPrint('Exception @DatabaseService/registerAppUser');
-//       debugPrint(s.toString());
-//       return false;
-//     }
-//   }
+  /// Register app user
+  registerAppUser(AppUser user) async {
+    debugPrint("User @Id => ${user.id}");
+    try {
+      await _db
+          .collection('app_user')
+          .doc(user.id)
+          .set(user.toJson())
+          .then((value) => debugPrint('user registered successfully'));
+    } catch (e, s) {
+      debugPrint('Exception @DatabaseService/registerAppUser');
+      debugPrint(s.toString());
+      return false;
+    }
+  }
 
-//   /// Get User from database using this funciton
-//   Future<AppUser> getAppUser(id) async {
-//     //Todo: Rename getUsers -> getUser
-//     debugPrint('@getAppUser: id: $id');
-//     try {
-//       final snapshot = await _db.collection('app_user').doc(id).get();
-//       debugPrint('Client Data: ${snapshot.data()}');
-//       return AppUser.fromJson(snapshot.data()!, snapshot.id);
-//     } catch (e, s) {
-//       debugPrint('Exception @DatabaseService/getAppUser');
-//       debugPrint(s.toString());
-//       return AppUser();
-//     }
-//   }
+  /// Get User from database using this funciton
+  Future<AppUser> getAppUser(id) async {
+    //Todo: Rename getUsers -> getUser
+    debugPrint('@getAppUser: id: $id');
+    try {
+      final snapshot = await _db.collection('app_user').doc(id).get();
+      debugPrint('Client Data: ${snapshot.data()}');
+      return AppUser.fromJson(snapshot.data()!, snapshot.id);
+    } catch (e, s) {
+      debugPrint('Exception @DatabaseService/getAppUser');
+      debugPrint(s.toString());
+      return AppUser();
+    }
+  }
 
-//   updateClientFcm(token, id) async {
-//     await _db.collection("app_user").doc(id).update({'fcmToken': token}).then(
-//         (value) => debugPrint('fcm updated successfully'));
-//   }
-// }
+  getIdentity() async {
+    List<InfoItem> list = [];
+    try {
+      final snapshot = await _db.collection('Identity').get();
+      for (var element in snapshot.docs) {
+        list.add(
+          InfoItem.fromJson(element.data(), element.id),
+        );
+        print('List data ===> ${element.data()}');
+      }
+
+      return list;
+    } catch (e) {
+      print('error occure while getting the data======>$e');
+    }
+  }
+  getDesires() async {
+    List<InfoItem> list = [];
+    try {
+      final snapshot = await _db.collection('Desires').get();
+      for (var element in snapshot.docs) {
+        list.add(
+          InfoItem.fromJson(element.data(), element.id),
+        );
+        print('List data ===> ${element.data()}');
+      }
+
+      return list;
+    } catch (e) {
+      print('error occure while getting the data======>$e');
+    }
+  }
+
+  // updateClientFcm(token, id) async {
+  //   await _db.collection("app_user").doc(id).update({'fcmToken': token}).then(
+  //       (value) => debugPrint('fcm updated successfully'));
+  // }
+}
