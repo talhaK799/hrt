@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/constants/strings.dart';
 import 'package:hart/core/constants/style.dart';
 import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/ui/custom_widgets/custom_app_bar.dart';
 import 'package:hart/ui/custom_widgets/custom_button.dart';
-import 'package:hart/ui/screens/chatting_screen/create_group/group_members/members_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'add_people_provider.dart';

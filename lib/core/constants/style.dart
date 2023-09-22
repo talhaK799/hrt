@@ -59,11 +59,22 @@ final buttonTextStyle = TextStyle(
   fontWeight: FontWeight.w600,
   color: whiteColor,
 );
+final buttonTextStyleRed = TextStyle(
+  fontSize: 14.sp,
+  fontFamily: nunitoFont,
+  fontWeight: FontWeight.w600,
+  color: primaryColor,
+);
 final buttonTextStyle2 = TextStyle(
   fontSize: 12.sp,
   fontFamily: nunitoFont,
   fontWeight: FontWeight.w600,
-  color: blackColor,
+);
+final buttonTextStyleGrey = TextStyle(
+  fontSize: 12.sp,
+  fontFamily: nunitoFont,
+  fontWeight: FontWeight.w600,
+  color: greyColor2,
 );
 
 final miniText = TextStyle(
@@ -77,6 +88,7 @@ final subtitleText = TextStyle(
   fontSize: 14.sp,
   fontFamily: nunitoFont,
   fontWeight: FontWeight.w400,
+  color: lightRed,
 );
 
 final sizeBox30 = SizedBox(
@@ -93,7 +105,7 @@ final sizeBox20 = SizedBox(
 );
 
 final boxShadow = [
-   BoxShadow(
+  BoxShadow(
     color: greyColor,
     offset: Offset(
       3.0,

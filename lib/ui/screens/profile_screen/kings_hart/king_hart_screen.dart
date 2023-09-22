@@ -1,0 +1,161 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:hart/core/constants/colors.dart';
+import 'package:hart/core/others/screen_utils.dart';
+import 'package:hart/ui/custom_widgets/custom_app_bar.dart';
+import 'package:hart/ui/custom_widgets/custom_button.dart';
+
+import '../../../../core/constants/strings.dart';
+import '../../../../core/constants/style.dart';
+
+class KingHartScreen extends StatelessWidget {
+  const KingHartScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(
+            24,
+            60,
+            24,
+            40,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              CustomAppBar(title: 'Kings HARTS'),
+              sizeBox30,
+              SvgPicture.asset(
+                '$staticAsset/Character.svg',
+              ),
+              sizeBox20,
+              Text(
+                'Let them know with a Spank',
+                style: subHeadingText1,
+              ),
+              sizeBox10,
+              Text(
+                'Notify a member you like immediately and increase your chances of connecting.',
+                textAlign: TextAlign.center,
+                style: descriptionTextStyle.copyWith(
+                  color: lightRed,
+                ),
+              ),
+              sizeBox20,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Offers(
+                    title: '1 Spank',
+                    price: '€ 5',
+                    offer: '20 % OFF',
+                    isOffered: false,
+                    onTap: () {},
+                  ),
+                  Offers(
+                    title: '1 Spank',
+                    price: '€ 5',
+                    offer: '20 % OFF',
+                    onTap: () {},
+                  ),
+                  Offers(
+                    title: '1 Spank',
+                    price: '€ 5',
+                    offer: '20 % OFF',
+                    onTap: () {},
+                  ),
+                ],
+              ),
+              sizeBox30,
+              Text(
+                'Become Maestro and get 1 Free Spank a day',
+                style: descriptionTextStyle.copyWith(
+                  color: lightRed,
+                ),
+              ),
+              sizeBox20,
+              CustomButton(title: 'CONTINUE', onTap: () {}),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class Offers extends StatelessWidget {
+  String? title;
+  String? price;
+  String? offer;
+  bool? isOffered;
+  final onTap;
+
+  Offers({
+    this.offer,
+    this.price,
+    this.title,
+    this.isOffered = true,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: 30,
+            vertical: 25,
+          ),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(25.r),
+              border: Border.all(
+                color: pinkColor2,
+              )),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                title!,
+                style: subtitleText.copyWith(
+                  color: lightRed,
+                ),
+              ),
+              sizeBox10,
+              Text(
+                price!,
+                style: subHeadingText1,
+              ),
+            ],
+          ),
+        ),
+        isOffered == true
+            ? Padding(
+                padding: const EdgeInsets.only(
+                  left: 20,
+                ),
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 5,
+                  ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30.r),
+                    color: primaryColor,
+                  ),
+                  child: Text(
+                    offer!,
+                    style: buttonTextStyle2.copyWith(
+                      color: whiteColor,
+                    ),
+                  ),
+                ),
+              )
+            : Container(),
+      ],
+    );
+  }
+}
