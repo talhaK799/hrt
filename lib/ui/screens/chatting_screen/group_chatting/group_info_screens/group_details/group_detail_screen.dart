@@ -9,7 +9,6 @@ import 'package:hart/ui/screens/chatting_screen/group_chatting/group_info_screen
 import 'package:hart/ui/screens/chatting_screen/group_chatting/group_info_screens/group_details/group_detail_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../../../create_group/create_group_screen.dart';
 
 class GroupDetailScreen extends StatelessWidget {
   const GroupDetailScreen({super.key});

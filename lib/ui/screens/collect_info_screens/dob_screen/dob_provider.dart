@@ -10,7 +10,7 @@ class DobProvider extends BaseViewModel {
     pickedDate = await DatePicker.showSimpleDatePicker(
       context,
       initialDate: DateTime(2002),
-      firstDate: DateTime(2000),
+      firstDate: DateTime(1971),
       lastDate: DateTime(2090),
       dateFormat: "dd/MM/yyyy",
       looping: true,

@@ -60,10 +60,28 @@ class DatabaseService {
       print('error occure while getting the data======>$e');
     }
   }
+
   getDesires() async {
     List<InfoItem> list = [];
     try {
       final snapshot = await _db.collection('Desires').get();
+      for (var element in snapshot.docs) {
+        list.add(
+          InfoItem.fromJson(element.data(), element.id),
+        );
+        print('List data ===> ${element.data()}');
+      }
+
+      return list;
+    } catch (e) {
+      print('error occure while getting the data======>$e');
+    }
+  }
+
+  getPersonalities() async {
+    List<InfoItem> list = [];
+    try {
+      final snapshot = await _db.collection('Personalities').get();
       for (var element in snapshot.docs) {
         list.add(
           InfoItem.fromJson(element.data(), element.id),
