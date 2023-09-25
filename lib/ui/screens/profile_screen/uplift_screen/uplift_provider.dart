@@ -1,6 +1,6 @@
 import 'package:hart/core/view_models/base_view_model.dart';
 
-class KingHartProvider extends BaseViewModel {
+class UpliftPorvider extends BaseViewModel {
   int currentIndex = 0;
 
   select(index) {

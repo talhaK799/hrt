@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/constants/strings.dart';
 import 'package:hart/core/constants/style.dart';
 import 'package:hart/core/others/screen_utils.dart';
@@ -10,6 +9,7 @@ import 'package:hart/ui/screens/chatting_screen/group_chatting/group_chatting_sc
 import 'package:provider/provider.dart';
 
 import '../../../../custom_widgets/custom_button.dart';
+import '../../../../custom_widgets/white_textfield.dart';
 
 class MembersScreen extends StatelessWidget {
   const MembersScreen({super.key});
@@ -40,7 +40,9 @@ class MembersScreen extends StatelessWidget {
                     ///
                     /// TextField
                     ///
-                    _groupNameTextField(),
+                    CustomTextFieldWhite(
+                      hintText: 'Enter your group name',
+                    ),
                     sizeBox20,
                     Text(
                       'Name your group',
@@ -102,36 +104,9 @@ class MembersScreen extends StatelessWidget {
     );
   }
 
-  _groupNameTextField() {
-    return Stack(
-      children: [
-        Container(
-          padding: EdgeInsets.all(8),
-          width: 1.sw,
-          height: 65.h,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12.r),
-              border: Border.all(color: greyColor)),
-        ),
-        Padding(
-          padding: EdgeInsets.only(left: 40, top: 10),
-          child: TextFormField(
-            // obscureText: obscure ?? false,
-            obscuringCharacter: '*',
-            cursorColor: greyColor,
-            style: subHeadingTextStyle,
-            decoration: InputDecoration(
-                contentPadding: EdgeInsets.zero,
-                hintText: 'Your group name..',
-                hintStyle: subHeadingTextStyle.copyWith(
-                  color: greyColor2,
-                ),
-                errorStyle: subHeadingTextStyle,
-                // suffix: suffex,
-                border: InputBorder.none),
-          ),
-        ),
-      ],
-    );
-  }
+  // _groupNameTextField() {
+  //   return CustomTextFieldWhite();
+  // }
 }
+
+
