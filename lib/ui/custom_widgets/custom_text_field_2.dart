@@ -56,7 +56,7 @@ class CustomTextField2 extends StatelessWidget {
                   color: primaryColor,
                 ),
                 // suffix: suffex,
-                border: InputBorder.none),
+                border: InputBorder.none,),
           ),
         ),
       ],

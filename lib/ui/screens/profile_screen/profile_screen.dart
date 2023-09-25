@@ -4,8 +4,16 @@ import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/constants/strings.dart';
 import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/ui/custom_widgets/custom_profile_tile.dart';
+import 'package:hart/ui/screens/profile_screen/About/about_screen.dart';
+import 'package:hart/ui/screens/profile_screen/Help/help_screen.dart';
+import 'package:hart/ui/screens/profile_screen/Notifications/notification_screen.dart';
+import 'package:hart/ui/screens/profile_screen/app_setting/app_setting_screen.dart';
+import 'package:hart/ui/screens/profile_screen/edit_profile/edit_profile_screen.dart';
 import 'package:hart/ui/screens/profile_screen/kings_hart/king_hart_screen.dart';
+import 'package:hart/ui/screens/profile_screen/our_community/community_screen.dart';
+import 'package:hart/ui/screens/profile_screen/pair_profile/pair_profile_screen.dart';
 import 'package:hart/ui/screens/profile_screen/premium_setting/premium_screen.dart';
+import 'package:hart/ui/screens/profile_screen/uplift_screen/uplisft_screen.dart';
 
 import '../../../core/constants/style.dart';
 
@@ -17,7 +25,7 @@ class ProfileScreen extends StatelessWidget {
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.fromLTRB(
+          padding: const EdgeInsets.fromLTRB(
             24,
             60,
             24,
@@ -94,44 +102,64 @@ class ProfileScreen extends StatelessWidget {
                 isWhite: false,
               ),
               CustomProfileTile(
-                onTap: () {},
+                onTap: () {
+                  Get.to(
+                    UpliftScreen(),
+                  );
+                },
                 title: 'Uplift',
                 color: pinkColor,
                 textColor: primaryColor,
                 iconColor: primaryColor,
-                icon: 'kings.png',
+                icon: 'uplift.png',
                 isWhite: false,
               ),
               sizeBox10,
               CustomProfileTile(
-                onTap: () {},
+                onTap: () {
+                  Get.to(
+                    PairProfileScreen(),
+                  );
+                },
                 title: 'Pair Profile with my partner',
-                icon: 'edit.png',
+                icon: 'pair.png',
               ),
               CustomProfileTile(
-                onTap: () {},
+                onTap: () {
+                  Get.to(
+                    EditProfileScreen(),
+                  );
+                },
                 title: 'Edit Profile',
                 icon: 'edit.png',
               ),
               CustomProfileTile(
                 onTap: () {},
                 title: 'Search Setting',
-                icon: 'edit.png',
+                icon: 'searchpro.png',
               ),
               CustomProfileTile(
-                onTap: () {},
+                onTap: () {
+                  Get.to(
+                    AppSettingsScreen(),
+                  );
+                },
                 title: 'App Setting',
-                icon: 'edit.png',
+                icon: 'setting.png',
               ),
               CustomProfileTile(
                 onTap: () {},
                 title: 'Share My Profile',
-                icon: 'edit.png',
+                icon: 'share.png',
               ),
               CustomProfileTile(
-                onTap: () {},
+                onTap: () {
+                  Get.to(
+                    NotificationScreen(),
+                  );
+                },
                 title: 'Notifications',
-                icon: 'edit.png',
+                icon: 'notifications.png',
               ),
               Text(
                 'HART',
@@ -141,16 +169,28 @@ class ProfileScreen extends StatelessWidget {
               ),
               sizeBox10,
               CustomProfileTile(
-                onTap: () {},
+                onTap: () {
+                  Get.to(
+                    CommunityScreen(),
+                  );
+                },
                 title: 'Our Community',
               ),
               CustomProfileTile(
-                onTap: () {},
+                onTap: () {
+                  Get.to(
+                    AboutScreen(),
+                  );
+                },
                 title: 'About',
               ),
               CustomProfileTile(
-                onTap: () {},
-                title: 'Notifications',
+                onTap: () {
+                  Get.to(
+                    HelpScreen(),
+                  );
+                },
+                title: 'Help',
               ),
             ],
           ),

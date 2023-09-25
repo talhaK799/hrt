@@ -3,7 +3,8 @@ import 'package:get/get.dart';
 import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/constants/strings.dart';
 import 'package:hart/core/others/screen_utils.dart';
-import 'package:hart/ui/screens/onboarding/onboarding_screen.dart';
+
+import 'profile_screen/profile_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -15,9 +16,12 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   init() async {
     await Future.delayed(const Duration(seconds: 2));
-    Get.offAll(() =>
-        // RootScreen()
-        OnboardingScreen());
+    Get.offAll(
+      () =>
+          // RootScreen()
+          // OnboardingScreen(),
+          ProfileScreen(),
+    );
   }
 
   @override
