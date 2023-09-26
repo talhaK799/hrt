@@ -24,6 +24,11 @@ class FantasiesProvider extends BaseViewModel {
 
   select(index) {
     items[index].isSelected = !items[index].isSelected!;
+    if (items[index].isSelected == true) {
+      selections++;
+    } else {
+      selections--;
+    }
     notifyListeners();
   }
 

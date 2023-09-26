@@ -22,8 +22,7 @@ class FantasiesScreen extends StatelessWidget {
       create: (context) => FantasiesProvider(),
       child: Consumer<FantasiesProvider>(builder: (context, model, child) {
         return ModalProgressHUD(
-          
-          inAsyncCall: model.state==ViewState.busy,
+          inAsyncCall: model.state == ViewState.busy,
           child: Scaffold(
             body: Padding(
               padding: EdgeInsets.only(
@@ -31,9 +30,7 @@ class FantasiesScreen extends StatelessWidget {
                 right: 50,
                 top: 50,
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Stack(
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -83,38 +80,44 @@ class FantasiesScreen extends StatelessWidget {
                       SizedBox(
                         height: 40.h,
                       ),
-                      ListView.separated(
-                        itemCount: model.items.length,
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          return CustomButton(
-                            title: model.items[index].title!,
-                            onTap: () {
-                              model.select(index);
-                            },
-                            color: model.items[index].isSelected == true
-                                ? primaryColor
-                                : pinkColor,
-                            textColor: model.items[index].isSelected == true
-                                ? whiteColor
-                                : primaryColor,
-                          );
-                        },
-                        separatorBuilder: (context, index) => sizeBox20,
+                      Expanded(
+                        child: ListView.separated(
+                          itemCount: model.items.length,
+                          shrinkWrap: true,
+                          padding: EdgeInsets.only(bottom: 100),
+                          physics: BouncingScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return CustomButton(
+                              title: model.items[index].title!,
+                              onTap: () {
+                                model.select(index);
+                              },
+                              color: model.items[index].isSelected == true
+                                  ? primaryColor
+                                  : pinkColor,
+                              textColor: model.items[index].isSelected == true
+                                  ? whiteColor
+                                  : primaryColor,
+                            );
+                          },
+                          separatorBuilder: (context, index) => sizeBox20,
+                        ),
                       ),
                     ],
                   ),
-                  Spacer(),
-                  CustomButton(
-                    title: 'CONTINUE',
-                    onTap: () {
-                      Get.to(
-                        ExploreScreen(),
-                      );
-                    },
-                  ),
-                  SizedBox(
-                    height: 30.h,
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 20),
+                      child: CustomButton(
+                        title: 'CONTINUE',
+                        onTap: () {
+                          Get.to(
+                            ExploreScreen(),
+                          );
+                        },
+                      ),
+                    ),
                   ),
                 ],
               ),

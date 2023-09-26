@@ -21,217 +21,233 @@ class HomeScreen extends StatelessWidget {
         return Scaffold(
             body: Stack(
           children: [
-            SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(24, 50, 24, 24),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Hart',
-                          style: subHeadingText1,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            showFilter(context);
-                          },
-                          child: Image.asset(
-                            '$staticAsset/Filter.png',
-                            scale: 3,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  _imageSlider(
-                    model,
-                  ),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 24,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Sarah',
-                          style: subHeadingText1,
-                        ),
-                        SizedBox(
-                          height: 15.h,
-                        ),
-                        Row(
-                          children: [
-                            // _infoContainer('23 men straight'),
-                            Text(
-                              '23 Women Straight',
-                              style: buttonTextStyle2,
-                            ),
-                            // SizedBox(
-                            //   width: 16.w,
-                            // ),
-                            // Row(
-                            //   children: [
-                            //     Image.asset(
-                            //       '$staticAsset/location2.png',
-                            //       scale: 3,
-                            //     ),
-                            //     SizedBox(
-                            //       width: 5.w,
-                            //     ),
-                            //     Text(
-                            //       '6.4 km',
-                            //       style: buttonTextStyle2,
-                            //     ),
-                            //   ],
-                            // ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10.h,
-                        ),
-                        Row(
-                          children: [
-                            // _infoContainer('Madrid, Spain'),
-                            Text(
-                              'Single, 10 km away,',
-                              style: buttonTextStyle2,
-                            ),
-                            SizedBox(
-                              width: 16.w,
-                            ),
-                            // _infoContainer('3 hours ago'),
-                            Text(
-                              '3 hours ago',
-                              style: buttonTextStyle2,
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 20.h,
-                        ),
-                        Text(
-                          'Desire',
-                          style: subHeadingText1,
-                        ),
-                        SizedBox(
-                          height: 15.h,
-                        ),
-                        Row(
-                          children: [
-                            _infoContainer('Friendship'),
-                            SizedBox(
-                              width: 16.w,
-                            ),
-                            _infoContainer('Marriage'),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 20.h,
-                        ),
-                        Text(
-                          'Interests',
-                          style: subHeadingText1,
-                        ),
-                        SizedBox(
-                          height: 15.h,
-                        ),
-                        Row(
-                          children: [
-                            _infoContainer('Art'),
-                            SizedBox(
-                              width: 16.w,
-                            ),
-                            _infoContainer('Music'),
-                            SizedBox(
-                              width: 16.w,
-                            ),
-                            _infoContainer('Hiking'),
-                            SizedBox(
-                              width: 16.w,
-                            ),
-                            _infoContainer('Real connection'),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 15.h,
-                        ),
-                        Text(
-                          'About Me',
-                          style: subHeadingText1,
-                        ),
-                        SizedBox(
-                          height: 10.h,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 50),
-                          child: Text(
-                            'Lorem ipsum dolor sit amet consectetur. Nulla ut proin diam est ac quam pretium lacus mollis. Pretium quam ac nibh nibh. Nec neque pulvinar risus sit consectetur cursus ut etiam risus...',
-                            style: buttonTextStyle2,
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
+            PageView.builder(
+              physics: BouncingScrollPhysics(),
+              controller: model.pageController,
+              itemCount: 4,
+              itemBuilder: (context, index) {
+                return _homeScreenData(context, model);
+              },
+              onPageChanged: (val) {},
             ),
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Align(
-                alignment: Alignment.bottomLeft,
-                child: Row(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        color: whiteColor,
-                        shape: BoxShape.circle,
-                        boxShadow: boxShadow,
-                      ),
-                      child: Image.asset(
-                        '$staticAsset/cross.png',
-                        scale: 3.5,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 15.w,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        model.like();
-                      },
-                      child: Container(
-                        padding: EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          color: model.isLiked ? primaryColor : whiteColor,
-                          shape: BoxShape.circle,
-                          boxShadow: boxShadow,
-                        ),
-                        child: model.isLiked
-                            ? Image.asset(
-                                '$staticAsset/likeWhite.png',
-                                scale: 3.5,
-                              )
-                            : Image.asset(
-                                '$staticAsset/Like.png',
-                                scale: 3.5,
-                              ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            )
+            _likeButtons(model)
           ],
         ));
       }),
+    );
+  }
+
+  _likeButtons(HomeProvider model) {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Align(
+        alignment: Alignment.bottomLeft,
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: whiteColor,
+                shape: BoxShape.circle,
+                boxShadow: boxShadow,
+              ),
+              child: Image.asset(
+                '$staticAsset/cross.png',
+                scale: 3.5,
+              ),
+            ),
+            SizedBox(
+              width: 15.w,
+            ),
+            GestureDetector(
+              onTap: () {
+                model.like();
+              },
+              child: Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: model.isLiked ? primaryColor : whiteColor,
+                  shape: BoxShape.circle,
+                  boxShadow: boxShadow,
+                ),
+                child: model.isLiked
+                    ? Image.asset(
+                        '$staticAsset/likeWhite.png',
+                        scale: 3.5,
+                      )
+                    : Image.asset(
+                        '$staticAsset/Like.png',
+                        scale: 3.5,
+                      ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  _homeScreenData(BuildContext context, HomeProvider model) {
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(24, 50, 24, 24),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Hart',
+                  style: subHeadingText1,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    showFilter(context);
+                  },
+                  child: Image.asset(
+                    '$staticAsset/Filter.png',
+                    scale: 3,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          _imageSlider(
+            model,
+          ),
+          SizedBox(
+            height: 20.h,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 24,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Sarah',
+                  style: subHeadingText1,
+                ),
+                SizedBox(
+                  height: 15.h,
+                ),
+                Row(
+                  children: [
+                    // _infoContainer('23 men straight'),
+                    Text(
+                      '23 Women Straight',
+                      style: buttonTextStyle2,
+                    ),
+                    // SizedBox(
+                    //   width: 16.w,
+                    // ),
+                    // Row(
+                    //   children: [
+                    //     Image.asset(
+                    //       '$staticAsset/location2.png',
+                    //       scale: 3,
+                    //     ),
+                    //     SizedBox(
+                    //       width: 5.w,
+                    //     ),
+                    //     Text(
+                    //       '6.4 km',
+                    //       style: buttonTextStyle2,
+                    //     ),
+                    //   ],
+                    // ),
+                  ],
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                Row(
+                  children: [
+                    // _infoContainer('Madrid, Spain'),
+                    Text(
+                      'Single, 10 km away,',
+                      style: buttonTextStyle2,
+                    ),
+                    SizedBox(
+                      width: 16.w,
+                    ),
+                    // _infoContainer('3 hours ago'),
+                    Text(
+                      '3 hours ago',
+                      style: buttonTextStyle2,
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 20.h,
+                ),
+                Text(
+                  'Desire',
+                  style: subHeadingText1,
+                ),
+                SizedBox(
+                  height: 15.h,
+                ),
+                Row(
+                  children: [
+                    _infoContainer('Friendship'),
+                    SizedBox(
+                      width: 16.w,
+                    ),
+                    _infoContainer('Marriage'),
+                  ],
+                ),
+                SizedBox(
+                  height: 20.h,
+                ),
+                Text(
+                  'Interests',
+                  style: subHeadingText1,
+                ),
+                SizedBox(
+                  height: 15.h,
+                ),
+                Row(
+                  children: [
+                    _infoContainer('Art'),
+                    SizedBox(
+                      width: 16.w,
+                    ),
+                    _infoContainer('Music'),
+                    SizedBox(
+                      width: 16.w,
+                    ),
+                    _infoContainer('Hiking'),
+                    SizedBox(
+                      width: 16.w,
+                    ),
+                    _infoContainer('Real connection'),
+                  ],
+                ),
+                SizedBox(
+                  height: 15.h,
+                ),
+                Text(
+                  'About Me',
+                  style: subHeadingText1,
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 85),
+                  child: Text(
+                    'Lorem ipsum dolor sit amet consectetur. Nulla ut proin diam est ac quam pretium lacus mollis. Pretium quam ac nibh nibh. Nec neque pulvinar risus sit consectetur cursus ut etiam risus...',
+                    style: buttonTextStyle2,
+                  ),
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 
@@ -243,7 +259,7 @@ class HomeScreen extends StatelessWidget {
         isScrollControlled: true,
         useSafeArea: true,
         // showDragHandle: true,
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             top: Radius.circular(20),
           ),
@@ -254,7 +270,7 @@ class HomeScreen extends StatelessWidget {
               children: [
                 Container(
                   height: 1.sh,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     image: DecorationImage(
                       image: AssetImage(
                         '$staticAsset/bottom_sheet.png',
@@ -263,7 +279,7 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ),
                   child: Padding(
-                    padding: EdgeInsets.fromLTRB(24, 24, 24, 0),
+                    padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
                     child: SingleChildScrollView(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -313,7 +329,7 @@ class HomeScreen extends StatelessWidget {
                             inactiveColor: greyColor,
                             showLabels: true,
                             min: 18,
-                            max: 40.0,
+                            max: 70.0,
                             endThumbIcon: thumbIcon(),
                             startThumbIcon: thumbIcon(),
                           ),
@@ -382,7 +398,7 @@ class HomeScreen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Location',
+                                'What you desire',
                                 style: subHeadingTextStyle2.copyWith(
                                   color: primaryColor,
                                 ),
@@ -414,13 +430,13 @@ class HomeScreen extends StatelessWidget {
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
                           Text(
                             'Only show people active in the last 7 days',
                             style: buttonTextStyle2.copyWith(
-                              color: Color(0xFFc48184),
+                              color: const Color(0xFFc48184),
                             ),
                           ),
                           sizeBox30,
@@ -469,7 +485,7 @@ class HomeScreen extends StatelessWidget {
 
   _infoContainer(text) {
     return Container(
-      padding: EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         vertical: 8,
         horizontal: 12,
       ),
@@ -492,7 +508,7 @@ _imageSlider(HomeProvider model) {
         itemCount: 5,
         itemBuilder: (context, index, realIndex) {
           return Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage('$dynamicAsset/image.png'),
                 fit: BoxFit.cover,
@@ -520,7 +536,7 @@ _imageSlider(HomeProvider model) {
         child: Align(
           alignment: Alignment.topRight,
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
             decoration: BoxDecoration(
               color: pinkColor,
               borderRadius: BorderRadius.circular(16),
@@ -529,7 +545,7 @@ _imageSlider(HomeProvider model) {
               axis: Axis.vertical,
               dotsCount: 5,
               position: model.currentIndex,
-              decorator: DotsDecorator(
+              decorator: const DotsDecorator(
                 activeColor: primaryColor,
                 size: Size(7.0, 7.0),
                 color: whiteColor,
@@ -550,7 +566,7 @@ _imageSlider(HomeProvider model) {
           right: 16,
           bottom: 16,
           child: Container(
-            padding: EdgeInsets.symmetric(
+            padding: const EdgeInsets.symmetric(
               horizontal: 10,
               vertical: 4,
             ),

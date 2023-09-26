@@ -15,19 +15,19 @@ class OnboardingViewModel extends BaseViewModel {
   }
   List<Onboarding> onboardingList = [
     Onboarding(
-      title: "Find your spouse with Hart",
+      title: "Find your connection with Hart",
       description:
           "Users going through a vetting process to ensure your never matchs with bots.",
       // imgUrl: "$staticImages/onboarding_01.png",
     ),
     Onboarding(
-      title: "Find your spouse with Hart",
+      title: "Find your connection with Hart",
       description:
           "Users going through a vetting process to ensure your never matchs with bots.",
       // imgUrl: "$staticImages/onboarding_02.png",
     ),
     Onboarding(
-      title: "Find your spouse with Hart",
+      title: "Find your connection with Hart",
       description:
           "Users going through a vetting process to ensure your never matchs with bots.",
       // imgUrl: "$staticImages/onboarding_03.png",

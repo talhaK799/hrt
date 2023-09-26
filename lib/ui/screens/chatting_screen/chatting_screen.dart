@@ -109,84 +109,7 @@ class ChattingScreen extends StatelessWidget {
                                           autoClose: true,
                                           icon: Icons.person_outline,
                                           onPressed: (context) {
-                                            showModalBottomSheet(
-                                                context: context,
-                                                useSafeArea: true,
-                                                isScrollControlled: true,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                    20.0,
-                                                  ),
-                                                ),
-                                                builder: (context) {
-                                                  return Consumer<
-                                                          ChattingProvider>(
-                                                      builder: (context, model,
-                                                          child) {
-                                                    return Container(
-                                                      padding: EdgeInsets.only(
-                                                        left: 25,
-                                                        right: 25,
-                                                        top: 100,
-                                                        bottom: 30,
-                                                      ),
-                                                      child: Column(children: [
-                                                        Text(
-                                                          'Do you want to disconnect from Josef?',
-                                                          textAlign:
-                                                              TextAlign.center,
-                                                          style: bodyTextStyle,
-                                                        ),
-                                                        sizeBox20,
-                                                        Text(
-                                                          'If you disconnect, Josef will no longer be able to message or access your chat history.',
-                                                          textAlign:
-                                                              TextAlign.center,
-                                                          style: buttonTextStyle
-                                                              .copyWith(
-                                                            color: Colors.grey,
-                                                          ),
-                                                        ),
-                                                        sizeBox30,
-                                                        ListView.separated(
-                                                          shrinkWrap: true,
-                                                          itemCount: model
-                                                              .buttons.length,
-                                                          itemBuilder:
-                                                              (context, index) {
-                                                            return GestureDetector(
-                                                              onTap: () => model
-                                                                  .selectButton(
-                                                                      index),
-                                                              child: _selecions(
-                                                                model.buttons[
-                                                                    index],
-                                                              ),
-                                                            );
-                                                          },
-                                                          separatorBuilder:
-                                                              (context,
-                                                                      index) =>
-                                                                  sizeBox20,
-                                                        ),
-                                                        sizeBox30,
-                                                        CustomButton(
-                                                          title: 'LEAVE',
-                                                          onTap: () {},
-                                                        ),
-                                                        sizeBox20,
-                                                        CustomButton(
-                                                          title: 'Back',
-                                                          textColor:
-                                                              primaryColor,
-                                                          color: pinkColor,
-                                                          onTap: () {},
-                                                        ),
-                                                      ]),
-                                                    );
-                                                  });
-                                                });
+                                            _disconnectionSheet(context);
                                           },
                                         ),
                                         SlidableAction(
@@ -237,6 +160,71 @@ class ChattingScreen extends StatelessWidget {
             ],
           ));
     });
+  }
+
+   _disconnectionSheet(BuildContext context) {
+    return showModalBottomSheet(
+        context: context,
+        useSafeArea: true,
+        isScrollControlled: true,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(
+            20.0,
+          ),
+        ),
+        builder: (context) {
+          return Consumer<ChattingProvider>(builder: (context, model, child) {
+            return Container(
+              padding: EdgeInsets.only(
+                left: 25,
+                right: 25,
+                top: 100,
+                bottom: 30,
+              ),
+              child: Column(children: [
+                Text(
+                  'Do you want to disconnect from Josef?',
+                  textAlign: TextAlign.center,
+                  style: bodyTextStyle,
+                ),
+                sizeBox20,
+                Text(
+                  'If you disconnect, Josef will no longer be able to message or access your chat history.',
+                  textAlign: TextAlign.center,
+                  style: buttonTextStyle.copyWith(
+                    color: Colors.grey,
+                  ),
+                ),
+                sizeBox30,
+                ListView.separated(
+                  shrinkWrap: true,
+                  itemCount: model.buttons.length,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () => model.selectButton(index),
+                      child: _selecions(
+                        model.buttons[index],
+                      ),
+                    );
+                  },
+                  separatorBuilder: (context, index) => sizeBox20,
+                ),
+                sizeBox30,
+                CustomButton(
+                  title: 'LEAVE',
+                  onTap: () {},
+                ),
+                sizeBox20,
+                CustomButton(
+                  title: 'Back',
+                  textColor: primaryColor,
+                  color: pinkColor,
+                  onTap: () {},
+                ),
+              ]),
+            );
+          });
+        });
   }
 
   _selecions(RadioButton button) {
@@ -324,7 +312,7 @@ class ChattingScreen extends StatelessWidget {
       ),
       subtitle: Text(
         model.chats[index].desscription!,
-        style: subtitleText,
+        style: subtitleText.copyWith(color: greyColor2),
       ),
       trailing: Column(
         children: [

@@ -67,30 +67,28 @@ class ConnectionScreen extends StatelessWidget {
                         ),
                         sizeBox10,
                         Padding(
-                          padding: const EdgeInsets.only(
-                            bottom: 40,
-                          ),
+                          padding: const EdgeInsets.only(bottom: 40, right: 20),
                           child: RichText(
                             text: TextSpan(
                               children: [
                                 TextSpan(
                                   text:
-                                      'As soon as someone like you, you will see them here. Keep liking more ',
+                                      'As soon someone likes you, will appear here! Keep liking more Hart members, the perfect connection is around the corner! ',
                                   style: buttonTextStyle.copyWith(
                                     color: greyColor2,
                                   ),
                                 ),
-                                TextSpan(
-                                  text: 'Hart',
-                                  style: subHeadingText1,
-                                ),
-                                TextSpan(
-                                  text:
-                                      ' members, a connection could be around in corner.',
-                                  style: buttonTextStyle.copyWith(
-                                    color: greyColor2,
-                                  ),
-                                )
+                                // TextSpan(
+                                //   text: 'Hart',
+                                //   style: subHeadingText1,
+                                // ),
+                                // TextSpan(
+                                //   text:
+                                //       ' members, a connection could be around in corner.',
+                                //   style: buttonTextStyle.copyWith(
+                                //     color: greyColor2,
+                                //   ),
+                                // )
                               ],
                             ),
                           ),

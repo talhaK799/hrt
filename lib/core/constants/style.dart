@@ -88,7 +88,6 @@ final subtitleText = TextStyle(
   fontSize: 14.sp,
   fontFamily: nunitoFont,
   fontWeight: FontWeight.w400,
-  color: lightRed,
 );
 
 final sizeBox30 = SizedBox(
