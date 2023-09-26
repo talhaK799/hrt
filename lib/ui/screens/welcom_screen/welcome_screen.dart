@@ -32,6 +32,7 @@ class WelcomeScreen extends StatelessWidget {
                 'WELCOME TO HART',
                 style: headingText.copyWith(
                   fontSize: 40.sp,
+                  fontWeight: FontWeight.w800,
                   color: primaryColor,
                 ),
               ),
@@ -40,7 +41,7 @@ class WelcomeScreen extends StatelessWidget {
               height: 20.h,
             ),
             Text(
-                'Hart enclose the mission to March open minded people seeking for something different! Be respectful with your match, discover and have fun!',
+                'Hart enclose the mission to Match open minded people seeking for something different! Be respectful with your match, discover and have fun!',
                 style: subHeadingTextStyle.copyWith(
                   fontWeight: FontWeight.w500,
                   color: blackColor,

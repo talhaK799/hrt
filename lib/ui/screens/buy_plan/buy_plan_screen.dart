@@ -50,7 +50,7 @@ class BuyPlanScreen extends StatelessWidget {
                           ]),
                     ),
                     Text(
-                      'You’re close to meeting your people. \nSpeed things up with Majestic Membership',
+                      'You’re close to meeting your people. \nSpeed things up with Majestic Maestro',
                       textAlign: TextAlign.center,
                       style: descriptionTextStyle.copyWith(
                         color: blackColor,
@@ -72,27 +72,35 @@ class BuyPlanScreen extends StatelessWidget {
               ),
             ),
           ),
-          GestureDetector(
-            onTap: () {
-              Get.to(
-                AddPhoneNumber(),
-              );
-            },
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: 40,
-                horizontal: 30,
-              ),
-              child: Align(
-                alignment: Alignment.topRight,
-                child: Image.asset(
-                  '$staticAsset/Cross Icon.png',
-                  scale: 2.5,
-                ),
-              ),
-            ),
-          ),
+
+          ///
+          /// Close button
+          ///
+          closeButtton(),
         ],
+      ),
+    );
+  }
+
+  GestureDetector closeButtton() {
+    return GestureDetector(
+      onTap: () {
+        Get.to(
+          AddPhoneNumber(),
+        );
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          vertical: 40,
+          horizontal: 30,
+        ),
+        child: Align(
+          alignment: Alignment.topRight,
+          child: Image.asset(
+            '$staticAsset/Cross Icon.png',
+            scale: 2.5,
+          ),
+        ),
       ),
     );
   }

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/constants/strings.dart';
 import 'package:hart/core/others/screen_utils.dart';
 
-import 'profile_screen/profile_screen.dart';
+import 'onboarding/onboarding_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -19,8 +20,8 @@ class _SplashScreenState extends State<SplashScreen> {
     Get.offAll(
       () =>
           // RootScreen()
-          // OnboardingScreen(),
-          ProfileScreen(),
+          OnboardingScreen(),
+      // ProfileScreen(),
     );
   }
 
@@ -44,8 +45,8 @@ class _SplashScreenState extends State<SplashScreen> {
               Container(
                 width: double.infinity,
                 height: MediaQuery.of(context).size.height * 1,
-                child: Image.asset(
-                  '$staticAsset/Splash Screen.png',
+                child: SvgPicture.asset(
+                  '$staticAsset/Splash Screen.svg',
                   fit: BoxFit.cover,
                 ),
               ),

@@ -23,7 +23,7 @@ class AuthScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(top: 40),
                   child: Image.asset(
-                    '$logoPath/logo2.png',
+                    '$logoPath/logo4.png',
                     scale: 3,
                   ),
                 ),
@@ -31,7 +31,7 @@ class AuthScreen extends StatelessWidget {
                   height: 25.h,
                 ),
                 Text(
-                  'Match, Meet & Joy',
+                  'Match, Meet & Enjoy',
                   style: headingText.copyWith(
                     color: primaryColor,
                   ),

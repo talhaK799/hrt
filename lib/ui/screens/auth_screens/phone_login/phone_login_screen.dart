@@ -5,7 +5,7 @@ import 'package:hart/core/constants/strings.dart';
 import 'package:hart/core/constants/style.dart';
 import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/ui/custom_widgets/custom_text_feild.dart';
-import 'package:hart/ui/screens/auth_screens/forgot_password/phone_no_verification/phone_no_verification.dart';
+import 'package:hart/ui/screens/auth_screens/forgot_password/email_verification/forgot_password_screen.dart';
 import 'package:hart/ui/screens/auth_screens/phone_login/phone_login_provider.dart';
 import 'package:hart/ui/screens/auth_screens/signup_email/signup_email_screen.dart';
 import 'package:hart/ui/screens/base_screen.dart';
@@ -81,7 +81,7 @@ class PhoneLoginScreen extends StatelessWidget {
                           // model.appuser.email = val;
                           // log('onchange ${val}');
                         },
-                        hintText: 'Phone No',
+                        hintText: 'Phone number',
                         prefixIcon: 'Phone Icon.png',
                         // controller: model.emailController,
                       ),
@@ -112,7 +112,7 @@ class PhoneLoginScreen extends StatelessWidget {
                       GestureDetector(
                           onTap: () {
                             Get.to(
-                              PhoneNoVerificationScreen(),
+                              ForgotPasswordScreen(),
                             );
                           },
                           child: Text(
@@ -127,7 +127,7 @@ class PhoneLoginScreen extends StatelessWidget {
                       ///Sign Up BUTTON
                       ///
                       CustomButton(
-                        title: 'Login',
+                        title: 'LOGIN',
                         onTap: () {
                           if (model.fmkey.currentState!.validate()) {
                             // model.signUp();

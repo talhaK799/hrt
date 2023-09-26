@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/constants/style.dart';
 import '../../core/models/onboarding.dart';
 
@@ -22,7 +23,9 @@ class CustomOnboardingCard extends StatelessWidget {
           ),
           child: Text(
             onboarding!.title!,
-            style: headingText,
+            style: headingText.copyWith(
+              color: blackColor,
+            ),
             textAlign: TextAlign.start,
           ),
         ),
