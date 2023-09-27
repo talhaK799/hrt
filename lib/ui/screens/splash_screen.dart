@@ -55,7 +55,7 @@ class _SplashScreenState extends State<SplashScreen> {
               ],
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 200),
+              padding: EdgeInsets.only(top: 0.4.sh),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -64,20 +64,20 @@ class _SplashScreenState extends State<SplashScreen> {
                     padding: EdgeInsets.symmetric(horizontal: 120),
                     child: Image.asset("$staticAsset/splashLogo.png"),
                   ),
-                  sizeBox20,
+                  sizeBox30,
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 60),
+                    padding: const EdgeInsets.symmetric(horizontal: 50),
                     child: Text(
                       'Welcome! It’s time to have fun!',
                       textAlign: TextAlign.center,
                       style: headingText,
                     ),
                   ),
-                  sizeBox20,
+                  sizeBox30,
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    padding: EdgeInsets.symmetric(horizontal: 10),
                     child: Text(
-                      'Find your connection with Hart \nShare some useful information to ensure \nyou never match with aloof members.',
+                      'Find your connection with Hart\nShare some useful information to ensure\nyou never match with aloof members.',
                       textAlign: TextAlign.center,
                       style: descriptionTextStyle.copyWith(
                         color: Colors.white70,

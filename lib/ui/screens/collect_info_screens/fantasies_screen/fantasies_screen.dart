@@ -77,9 +77,9 @@ class FantasiesScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      SizedBox(
-                        height: 40.h,
-                      ),
+                      // SizedBox(
+                      //   height: 40.h,
+                      // ),
                       Expanded(
                         child: ListView.separated(
                           itemCount: model.items.length,

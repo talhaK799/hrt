@@ -4,6 +4,7 @@ import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/ui/custom_widgets/custom_app_bar.dart';
 import 'package:hart/ui/custom_widgets/custom_button.dart';
+import 'package:hart/ui/custom_widgets/offer_container.dart';
 import 'package:hart/ui/screens/profile_screen/kings_hart/king_hart_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -38,7 +39,9 @@ class KingHartScreen extends StatelessWidget {
                   sizeBox20,
                   Text(
                     'Let them know with a Spank',
-                    style: subHeadingText1,
+                    style: subHeadingText1.copyWith(
+                      fontSize: 18.sp,
+                    ),
                   ),
                   sizeBox10,
                   Text(
@@ -49,43 +52,49 @@ class KingHartScreen extends StatelessWidget {
                     ),
                   ),
                   sizeBox20,
-                  Container(
-                    height: 0.2.sh,
-                    child: ListView(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
+                  SizedBox(
+                    // height: 130.h,
+                    child: Row(
+                      // shrinkWrap: true,
+                      // scrollDirection: Axis.horizontal,
                       // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Offers(
-                          title: '1 Spank',
-                          price: '€ 5',
-                          offer: '20 % OFF',
-                          selectionIndex: 0,
-                          currentIndex: model.currentIndex,
-                          isOffered: false,
-                          onTap: () {
-                            model.select(0);
-                          },
+                        Expanded(
+                          child: Offers(
+                            title: '1 Spank',
+                            price: '€ 5',
+                            offer: '20 % OFF',
+                            selectionIndex: 0,
+                            currentIndex: model.currentIndex,
+                            isOffered: false,
+                            onTap: () {
+                              model.select(0);
+                            },
+                          ),
                         ),
-                        Offers(
-                          title: '5 Spank',
-                          price: '€ 15',
-                          offer: '20 % OFF',
-                          selectionIndex: 1,
-                          currentIndex: model.currentIndex,
-                          onTap: () {
-                            model.select(1);
-                          },
+                        Expanded(
+                          child: Offers(
+                            title: '5 Spank',
+                            price: '€ 15',
+                            offer: '20 % OFF',
+                            selectionIndex: 1,
+                            currentIndex: model.currentIndex,
+                            onTap: () {
+                              model.select(1);
+                            },
+                          ),
                         ),
-                        Offers(
-                          title: '10 Spank',
-                          price: '€ 25',
-                          offer: '50 % OFF',
-                          selectionIndex: 2,
-                          currentIndex: model.currentIndex,
-                          onTap: () {
-                            model.select(2);
-                          },
+                        Expanded(
+                          child: Offers(
+                            title: '10 Spank',
+                            price: '€ 25',
+                            offer: '50 % OFF',
+                            selectionIndex: 2,
+                            currentIndex: model.currentIndex,
+                            onTap: () {
+                              model.select(2);
+                            },
+                          ),
                         ),
                       ],
                     ),
@@ -94,10 +103,9 @@ class KingHartScreen extends StatelessWidget {
                   Text(
                     'Become Maestro and get 1 Free Spank a day',
                     style: descriptionTextStyle.copyWith(
-                      color: lightRed,
-                    ),
+                        color: lightRed, fontSize: 13.sp),
                   ),
-                  sizeBox20,
+                  sizeBox30,
                   CustomButton(title: 'CONTINUE', onTap: () {}),
                 ],
               ),
@@ -110,90 +118,4 @@ class KingHartScreen extends StatelessWidget {
 }
 
 // ignore: must_be_immutable
-class Offers extends StatelessWidget {
-  String? title;
-  String? price;
-  String? offer;
-  bool? isOffered;
-  int? selectionIndex;
-  int? currentIndex;
-  final onTap;
 
-  Offers({
-    this.offer,
-    this.price,
-    this.title,
-    this.isOffered = true,
-    this.selectionIndex,
-    this.currentIndex,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Stack(
-        children: [
-          GestureDetector(
-            onTap: onTap,
-            child: Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: 30,
-                vertical: 25,
-              ),
-              decoration: BoxDecoration(
-                  color:
-                      selectionIndex == currentIndex ? pinkColor : whiteColor,
-                  borderRadius: BorderRadius.circular(25.r),
-                  border: Border.all(
-                    color: pinkColor2,
-                  )),
-              child: Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      title!,
-                      style: subtitleText.copyWith(
-                        color: lightRed,
-                      ),
-                    ),
-                    Text(
-                      price!,
-                      style: subHeadingText1,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          isOffered == true
-              ? Padding(
-                  padding: const EdgeInsets.only(
-                    left: 20,
-                  ),
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 5,
-                    ),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30.r),
-                      color: primaryColor,
-                    ),
-                    child: Text(
-                      offer!,
-                      style: buttonTextStyle2.copyWith(
-                        color: whiteColor,
-                      ),
-                    ),
-                  ),
-                )
-              : Container(),
-        ],
-      ),
-    );
-  }
-}

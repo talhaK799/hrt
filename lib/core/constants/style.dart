@@ -18,7 +18,7 @@ final bodyTextStyle = TextStyle(
 );
 
 final headingText = TextStyle(
-  fontSize: 24.sp,
+  fontSize: 21.sp,
   fontFamily: nunitoFont,
   fontWeight: FontWeight.w700,
   color: whiteColor,
@@ -36,7 +36,7 @@ final subHeadingTextWhite = TextStyle(
   color: whiteColor,
 );
 final descriptionTextStyle = TextStyle(
-  fontSize: 16.sp,
+  fontSize: 15.sp,
   fontFamily: nunitoFont,
   fontWeight: FontWeight.w600,
 );

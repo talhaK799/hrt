@@ -140,24 +140,6 @@ class HomeScreen extends StatelessWidget {
                       '23 Women Straight',
                       style: buttonTextStyle2,
                     ),
-                    // SizedBox(
-                    //   width: 16.w,
-                    // ),
-                    // Row(
-                    //   children: [
-                    //     Image.asset(
-                    //       '$staticAsset/location2.png',
-                    //       scale: 3,
-                    //     ),
-                    //     SizedBox(
-                    //       width: 5.w,
-                    //     ),
-                    //     Text(
-                    //       '6.4 km',
-                    //       style: buttonTextStyle2,
-                    //     ),
-                    //   ],
-                    // ),
                   ],
                 ),
                 SizedBox(
@@ -209,21 +191,30 @@ class HomeScreen extends StatelessWidget {
                 SizedBox(
                   height: 15.h,
                 ),
-                Row(
+                Column(
                   children: [
-                    _infoContainer('Art'),
-                    SizedBox(
-                      width: 16.w,
+                    Row(
+                      children: [
+                        _infoContainer('Art'),
+                        SizedBox(
+                          width: 16.w,
+                        ),
+                        _infoContainer('Music'),
+                        SizedBox(
+                          width: 16.w,
+                        ),
+                        _infoContainer('Hiking'),
+                        // SizedBox(
+                        //   width: 16.w,
+                        // ),
+                      ],
                     ),
-                    _infoContainer('Music'),
-                    SizedBox(
-                      width: 16.w,
-                    ),
-                    _infoContainer('Hiking'),
-                    SizedBox(
-                      width: 16.w,
-                    ),
-                    _infoContainer('Real connection'),
+                    sizeBox10,
+                    Row(
+                      children: [
+                        _infoContainer('Real connection'),
+                      ],
+                    )
                   ],
                 ),
                 SizedBox(

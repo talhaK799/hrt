@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hart/core/constants/colors.dart';
@@ -58,7 +60,9 @@ class AddPhotoScreen extends StatelessWidget {
                   ),
                   GridView.builder(
                       primary: false,
-                      itemCount: 9,
+                      itemCount: model.isMultipleSelection
+                          ? model.imageFileList!.length
+                          : model.images.length,
                       shrinkWrap: true,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         mainAxisSpacing: 16,
@@ -67,27 +71,47 @@ class AddPhotoScreen extends StatelessWidget {
                       ),
                       itemBuilder: (context, index) {
                         return GestureDetector(
+                          onTap: () => model.pickImge(index),
                           child: Container(
                             width: 90.w,
                             height: 90.h,
                             decoration: BoxDecoration(
                               color: greyColor,
-                              image: model.image != null
-                                  ? DecorationImage(
-                                      image: FileImage(model.image!),
-                                      fit: BoxFit.cover)
-                                  : null,
+                              image: model.isMultipleSelection
+                                  ? model.imageFileList!.isNotEmpty
+                                      ? DecorationImage(
+                                          image: FileImage(
+                                            File(
+                                              model.imageFileList![index].path,
+                                            ),
+                                          ),
+                                          fit: BoxFit.cover)
+                                      : null
+                                  : model.images[index].image != null
+                                      ? DecorationImage(
+                                          image: FileImage(
+                                              model.images[index].image!),
+                                          fit: BoxFit.cover)
+                                      : null,
                               borderRadius: BorderRadius.circular(
                                 12.r,
                               ),
                             ),
-                            child: model.image == null
-                                ? Center(
-                                    child: Image.asset(
-                                    '$staticAsset/Add.png',
-                                    scale: 3,
-                                  ))
-                                : null,
+                            child: model.isMultipleSelection
+                                ? model.imageFileList!.isEmpty
+                                    ? Center(
+                                        child: Image.asset(
+                                        '$staticAsset/Add.png',
+                                        scale: 3,
+                                      ))
+                                    : null
+                                : model.images[index].image == null
+                                    ? Center(
+                                        child: Image.asset(
+                                        '$staticAsset/Add.png',
+                                        scale: 3,
+                                      ))
+                                    : null,
                           ),
                         );
                       }),
@@ -97,7 +121,7 @@ class AddPhotoScreen extends StatelessWidget {
                   CustomButton(
                     title: 'Add Photos',
                     onTap: () {
-                      model.pickImge();
+                      model.selectImages();
                     },
                     color: pinkColor,
                     textColor: primaryColor,
