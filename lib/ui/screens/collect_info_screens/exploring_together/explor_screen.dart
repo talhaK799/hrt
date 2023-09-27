@@ -55,23 +55,22 @@ class ExploreScreen extends StatelessWidget {
                         value: 6,
                       ),
                       SizedBox(
-                        height: 40.h,
+                        height: 20.h,
                       ),
                       Image.asset(
-                        '$dynamicAsset/Picture.png',
+                        '$staticAsset/picture.png',
+                        height: 0.41.sh,
+                        fit: BoxFit.contain,
                       )
                     ],
                   ),
                   SizedBox(
                     height: 30.h,
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    child: Text(
-                      'Pair your account with a partner. No connections or chat will be shared.',
-                      style: descriptionTextStyle.copyWith(
-                        fontWeight: FontWeight.w500,
-                      ),
+                  Text(
+                    'Pair your account with a partner.No connections or chat will be shared.',
+                    style: descriptionTextStyle.copyWith(
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                   SizedBox(
@@ -108,5 +107,3 @@ class ExploreScreen extends StatelessWidget {
     );
   }
 }
-
-

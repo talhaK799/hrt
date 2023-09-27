@@ -33,6 +33,7 @@ class BuyPlanScreen extends StatelessWidget {
               padding: EdgeInsets.fromLTRB(30, 30, 30, 0),
               child: SingleChildScrollView(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     RichText(
                       text: TextSpan(
@@ -50,10 +51,11 @@ class BuyPlanScreen extends StatelessWidget {
                           ]),
                     ),
                     Text(
-                      'You’re close to meeting your people. \nSpeed things up with Majestic Maestro',
+                      'You’re close to meeting your people. Speed things up with Majestic Maestro',
                       textAlign: TextAlign.center,
                       style: descriptionTextStyle.copyWith(
                         color: blackColor,
+                        fontSize: 14.sp,
                       ),
                     ),
                     SizedBox(
@@ -106,116 +108,13 @@ class BuyPlanScreen extends StatelessWidget {
   }
 
   _plan() {
-    return Container(
-      height: 0.5.sh,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Container(
-            padding: EdgeInsets.only(top: 16, bottom: 12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'FEATURE',
-                  style: subHeadingTextStyle.copyWith(
-                    color: blackColor,
-                  ),
-                ),
-                Text(
-                  'SEND LIKES',
-                  style: subHeadingTextStyle.copyWith(
-                    fontSize: 12.sp,
-                    color: blackColor,
-                  ),
-                ),
-                Text(
-                  'SEE WH LIKES YOU',
-                  style: subHeadingTextStyle.copyWith(
-                    fontSize: 12.sp,
-                    color: blackColor,
-                  ),
-                ),
-                Text(
-                  'GET 1 FREE PING A DAY',
-                  style: subHeadingTextStyle.copyWith(
-                    fontSize: 12.sp,
-                    color: blackColor,
-                  ),
-                ),
-                Text(
-                  'LAST SEEN ONLINE',
-                  style: subHeadingTextStyle.copyWith(
-                    fontSize: 12.sp,
-                    color: blackColor,
-                  ),
-                ),
-                Text(
-                  'SEARCH BY DESIRE',
-                  style: subHeadingTextStyle.copyWith(
-                    fontSize: 12.sp,
-                    color: blackColor,
-                  ),
-                ),
-                Text(
-                  'MAKE PHOTOS PRIVATE',
-                  style: subHeadingTextStyle.copyWith(
-                    fontSize: 12.sp,
-                    color: blackColor,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.only(top: 16, bottom: 12),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'BASIC',
-                  style: subHeadingTextStyle.copyWith(
-                    color: blackColor,
-                  ),
-                ),
-                Text(
-                  'LIMITED',
-                  style: subHeadingTextStyle.copyWith(
-                    fontSize: 12.sp,
-                    color: blackColor,
-                  ),
-                ),
-                Image.asset(
-                  '$staticAsset/Cross Icon.png',
-                  color: blackColor,
-                  scale: 4,
-                ),
-                Image.asset(
-                  '$staticAsset/Cross Icon.png',
-                  color: blackColor,
-                  scale: 4,
-                ),
-                Image.asset(
-                  '$staticAsset/Cross Icon.png',
-                  color: blackColor,
-                  scale: 4,
-                ),
-                Image.asset(
-                  '$staticAsset/Cross Icon.png',
-                  color: blackColor,
-                  scale: 4,
-                ),
-                Image.asset(
-                  '$staticAsset/Cross Icon.png',
-                  color: blackColor,
-                  scale: 4,
-                ),
-              ],
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.all(16),
+    return Stack(
+      children: [
+        Align(
+          alignment: Alignment.centerRight,
+          child: Container(
+            height: 0.5.sh,
+            width: 100.h,
             decoration: BoxDecoration(
               color: Color(0xFFF0D9D9),
               borderRadius: BorderRadius.only(
@@ -223,46 +122,140 @@ class BuyPlanScreen extends StatelessWidget {
                 bottomRight: Radius.circular(16.r),
               ),
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'MAESTRO',
-                  style: subHeadingTextStyle.copyWith(
-                    color: primaryColor,
-                  ),
-                ),
-                Text(
-                  'UNLIMITED',
-                  style: subHeadingTextStyle.copyWith(
-                    fontSize: 12.sp,
-                    color: primaryColor,
-                  ),
-                ),
-                Image.asset(
-                  '$staticAsset/Vector.png',
-                  scale: 4,
-                ),
-                Image.asset(
-                  '$staticAsset/Vector.png',
-                  scale: 4,
-                ),
-                Image.asset(
-                  '$staticAsset/Vector.png',
-                  scale: 4,
-                ),
-                Image.asset(
-                  '$staticAsset/Vector.png',
-                  scale: 4,
-                ),
-                Image.asset(
-                  '$staticAsset/Vector.png',
-                  scale: 4,
-                ),
-              ],
-            ),
           ),
-        ],
+        ),
+        SizedBox(
+          height: 0.5.sh,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Row(
+                // crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'FEATURE',
+                    style: subHeadingTextStyle.copyWith(
+                      color: blackColor,
+                    ),
+                  ),
+                  Text(
+                    'BASIC',
+                    style: subHeadingTextStyle.copyWith(
+                      color: blackColor,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 10),
+                    child: Text(
+                      'MAESTRO',
+                      style: subHeadingTextStyle.copyWith(
+                        color: primaryColor,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _text('SEND LIKES'),
+                  Text(
+                    'LIMITED',
+                    style: subHeadingTextStyle.copyWith(
+                      fontSize: 12.sp,
+                      color: blackColor,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 20),
+                    child: Text(
+                      'UNLIMITED',
+                      style: subHeadingTextStyle.copyWith(
+                        fontSize: 12.sp,
+                        color: primaryColor,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _text('SEE WHO LIKES YOU'),
+                  cross(),
+                  tick(),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _text('GET 1 FREE SPANK A DAY'),
+                  cross(),
+                  tick(),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _text('LAST SEEN ONLINE'),
+                  cross(),
+                  tick(),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _text('SEARCH BY DESIRE'),
+                  cross(),
+                  tick(),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _text('MAKE PHOTOS PRIVATE'),
+                  cross(),
+                  tick(),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  tick() {
+    return Padding(
+      padding: const EdgeInsets.only(right: 40),
+      child: Image.asset(
+        '$staticAsset/Vector.png',
+        scale: 4,
+      ),
+    );
+  }
+
+  cross() {
+    return Padding(
+      padding: const EdgeInsets.only(right: 40),
+      child: Image.asset(
+        '$staticAsset/Cross Icon.png',
+        color: blackColor,
+        scale: 4.5,
+      ),
+    );
+  }
+
+  _text(text) {
+    return SizedBox(
+      width: 90.w,
+      child: Text(
+        text,
+        style: subHeadingTextStyle.copyWith(
+          fontSize: 12.sp,
+          color: blackColor,
+        ),
       ),
     );
   }

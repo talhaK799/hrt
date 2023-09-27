@@ -15,7 +15,7 @@ class WelcomeScreen extends StatelessWidget {
       image: '$staticAsset/Ellipse3.svg',
       backgroundColor: primaryColor.withOpacity(0.76),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(30, 40, 30, 0),
+        padding: const EdgeInsets.fromLTRB(25, 40, 25, 0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -23,41 +23,41 @@ class WelcomeScreen extends StatelessWidget {
               padding: const EdgeInsets.only(top: 50, bottom: 50),
               child: Image.asset(
                 '$logoPath/logo4.png',
-                scale: 3.5,
+                scale: 4,
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(right: 60),
-              child: Text(
-                'WELCOME TO HART',
-                style: headingText.copyWith(
-                  fontSize: 40.sp,
-                  fontWeight: FontWeight.w800,
-                  color: primaryColor,
-                ),
+            Text(
+              'WELCOME TO \nHART',
+              style: headingText.copyWith(
+                fontSize: 35.sp,
+                fontWeight: FontWeight.w800,
+                color: primaryColor,
               ),
             ),
             SizedBox(
               height: 20.h,
             ),
             Text(
-                'Hart enclose the mission to Match open minded people seeking for something different! Be respectful with your match, discover and have fun!',
-                style: subHeadingTextStyle.copyWith(
-                  fontWeight: FontWeight.w500,
-                  color: blackColor,
-                )),
-            SizedBox(
-              height: 40.h,
-            ),
-            Text(
-              'Please confirm that you’re over 18',
+              'Hart enclose the mission to Match open minded people seeking for something different! Be respectful with your match, discover and have fun!',
               style: subHeadingTextStyle.copyWith(
+                fontWeight: FontWeight.w500,
+                fontSize: 15.sp,
                 color: blackColor,
               ),
             ),
             SizedBox(
-              height: 40.h,
+              height: 0.2.sh,
             ),
+            Center(
+              child: Text(
+                'Please confirm that you’re over 18',
+                textAlign: TextAlign.center,
+                style: subHeadingTextStyle.copyWith(
+                  color: blackColor,
+                ),
+              ),
+            ),
+            sizeBox20,
             CustomButton(
               title: 'CONFIRM',
               onTap: () {

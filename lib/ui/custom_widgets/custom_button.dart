@@ -26,7 +26,9 @@ class CustomButton extends StatelessWidget {
       child: Container(
         constraints: BoxConstraints.tight(Size.fromHeight(60.h)),
         alignment: Alignment.center,
-        padding: EdgeInsets.symmetric(vertical: 10),
+        padding: EdgeInsets.symmetric(
+          vertical: 10,
+        ),
         decoration: BoxDecoration(
           color: color ?? primaryColor,
           borderRadius: BorderRadius.circular(
@@ -41,7 +43,7 @@ class CustomButton extends StatelessWidget {
                     children: [
                       Image.asset(
                         '$staticAsset/$icon',
-                        scale: 2.5,
+                        scale: 3.5,
                       ),
                       SizedBox(
                         width: 20.w,
@@ -52,12 +54,17 @@ class CustomButton extends StatelessWidget {
                       ),
                     ],
                   )
-                : Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    child: Text(
-                      title,
-                      style: buttonTextStyle.copyWith(
-                        color: textColor ?? whiteColor,
+                : Expanded(
+                    child: Center(
+                      child: Padding(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+                        child: Text(
+                          title,
+                          style: buttonTextStyle.copyWith(
+                            color: textColor ?? whiteColor,
+                          ),
+                        ),
                       ),
                     ),
                   ),

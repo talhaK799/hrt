@@ -21,19 +21,22 @@ class AuthScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 40),
+                  padding: const EdgeInsets.only(top: 40, bottom: 70),
                   child: Image.asset(
                     '$logoPath/logo4.png',
-                    scale: 3,
+                    scale: 3.7,
                   ),
                 ),
-                SizedBox(
-                  height: 25.h,
-                ),
-                Text(
-                  'Match, Meet & Enjoy',
-                  style: headingText.copyWith(
-                    color: primaryColor,
+                // SizedBox(
+                //   height: 25.h,
+                // ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 25),
+                  child: Text(
+                    'Match, Meet & Enjoy',
+                    style: headingText.copyWith(
+                      color: primaryColor,
+                    ),
                   ),
                 ),
                 SizedBox(
