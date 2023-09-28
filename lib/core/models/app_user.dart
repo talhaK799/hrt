@@ -2,29 +2,29 @@ class AppUser {
   String? id;
   String? email;
   String? password;
-  String? weight;
-  String? height;
+  String? phoneNumber;
+  bool? isEmailVerified;
   String? name;
-  String? fcmToken;
+  // String? fcmToken;
 
   AppUser({
     this.id,
     this.email,
     this.password,
-    this.weight,
-    this.height,
+    this.phoneNumber,
+    this.isEmailVerified,
     this.name,
-    this.fcmToken,
+    // this.fcmToken,
   });
 
-  Map<String, dynamic> toJson() {
+  toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
     data['id'] = id;
     data['email'] = email;
     data['name'] = name;
-    data['weight'] = weight;
-    data['height'] = height;
-    data['fcmToken'] = fcmToken;
+    data['phoneNumber'] = phoneNumber;
+    data['isEmailVerified'] = isEmailVerified ?? false;
+    // // data['fcmToken'] = fcmToken;
     return data;
   }
 
@@ -32,8 +32,8 @@ class AppUser {
     id = id;
     email = json['email'];
     name = json['name'];
-    weight = json['weight'];
-    height = json['height'];
-    fcmToken = json['fcmToken'];
+    phoneNumber = json['phoneNumber'];
+    isEmailVerified = json['isEmailVerified'] ?? false;
+    // fcmToken = json['fcmToken'];
   }
 }

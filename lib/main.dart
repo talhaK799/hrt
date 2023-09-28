@@ -12,6 +12,8 @@ import 'package:hart/ui/screens/home/home_provider.dart';
 import 'package:hart/ui/screens/splash_screen.dart';
 import 'package:provider/provider.dart';
 
+import 'ui/screens/collect_info_screens/verifications/email_screen.dart/email_verification_provider.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -36,7 +38,9 @@ class MyApp extends StatelessWidget {
           ),
           ChangeNotifierProvider(create: (context)=>HomeProvider(),
           ),
-          ChangeNotifierProvider(create: (context)=>ChattingProvider(),)
+          ChangeNotifierProvider(create: (context)=>ChattingProvider(),),
+          ChangeNotifierProvider(
+      create: (context) => EmailVerificationProvider(),),
         ],
         child: Consumer<ThemeProvider>(builder: (context,model,child){
           return GetMaterialApp(

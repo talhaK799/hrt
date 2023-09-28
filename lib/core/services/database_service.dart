@@ -44,6 +44,18 @@ class DatabaseService {
     }
   }
 
+  Future<bool> updateUserProfile(AppUser appUser) async {
+    // print("appuaser premiume check: ${appUser.isPremiumUser}");
+    try {
+      await _db.collection('app_user').doc(appUser.id).update(appUser.toJson());
+      return true;
+    } catch (e, s) {
+      debugPrint('Exception @DatabaseService/updateAppUser ==>$e');
+      debugPrint(s.toString());
+      return false;
+    }
+  }
+
   getIdentity() async {
     List<InfoItem> list = [];
     try {

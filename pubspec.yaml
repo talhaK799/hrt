@@ -60,6 +60,8 @@ dependencies:
   carousel_slider: ^4.2.1
   syncfusion_flutter_sliders: ^22.2.12
   flutter_slidable: ^3.0.0
+  twilio_phone_verify: ^2.0.0
+  email_otp:
 
 dev_dependencies:
   flutter_test:
