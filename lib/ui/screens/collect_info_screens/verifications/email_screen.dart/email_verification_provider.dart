@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hart/core/models/custom_auth_result.dart';
+import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/services/auth_service.dart';
 import 'package:hart/core/services/database_service.dart';
 import 'package:hart/core/view_models/base_view_model.dart';
 import 'package:email_otp/email_otp.dart';
 import 'package:hart/locator.dart';
-import 'package:hart/ui/screens/collect_info_screens/dob_screen/dob_screen.dart';
+import 'package:hart/ui/screens/auth_screens/forgot_password/phone_no_verification/phone_no_verification.dart';
 import 'package:hart/ui/screens/collect_info_screens/verifications/email_screen.dart/code_confirmation_screen.dart';
-
-import '../../../../../core/enums/view_state.dart';
+import 'package:hart/ui/screens/collect_info_screens/verifications/phone_no_screen/add_phone_no.dart';
 
 class EmailVerificationProvider extends BaseViewModel {
   String email = '';
@@ -25,8 +24,8 @@ class EmailVerificationProvider extends BaseViewModel {
 
   sendotptoEmail() async {
     await emailOTP.setConfig(
-        appEmail: "calaf.online1@gmail.com",
-        appName: "Calaf",
+        appEmail: "hart@gmail.com",
+        appName: "Hart",
         userEmail: email,
         otpLength: 4,
         otpType: OTPType.digitsOnly);
@@ -61,7 +60,9 @@ class EmailVerificationProvider extends BaseViewModel {
       await _databaseService.updateUserProfile(authService.appUser);
       setState(ViewState.idle);
 
-      Get.to(DOBScreen());
+      Get.to(
+        AddPhoneNumberScreen(),
+      );
     } else {
       Get.snackbar("Error!", "Invalid OTP");
     }

@@ -88,7 +88,7 @@ class BuyPlanScreen extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Get.to(
-          AddPhoneNumber(),
+          AddPhoneNumberScreen(),
         );
       },
       child: Padding(

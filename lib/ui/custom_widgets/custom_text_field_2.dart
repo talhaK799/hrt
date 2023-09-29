@@ -47,16 +47,17 @@ class CustomTextField2 extends StatelessWidget {
             ),
             textAlign: TextAlign.center,
             decoration: InputDecoration(
-                contentPadding: EdgeInsets.zero,
-                hintText: hintText,
-                hintStyle: subHeadingTextStyle.copyWith(
-                  color: greyColor,
-                ),
-                errorStyle: subHeadingTextStyle.copyWith(
-                  color: primaryColor,
-                ),
-                // suffix: suffex,
-                border: InputBorder.none,),
+              contentPadding: EdgeInsets.zero,
+              hintText: hintText,
+              hintStyle: subHeadingTextStyle.copyWith(
+                color: greyColor,
+              ),
+              errorStyle: subHeadingTextStyle.copyWith(
+                color: primaryColor,
+              ),
+              // suffix: suffex,
+              border: InputBorder.none,
+            ),
           ),
         ),
       ],

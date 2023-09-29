@@ -4,6 +4,7 @@ class AppUser {
   String? password;
   String? phoneNumber;
   bool? isEmailVerified;
+  bool? isPhoneNoVerified;
   String? name;
   // String? fcmToken;
 
@@ -13,6 +14,7 @@ class AppUser {
     this.password,
     this.phoneNumber,
     this.isEmailVerified,
+    this.isPhoneNoVerified,
     this.name,
     // this.fcmToken,
   });
@@ -24,6 +26,7 @@ class AppUser {
     data['name'] = name;
     data['phoneNumber'] = phoneNumber;
     data['isEmailVerified'] = isEmailVerified ?? false;
+    data['isPhoneNoVerified'] = isPhoneNoVerified ?? false;
     // // data['fcmToken'] = fcmToken;
     return data;
   }
@@ -34,6 +37,7 @@ class AppUser {
     name = json['name'];
     phoneNumber = json['phoneNumber'];
     isEmailVerified = json['isEmailVerified'] ?? false;
+    isPhoneNoVerified = json['isPhoneNoVerified'] ?? false;
     // fcmToken = json['fcmToken'];
   }
 }
