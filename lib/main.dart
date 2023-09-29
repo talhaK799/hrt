@@ -8,6 +8,7 @@ import 'package:hart/core/services/locato_storage_service.dart';
 import 'package:hart/core/view_models/theme_provider.dart';
 import 'package:hart/locator.dart';
 import 'package:hart/ui/screens/chatting_screen/chatting_provider.dart';
+import 'package:hart/ui/screens/collect_info_screens/verifications/phone_no_screen/phone_no_provider.dart';
 import 'package:hart/ui/screens/home/home_provider.dart';
 import 'package:hart/ui/screens/splash_screen.dart';
 import 'package:provider/provider.dart';
@@ -36,27 +37,30 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(
             create: (context) => ThemeProvider(),
           ),
-          ChangeNotifierProvider(create: (context)=>HomeProvider(),
-          ),
-          ChangeNotifierProvider(create: (context)=>ChattingProvider(),),
           ChangeNotifierProvider(
-      create: (context) => EmailVerificationProvider(),),
+            create: (context) => HomeProvider(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => ChattingProvider(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => EmailVerificationProvider(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => PhoneNoProvider(),
+          ),
         ],
-        child: Consumer<ThemeProvider>(builder: (context,model,child){
+        child: Consumer<ThemeProvider>(builder: (context, model, child) {
           return GetMaterialApp(
             locale: Locale(langCode),
             translations: LocalizationService(),
             debugShowCheckedModeBanner: false,
-            darkTheme: model.isDarkTheme?ThemeData.dark():ThemeData.light(),
-            theme:AppColors.themeData(model.isDarkTheme, context),
-      home: SplashScreen(),
-    );
+            darkTheme: model.isDarkTheme ? ThemeData.dark() : ThemeData.light(),
+            theme: AppColors.themeData(model.isDarkTheme, context),
+            home: SplashScreen(),
+          );
         }),
       ),
     );
   }
 }
-
-
-
-

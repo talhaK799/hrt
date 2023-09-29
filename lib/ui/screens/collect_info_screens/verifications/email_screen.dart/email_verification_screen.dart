@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/ui/custom_widgets/custom_button.dart';
@@ -8,7 +7,6 @@ import 'package:hart/ui/screens/collect_info_screens/verifications/email_screen.
 import 'package:provider/provider.dart';
 
 import '../../../../../core/constants/style.dart';
-import 'code_confirmation_screen.dart';
 
 class EmailVerificationScreen extends StatelessWidget {
   const EmailVerificationScreen({super.key});
