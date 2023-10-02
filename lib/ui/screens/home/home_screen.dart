@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/constants/strings.dart';
 import 'package:hart/core/constants/style.dart';
@@ -433,7 +434,9 @@ class HomeScreen extends StatelessWidget {
                           sizeBox30,
                           CustomButton(
                             title: 'CONTINUE',
-                            onTap: () {},
+                            onTap: () {
+                              Get.back();
+                            },
                           ),
 
                           sizeBox30,

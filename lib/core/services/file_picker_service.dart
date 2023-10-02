@@ -8,14 +8,15 @@ class FilePickerService {
   File? selectedImage;
   final _imagePicker = ImagePicker();
 
-  Future<File?> pickImage() async {
+  pickImage() async {
     return await pickImageWithoutCompression();
   }
 
-  Future<File?> pickImageWithCompression() async {
+  pickImageWithCompression() async {
     File? selectedImage;
     final image50 = await _imagePicker.pickImage(
-        source: ImageSource.gallery,);
+      source: ImageSource.gallery,
+    );
     // final image100 = await _imagePicker.pickImage(
     //     source: ImageSource.gallery, imageQuality: 100);
     if (image50 != null) selectedImage = File(image50.path);

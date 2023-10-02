@@ -25,19 +25,19 @@ class SignUpwithEmailProvider extends BaseViewModel {
 
   signUp(context) async {
     setState(ViewState.busy);
-    authResult = await authService.signUpWithEmailPassword(appuser);
+    // authResult = await authService.signUpWithEmailPassword(appuser);
 
-    setState(ViewState.idle);
-    if (authResult.user != null) {
-      Get.to(
-        EmailVerificationScreen(),
-      );
-    } else {
-      showMyDialog(
-        context,
-        authResult.errorMessage!,
-      );
-    }
+    // setState(ViewState.idle);
+    // if (authResult.user != null) {
+    Get.to(
+      EmailVerificationScreen(),
+    );
+    // } else {
+    //   showMyDialog(
+    //     context,
+    //     authResult.errorMessage!,
+    //   );
+    // }
 
     notifyListeners();
   }

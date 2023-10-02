@@ -30,7 +30,7 @@ class DatabaseService {
   }
 
   /// Get User from database using this funciton
-  Future<AppUser> getAppUser(id) async {
+  getAppUser(id) async {
     //Todo: Rename getUsers -> getUser
     debugPrint('@getAppUser: id: $id');
     try {
@@ -44,7 +44,7 @@ class DatabaseService {
     }
   }
 
-  Future<bool> updateUserProfile(AppUser appUser) async {
+  updateUserProfile(AppUser appUser) async {
     // print("appuaser premiume check: ${appUser.isPremiumUser}");
     try {
       await _db.collection('app_user').doc(appUser.id).update(appUser.toJson());
