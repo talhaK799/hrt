@@ -36,7 +36,7 @@ class LocalStorageService {
     await _preferences!.setString('lang_code', langCode);
   }
 
-  Future<String> getSelectedLanguage() async {
+  getSelectedLanguage() async {
     await init();
     return _preferences!.getString("lang_code") ?? 'en';
   }

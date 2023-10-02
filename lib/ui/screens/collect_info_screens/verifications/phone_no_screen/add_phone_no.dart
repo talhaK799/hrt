@@ -66,9 +66,9 @@ class AddPhoneNumberScreen extends StatelessWidget {
               CustomButton(
                 title: 'CONTINUE',
                 onTap: () {
-                  if (model.formKey.currentState!.validate()) {
-                    model.sentOTP();
-                  }
+                  // if (model.formKey.currentState!.validate()) {
+                  model.sentOTP();
+                  // }
                 },
               ),
               SizedBox(
@@ -96,6 +96,7 @@ class AddPhoneNumberScreen extends StatelessWidget {
               ),
               readOnly: true,
               decoration: InputDecoration(
+                border: InputBorder.none,
                 hintText: "",
                 prefixIcon: CountryCodePicker(
                   padding: EdgeInsets.only(right: 0, left: 0),
@@ -105,6 +106,7 @@ class AddPhoneNumberScreen extends StatelessWidget {
                     color: primaryColor,
                   ),
                   showFlag: false,
+
                   initialSelection: "+92",
                   onChanged: (value) {
                     model.selectCountryCode(value.dialCode);

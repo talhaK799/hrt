@@ -29,7 +29,7 @@ class AuthService extends ChangeNotifier {
 
   /// [SignUp] with email and password function
   ///
-  Future<CustomAuthResult> signUpWithEmailPassword(AppUser appUser) async {
+  signUpWithEmailPassword(AppUser appUser) async {
     debugPrint('@services/singUpWithEmailPassword');
     try {
       final credentials = await _auth.createUserWithEmailAndPassword(
@@ -62,7 +62,7 @@ class AuthService extends ChangeNotifier {
 
   /// [Login] with email and password function
   ///
-  Future<CustomAuthResult> loginWithEmailPassword({email, password}) async {
+  loginWithEmailPassword({email, password}) async {
     try {
       final credentials = await _auth.signInWithEmailAndPassword(
           email: email, password: password);

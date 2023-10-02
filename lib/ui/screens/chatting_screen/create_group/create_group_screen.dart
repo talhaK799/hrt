@@ -49,6 +49,7 @@ class CreateGroupScreen extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 95),
                         child: ListView.separated(
+                          padding: EdgeInsets.zero,
                           primary: false,
                           shrinkWrap: true,
                           itemCount: model.memebers.length,
@@ -95,6 +96,7 @@ class CreateGroupScreen extends StatelessWidget {
                         ? CustomButton(
                             title: 'Continue',
                             onTap: () {
+                              print("Done");
                               Get.to(
                                 MembersScreen(),
                               );

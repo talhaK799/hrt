@@ -1,4 +1,4 @@
-package com.example.hart
+package hart.flutter.app
 
 import io.flutter.embedding.android.FlutterActivity
 
