@@ -97,6 +97,7 @@ class CreateGroupScreen extends StatelessWidget {
                             title: 'Continue',
                             onTap: () {
                               print("Done");
+                              FocusManager.instance.primaryFocus?.unfocus();
                               Get.to(
                                 MembersScreen(),
                               );

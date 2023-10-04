@@ -29,7 +29,9 @@ class HomeScreen extends StatelessWidget {
               itemBuilder: (context, index) {
                 return _homeScreenData(context, model);
               },
-              onPageChanged: (val) {},
+              onPageChanged: (val) {
+                model.changePage();
+              },
             ),
             _likeButtons(model)
           ],
@@ -45,16 +47,21 @@ class HomeScreen extends StatelessWidget {
         alignment: Alignment.bottomLeft,
         child: Row(
           children: [
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: whiteColor,
-                shape: BoxShape.circle,
-                boxShadow: boxShadow,
-              ),
-              child: Image.asset(
-                '$staticAsset/cross.png',
-                scale: 3.5,
+            GestureDetector(
+              onTap: () {
+                model.disLike();
+              },
+              child: Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: whiteColor,
+                  shape: BoxShape.circle,
+                  boxShadow: boxShadow,
+                ),
+                child: Image.asset(
+                  '$staticAsset/cross.png',
+                  scale: 3.5,
+                ),
               ),
             ),
             SizedBox(
@@ -98,9 +105,14 @@ class HomeScreen extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  'Hart',
-                  style: subHeadingText1,
+                // Text(
+                //   'Hart',
+                //   style: subHeadingText1,
+                // ),
+                Image.asset(
+                  '$logoPath/logo3.png',
+                  scale: 6.5,
+                  color: primaryColor,
                 ),
                 GestureDetector(
                   onTap: () {
@@ -229,7 +241,7 @@ class HomeScreen extends StatelessWidget {
                   height: 10.h,
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 85),
+                  padding: const EdgeInsets.only(bottom: 100),
                   child: Text(
                     'Lorem ipsum dolor sit amet consectetur. Nulla ut proin diam est ac quam pretium lacus mollis. Pretium quam ac nibh nibh. Nec neque pulvinar risus sit consectetur cursus ut etiam risus...',
                     style: buttonTextStyle2,

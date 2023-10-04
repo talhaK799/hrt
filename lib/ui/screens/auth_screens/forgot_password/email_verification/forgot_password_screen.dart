@@ -87,6 +87,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                       CustomButton(
                         title: 'VERIFY',
                         onTap: () {
+                          FocusManager.instance.primaryFocus?.unfocus();
                           if (model.formkey.currentState!.validate()) {
                             // model.signUp();
                           }

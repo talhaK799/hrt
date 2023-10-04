@@ -21,8 +21,28 @@ class HomeProvider extends BaseViewModel {
     notifyListeners();
   }
 
+  changePage() {
+    isLiked = false;
+    notifyListeners();
+  }
+
   like() {
-    isLiked = !isLiked;
+    isLiked = true;
+
+    pageController!.nextPage(
+      duration: Duration(milliseconds: 500),
+      curve: Curves.easeIn,
+    );
+    notifyListeners();
+  }
+
+  disLike() {
+    isLiked = false;
+
+    pageController!.nextPage(
+      duration: Duration(milliseconds: 500),
+      curve: Curves.easeIn,
+    );
     notifyListeners();
   }
 

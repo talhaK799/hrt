@@ -107,6 +107,7 @@ class EmailOtpScreen extends StatelessWidget {
                   CustomButton(
                     title: 'CONTINUE',
                     onTap: () {
+                      FocusManager.instance.primaryFocus?.unfocus();
                       model.verifyOtp();
                     },
                   ),

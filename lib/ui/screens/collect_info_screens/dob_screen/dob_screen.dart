@@ -54,7 +54,8 @@ class DOBScreen extends StatelessWidget {
                           ? 'Example: 12/03/1985'
                           : monthNameDate.format(model.pickedDate!),
                       color: pinkColor,
-                      textColor: greyColor,
+                      textColor:
+                          model.pickedDate == null ? greyColor : primaryColor,
                       onTap: () {
                         model.pickDate(context);
                       },
@@ -67,6 +68,7 @@ class DOBScreen extends StatelessWidget {
                 CustomButton(
                   title: 'CONTINUE',
                   onTap: () {
+                    FocusManager.instance.primaryFocus?.unfocus();
                     if (model.age < 18) {
                       Get.snackbar('Alert!!', 'Age must be 18 or above');
                     } else {

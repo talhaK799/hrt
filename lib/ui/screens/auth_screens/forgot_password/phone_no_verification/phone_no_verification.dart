@@ -86,6 +86,7 @@ class PhoneNoVerificationScreen extends StatelessWidget {
                       CustomButton(
                         title: 'Login',
                         onTap: () {
+                          FocusManager.instance.primaryFocus?.unfocus();
                           if (model.formkey.currentState!.validate()) {
                             // model.signUp();
                           }

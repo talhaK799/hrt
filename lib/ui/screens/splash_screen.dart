@@ -18,13 +18,16 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   init() async {
-    // await Future
+    await Future.delayed(
+      Duration(seconds: 2),
+    );
     // Get.offAll(RootScreen());
+    Get.offAll(AuthScreen());
   }
 
   @override
   void initState() {
-    // init();
+    init();
     super.initState();
   }
 
@@ -37,6 +40,7 @@ class _SplashScreenState extends State<SplashScreen> {
         child: GestureDetector(
           onTap: () => Get.offAll(AuthScreen()),
           child: Stack(
+            alignment: Alignment.center,
             children: [
               Column(
                 children: [
@@ -54,7 +58,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 ],
               ),
               Padding(
-                padding: EdgeInsets.only(top: 0.4.sh),
+                padding: EdgeInsets.only(top: 0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
