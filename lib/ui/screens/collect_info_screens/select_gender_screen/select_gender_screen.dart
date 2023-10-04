@@ -89,9 +89,7 @@ class SelectGenderScreen extends StatelessWidget {
                       child: CustomButton(
                         title: 'CONTINUE',
                         onTap: () {
-                          Get.to(
-                            FantasiesScreen(),
-                          );
+                          model.addSelectedItems();
                         },
                       ),
                     ),

@@ -6,7 +6,13 @@ class AppUser {
   bool? isEmailVerified;
   bool? isPhoneNoVerified;
   String? name;
-  // String? fcmToken;
+  String? dob;
+  String? nickName;
+  List<String>? identity;
+  List<String>? lookingFor;
+  List<String>? desire;
+  List<String>? images;
+  
 
   AppUser({
     this.id,
@@ -16,7 +22,12 @@ class AppUser {
     this.isEmailVerified,
     this.isPhoneNoVerified,
     this.name,
-    // this.fcmToken,
+    this.dob,
+    this.nickName,
+    this.identity,
+    this.lookingFor,
+    this.desire,
+    this.images,
   });
 
   toJson() {
@@ -27,7 +38,26 @@ class AppUser {
     data['phoneNumber'] = phoneNumber;
     data['isEmailVerified'] = isEmailVerified ?? false;
     data['isPhoneNoVerified'] = isPhoneNoVerified ?? false;
-    // // data['fcmToken'] = fcmToken;
+    data['dob'] = dob;
+    data['nickName'] = nickName;
+    data['identity'] = identity ?? [];
+    data['lookingFor'] = lookingFor ?? [];
+    data['desire'] = desire ?? [];
+    data['images'] = images ?? [];
+    // if (identity != null || identity!.isNotEmpty) {
+    //   identity!.forEach((element) async {
+    //     await data["identity"].add(element);
+    //   });
+    // } else {
+    //   identity = [];
+    // }
+    // if (lookingFor != null || lookingFor!.isNotEmpty) {
+    //   lookingFor!.forEach((element) async {
+    //     await data["lookingFor"].add(element);
+    //   });
+    // } else {
+    //   lookingFor = [];
+    // }
     return data;
   }
 
@@ -38,6 +68,39 @@ class AppUser {
     phoneNumber = json['phoneNumber'];
     isEmailVerified = json['isEmailVerified'] ?? false;
     isPhoneNoVerified = json['isPhoneNoVerified'] ?? false;
-    // fcmToken = json['fcmToken'];
+    dob = json['dob'];
+    if (json["lookingFor"] != null) {
+      lookingFor = [];
+      json["lookingFor"].forEach((element) {
+        lookingFor!.add(element);
+      });
+    } else {
+      lookingFor = [];
+    }
+    if (json["identity"] != null) {
+      identity = [];
+      json["identity"].forEach((element) {
+        identity!.add(element);
+      });
+    } else {
+      identity = [];
+    }
+    if (json["desire"] != null) {
+      desire = [];
+      json["desire"].forEach((element) {
+        desire!.add(element);
+      });
+    } else {
+      desire = [];
+    }
+    if (json["images"] != null) {
+      images = [];
+      json["images"].forEach((element) {
+        images!.add(element);
+      });
+    } else {
+      images = [];
+    }
+    nickName = json['nickName'];
   }
 }

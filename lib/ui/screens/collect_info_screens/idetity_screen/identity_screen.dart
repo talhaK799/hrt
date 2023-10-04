@@ -87,13 +87,10 @@ class IdentityScreen extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 20),
                       child: CustomButton(
-
                         title: 'CONTINUE',
                         onTap: () {
                           FocusManager.instance.primaryFocus?.unfocus();
-                          Get.to(
-                            SelectGenderScreen(),
-                          );
+                          model.addSelectedItems();
                         },
                       ),
                     ),
