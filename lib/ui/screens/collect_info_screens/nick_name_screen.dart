@@ -62,6 +62,7 @@ class NickNameScreen extends StatelessWidget {
             CustomButton(
               title: 'CONTINUE',
               onTap: () {
+                FocusManager.instance.primaryFocus?.unfocus();
                 Get.to(
                   IdentityScreen(),
                 );

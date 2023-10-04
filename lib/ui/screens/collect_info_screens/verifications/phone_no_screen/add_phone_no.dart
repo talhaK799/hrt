@@ -66,6 +66,7 @@ class AddPhoneNumberScreen extends StatelessWidget {
               CustomButton(
                 title: 'CONTINUE',
                 onTap: () {
+                  FocusManager.instance.primaryFocus?.unfocus();
                   // if (model.formKey.currentState!.validate()) {
                   model.sentOTP();
                   // }

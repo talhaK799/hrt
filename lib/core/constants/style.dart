@@ -24,7 +24,7 @@ final headingText = TextStyle(
   color: whiteColor,
 );
 final subHeadingText1 = TextStyle(
-  fontSize: 20.sp,
+  fontSize: 22.sp,
   fontFamily: nunitoFont,
   fontWeight: FontWeight.w700,
   color: primaryColor,
@@ -66,7 +66,7 @@ final buttonTextStyleRed = TextStyle(
   color: primaryColor,
 );
 final buttonTextStyle2 = TextStyle(
-  fontSize: 12.sp,
+  fontSize: 14.sp,
   fontFamily: nunitoFont,
   fontWeight: FontWeight.w600,
 );

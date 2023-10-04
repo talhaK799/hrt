@@ -112,6 +112,7 @@ class FantasiesScreen extends StatelessWidget {
                       child: CustomButton(
                         title: 'CONTINUE',
                         onTap: () {
+                          FocusManager.instance.primaryFocus?.unfocus();
                           Get.to(
                             ExploreScreen(),
                           );

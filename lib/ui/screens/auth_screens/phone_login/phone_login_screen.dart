@@ -129,6 +129,7 @@ class PhoneLoginScreen extends StatelessWidget {
                       CustomButton(
                         title: 'LOGIN',
                         onTap: () {
+                          FocusManager.instance.primaryFocus?.unfocus();
                           if (model.fmkey.currentState!.validate()) {
                             // model.signUp();
                           }

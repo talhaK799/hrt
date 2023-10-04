@@ -37,17 +37,17 @@ class PermissionScreen extends StatelessWidget {
                     height: 20.h,
                   ),
                   Text(
-                    'Add your photos',
+                    'Permissions',
                     style: headingText.copyWith(
                       color: blackColor,
-                      fontSize: 20.sp,
+                      fontSize: 22.sp,
                     ),
                   ),
                   SizedBox(
                     height: 20.h,
                   ),
                   CustomProgressIndicator(
-                    value: 7,
+                    value: 8,
                   ),
                   SizedBox(
                     height: 20.h,

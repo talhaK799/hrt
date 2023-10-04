@@ -53,163 +53,168 @@ class SignUpWithEmail extends StatelessWidget {
                   ///
                   Form(
                     key: model.formKey,
-                    child: Column(
-                      children: [
-                        CustomTextField(
-                          validator: (val) {
-                            if (val.isEmpty) {
-                              return 'User Name is Required';
-                            } else {
-                              model.appuser.name = val;
-                              return null;
-                            }
-                          },
-                          onChange: (val) {
-                            // model.appuser.name = val;
-                          },
-                          hintText: 'Name',
-                          prefixIcon: 'user.png',
-                        ),
-                        SizedBox(
-                          height: 10.h,
-                        ),
-                        CustomTextField(
-                          validator: (val) {
-                            if (val.isEmpty) {
-                              return 'Email is Required';
-                            } else {
-                              model.appuser.email = val;
-                              return null;
-                            }
-                          },
-                          onChange: (val) {
-                            // model.appuser.email = val;
-                            // log('onchange ${val}');
-                          },
-                          hintText: 'Email',
-                          prefixIcon: 'email.png',
-                          // controller: model.emailController,
-                        ),
-                        SizedBox(
-                          height: 20.h,
-                        ),
-                        CustomTextField(
-                          validator: (val) {
-                            if (val.isEmpty) {
-                              return 'Password is Required';
-                            } else {
-                              return null;
-                            }
-                          },
-                          onChange: (val) {
-                            // model.appuser.email = val;
-                            // log('onchange ${val}');
-                          },
-                          hintText: 'Password',
-                          prefixIcon: 'password.png',
-                          controller: model.passwordController,
-                        ),
-                        SizedBox(
-                          height: 20.h,
-                        ),
-                        CustomTextField(
-                          validator: (val) {
-                            if (val.isEmpty) {
-                              return 'Password is Required';
-                            } else if (model.passwordController.text !=
-                                model.confirmPasswordController.text) {
-                              return 'Password donot Match';
-                            } else {
-                              model.appuser.password = val;
-                              return null;
-                            }
-                          },
-                          onChange: (val) {
-                            // model.appuser.email = val;
-                            // log('onchange ${val}');
-                          },
-                          hintText: 'Confirm Password',
-                          prefixIcon: 'password.png',
-                          controller: model.confirmPasswordController,
-                        ),
-                        SizedBox(
-                          height: 40.h,
-                        ),
-
-                        ///
-                        ///Sign Up BUTTON
-                        ///
-                        CustomButton(
-                          title: 'Sign Up',
-                          onTap: () {
-                            if (model.formKey.currentState!.validate()) {
-                              model.signUp(context);
-                            }
-                          },
-                        ),
-                        SizedBox(
-                          height: 20.h,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 40),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Already have an account? ',
-                                style: subHeadingTextStyle.copyWith(
-                                  color: blackColor,
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  Get.to(
-                                    LoginScreen(),
-                                  );
-                                },
-                                child: Text(
-                                  'Login',
-                                  style: subHeadingTextStyle.copyWith(
-                                      color: primaryColor),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
+                    child: _textFields(model, context),
                   ),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Already have an account',
-                        style: subHeadingTextStyle,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Get.to(
-                            LoginScreen(),
-                          );
-                        },
-                        child: Text(
-                          'Login',
-                          style: buttonTextStyle.copyWith(
-                            decoration: TextDecoration.underline,
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
+                  // SizedBox(
+                  //   height: 20.h,
+                  // ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: [
+                  //     Text(
+                  //       'Already have an account',
+                  //       style: subHeadingTextStyle,
+                  //     ),
+                  //     GestureDetector(
+                  //       onTap: () {
+                  //         Get.to(
+                  //           LoginScreen(),
+                  //         );
+                  //       },
+                  //       child: Text(
+                  //         'Login',
+                  //         style: buttonTextStyle.copyWith(
+                  //           decoration: TextDecoration.underline,
+                  //         ),
+                  //       ),
+                  //     )
+                  //   ],
+                  // ),
                 ],
               ),
             ),
           ),
         );
       }),
+    );
+  }
+
+  _textFields(SignUpwithEmailProvider model, BuildContext context) {
+    return Column(
+      children: [
+        CustomTextField(
+          validator: (val) {
+            if (val.isEmpty) {
+              return 'User Name is Required';
+            } else {
+              model.appuser.name = val;
+              return null;
+            }
+          },
+          onChange: (val) {
+            // model.appuser.name = val;
+          },
+          hintText: 'Name',
+          prefixIcon: 'user.png',
+        ),
+        SizedBox(
+          height: 10.h,
+        ),
+        CustomTextField(
+          validator: (val) {
+            if (val.isEmpty) {
+              return 'Email is Required';
+            } else {
+              model.appuser.email = val;
+              return null;
+            }
+          },
+          onChange: (val) {
+            // model.appuser.email = val;
+            // log('onchange ${val}');
+          },
+          hintText: 'Email',
+          prefixIcon: 'email.png',
+          // controller: model.emailController,
+        ),
+        SizedBox(
+          height: 20.h,
+        ),
+        CustomTextField(
+          validator: (val) {
+            if (val.isEmpty) {
+              return 'Password is Required';
+            } else {
+              return null;
+            }
+          },
+          onChange: (val) {
+            // model.appuser.email = val;
+            // log('onchange ${val}');
+          },
+          hintText: 'Password',
+          prefixIcon: 'password.png',
+          controller: model.passwordController,
+        ),
+        SizedBox(
+          height: 20.h,
+        ),
+        CustomTextField(
+          validator: (val) {
+            if (val.isEmpty) {
+              return 'Password is Required';
+            } else if (model.passwordController.text !=
+                model.confirmPasswordController.text) {
+              return 'Password donot Match';
+            } else {
+              model.appuser.password = val;
+              return null;
+            }
+          },
+          onChange: (val) {
+            // model.appuser.email = val;
+            // log('onchange ${val}');
+          },
+          hintText: 'Confirm Password',
+          prefixIcon: 'password.png',
+          controller: model.confirmPasswordController,
+        ),
+        SizedBox(
+          height: 40.h,
+        ),
+
+        ///
+        ///Sign Up BUTTON
+        ///
+        CustomButton(
+          title: 'Sign Up',
+          onTap: () {
+            FocusManager.instance.primaryFocus?.unfocus();
+            model.signUp(context);
+            // if (model.formKey.currentState!.validate()) {
+            //   model.signUp(context);
+            // }
+          },
+        ),
+        SizedBox(
+          height: 20.h,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 40),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Already have an account? ',
+                style: subHeadingTextStyle.copyWith(
+                  color: blackColor,
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  Get.to(
+                    LoginScreen(),
+                  );
+                },
+                child: Text(
+                  'Login',
+                  style: subHeadingTextStyle.copyWith(color: primaryColor),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

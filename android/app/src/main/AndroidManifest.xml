@@ -9,7 +9,7 @@
     <!-- Permissions options for the `notification` group -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <application
-        android:label="Hart: Match, Meet & Enjoy"
+        android:label="Hart: Match, Meet and Enjoy"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity

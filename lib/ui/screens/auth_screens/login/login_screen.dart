@@ -133,6 +133,7 @@ class LoginScreen extends StatelessWidget {
                         CustomButton(
                           title: 'Login',
                           onTap: () {
+                            FocusManager.instance.primaryFocus?.unfocus();
                             if (model.fmkey.currentState!.validate()) {
                               model.login(context);
                             }

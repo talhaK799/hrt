@@ -43,7 +43,7 @@ class PhoneCodeConfirmationScreen extends StatelessWidget {
                       height: 20.h,
                     ),
                     Text(
-                      'Please enter 4-digit code sent to your Phone No.',
+                      'Please enter 6-digit code sent to your Phone No.',
                       style: subHeadingTextStyle.copyWith(
                         color: blackColor,
                         fontWeight: FontWeight.w500,
@@ -104,6 +104,7 @@ class PhoneCodeConfirmationScreen extends StatelessWidget {
                 CustomButton(
                   title: 'CONTINUE',
                   onTap: () {
+                    FocusManager.instance.primaryFocus?.unfocus();
                     model.verifyPhoneOtp();
                   },
                 ),

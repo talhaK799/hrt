@@ -57,10 +57,13 @@ class ExploreScreen extends StatelessWidget {
                       SizedBox(
                         height: 20.h,
                       ),
-                      Image.asset(
-                        '$staticAsset/picture.png',
-                        height: 0.41.sh,
-                        fit: BoxFit.contain,
+                      Align(
+                        alignment: Alignment.center,
+                        child: Image.asset(
+                          '$staticAsset/picture.png',
+                          // height: 0.41.sh,
+                          fit: BoxFit.contain,
+                        ),
                       )
                     ],
                   ),
@@ -90,6 +93,7 @@ class ExploreScreen extends StatelessWidget {
                   CustomButton(
                     title: 'CONTINUE',
                     onTap: () {
+                      FocusManager.instance.primaryFocus?.unfocus();
                       Get.to(
                         AddPhotoScreen(),
                       );

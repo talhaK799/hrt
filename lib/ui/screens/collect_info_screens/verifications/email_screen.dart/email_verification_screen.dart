@@ -61,9 +61,11 @@ class EmailVerificationScreen extends StatelessWidget {
                         CustomButton(
                           title: 'CONTINUE',
                           onTap: () {
-                            if (model.formKey.currentState!.validate()) {
+                            FocusManager.instance.primaryFocus?.unfocus();
                               model.sendotptoEmail();
-                            }
+                            // if (model.formKey.currentState!.validate()) {
+                            //   model.sendotptoEmail();
+                            // }
                           },
                         ),
                       ],
