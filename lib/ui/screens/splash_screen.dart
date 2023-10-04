@@ -18,9 +18,9 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   init() async {
-    await Future.delayed(
-      Duration(seconds: 2),
-    );
+    // await Future.delayed(
+    //   Duration(seconds: 2),
+    // );
     // Get.offAll(RootScreen());
     Get.offAll(AuthScreen());
   }
