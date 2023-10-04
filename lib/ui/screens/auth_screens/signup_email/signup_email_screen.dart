@@ -180,10 +180,10 @@ class SignUpWithEmail extends StatelessWidget {
           title: 'Sign Up',
           onTap: () {
             FocusManager.instance.primaryFocus?.unfocus();
-            model.signUp(context);
-            // if (model.formKey.currentState!.validate()) {
-            //   model.signUp(context);
-            // }
+            // model.signUp(context);
+            if (model.formKey.currentState!.validate()) {
+              model.signUp(context);
+            }
           },
         ),
         SizedBox(
