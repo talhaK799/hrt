@@ -22,18 +22,56 @@ class HomeScreen extends StatelessWidget {
         return Scaffold(
             body: Stack(
           children: [
-            PageView.builder(
-              physics: BouncingScrollPhysics(),
-              controller: model.pageController,
-              itemCount: 4,
-              itemBuilder: (context, index) {
-                return _homeScreenData(context, model);
-              },
-              onPageChanged: (val) {
-                model.changePage();
-              },
+            Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 50, 24, 24),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // Text(
+                      //   'Hart',
+                      //   style: subHeadingText1,
+                      // ),
+                      Image.asset(
+                        '$logoPath/logo3.png',
+                        scale: 6.5,
+                        color: primaryColor,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          showFilter(context);
+                        },
+                        child: Image.asset(
+                          '$staticAsset/Filter.png',
+                          scale: 3,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: PageView.builder(
+                    physics: BouncingScrollPhysics(),
+                    controller: model.pageController,
+                    itemCount: 5,
+                    itemBuilder: (context, index) {
+                      return index == 4
+                          ? Center(
+                              child: Text(
+                                'No More Users',
+                                style:
+                                    headingText.copyWith(color: primaryColor),
+                              ),
+                            )
+                          : _homeScreenData(context, model);
+                    },
+                    onPageChanged: (val) => model.changePage(val),
+                  ),
+                ),
+              ],
             ),
-            _likeButtons(model)
+            model.isLast ? Container() : _likeButtons(model)
           ],
         ));
       }),
@@ -100,32 +138,32 @@ class HomeScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(24, 50, 24, 24),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                // Text(
-                //   'Hart',
-                //   style: subHeadingText1,
-                // ),
-                Image.asset(
-                  '$logoPath/logo3.png',
-                  scale: 6.5,
-                  color: primaryColor,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    showFilter(context);
-                  },
-                  child: Image.asset(
-                    '$staticAsset/Filter.png',
-                    scale: 3,
-                  ),
-                ),
-              ],
-            ),
-          ),
+          // Padding(
+          //   padding: const EdgeInsets.fromLTRB(24, 50, 24, 24),
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //     children: [
+          //       // Text(
+          //       //   'Hart',
+          //       //   style: subHeadingText1,
+          //       // ),
+          //       Image.asset(
+          //         '$logoPath/logo3.png',
+          //         scale: 6.5,
+          //         color: primaryColor,
+          //       ),
+          //       GestureDetector(
+          //         onTap: () {
+          //           showFilter(context);
+          //         },
+          //         child: Image.asset(
+          //           '$staticAsset/Filter.png',
+          //           scale: 3,
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
           _imageSlider(
             model,
           ),
@@ -284,176 +322,174 @@ class HomeScreen extends StatelessWidget {
                   ),
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Reset',
-                                style: miniText,
-                              ),
-                              Text(
-                                'Filters',
-                                style: subHeadingText1,
-                              ),
-                              Text(
-                                'Done',
-                                style: miniText,
-                              ),
-                            ],
-                          ),
-                          sizeBox20,
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Age Range',
-                                style: subHeadingTextStyle2,
-                              ),
-                              Text(
-                                '${model.ageValues.start.floor()} - ${model.ageValues.end.floor()}',
-                                style: miniText,
-                              ),
-                            ],
-                          ),
-
-                          ///
-                          /// Age slider
-                          ///
-                          SfRangeSlider(
-                            values: model.ageValues,
-                            onChanged: (val) {
-                              model.selectAge(val);
-                            },
-                            activeColor: primaryColor,
-                            inactiveColor: greyColor,
-                            showLabels: true,
-                            min: 18,
-                            max: 70.0,
-                            endThumbIcon: thumbIcon(),
-                            startThumbIcon: thumbIcon(),
-                          ),
-                          sizeBox20,
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Maximum Distance',
-                                style: subHeadingTextStyle2,
-                              ),
-                              Text(
-                                '${model.distanceValues.start.floor()} - ${model.distanceValues.end.floor()} KM',
-                                style: miniText,
-                              ),
-                            ],
-                          ),
-                          // sizeBox10,
-                          SfRangeSlider(
-                            values: model.distanceValues,
-                            onChanged: (val) {
-                              model.selectDistance(val);
-                            },
-                            activeColor: primaryColor,
-                            inactiveColor: greyColor,
-                            showLabels: true,
-                            max: 150.0,
-                            endThumbIcon: thumbIcon(),
-                            startThumbIcon: thumbIcon(),
-                          ),
-                          sizeBox30,
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Looking For',
-                                style: subHeadingTextStyle2,
-                              ),
-                              Text(
-                                'Woman >',
-                                style: miniText.copyWith(color: greyColor2),
-                              ),
-                            ],
-                          ),
-                          sizeBox20,
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Location',
-                                style: subHeadingTextStyle2,
-                              ),
-                              Text(
-                                'Current location >',
-                                style: miniText.copyWith(color: greyColor2),
-                              ),
-                            ],
-                          ),
-                          sizeBox20,
-                          Text(
-                            'Search by',
-                            style: subHeadingText1,
-                          ),
-                          sizeBox20,
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'What you desire',
-                                style: subHeadingTextStyle2.copyWith(
-                                  color: primaryColor,
-                                ),
-                              ),
-                              Text(
-                                'Any >',
-                                style: miniText.copyWith(
-                                  color: primaryColor,
-                                ),
-                              ),
-                            ],
-                          ),
-                          sizeBox20,
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Recently online',
-                                style: buttonTextStyle.copyWith(
-                                  color: primaryColor,
-                                ),
-                              ),
-                              Switch(
-                                activeColor: primaryColor,
-                                value: model.isRecent,
-                                onChanged: (val) {
-                                  model.recent(val);
-                                },
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Text(
-                            'Only show people active in the last 7 days',
-                            style: buttonTextStyle2.copyWith(
-                              color: const Color(0xFFc48184),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Reset',
+                              style: miniText,
                             ),
-                          ),
-                          sizeBox30,
-                          CustomButton(
-                            title: 'CONTINUE',
-                            onTap: () {
-                              Get.back();
-                            },
-                          ),
+                            Text(
+                              'Filters',
+                              style: subHeadingText1,
+                            ),
+                            Text(
+                              'Done',
+                              style: miniText,
+                            ),
+                          ],
+                        ),
+                        sizeBox20,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Age Range',
+                              style: subHeadingTextStyle2,
+                            ),
+                            Text(
+                              '${model.ageValues.start.floor()} - ${model.ageValues.end.floor()}',
+                              style: miniText,
+                            ),
+                          ],
+                        ),
 
-                          sizeBox30,
-                        ],
-                      ),
+                        ///
+                        /// Age slider
+                        ///
+                        SfRangeSlider(
+                          values: model.ageValues,
+                          onChanged: (val) {
+                            model.selectAge(val);
+                          },
+                          activeColor: primaryColor,
+                          inactiveColor: greyColor,
+                          showLabels: true,
+                          min: 18,
+                          max: 70.0,
+                          endThumbIcon: thumbIcon(),
+                          startThumbIcon: thumbIcon(),
+                        ),
+                        sizeBox20,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Maximum Distance',
+                              style: subHeadingTextStyle2,
+                            ),
+                            Text(
+                              '${model.distanceValues.start.floor()} - ${model.distanceValues.end.floor()} KM',
+                              style: miniText,
+                            ),
+                          ],
+                        ),
+                        // sizeBox10,
+                        SfRangeSlider(
+                          values: model.distanceValues,
+                          onChanged: (val) {
+                            model.selectDistance(val);
+                          },
+                          activeColor: primaryColor,
+                          inactiveColor: greyColor,
+                          showLabels: true,
+                          max: 150.0,
+                          endThumbIcon: thumbIcon(),
+                          startThumbIcon: thumbIcon(),
+                        ),
+                        sizeBox30,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Looking For',
+                              style: subHeadingTextStyle2,
+                            ),
+                            Text(
+                              'Woman >',
+                              style: miniText.copyWith(color: greyColor2),
+                            ),
+                          ],
+                        ),
+                        sizeBox20,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Location',
+                              style: subHeadingTextStyle2,
+                            ),
+                            Text(
+                              'Current location >',
+                              style: miniText.copyWith(color: greyColor2),
+                            ),
+                          ],
+                        ),
+                        sizeBox20,
+                        Text(
+                          'Search by',
+                          style: subHeadingText1,
+                        ),
+                        sizeBox20,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'What you desire',
+                              style: subHeadingTextStyle2.copyWith(
+                                color: primaryColor,
+                              ),
+                            ),
+                            Text(
+                              'Any >',
+                              style: miniText.copyWith(
+                                color: primaryColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                        sizeBox20,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Recently online',
+                              style: buttonTextStyle.copyWith(
+                                color: primaryColor,
+                              ),
+                            ),
+                            Switch(
+                              activeColor: primaryColor,
+                              value: model.isRecent,
+                              onChanged: (val) {
+                                model.recent(val);
+                              },
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          'Only show people active in the last 7 days',
+                          style: buttonTextStyle2.copyWith(
+                            color: const Color(0xFFc48184),
+                          ),
+                        ),
+                        Spacer(),
+                        CustomButton(
+                          title: 'CONTINUE',
+                          onTap: () {
+                            Get.back();
+                          },
+                        ),
+
+                        sizeBox30,
+                      ],
                     ),
                   ),
                 ),

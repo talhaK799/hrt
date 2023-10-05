@@ -19,132 +19,128 @@ class PermissionScreen extends StatelessWidget {
       create: (context) => PermissionProvider(),
       child: Consumer<PermissionProvider>(builder: (context, model, child) {
         return Scaffold(
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.only(
-                left: 40,
-                right: 50,
-                top: 50,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CustomBackButton(
-                    isWhite: true,
+          body: Padding(
+            padding: EdgeInsets.only(
+              left: 40,
+              right: 50,
+              top: 50,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CustomBackButton(
+                  isWhite: true,
+                ),
+                SizedBox(
+                  height: 20.h,
+                ),
+                Text(
+                  'Permissions',
+                  style: headingText.copyWith(
+                    color: blackColor,
+                    fontSize: 22.sp,
                   ),
-                  SizedBox(
-                    height: 20.h,
+                ),
+                SizedBox(
+                  height: 20.h,
+                ),
+                CustomProgressIndicator(
+                  value: 8,
+                ),
+                SizedBox(
+                  height: 20.h,
+                ),
+                Text(
+                  'A few things we need your permission to access before you begin:',
+                  style: descriptionTextStyle.copyWith(
+                    color: blackColor,
+                    fontSize: 12.sp,
                   ),
-                  Text(
-                    'Permissions',
-                    style: headingText.copyWith(
-                      color: blackColor,
-                      fontSize: 22.sp,
+                ),
+                SizedBox(
+                  height: 40.h,
+                ),
+                Row(
+                  children: [
+                    Image.asset(
+                      '$staticAsset/notification.png',
+                      scale: 3,
                     ),
+                    SizedBox(
+                      width: 15.w,
+                    ),
+                    Text(
+                      'Notifications',
+                      style: headingText.copyWith(
+                        fontSize: 18.sp,
+                        color: blackColor,
+                      ),
+                    )
+                  ],
+                ),
+                // SizedBox(
+                //   height: 16.h,
+                // ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 30,
                   ),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  CustomProgressIndicator(
-                    value: 8,
-                  ),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  Text(
-                    'A few things we need your permission to access before you begin:',
+                  child: Text(
+                    'We notify you when you have a new connection or receive a message.',
                     style: descriptionTextStyle.copyWith(
-                      color: blackColor,
+                      color: greyColor2,
                       fontSize: 12.sp,
                     ),
                   ),
-                  SizedBox(
-                    height: 40.h,
-                  ),
-                  Row(
-                    children: [
-                      Image.asset(
-                        '$staticAsset/notification.png',
-                        scale: 3,
-                      ),
-                      SizedBox(
-                        width: 15.w,
-                      ),
-                      Text(
-                        'Notifications',
-                        style: headingText.copyWith(
-                          fontSize: 18.sp,
-                          color: blackColor,
-                        ),
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    height: 16.h,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: 30,
+                ),
+                SizedBox(
+                  height: 30.h,
+                ),
+                Row(
+                  children: [
+                    Image.asset(
+                      '$staticAsset/location.png',
+                      scale: 3,
                     ),
-                    child: Text(
-                      'We notify you when you have a new connection or receive a message.',
-                      style: descriptionTextStyle.copyWith(
-                        color: greyColor2,
-                        fontSize: 12.sp,
-                      ),
+                    SizedBox(
+                      width: 15.w,
                     ),
-                  ),
-                  SizedBox(
-                    height: 30.h,
-                  ),
-                  Row(
-                    children: [
-                      Image.asset(
-                        '$staticAsset/location.png',
-                        scale: 3,
+                    Text(
+                      'Location',
+                      style: headingText.copyWith(
+                        fontSize: 18.sp,
+                        color: blackColor,
                       ),
-                      SizedBox(
-                        width: 15.w,
-                      ),
-                      Text(
-                        'Location',
-                        style: headingText.copyWith(
-                          fontSize: 18.sp,
-                          color: blackColor,
-                        ),
-                      )
-                    ],
+                    )
+                  ],
+                ),
+                // SizedBox(
+                //   height: 16.h,
+                // ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 30,
                   ),
-                  SizedBox(
-                    height: 16.h,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: 30,
-                    ),
-                    child: Text(
-                      'We connect you with  the other  Hart  members based on your location.',
-                      style: descriptionTextStyle.copyWith(
-                        color: greyColor2,
-                        fontSize: 12.sp,
-                      ),
+                  child: Text(
+                    'We connect you with  the other  Hart  members based on your location.',
+                    style: descriptionTextStyle.copyWith(
+                      color: greyColor2,
+                      fontSize: 12.sp,
                     ),
                   ),
-                  SizedBox(
-                    height: 50.h,
-                  ),
-                  CustomButton(
-                    title: 'FIX',
-                    onTap: () {
-                      model.requestPermission();
-                    },
-                  ),
-                  SizedBox(
-                    height: 30.h,
-                  ),
-                ],
-              ),
+                ),
+                Spacer(),
+                CustomButton(
+                  title: 'FIX',
+                  onTap: () {
+                    model.requestPermission();
+                  },
+                ),
+                SizedBox(
+                  height: 30.h,
+                ),
+              ],
             ),
           ),
         );
