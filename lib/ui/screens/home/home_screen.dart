@@ -135,6 +135,7 @@ class HomeScreen extends StatelessWidget {
 
   _homeScreenData(BuildContext context, HomeProvider model) {
     return SingleChildScrollView(
+      physics: BouncingScrollPhysics(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
