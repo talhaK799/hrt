@@ -60,22 +60,17 @@ class AddPhotoProvider extends BaseViewModel {
   }
 
   addUserImages() async {
-    setState(ViewState.busy);
-    imagesUrls=await fbStorage.uploadImagesList(selectedImages!, 'User Images');
-    // for (var element in selectedImages!) {
-    //   if (element.isSelected == true) {
-    //     selectedItems.add(element.title!);
-    //   }
-    // }
+    // setState(ViewState.busy);
+    // imagesUrls=await fbStorage.uploadImagesList(selectedImages!, 'User Images');
 
-    currentUser.images = imagesUrls;
+    // currentUser.images = imagesUrls;
     
-    bool isUpdated = await _db.updateUserProfile(currentUser);
-    setState(ViewState.idle);
-    if (isUpdated) {
+    // bool isUpdated = await _db.updateUserProfile(currentUser);
+    // setState(ViewState.idle);
+    // if (isUpdated) {
       Get.to(
         PermissionScreen(),
       );
-    }
+    // }
   }
 }

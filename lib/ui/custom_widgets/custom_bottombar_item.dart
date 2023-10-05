@@ -25,17 +25,18 @@ class CustomBottomBarItem extends StatelessWidget {
       onTap: onTap,
       child: currentIndex == activeIndex
           ? ImageIcon(
-            AssetImage(
-              '$staticAsset/$icon2',
-            ),
-            size: 30,
-            color: primaryColor,
-          )
+              AssetImage(
+                '$staticAsset/$icon2',
+              ),
+              size: 23,
+              color: primaryColor,
+            )
           : ImageIcon(
               AssetImage(
                 '$staticAsset/$icon',
               ),
-              size: 30,
+              color: greyColor2,
+              size: 23,
             ),
     );
   }

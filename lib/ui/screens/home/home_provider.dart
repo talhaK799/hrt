@@ -6,6 +6,7 @@ class HomeProvider extends BaseViewModel {
   int currentIndex = 0;
   bool isLiked = false;
   bool isRecent = false;
+  bool isLast = false;
   SfRangeValues ageValues = SfRangeValues(18, 30);
   SfRangeValues distanceValues = SfRangeValues(3, 50);
   PageController? pageController;
@@ -21,7 +22,12 @@ class HomeProvider extends BaseViewModel {
     notifyListeners();
   }
 
-  changePage() {
+  changePage(val) {
+    if (val == 4) {
+      isLast = true;
+    } else {
+      isLast = false;
+    }
     isLiked = false;
     notifyListeners();
   }
@@ -43,6 +49,7 @@ class HomeProvider extends BaseViewModel {
       duration: Duration(milliseconds: 500),
       curve: Curves.easeIn,
     );
+
     notifyListeners();
   }
 
