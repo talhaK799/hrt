@@ -38,6 +38,7 @@ class CustomTextField2 extends StatelessWidget {
           padding: EdgeInsets.only(left: 0, top: 10),
           child: TextFormField(
             validator: validator,
+            onChanged: onChange,
             controller: controller,
             // obscureText: obscure ?? false,
             obscuringCharacter: '*',

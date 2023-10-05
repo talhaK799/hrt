@@ -23,13 +23,17 @@ class EmailVerificationProvider extends BaseViewModel {
   DatabaseService _databaseService = DatabaseService();
 
   sendotptoEmail() async {
+    emailOTP = EmailOTP();
+
+    print(email);
+    setState(ViewState.busy);
     await emailOTP.setConfig(
-        appEmail: "hart@gmail.com",
+        appEmail: "talhakhurshed799@gmail.com",
         appName: "Hart",
         userEmail: email,
         otpLength: 4,
         otpType: OTPType.digitsOnly);
-
+    setState(ViewState.idle);
     bool isOTPSend = await emailOTP.sendOTP();
 
     if (isOTPSend) {
