@@ -5,6 +5,8 @@ import 'package:syncfusion_flutter_sliders/sliders.dart';
 class HomeProvider extends BaseViewModel {
   int currentIndex = 0;
   bool isLiked = false;
+  bool isDislike = false;
+
   bool isRecent = false;
   bool isLast = false;
   SfRangeValues ageValues = SfRangeValues(18, 30);
@@ -29,11 +31,13 @@ class HomeProvider extends BaseViewModel {
       isLast = false;
     }
     isLiked = false;
+    isDislike = false;
     notifyListeners();
   }
 
   like() {
     isLiked = true;
+    isDislike = false;
 
     pageController!.nextPage(
       duration: Duration(milliseconds: 500),
@@ -44,6 +48,7 @@ class HomeProvider extends BaseViewModel {
 
   disLike() {
     isLiked = false;
+    isDislike = true;
 
     pageController!.nextPage(
       duration: Duration(milliseconds: 500),

@@ -92,13 +92,14 @@ class HomeScreen extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: whiteColor,
+                  color:model.isDislike?greyColor2: whiteColor,
                   shape: BoxShape.circle,
                   boxShadow: boxShadow,
                 ),
                 child: Image.asset(
                   '$staticAsset/cross.png',
                   scale: 3.5,
+                  color: model.isDislike?whiteColor:null,
                 ),
               ),
             ),
@@ -135,6 +136,7 @@ class HomeScreen extends StatelessWidget {
 
   _homeScreenData(BuildContext context, HomeProvider model) {
     return SingleChildScrollView(
+      physics: BouncingScrollPhysics(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
