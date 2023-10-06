@@ -175,25 +175,25 @@ class LoginScreen extends StatelessWidget {
                   SizedBox(
                     height: 20.h,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Already have an account',
-                        style: subHeadingTextStyle,
-                      ),
-                      TextButton(
-                          onPressed: () {
-                            // Get.to(LoginScreen());
-                          },
-                          child: Text(
-                            'Login',
-                            style: buttonTextStyle.copyWith(
-                              decoration: TextDecoration.underline,
-                            ),
-                          ))
-                    ],
-                  ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: [
+                  //     Text(
+                  //       'Already have an account',
+                  //       style: subHeadingTextStyle,
+                  //     ),
+                  //     TextButton(
+                  //         onPressed: () {
+                  //           // Get.to(LoginScreen());
+                  //         },
+                  //         child: Text(
+                  //           'Login',
+                  //           style: buttonTextStyle.copyWith(
+                  //             decoration: TextDecoration.underline,
+                  //           ),
+                  //         ))
+                  //   ],
+                  // ),
                 ],
               ),
             ),

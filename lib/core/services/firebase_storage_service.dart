@@ -4,7 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/cupertino.dart';
 
 class FirebaseStorageService {
-  Future<String> uploadImage(File image, String folderName) async {
+  uploadImage(File image, String folderName) async {
     var fileName = image.path.split("/").last;
 
     final reference = firebase_storage.FirebaseStorage.instance
@@ -12,7 +12,9 @@ class FirebaseStorageService {
         .child('$folderName/$fileName');
     firebase_storage.UploadTask uploadTask = reference.putFile(image);
     // final StreamSubscription<StorageTaskEvent> streamSubscription =
-    uploadTask.snapshotEvents.listen((event) {});  /// 2
+    uploadTask.snapshotEvents.listen((event) {});
+
+    /// 2
 
     firebase_storage.TaskSnapshot snapshot = await uploadTask.whenComplete(() {
       debugPrint("Image upload Completed");
@@ -24,8 +26,7 @@ class FirebaseStorageService {
 
   ///
   /// Get list of images urls
-  Future<List<String>> uploadImagesList(
-      List<File> images, String folderName) async {
+  uploadImagesList(List<File> images, String folderName) async {
     List<String> imagesUrl = [];
     for (int i = 0; i < images.length; i++) {
       var fileName = images[i].path.split("/").last;

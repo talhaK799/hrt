@@ -92,14 +92,14 @@ class HomeScreen extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color:model.isDislike?greyColor2: whiteColor,
+                  color: model.isDislike ? greyColor2 : whiteColor,
                   shape: BoxShape.circle,
                   boxShadow: boxShadow,
                 ),
                 child: Image.asset(
                   '$staticAsset/cross.png',
                   scale: 3.5,
-                  color: model.isDislike?whiteColor:null,
+                  color: model.isDislike ? whiteColor : null,
                 ),
               ),
             ),
@@ -326,6 +326,7 @@ class HomeScreen extends StatelessWidget {
                     padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -345,7 +346,7 @@ class HomeScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        sizeBox20,
+                        SizedBox(height: 0.05.sh),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -376,7 +377,7 @@ class HomeScreen extends StatelessWidget {
                           endThumbIcon: thumbIcon(),
                           startThumbIcon: thumbIcon(),
                         ),
-                        sizeBox20,
+                        SizedBox(height: 40.h),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -403,7 +404,8 @@ class HomeScreen extends StatelessWidget {
                           endThumbIcon: thumbIcon(),
                           startThumbIcon: thumbIcon(),
                         ),
-                        sizeBox30,
+                        SizedBox(height: 40.h),
+
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -431,7 +433,8 @@ class HomeScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        sizeBox20,
+                        SizedBox(height: 40.h),
+
                         Text(
                           'Search by',
                           style: subHeadingText1,
@@ -454,7 +457,8 @@ class HomeScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        sizeBox20,
+                        SizedBox(height: 40.h),
+
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
