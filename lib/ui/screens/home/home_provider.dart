@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:hart/core/enums/view_state.dart';
+import 'package:hart/core/models/app_user.dart';
+import 'package:hart/core/services/auth_service.dart';
+import 'package:hart/core/services/database_service.dart';
 import 'package:hart/core/view_models/base_view_model.dart';
+import 'package:hart/locator.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 class HomeProvider extends BaseViewModel {
@@ -7,13 +12,26 @@ class HomeProvider extends BaseViewModel {
   bool isLiked = false;
   bool isRecent = false;
   bool isLast = false;
+  final currentUser = locator<AuthService>().appUser;
+  final db = DatabaseService();
   SfRangeValues ageValues = SfRangeValues(18, 30);
   SfRangeValues distanceValues = SfRangeValues(3, 50);
+  final _db = DatabaseService();
   PageController? pageController;
+  int index = 0;
+  List<AppUser> users = [];
 
   HomeProvider() {
+    getAllAppUsers();
     pageController = PageController(initialPage: 0);
     notifyListeners();
+  }
+
+  getAllAppUsers() async {
+    setState(ViewState.busy);
+    users = await _db.getAllUsers();
+    print(' user id is : ${users.first.id}');
+    setState(ViewState.idle);
   }
 
   updateIndex(index) {
@@ -23,32 +41,55 @@ class HomeProvider extends BaseViewModel {
   }
 
   changePage(val) {
-    if (val == 4) {
+    index = val;
+    if (val == users.indexOf(users.last) + 1) {
       isLast = true;
     } else {
       isLast = false;
     }
-    isLiked = false;
+    // isLiked = false;
     notifyListeners();
   }
 
-  like() {
-    isLiked = true;
+  like(index) async {
+    users[index].isLiked = true;
+    users[index].isDesLiked = false;
+    print('user  id ${users[index].id!}');
+    if (!users[index].likedUsers!.contains(users[index].id)) {
+      users[index].likedUsers!.add(users[index].id!);
+      if (users[index].disLikedUsers!.contains(users[index].id)) {
+        users[index].disLikedUsers!.remove(users[index].id!);
+      }
+    }
 
-    pageController!.nextPage(
-      duration: Duration(milliseconds: 500),
-      curve: Curves.easeIn,
-    );
-    notifyListeners();
+    bool isUpdated = await db.updateUserProfile(users[index]);
+    if (isUpdated) {
+      pageController!.nextPage(
+        duration: Duration(milliseconds: 500),
+        curve: Curves.easeIn,
+      );
+
+      notifyListeners();
+    }
   }
 
-  disLike() {
-    isLiked = false;
+  disLike(index) async {
+    users[index].isDesLiked = true;
+    users[index].isLiked = false;
+    if (!users[index].disLikedUsers!.contains(users[index].id)) {
+      users[index].disLikedUsers!.add(users[index].id!);
+      if (users[index].likedUsers!.contains(users[index].id)) {
+        users[index].likedUsers!.remove(users[index].id!);
+      }
+    }
 
-    pageController!.nextPage(
-      duration: Duration(milliseconds: 500),
-      curve: Curves.easeIn,
-    );
+    bool isUpdated = await db.updateUserProfile(users[index]);
+    if (isUpdated) {
+      pageController!.nextPage(
+        duration: Duration(milliseconds: 500),
+        curve: Curves.easeIn,
+      );
+    }
 
     notifyListeners();
   }

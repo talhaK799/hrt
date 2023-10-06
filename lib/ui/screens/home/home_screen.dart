@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/constants/strings.dart';
 import 'package:hart/core/constants/style.dart';
+import 'package:hart/core/models/app_user.dart';
 import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/ui/custom_widgets/custom_button.dart';
 import 'package:hart/ui/screens/home/home_provider.dart';
@@ -12,7 +13,9 @@ import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  HomeScreen({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -54,9 +57,9 @@ class HomeScreen extends StatelessWidget {
                   child: PageView.builder(
                     physics: BouncingScrollPhysics(),
                     controller: model.pageController,
-                    itemCount: 5,
+                    itemCount: model.users.length + 1,
                     itemBuilder: (context, index) {
-                      return index == 4
+                      return index == model.users.indexOf(model.users.last) + 1
                           ? Center(
                               child: Text(
                                 'No More Users',
@@ -64,7 +67,7 @@ class HomeScreen extends StatelessWidget {
                                     headingText.copyWith(color: primaryColor),
                               ),
                             )
-                          : _homeScreenData(context, model);
+                          : _homeScreenData(model, model.users[index]);
                     },
                     onPageChanged: (val) => model.changePage(val),
                   ),
@@ -87,17 +90,22 @@ class HomeScreen extends StatelessWidget {
           children: [
             GestureDetector(
               onTap: () {
-                model.disLike();
+                model.disLike(model.index);
               },
               child: Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: whiteColor,
+                  color: model.users[model.index].isDesLiked == true
+                      ? greyColor2
+                      : whiteColor,
                   shape: BoxShape.circle,
                   boxShadow: boxShadow,
                 ),
                 child: Image.asset(
                   '$staticAsset/cross.png',
+                  color: model.users[model.index].isDesLiked == true
+                      ? whiteColor
+                      : null,
                   scale: 3.5,
                 ),
               ),
@@ -107,16 +115,18 @@ class HomeScreen extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                model.like();
+                model.like(model.index);
               },
               child: Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: model.isLiked ? primaryColor : whiteColor,
+                  color: model.users[model.index].isLiked == true
+                      ? primaryColor
+                      : whiteColor,
                   shape: BoxShape.circle,
                   boxShadow: boxShadow,
                 ),
-                child: model.isLiked
+                child: model.users[model.index].isLiked == true
                     ? Image.asset(
                         '$staticAsset/likeWhite.png',
                         scale: 3.5,
@@ -133,41 +143,13 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  _homeScreenData(BuildContext context, HomeProvider model) {
+  _homeScreenData(HomeProvider model, AppUser user) {
     return SingleChildScrollView(
       physics: BouncingScrollPhysics(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Padding(
-          //   padding: const EdgeInsets.fromLTRB(24, 50, 24, 24),
-          //   child: Row(
-          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //     children: [
-          //       // Text(
-          //       //   'Hart',
-          //       //   style: subHeadingText1,
-          //       // ),
-          //       Image.asset(
-          //         '$logoPath/logo3.png',
-          //         scale: 6.5,
-          //         color: primaryColor,
-          //       ),
-          //       GestureDetector(
-          //         onTap: () {
-          //           showFilter(context);
-          //         },
-          //         child: Image.asset(
-          //           '$staticAsset/Filter.png',
-          //           scale: 3,
-          //         ),
-          //       ),
-          //     ],
-          //   ),
-          // ),
-          _imageSlider(
-            model,
-          ),
+          _imageSlider(model, user),
           SizedBox(
             height: 20.h,
           ),
@@ -224,15 +206,21 @@ class HomeScreen extends StatelessWidget {
                 SizedBox(
                   height: 15.h,
                 ),
-                Row(
-                  children: [
-                    _infoContainer('Friendship'),
-                    SizedBox(
+                SizedBox(
+                  height: 35.h,
+                  child: ListView.separated(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: ((context, index) {
+                      return _infoContainer(user.desire![index]);
+                    }),
+                    separatorBuilder: (context, index) => SizedBox(
                       width: 16.w,
                     ),
-                    _infoContainer('Marriage'),
-                  ],
+                    itemCount: user.desire!.length,
+                  ),
                 ),
+
                 SizedBox(
                   height: 20.h,
                 ),
@@ -243,32 +231,46 @@ class HomeScreen extends StatelessWidget {
                 SizedBox(
                   height: 15.h,
                 ),
-                Column(
-                  children: [
-                    Row(
-                      children: [
-                        _infoContainer('Art'),
-                        SizedBox(
-                          width: 16.w,
-                        ),
-                        _infoContainer('Music'),
-                        SizedBox(
-                          width: 16.w,
-                        ),
-                        _infoContainer('Hiking'),
-                        // SizedBox(
-                        //   width: 16.w,
-                        // ),
-                      ],
+                SizedBox(
+                  height: 35.h,
+                  child: ListView.separated(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: ((context, index) {
+                      return _infoContainer(user.identity![index]);
+                    }),
+                    separatorBuilder: (context, index) => SizedBox(
+                      width: 16.w,
                     ),
-                    sizeBox10,
-                    Row(
-                      children: [
-                        _infoContainer('Real connection'),
-                      ],
-                    )
-                  ],
+                    itemCount: user.identity!.length,
+                  ),
                 ),
+                // Column(
+                //   children: [
+                //     Row(
+                //       children: [
+                //         _infoContainer('Art'),
+                //         SizedBox(
+                //           width: 16.w,
+                //         ),
+                //         _infoContainer('Music'),
+                //         SizedBox(
+                //           width: 16.w,
+                //         ),
+                //         _infoContainer('Hiking'),
+                //         // SizedBox(
+                //         //   width: 16.w,
+                //         // ),
+                //       ],
+                //     ),
+                //     sizeBox10,
+                //     Row(
+                //       children: [
+                //         _infoContainer('Real connection'),
+                //       ],
+                //     )
+                //   ],
+                // ),
                 SizedBox(
                   height: 15.h,
                 ),
@@ -511,7 +513,7 @@ class HomeScreen extends StatelessWidget {
         });
   }
 
-  Container thumbIcon() {
+  thumbIcon() {
     return Container(
       width: 12.w,
       height: 12.h,
@@ -544,18 +546,23 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-_imageSlider(HomeProvider model) {
+_imageSlider(HomeProvider model, AppUser user) {
   return Stack(
     children: [
       CarouselSlider.builder(
-        itemCount: 5,
+        itemCount: user.images!.length,
         itemBuilder: (context, index, realIndex) {
           return Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('$dynamicAsset/image.png'),
-                fit: BoxFit.cover,
-              ),
+            // decoration: BoxDecoration(
+            //   image: DecorationImage(
+            //     image: NetworkImage(user.images![index].toString()),
+            //     fit: BoxFit.cover,
+            //   ),
+            // ),
+            child: FadeInImage.assetNetwork(
+              placeholder: '$logoPath/logo4.png',
+              image: user.images![index].toString(),
+              fit: BoxFit.fill,
             ),
           );
         },
@@ -586,7 +593,7 @@ _imageSlider(HomeProvider model) {
             ),
             child: DotsIndicator(
               axis: Axis.vertical,
-              dotsCount: 5,
+              dotsCount: user.images!.length,
               position: model.currentIndex,
               decorator: const DotsDecorator(
                 activeColor: primaryColor,

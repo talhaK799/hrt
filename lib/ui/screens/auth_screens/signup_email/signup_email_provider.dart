@@ -24,22 +24,22 @@ class SignUpwithEmailProvider extends BaseViewModel {
   // double passwordLength = 8.0;
 
   signUp(context) async {
-    // setState(ViewState.busy);
-    // authResult = await authService.signUpWithEmailPassword(appuser);
+    setState(ViewState.busy);
+    authResult = await authService.signUpWithEmailPassword(appuser);
 
-    // setState(ViewState.idle);
-    // if (authResult.user != null) {
+    setState(ViewState.idle);
+    if (authResult.user != null) {
     Get.to(
       EmailVerificationScreen(),
     );
-    // } else {
-    //   showMyDialog(
-    //     context,
-    //     authResult.errorMessage!,
-    //   );
-    // }
+    } else {
+      showMyDialog(
+        context,
+        authResult.errorMessage!,
+      );
+    }
 
-    // notifyListeners();
+    notifyListeners();
   }
 
   toggleVisibilty() {
