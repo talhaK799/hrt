@@ -29,38 +29,38 @@ class PhoneNoProvider extends BaseViewModel {
   }
 
   sentOTP() async {
-    // if (appUser.phoneNumber != null || countryCode.isNotEmpty) {
-    //   // isTimeExpired = false;
-    //   authService.appUser.phoneNumber = countryCode + appUser.phoneNumber!;
-    //   print("Phone number ==> ${authService.appUser.phoneNumber}");
-    //   await verificationService.sendVerificationCodeThroughPhoneNumber(
-    //       authService.appUser.phoneNumber!);
+    if (appUser.phoneNumber != null || countryCode.isNotEmpty) {
+      // isTimeExpired = false;
+      authService.appUser.phoneNumber = countryCode + appUser.phoneNumber!;
+      print("Phone number ==> ${authService.appUser.phoneNumber}");
+      await verificationService.sendVerificationCodeThroughPhoneNumber(
+          authService.appUser.phoneNumber!);
     Get.to(() => PhoneCodeConfirmationScreen());
     // startTimer();
-    // notifyListeners();
-    // }
+    notifyListeners();
+    }
   }
 
   verifyPhoneOtp() async {
-    // var msg = await verificationService.verifyPhoneNumber(
-    //     authService.appUser.phoneNumber, phoneOtp);
-    // print("msg ==>$msg");
+    var msg = await verificationService.verifyPhoneNumber(
+        authService.appUser.phoneNumber, phoneOtp);
+    print("msg ==>$msg");
 
-    // if (msg == "Phone number is verified") {
+    if (msg == "Phone number is verified") {
     // // _timer.cancel();
     // setState(ViewState.busy);
     // // _timer.cancel();
-    // authService.appUser.isPhoneNoVerified = true;
-    // authService.appUser.phoneNumber = countryCode + appUser.phoneNumber!;
+    authService.appUser.isPhoneNoVerified = true;
+    authService.appUser.phoneNumber = countryCode + appUser.phoneNumber!;
 
-    // bool isUpdatedProfile =
-    //     await _databaseService.updateUserProfile(authService.appUser);
-    // setState(ViewState.idle);
-    // if (isUpdatedProfile) {
+    bool isUpdatedProfile =
+        await _databaseService.updateUserProfile(authService.appUser);
+    setState(ViewState.idle);
+    if (isUpdatedProfile) {
     Get.to(
       DOBScreen(),
     );
-    //   }
-    // }
+      }
+    }
   }
 }

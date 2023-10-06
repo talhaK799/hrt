@@ -33,21 +33,21 @@ class SelectGenderProvider extends BaseViewModel {
   }
 
   addSelectedItems() async {
-    // for (var element in items) {
-    //   if (element.isSelected == true) {
-    //     selectedItems.add(element.title!);
-    //   }
-    // }
+    for (var element in items) {
+      if (element.isSelected == true) {
+        selectedItems.add(element.title!);
+      }
+    }
 
-    // currentUser.lookingFor = selectedItems;
-    // setState(ViewState.busy);
-    // bool isUpdated = await _db.updateUserProfile(currentUser);
-    // setState(ViewState.idle);
-    // if (isUpdated) {
+    currentUser.lookingFor = selectedItems;
+    setState(ViewState.busy);
+    bool isUpdated = await _db.updateUserProfile(currentUser);
+    setState(ViewState.idle);
+    if (isUpdated) {
       Get.to(
         FantasiesScreen(),
       );
-    // }
+    }
   }
   // bool isMan = false;
   // bool isWoman = false;

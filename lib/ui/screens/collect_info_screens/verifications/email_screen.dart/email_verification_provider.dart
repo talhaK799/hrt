@@ -36,39 +36,39 @@ class EmailVerificationProvider extends BaseViewModel {
     setState(ViewState.idle);
     bool isOTPSend = await emailOTP.sendOTP();
 
-    // if (isOTPSend) {
-    //   Get.snackbar("Success!", "OTP sent to your email");
+    if (isOTPSend) {
+      Get.snackbar("Success!", "OTP sent to your email");
       Get.to(
         EmailOtpScreen(),
       );
       // startTimer();
       // otp = myauth.toString();
       // print("OTP sent ==> ${myauth.toString()}");
-    // } else {
-    //   print("Oops, OTP send failed");
-    //   Get.snackbar("Error!", "Send again opt");
-    // }
+    } else {
+      print("Oops, OTP send failed");
+      Get.snackbar("Error!", "Send again opt");
+    }
     // await _verificationService.sendCodeToEmail();
     // print("${_verificationService.twilioResponse.statusCode}");
   }
 
   verifyOtp() async {
-    // setState(ViewState.busy);
-    // bool isVerify = await emailOTP.verifyOTP(otp: phoneOtp);
-    // setState(ViewState.idle);
+    setState(ViewState.busy);
+    bool isVerify = await emailOTP.verifyOTP(otp: phoneOtp);
+    setState(ViewState.idle);
 
-    // if (isVerify == true) {
-    //   authService.appUser.isEmailVerified = true;
+    if (isVerify == true) {
+      authService.appUser.isEmailVerified = true;
 
-    //   setState(ViewState.busy);
-    //   await _databaseService.updateUserProfile(authService.appUser);
-    //   setState(ViewState.idle);
+      setState(ViewState.busy);
+      await _databaseService.updateUserProfile(authService.appUser);
+      setState(ViewState.idle);
 
       Get.to(
         AddPhoneNumberScreen(),
       );
-    // } else {
-    //   Get.snackbar("Error!", "Invalid OTP");
-    // }
+    } else {
+      Get.snackbar("Error!", "Invalid OTP");
+    }
   }
 }
