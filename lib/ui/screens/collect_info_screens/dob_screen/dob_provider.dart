@@ -27,6 +27,7 @@ class DobProvider extends BaseViewModel {
     if (age > 18) {
       setState(ViewState.busy);
       currentUser.appUser.dob = pickedDate.toString();
+      currentUser.appUser.age = age;
       bool isProfUpdated = await db.updateUserProfile(currentUser.appUser);
       if (!isProfUpdated) {
         Get.snackbar('error!!', 'profile not updated');

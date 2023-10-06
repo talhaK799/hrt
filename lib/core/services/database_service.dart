@@ -107,6 +107,24 @@ class DatabaseService {
     }
   }
 
+  getAllUsers() async {
+    List<AppUser> list = [];
+    try {
+      final snapshot = await _db.collection('app_user').get();
+      for (var user in snapshot.docs) {
+        list.add(
+          AppUser.fromJson(user.data(), user.id),
+        );
+        // print('users --> ${user.data().keys}');
+      }
+      return list;
+    } catch (e, s) {
+      debugPrint('Exception @DatabaseService/getAppUsers');
+      debugPrint(s.toString());
+      return AppUser();
+    }
+  }
+
   // updateClientFcm(token, id) async {
   //   await _db.collection("app_user").doc(id).update({'fcmToken': token}).then(
   //       (value) => debugPrint('fcm updated successfully'));

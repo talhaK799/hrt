@@ -16,18 +16,18 @@ class LoginProvider extends BaseViewModel {
   AppUser appUser = AppUser();
 
   login(context) async {
-    // setState(ViewState.busy);
-    // authResult = await authService.loginWithEmailPassword(
-    //     email: appUser.email, password: appUser.password);
+    setState(ViewState.busy);
+    authResult = await authService.loginWithEmailPassword(
+        email: appUser.email, password: appUser.password);
 
-    // setState(ViewState.idle);
-    // if (authResult.user != null) {
+    setState(ViewState.idle);
+    if (authResult.user != null) {
     Get.to(
       RootScreen(),
     );
-    // } else {
-    //   showMyDialog(context,authResult.errorMessage);
-    // }
+    } else {
+      showMyDialog(context,authResult.errorMessage);
+    }
 
     notifyListeners();
   }
