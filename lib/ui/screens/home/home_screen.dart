@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/constants/strings.dart';
@@ -23,60 +24,61 @@ class HomeScreen extends StatelessWidget {
       create: (context) => HomeProvider(),
       child: Consumer<HomeProvider>(builder: (context, model, child) {
         return Scaffold(
+            backgroundColor:
+                model.index == model.users.indexOf(model.users.last) + 1
+                    ? primaryColor
+                    : whiteColor,
             body: Stack(
-          children: [
-            Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(24, 50, 24, 24),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      // Text(
-                      //   'Hart',
-                      //   style: subHeadingText1,
-                      // ),
-                      Image.asset(
-                        '$logoPath/logo3.png',
-                        scale: 6.5,
-                        color: primaryColor,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          showFilter(context);
+                Column(
+                  children: [
+                    model.index == model.users.indexOf(model.users.last) + 1
+                        ? Container()
+                        : Padding(
+                            padding: const EdgeInsets.fromLTRB(24, 50, 24, 24),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                // Text(
+                                //   'Hart',
+                                //   style: subHeadingText1,
+                                // ),
+                                Image.asset(
+                                  '$logoPath/logo3.png',
+                                  scale: 6.5,
+                                  color: primaryColor,
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    showFilter(context);
+                                  },
+                                  child: Image.asset(
+                                    '$staticAsset/Filter.png',
+                                    scale: 3,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                    Expanded(
+                      child: PageView.builder(
+                        physics: BouncingScrollPhysics(),
+                        controller: model.pageController,
+                        itemCount: model.users.length + 1,
+                        itemBuilder: (context, index) {
+                          return index ==
+                                  model.users.indexOf(model.users.last) + 1
+                              ? _staticScreen(context)
+                              : _homeScreenData(model, model.users[index]);
                         },
-                        child: Image.asset(
-                          '$staticAsset/Filter.png',
-                          scale: 3,
-                        ),
+                        onPageChanged: (val) => model.changePage(val),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                Expanded(
-                  child: PageView.builder(
-                    physics: BouncingScrollPhysics(),
-                    controller: model.pageController,
-                    itemCount: model.users.length + 1,
-                    itemBuilder: (context, index) {
-                      return index == model.users.indexOf(model.users.last) + 1
-                          ? Center(
-                              child: Text(
-                                'No More Users',
-                                style:
-                                    headingText.copyWith(color: primaryColor),
-                              ),
-                            )
-                          : _homeScreenData(model, model.users[index]);
-                    },
-                    onPageChanged: (val) => model.changePage(val),
-                  ),
-                ),
+                model.isLast ? Container() : _likeButtons(model)
               ],
-            ),
-            model.isLast ? Container() : _likeButtons(model)
-          ],
-        ));
+            ));
       }),
     );
   }
@@ -140,6 +142,92 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  _staticScreen(BuildContext context) {
+    return Stack(
+      children: [
+        ///
+        /// Background Image
+        ///
+        SingleChildScrollView(
+          physics: NeverScrollableScrollPhysics(),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 0.35.sh,
+              ),
+              Container(
+                width: double.infinity,
+                height: MediaQuery.of(context).size.height * 1,
+                child: SvgPicture.asset(
+                  '$staticAsset/circle.svg',
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ],
+          ),
+        ),
+
+        SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(
+              18,
+              50,
+              18,
+              0,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Nobody around',
+                  style: subHeadingTextWhite,
+                ),
+                sizeBox20,
+                Image.asset(
+                  '$dynamicAsset/Subtract.png',
+                ),
+                sizeBox20,
+                Text(
+                  'There is nobody matching your search preferences right now.',
+                  style: subHeadingText1.copyWith(
+                    color: blackColor,
+                  ),
+                ),
+                sizeBox10,
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 40, right: 20),
+                  child: RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: 'Try changing your search setting.',
+                          style: buttonTextStyle.copyWith(
+                            color: greyColor2,
+                          ),
+                        ),
+                        // TextSpan(
+                        //   text: 'Hart',
+                        //   style: subHeadingText1,
+                        // ),
+                        // TextSpan(
+                        //   text:
+                        //       ' members, a connection could be around in corner.',
+                        //   style: buttonTextStyle.copyWith(
+                        //     color: greyColor2,
+                        //   ),
+                        // )
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        )
+      ],
     );
   }
 
