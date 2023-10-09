@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/models/app_user.dart';
+import 'package:hart/core/models/likedUser.dart';
 import 'package:hart/core/services/auth_service.dart';
 import 'package:hart/core/services/database_service.dart';
 import 'package:hart/core/view_models/base_view_model.dart';
@@ -20,6 +21,7 @@ class HomeProvider extends BaseViewModel {
   PageController? pageController;
   int index = 0;
   List<AppUser> users = [];
+  LikedUser likedUser = LikedUser();
 
   HomeProvider() {
     getAllAppUsers();
@@ -52,18 +54,25 @@ class HomeProvider extends BaseViewModel {
   }
 
   like(index) async {
+    likedUser.likignUsersIds = [];
+    setState(ViewState.busy);
     users[index].isLiked = true;
     users[index].isDesLiked = false;
-    print('user  id ${users[index].id!}');
+    likedUser.id = users[index].id;
+
+    likedUser.likignUsersIds!.add(currentUser.id!);
+    print('user  id ${currentUser.id}');
     if (!users[index].likedUsers!.contains(users[index].id)) {
       users[index].likedUsers!.add(users[index].id!);
       if (users[index].disLikedUsers!.contains(users[index].id)) {
         users[index].disLikedUsers!.remove(users[index].id!);
       }
     }
-
+    bool isliked = await db.likeUser(likedUser);
     bool isUpdated = await db.updateUserProfile(users[index]);
-    if (isUpdated) {
+
+    setState(ViewState.idle);
+    if (isUpdated && isliked) {
       pageController!.nextPage(
         duration: Duration(milliseconds: 500),
         curve: Curves.easeIn,

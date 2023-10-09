@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hart/core/models/app_user.dart';
 import 'package:hart/core/models/info_item.dart';
+import 'package:hart/core/models/likedUser.dart';
 
 class DatabaseService {
   final _db = FirebaseFirestore.instance;
@@ -24,6 +25,22 @@ class DatabaseService {
           .then((value) => debugPrint('user registered successfully'));
     } catch (e, s) {
       debugPrint('Exception @DatabaseService/registerAppUser');
+      debugPrint(s.toString());
+      return false;
+    }
+  }
+
+  likeUser(LikedUser user) async {
+    debugPrint("User @Id => ${user.id}");
+    try {
+      await _db
+          .collection('Likes')
+          .doc(user.id)
+          .set(user.toJson())
+          .then((value) => debugPrint('user Liked successfully'));
+      return true;
+    } catch (e, s) {
+      debugPrint('Exception @DatabaseService/likeUser');
       debugPrint(s.toString());
       return false;
     }
