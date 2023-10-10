@@ -17,27 +17,28 @@ class AppUser {
   List<String>? images;
   List<String>? likedUsers;
   List<String>? disLikedUsers;
+  List<String>? users;
 
-  AppUser({
-    this.id,
-    this.email,
-    this.password,
-    this.phoneNumber,
-    this.isEmailVerified,
-    this.isPhoneNoVerified,
-    this.isLiked,
-    this.isDesLiked,
-    this.name,
-    this.dob,
-    this.nickName,
-    this.identity,
-    this.lookingFor,
-    this.desire,
-    this.images,
-    this.disLikedUsers,
-    this.likedUsers,
-    this.age,
-  });
+  AppUser(
+      {this.id,
+      this.email,
+      this.password,
+      this.phoneNumber,
+      this.isEmailVerified,
+      this.isPhoneNoVerified,
+      this.isLiked,
+      this.isDesLiked,
+      this.name,
+      this.dob,
+      this.nickName,
+      this.identity,
+      this.lookingFor,
+      this.desire,
+      this.images,
+      this.disLikedUsers,
+      this.likedUsers,
+      this.age,
+      this.users});
 
   toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();

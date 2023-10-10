@@ -3,8 +3,11 @@ import 'package:flutter_svg/svg.dart';
 import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/constants/strings.dart';
 import 'package:hart/core/constants/style.dart';
+import 'package:hart/core/enums/view_state.dart';
+import 'package:hart/core/models/app_user.dart';
 import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/ui/screens/connection_screen/connections_provider.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 class ConnectionScreen extends StatelessWidget {
@@ -13,87 +16,91 @@ class ConnectionScreen extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => ConnectionsProvider(),
       child: Consumer<ConnectionsProvider>(builder: (context, model, child) {
-        return Scaffold(
-          backgroundColor: model.isLiked ? whiteColor : primaryColor,
-          body: model.isLiked
-              ? Padding(
-                  padding: EdgeInsets.fromLTRB(22, 50, 22, 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Connections',
-                        style: subHeadingTextWhite.copyWith(
-                          color: primaryColor,
+        return ModalProgressHUD(
+          inAsyncCall: model.state == ViewState.busy,
+          child: Scaffold(
+            backgroundColor:
+                model.appusers.isNotEmpty ? whiteColor : primaryColor,
+            body: model.appusers.isNotEmpty
+                ? Padding(
+                    padding: EdgeInsets.fromLTRB(22, 50, 22, 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Connections',
+                          style: subHeadingTextWhite.copyWith(
+                            color: primaryColor,
+                          ),
                         ),
-                      ),
-                      sizeBox30,
+                        sizeBox30,
 
-                      ///
-                      /// Uplift Button
-                      ///
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            '2 Members liked you',
-                            style: subHeadingTextStyle2,
-                          ),
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                              vertical: 10,
-                              horizontal: 20,
+                        ///
+                        /// Uplift Button
+                        ///
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '${model.appusers.length} Members liked you',
+                              style: subHeadingTextStyle2,
                             ),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(24.r),
-                              color: pinkColor,
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                vertical: 10,
+                                horizontal: 20,
+                              ),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(24.r),
+                                color: pinkColor,
+                              ),
+                              child: Row(
+                                children: [
+                                  Image.asset(
+                                    '$staticAsset/uplift2.png',
+                                    scale: 3,
+                                  ),
+                                  sizeBoxw10,
+                                  Text(
+                                    'Uplift',
+                                    style: buttonTextStyleRed,
+                                  ),
+                                ],
+                              ),
                             ),
-                            child: Row(
-                              children: [
-                                Image.asset(
-                                  '$staticAsset/uplift2.png',
-                                  scale: 3,
-                                ),
-                                sizeBoxw10,
-                                Text(
-                                  'Uplift',
-                                  style: buttonTextStyleRed,
-                                ),
-                              ],
+                          ],
+                        ),
+                        sizeBox20,
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            'Showing most recent first',
+                            style: buttonTextStyleGrey.copyWith(
+                              color: blackColor,
                             ),
-                          ),
-                        ],
-                      ),
-                      sizeBox20,
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: Text(
-                          'Showing most recent first',
-                          style: buttonTextStyleGrey.copyWith(
-                            color: blackColor,
                           ),
                         ),
-                      ),
 
-                      sizeBox10,
-                      // _userDetails(),
-                      Expanded(
-                        child: ListView.separated(
-                          physics: BouncingScrollPhysics(),
-                          itemCount: 3,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            return _userDetails();
-                          },
-                          separatorBuilder: (context, index) => SizedBox(
-                            height: 40.h,
+                        sizeBox10,
+                        // _userDetails(),
+                        Expanded(
+                          child: ListView.separated(
+                            physics: BouncingScrollPhysics(),
+                            itemCount: model.appusers.length,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return _userDetails(model.appusers[index]);
+                            },
+                            separatorBuilder: (context, index) => SizedBox(
+                              height: 40.h,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                )
-              : _staticScreen(context),
+                      ],
+                    ),
+                  )
+                : _staticScreen(context),
+          ),
         );
       }),
     );
@@ -186,7 +193,7 @@ class ConnectionScreen extends StatelessWidget {
     );
   }
 
-  _userDetails() {
+  _userDetails(AppUser user) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -194,7 +201,7 @@ class ConnectionScreen extends StatelessWidget {
           height: 95.h,
           child: ListView.builder(
             physics: BouncingScrollPhysics(),
-            itemCount: 4,
+            itemCount: user.images!.length,
             scrollDirection: Axis.horizontal,
             shrinkWrap: true,
             itemBuilder: (context, index) {
@@ -204,8 +211,8 @@ class ConnectionScreen extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10.r),
                   image: DecorationImage(
-                    image: AssetImage(
-                      '$dynamicAsset/image.png',
+                    image: NetworkImage(
+                      user.images![index],
                     ),
                     fit: BoxFit.cover,
                   ),
@@ -222,7 +229,7 @@ class ConnectionScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Vince',
+                  user.name!,
                   style: bodyTextStyle,
                 ),
                 sizeBox10,

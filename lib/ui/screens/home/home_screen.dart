@@ -6,79 +6,97 @@ import 'package:get/get.dart';
 import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/constants/strings.dart';
 import 'package:hart/core/constants/style.dart';
+import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/models/app_user.dart';
 import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/ui/custom_widgets/custom_button.dart';
 import 'package:hart/ui/screens/home/home_provider.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   HomeScreen({
     super.key,
   });
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => HomeProvider(),
       child: Consumer<HomeProvider>(builder: (context, model, child) {
-        return Scaffold(
-            backgroundColor:
-                model.index == model.users.indexOf(model.users.last) + 1
-                    ? primaryColor
-                    : whiteColor,
-            body: Stack(
-              children: [
-                Column(
-                  children: [
-                    model.index == model.users.indexOf(model.users.last) + 1
-                        ? Container()
-                        : Padding(
-                            padding: const EdgeInsets.fromLTRB(24, 50, 24, 24),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                // Text(
-                                //   'Hart',
-                                //   style: subHeadingText1,
-                                // ),
-                                Image.asset(
-                                  '$logoPath/logo3.png',
-                                  scale: 6.5,
-                                  color: primaryColor,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    showFilter(context);
-                                  },
-                                  child: Image.asset(
-                                    '$staticAsset/Filter.png',
-                                    scale: 3,
+        return ModalProgressHUD(
+          inAsyncCall: model.state == ViewState.busy,
+          child: Scaffold(
+              backgroundColor: model.index ==
+                      model.filteredUsers.indexOf(model.filteredUsers.last) + 1
+                  ? primaryColor
+                  : whiteColor,
+              body: Stack(
+                children: [
+                  Column(
+                    children: [
+                      model.index ==
+                              model.filteredUsers
+                                      .indexOf(model.filteredUsers.last) +
+                                  1
+                          ? Container()
+                          : Padding(
+                              padding:
+                                  const EdgeInsets.fromLTRB(24, 50, 24, 24),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  // Text(
+                                  //   'Hart',
+                                  //   style: subHeadingText1,
+                                  // ),
+                                  Image.asset(
+                                    '$logoPath/logo3.png',
+                                    scale: 6.5,
+                                    color: primaryColor,
                                   ),
-                                ),
-                              ],
+                                  GestureDetector(
+                                    onTap: () {
+                                      showFilter(context);
+                                    },
+                                    child: Image.asset(
+                                      '$staticAsset/Filter.png',
+                                      scale: 3,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                    Expanded(
-                      child: PageView.builder(
-                        physics: BouncingScrollPhysics(),
-                        controller: model.pageController,
-                        itemCount: model.users.length + 1,
-                        itemBuilder: (context, index) {
-                          return index ==
-                                  model.users.indexOf(model.users.last) + 1
-                              ? _staticScreen(context)
-                              : _homeScreenData(model, model.users[index]);
-                        },
-                        onPageChanged: (val) => model.changePage(val),
+                      Expanded(
+                        child: PageView.builder(
+                          physics: BouncingScrollPhysics(),
+                          controller: model.pageController,
+                          itemCount: model.filteredUsers.length + 1,
+                          itemBuilder: (context, index) {
+                            return index ==
+                                    model.filteredUsers
+                                            .indexOf(model.filteredUsers.last) +
+                                        1
+                                ? _staticScreen(context)
+                                : _homeScreenData(
+                                    model, model.filteredUsers[index]);
+                          },
+                          onPageChanged: (val) => model.changePage(val),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                model.isLast ? Container() : _likeButtons(model)
-              ],
-            ));
+                    ],
+                  ),
+                  model.isLast ? Container() : _likeButtons(model)
+                ],
+              )),
+        );
       }),
     );
   }
@@ -91,23 +109,28 @@ class HomeScreen extends StatelessWidget {
         child: Row(
           children: [
             GestureDetector(
-              onTap: () {
-                model.disLike(model.index);
+              onTap: () async {
+                setState(() {
+                  model.isLiked = false;
+                  model.isDisLiked = true;
+                });
+                await Future.delayed(Duration(milliseconds: 500));
+
+                setState(() {
+                  model.isDisLiked = false;
+                });
+                model.disLike(model.users[model.index]);
               },
               child: Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: model.users[model.index].isDesLiked == true
-                      ? greyColor2
-                      : whiteColor,
+                  color: model.isDisLiked == true ? greyColor2 : whiteColor,
                   shape: BoxShape.circle,
                   boxShadow: boxShadow,
                 ),
                 child: Image.asset(
                   '$staticAsset/cross.png',
-                  color: model.users[model.index].isDesLiked == true
-                      ? whiteColor
-                      : null,
+                  color: model.isDisLiked == true ? whiteColor : null,
                   scale: 3.5,
                 ),
               ),
@@ -116,19 +139,26 @@ class HomeScreen extends StatelessWidget {
               width: 15.w,
             ),
             GestureDetector(
-              onTap: () {
-                model.like(model.index);
+              onTap: () async {
+                setState(() {
+                  model.isLiked = true;
+                  model.isDisLiked = false;
+                });
+                await Future.delayed(Duration(milliseconds: 500));
+
+                setState(() {
+                  model.isLiked = false;
+                });
+                model.like(model.users[model.index]);
               },
               child: Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: model.users[model.index].isLiked == true
-                      ? primaryColor
-                      : whiteColor,
+                  color: model.isLiked == true ? primaryColor : whiteColor,
                   shape: BoxShape.circle,
                   boxShadow: boxShadow,
                 ),
-                child: model.users[model.index].isLiked == true
+                child: model.isLiked == true
                     ? Image.asset(
                         '$staticAsset/likeWhite.png',
                         scale: 3.5,
@@ -249,7 +279,7 @@ class HomeScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Sarah',
+                  user.name!,
                   style: subHeadingText1,
                 ),
                 SizedBox(
@@ -661,7 +691,7 @@ _imageSlider(HomeProvider model, AppUser user) {
           height: 0.4.sh,
           aspectRatio: 16 / 9,
           viewportFraction: 1,
-          initialPage: model.currentIndex,
+          initialPage: 0,
           enableInfiniteScroll: false,
           scrollDirection: Axis.vertical,
         ),
@@ -682,7 +712,7 @@ _imageSlider(HomeProvider model, AppUser user) {
             child: DotsIndicator(
               axis: Axis.vertical,
               dotsCount: user.images!.length,
-              position: model.currentIndex,
+              position: model.dotIndex,
               decorator: const DotsDecorator(
                 activeColor: primaryColor,
                 size: Size(7.0, 7.0),
