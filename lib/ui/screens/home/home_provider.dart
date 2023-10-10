@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/models/app_user.dart';
-import 'package:hart/core/models/likedUser.dart';
+import 'package:hart/core/models/matches.dart';
 import 'package:hart/core/services/auth_service.dart';
 import 'package:hart/core/services/database_service.dart';
 import 'package:hart/core/view_models/base_view_model.dart';
@@ -9,40 +9,52 @@ import 'package:hart/locator.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 class HomeProvider extends BaseViewModel {
-  int currentIndex = 0;
+  int dotIndex = 0;
   bool isLiked = false;
+  bool isDisLiked = false;
   bool isRecent = false;
   bool isLast = false;
   final currentUser = locator<AuthService>().appUser;
   final db = DatabaseService();
   SfRangeValues ageValues = SfRangeValues(18, 30);
   SfRangeValues distanceValues = SfRangeValues(3, 50);
-  final _db = DatabaseService();
+  // final _db = DatabaseService();
   PageController? pageController;
   int index = 0;
   List<AppUser> users = [];
-  LikedUser likedUser = LikedUser();
+  List<AppUser> filteredUsers = [];
+  Matches matches = Matches();
 
   HomeProvider() {
-    getAllAppUsers();
+    init();
     pageController = PageController(initialPage: 0);
     notifyListeners();
+  }
+  init() async {
+    await getAllAppUsers();
   }
 
   getAllAppUsers() async {
     setState(ViewState.busy);
-    users = await _db.getAllUsers();
-    print(' user id is : ${users.first.id}');
+    users = await db.getAllUsers(currentUser);
+    for (var user in users) {
+      if (!currentUser.likedUsers!.contains(user.id) &&
+          !currentUser.likedUsers!.contains(user.id)) {
+        filteredUsers.add(user);
+        notifyListeners();
+      }
+    }
     setState(ViewState.idle);
   }
 
   updateIndex(index) {
-    currentIndex = index;
-    print('current index==> $index=====> $currentIndex');
+    dotIndex = index;
+    print('current index==> $index=====> $dotIndex');
     notifyListeners();
   }
 
   changePage(val) {
+    dotIndex = 0;
     index = val;
     if (val == users.indexOf(users.last) + 1) {
       isLast = true;
@@ -53,46 +65,45 @@ class HomeProvider extends BaseViewModel {
     notifyListeners();
   }
 
-  like(index) async {
-    likedUser.likignUsersIds = [];
-    setState(ViewState.busy);
-    users[index].isLiked = true;
-    users[index].isDesLiked = false;
-    likedUser.id = users[index].id;
-
-    likedUser.likignUsersIds!.add(currentUser.id!);
-    print('user  id ${currentUser.id}');
-    if (!users[index].likedUsers!.contains(users[index].id)) {
-      users[index].likedUsers!.add(users[index].id!);
-      if (users[index].disLikedUsers!.contains(users[index].id)) {
-        users[index].disLikedUsers!.remove(users[index].id!);
+  ///
+  /// Like
+  ///
+  like(AppUser user) async {
+    print('user  id ${currentUser.id} liked ${user.id}');
+    if (await !currentUser.likedUsers!.contains(user.id)) {
+      currentUser.likedUsers!.add(user.id!);
+      if (await currentUser.disLikedUsers!.contains(user.id)) {
+        currentUser.disLikedUsers!.remove(user.id!);
       }
     }
-    bool isliked = await db.likeUser(likedUser);
-    bool isUpdated = await db.updateUserProfile(users[index]);
+    matches.likedUserId = user.id;
+    matches.likedByUserId = currentUser.id;
+    bool isRequested = await db.addRequest(matches);
+    bool isUpdated = await db.updateUserProfile(currentUser);
 
-    setState(ViewState.idle);
-    if (isUpdated && isliked) {
+    print('profile update ==> ${isUpdated}');
+    if (isUpdated && isRequested) {
       pageController!.nextPage(
         duration: Duration(milliseconds: 500),
         curve: Curves.easeIn,
       );
-
-      notifyListeners();
+      filteredUsers.remove(user);
     }
+    notifyListeners();
   }
 
-  disLike(index) async {
-    users[index].isDesLiked = true;
-    users[index].isLiked = false;
-    if (!users[index].disLikedUsers!.contains(users[index].id)) {
-      users[index].disLikedUsers!.add(users[index].id!);
-      if (users[index].likedUsers!.contains(users[index].id)) {
-        users[index].likedUsers!.remove(users[index].id!);
+  ///
+  /// DisLike
+  ///
+  disLike(AppUser user) async {
+    if (await !currentUser.disLikedUsers!.contains(user.id)) {
+      currentUser.disLikedUsers!.add(user.id!);
+      if (await currentUser.likedUsers!.contains(user.id)) {
+        currentUser.likedUsers!.remove(user.id!);
       }
     }
 
-    bool isUpdated = await db.updateUserProfile(users[index]);
+    bool isUpdated = await db.updateUserProfile(currentUser);
     if (isUpdated) {
       pageController!.nextPage(
         duration: Duration(milliseconds: 500),
