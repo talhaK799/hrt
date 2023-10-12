@@ -64,6 +64,16 @@ class DatabaseService {
     return list;
   }
 
+  updateRequest(Matches request) async {
+    try {
+      await _db.collection("Matches").doc(request.id).update(request.toJson());
+      return true;
+    } catch (e) {
+      print("Exception@addNewRequests ==> $e");
+      return false;
+    }
+  }
+
   //   getRequest(String otherUerId, String currentUserId) async {
   //   try {
   //     final snapshot = await _db

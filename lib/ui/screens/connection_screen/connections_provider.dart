@@ -8,24 +8,70 @@ import 'package:hart/locator.dart';
 import '../../../core/services/database_service.dart';
 
 class ConnectionsProvider extends BaseViewModel {
-  bool isLiked = true;
+  bool isLiked = false;
+  bool disLiked = false;
 
   final db = DatabaseService();
-  final currenUser = locator<AuthService>().appUser;
+  final currentUser = locator<AuthService>().appUser;
   AppUser user = AppUser();
   List<Matches> matches = [];
-  List<AppUser> appusers = [];
+  // Matches match = Matches();
+  List<AppUser> likingUsers = [];
   ConnectionsProvider() {
     getLikingUsers();
   }
 
   getLikingUsers() async {
     setState(ViewState.busy);
-    matches = await db.getAllRequest(currenUser.id!);
+    matches = await db.getAllRequest(currentUser.id!);
     for (var m in matches) {
       user = await db.getAppUser(m.likedByUserId);
-      appusers.add(user);
+      likingUsers.add(user);
     }
     setState(ViewState.idle);
+  }
+
+  like(AppUser user, Matches match) async {
+    print('user  id ${currentUser.id} liked ${user.id}');
+    if (await !currentUser.likedUsers!.contains(user.id)) {
+      currentUser.likedUsers!.add(user.id!);
+      if (await currentUser.disLikedUsers!.contains(user.id)) {
+        currentUser.disLikedUsers!.remove(user.id!);
+      }
+    }
+
+    match.isAccepted = true;
+    match.isRejected = false;
+    match.isProgressed = true;
+    bool isUpdatedMatch = await db.updateRequest(match);
+    bool isUpdated = await db.updateUserProfile(currentUser);
+
+    print('profile update ==> ${isUpdated} requestUpdate==>${isUpdatedMatch}');
+    if (isUpdated && isUpdatedMatch) {
+      likingUsers.remove(user);
+    }
+    notifyListeners();
+  }
+
+  dilike(AppUser user, Matches match) async {
+    print('user  id ${currentUser.id} disliked ${user.id}');
+    if (await !currentUser.disLikedUsers!.contains(user.id)) {
+      currentUser.disLikedUsers!.add(user.id!);
+      if (await currentUser.likedUsers!.contains(user.id)) {
+        currentUser.likedUsers!.remove(user.id!);
+      }
+    }
+
+    match.isRejected = true;
+    match.isAccepted = false;
+    match.isProgressed = true;
+    bool isUpdatedMatch = await db.updateRequest(match);
+    bool isUpdated = await db.updateUserProfile(currentUser);
+
+    print('profile update ==> ${isUpdated} requestUpdate==>${isUpdatedMatch}');
+    if (isUpdated && isUpdatedMatch) {
+      likingUsers.remove(user);
+    }
+    notifyListeners();
   }
 }
