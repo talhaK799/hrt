@@ -2,6 +2,7 @@ class Matches {
   String? id;
   bool? isAccepted;
   bool? isProgressed;
+  DateTime? createdAt;
   bool? isRejected;
   String? likedByUserId;
   String? likedUserId;
@@ -9,6 +10,7 @@ class Matches {
   Matches({
     this.isAccepted,
     this.id,
+    this.createdAt,
     this.isProgressed,
     this.isRejected,
     this.likedByUserId,
@@ -29,6 +31,7 @@ class Matches {
       'isAccepted': isAccepted ?? false,
       'isProgressed': isProgressed ?? false,
       'isRejected': isRejected ?? false,
+      'createdAt': DateTime.now(),
       'likedByUserId': likedByUserId ?? '',
       'likedUserId': likedUserId ?? '',
     };

@@ -33,18 +33,13 @@ class _HomeScreenState extends State<HomeScreen> {
         return ModalProgressHUD(
           inAsyncCall: model.state == ViewState.busy,
           child: Scaffold(
-              backgroundColor: model.index ==
-                      model.filteredUsers.indexOf(model.filteredUsers.last) + 1
-                  ? primaryColor
-                  : whiteColor,
+              backgroundColor:
+                  model.filteredUsers.isEmpty ? primaryColor : whiteColor,
               body: Stack(
                 children: [
                   Column(
                     children: [
-                      model.index ==
-                              model.filteredUsers
-                                      .indexOf(model.filteredUsers.last) +
-                                  1
+                      model.filteredUsers.isEmpty
                           ? Container()
                           : Padding(
                               padding:
@@ -78,22 +73,25 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: PageView.builder(
                           physics: BouncingScrollPhysics(),
                           controller: model.pageController,
-                          itemCount: model.filteredUsers.length + 1,
+                          itemCount: model.filteredUsers.length > 0
+                              ? model.filteredUsers.length
+                              : 1,
                           itemBuilder: (context, index) {
-                            return index ==
-                                    model.filteredUsers
-                                            .indexOf(model.filteredUsers.last) +
-                                        1
+                            model.index = index;
+
+                            return model.filteredUsers.length == 0
                                 ? _staticScreen(context)
                                 : _homeScreenData(
                                     model, model.filteredUsers[index]);
                           },
                           onPageChanged: (val) => model.changePage(val),
                         ),
-                      ),
+                      )
                     ],
                   ),
-                  model.isLast ? Container() : _likeButtons(model)
+                  model.filteredUsers.isEmpty
+                      ? Container()
+                      : _likeButtons(model)
                 ],
               )),
         );
@@ -119,7 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 setState(() {
                   model.isDisLiked = false;
                 });
-                model.disLike(model.users[model.index]);
+                model.disLike(model.filteredUsers[model.index]);
               },
               child: Container(
                 padding: const EdgeInsets.all(20),
@@ -149,7 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 setState(() {
                   model.isLiked = false;
                 });
-                model.like(model.users[model.index]);
+                model.like(model.filteredUsers[model.index]);
               },
               child: Container(
                 padding: const EdgeInsets.all(20),
@@ -201,6 +199,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
 
         SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
           child: Padding(
             padding: EdgeInsets.fromLTRB(
               18,
@@ -688,7 +687,7 @@ _imageSlider(HomeProvider model, AppUser user) {
           onPageChanged: (index, reason) {
             model.updateIndex(index);
           },
-          height: 0.4.sh,
+          height: 250.h,
           aspectRatio: 16 / 9,
           viewportFraction: 1,
           initialPage: 0,

@@ -5,12 +5,18 @@ import 'package:hart/core/constants/strings.dart';
 import 'package:hart/core/constants/style.dart';
 import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/models/app_user.dart';
+import 'package:hart/core/models/matches.dart';
 import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/ui/screens/connection_screen/connections_provider.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
-class ConnectionScreen extends StatelessWidget {
+class ConnectionScreen extends StatefulWidget {
+  @override
+  State<ConnectionScreen> createState() => _ConnectionScreenState();
+}
+
+class _ConnectionScreenState extends State<ConnectionScreen> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -20,8 +26,8 @@ class ConnectionScreen extends StatelessWidget {
           inAsyncCall: model.state == ViewState.busy,
           child: Scaffold(
             backgroundColor:
-                model.appusers.isNotEmpty ? whiteColor : primaryColor,
-            body: model.appusers.isNotEmpty
+                model.likingUsers.isNotEmpty ? whiteColor : primaryColor,
+            body: model.likingUsers.isNotEmpty
                 ? Padding(
                     padding: EdgeInsets.fromLTRB(22, 50, 22, 10),
                     child: Column(
@@ -42,7 +48,7 @@ class ConnectionScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              '${model.appusers.length} Members liked you',
+                              '${model.likingUsers.length} Members liked you',
                               style: subHeadingTextStyle2,
                             ),
                             Container(
@@ -86,10 +92,13 @@ class ConnectionScreen extends StatelessWidget {
                         Expanded(
                           child: ListView.separated(
                             physics: BouncingScrollPhysics(),
-                            itemCount: model.appusers.length,
+                            itemCount: model.likingUsers.length,
                             shrinkWrap: true,
                             itemBuilder: (context, index) {
-                              return _userDetails(model.appusers[index]);
+                              return _userDetails(
+                                  model,
+                                  model.likingUsers[index],
+                                  model.matches[index]);
                             },
                             separatorBuilder: (context, index) => SizedBox(
                               height: 40.h,
@@ -193,7 +202,7 @@ class ConnectionScreen extends StatelessWidget {
     );
   }
 
-  _userDetails(AppUser user) {
+  _userDetails(model, AppUser user, Matches match) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -225,56 +234,60 @@ class ConnectionScreen extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  user.name!,
-                  style: bodyTextStyle,
-                ),
-                sizeBox10,
-                Text(
-                  '15 woman straight',
-                  style: buttonTextStyleGrey,
-                ),
-                Text(
-                  'Single, 8 km away, Last seen 30 min ago',
-                  style: buttonTextStyleGrey,
-                ),
-              ],
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    user.name!,
+                    style: bodyTextStyle,
+                  ),
+                  sizeBox10,
+                  Text(
+                    '15 woman straight',
+                    style: buttonTextStyleGrey,
+                  ),
+                  Text(
+                    'Single, 8 km away, Last seen 30 min ago',
+                    style: buttonTextStyleGrey,
+                  ),
+                ],
+              ),
             ),
-            _likeButtons(),
+            _likeButtons(model, user, match),
           ],
         ),
       ],
     );
   }
 
-  _likeButtons() {
+  _likeButtons(ConnectionsProvider model, user, match) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         GestureDetector(
-          onTap: () {
-            // model.disLike(model.index);
+          onTap: () async {
+            setState(() {
+              model.disLiked = true;
+            });
+
+            await Future.delayed(Duration(milliseconds: 500));
+
+            setState(() {
+              model.disLiked = false;
+            });
+            model.dilike(user, match);
           },
           child: Container(
             padding: const EdgeInsets.all(15),
             decoration: BoxDecoration(
-              color:
-                  //model.users[model.index].isDesLiked == true
-                  //     ? greyColor2
-                  // :
-                  whiteColor,
+              color: model.disLiked == true ? greyColor2 : whiteColor,
               shape: BoxShape.circle,
               boxShadow: boxShadow,
             ),
             child: Image.asset(
               '$staticAsset/cross.png',
-              // color:
-              //  model.users[model.index].isDesLiked == true
-              //     ? whiteColor
-              //     : null,
+              color: model.disLiked == true ? whiteColor : null,
               scale: 6,
             ),
           ),
@@ -283,32 +296,34 @@ class ConnectionScreen extends StatelessWidget {
           width: 10.w,
         ),
         GestureDetector(
-          onTap: () {
-            // model.like(model.index);
+          onTap: () async {
+            setState(() {
+              model.isLiked = true;
+            });
+
+            await Future.delayed(Duration(milliseconds: 500));
+
+            setState(() {
+              model.isLiked = false;
+            });
+            model.like(user, match);
           },
           child: Container(
             padding: const EdgeInsets.all(15),
             decoration: BoxDecoration(
-              color:
-                  // model.users[model.index].isLiked == true
-                  //     ? primaryColor
-                  //     :
-                  whiteColor,
+              color: model.isLiked == true ? primaryColor : whiteColor,
               shape: BoxShape.circle,
               boxShadow: boxShadow,
             ),
-            child:
-                //  model.users[model.index].isLiked == true
-                //     ?
-                //     Image.asset(
-                //   '$staticAsset/likeWhite.png',
-                //   scale: 8,
-                // )
-                // :
-                Image.asset(
-              '$staticAsset/Like.png',
-              scale: 6,
-            ),
+            child: model.isLiked == true
+                ? Image.asset(
+                    '$staticAsset/likeWhite.png',
+                    scale: 8,
+                  )
+                : Image.asset(
+                    '$staticAsset/Like.png',
+                    scale: 6,
+                  ),
           ),
         )
       ],

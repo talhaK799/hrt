@@ -14,7 +14,7 @@ class HomeProvider extends BaseViewModel {
   bool isDisLiked = false;
   bool isRecent = false;
   bool isLast = false;
-  final currentUser = locator<AuthService>().appUser;
+  final currentUser = locator<AuthService>();
   final db = DatabaseService();
   SfRangeValues ageValues = SfRangeValues(18, 30);
   SfRangeValues distanceValues = SfRangeValues(3, 50);
@@ -35,11 +35,14 @@ class HomeProvider extends BaseViewModel {
   }
 
   getAllAppUsers() async {
+    users = [];
+    filteredUsers = [];
+    currentUser.appUser = await db.getAppUser(currentUser.appUser.id);
     setState(ViewState.busy);
-    users = await db.getAllUsers(currentUser);
+    users = await db.getAllUsers(currentUser.appUser);
     for (var user in users) {
-      if (!currentUser.likedUsers!.contains(user.id) &&
-          !currentUser.likedUsers!.contains(user.id)) {
+      if (!currentUser.appUser.likedUsers!.contains(user.id) &&
+          !currentUser.appUser.disLikedUsers!.contains(user.id)) {
         filteredUsers.add(user);
         notifyListeners();
       }
@@ -55,12 +58,13 @@ class HomeProvider extends BaseViewModel {
 
   changePage(val) {
     dotIndex = 0;
-    index = val;
-    if (val == users.indexOf(users.last) + 1) {
-      isLast = true;
-    } else {
-      isLast = false;
-    }
+    // index = val;
+    // print(val);
+    // if (val == filteredUsers.indexOf(filteredUsers.last) + 1) {
+    //   isLast = true;
+    // } else {
+    //   isLast = false;
+    // }
     // isLiked = false;
     notifyListeners();
   }
@@ -69,42 +73,54 @@ class HomeProvider extends BaseViewModel {
   /// Like
   ///
   like(AppUser user) async {
-    print('user  id ${currentUser.id} liked ${user.id}');
-    if (await !currentUser.likedUsers!.contains(user.id)) {
-      currentUser.likedUsers!.add(user.id!);
-      if (await currentUser.disLikedUsers!.contains(user.id)) {
-        currentUser.disLikedUsers!.remove(user.id!);
+    print("User index ==> ${index}");
+    print('liked users ==> ${currentUser.appUser.likedUsers!.length}');
+    print('user  id ${currentUser.appUser.id} liked ${user.id}');
+
+    if (await !currentUser.appUser.likedUsers!.contains(user.id)) {
+      currentUser.appUser.likedUsers!.add(user.id!);
+      // if (await currentUser.disLikedUsers!.contains(user.id)) {
+      //   currentUser.disLikedUsers!.remove(user.id!);
+      // }
+    }
+
+    matches.likedUserId = user.id;
+    matches.likedByUserId = currentUser.appUser.id;
+    bool isRequested = await db.addRequest(matches);
+    bool isUpdated = await db.updateUserProfile(currentUser.appUser);
+
+    print('profile update ==> ${currentUser.appUser.likedUsers!.length}');
+    if (isUpdated && isRequested) {
+      filteredUsers.removeWhere((element) => element.id == user.id);
+
+      notifyListeners();
+      if (filteredUsers.length > 0) {
+        dotIndex = 0;
+        await pageController!.nextPage(
+          duration: Duration(milliseconds: 500),
+          curve: Curves.easeIn,
+        );
       }
     }
-    matches.likedUserId = user.id;
-    matches.likedByUserId = currentUser.id;
-    bool isRequested = await db.addRequest(matches);
-    bool isUpdated = await db.updateUserProfile(currentUser);
-
-    print('profile update ==> ${isUpdated}');
-    if (isUpdated && isRequested) {
-      pageController!.nextPage(
-        duration: Duration(milliseconds: 500),
-        curve: Curves.easeIn,
-      );
-      filteredUsers.remove(user);
-    }
     notifyListeners();
+
+    print("Users ====> ${filteredUsers.length}");
   }
 
   ///
   /// DisLike
   ///
   disLike(AppUser user) async {
-    if (await !currentUser.disLikedUsers!.contains(user.id)) {
-      currentUser.disLikedUsers!.add(user.id!);
-      if (await currentUser.likedUsers!.contains(user.id)) {
-        currentUser.likedUsers!.remove(user.id!);
+    if (await !currentUser.appUser.disLikedUsers!.contains(user.id)) {
+      currentUser.appUser.disLikedUsers!.add(user.id!);
+      if (await currentUser.appUser.likedUsers!.contains(user.id)) {
+        currentUser.appUser.likedUsers!.remove(user.id!);
       }
     }
 
-    bool isUpdated = await db.updateUserProfile(currentUser);
+    bool isUpdated = await db.updateUserProfile(currentUser.appUser);
     if (isUpdated) {
+      filteredUsers.removeWhere((element) => element.id == user.id);
       pageController!.nextPage(
         duration: Duration(milliseconds: 500),
         curve: Curves.easeIn,

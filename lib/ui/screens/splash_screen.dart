@@ -5,6 +5,7 @@ import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/constants/strings.dart';
 import 'package:hart/core/constants/style.dart';
 import 'package:hart/core/others/screen_utils.dart';
+import 'package:hart/locator.dart';
 import 'package:hart/ui/screens/auth_screens/auth_screens.dart';
 import 'package:hart/ui/screens/root_screen/root_screen.dart';
 import 'dart:async';
@@ -17,6 +18,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  final _authService = locator<AuthScreen>();
   init() async {
     await Future.delayed(
       Duration(seconds: 2),
