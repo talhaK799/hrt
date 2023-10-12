@@ -10,11 +10,13 @@ class CustomBottomBarItem extends StatelessWidget {
   String icon2;
   int currentIndex;
   int activeIndex;
+  double? size;
   CustomBottomBarItem({
     required this.icon,
     required this.icon2,
     required this.currentIndex,
     required this.activeIndex,
+    this.size,
     required this.onTap,
     Key? key,
   }) : super(key: key);
@@ -28,7 +30,7 @@ class CustomBottomBarItem extends StatelessWidget {
               AssetImage(
                 '$staticAsset/$icon2',
               ),
-              size: 23,
+              size:size?? 23,
               color: primaryColor,
             )
           : ImageIcon(
@@ -36,7 +38,7 @@ class CustomBottomBarItem extends StatelessWidget {
                 '$staticAsset/$icon',
               ),
               color: greyColor2,
-              size: 23,
+              size:size?? 23,
             ),
     );
   }

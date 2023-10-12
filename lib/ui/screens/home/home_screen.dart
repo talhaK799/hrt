@@ -216,7 +216,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 sizeBox20,
                 Image.asset(
-                  '$dynamicAsset/Subtract.png',
+                  '$staticAsset/Subtract.png',
                 ),
                 sizeBox20,
                 Text(

@@ -31,8 +31,8 @@ class PairProfileScreen extends StatelessWidget {
                 children: [
                   CustomAppBar(title: 'Pair Profiles'),
                   sizeBox30,
-                  SvgPicture.asset(
-                    '$dynamicAsset/Subtract.svg',
+                  Image.asset(
+                    '$staticAsset/pairImage.png',
                   ),
                   sizeBox20,
                   Text(
