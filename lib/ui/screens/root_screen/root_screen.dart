@@ -59,6 +59,7 @@ class RootScreen extends StatelessWidget {
                   icon: 'heartl.png',
                   currentIndex: model.currentIndex,
                   activeIndex: 1,
+                  size: 28,
                   onTap: () {
                     model.updateIndex(1);
                   },

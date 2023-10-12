@@ -1,9 +1,11 @@
+import 'package:get/get.dart';
 import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/models/app_user.dart';
 import 'package:hart/core/models/matches.dart';
 import 'package:hart/core/services/auth_service.dart';
 import 'package:hart/core/view_models/base_view_model.dart';
 import 'package:hart/locator.dart';
+import 'package:hart/ui/screens/connection_screen/connect_popup/connect_popup_screen.dart';
 
 import '../../../core/services/database_service.dart';
 
@@ -35,9 +37,12 @@ class ConnectionsProvider extends BaseViewModel {
     print('user  id ${currentUser.id} liked ${user.id}');
     if (await !currentUser.likedUsers!.contains(user.id)) {
       currentUser.likedUsers!.add(user.id!);
-      if (await currentUser.disLikedUsers!.contains(user.id)) {
-        currentUser.disLikedUsers!.remove(user.id!);
-      }
+    }
+
+    if (await user.likedUsers!.contains(currentUser.id)) {
+      Get.to(
+        ConnectPopupScreen(),
+      );
     }
 
     match.isAccepted = true;
