@@ -11,6 +11,7 @@ import 'package:hart/core/models/app_user.dart';
 import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/ui/custom_widgets/custom_button.dart';
 import 'package:hart/ui/screens/home/home_provider.dart';
+import 'package:lottie/lottie.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
@@ -24,7 +25,25 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
+  // late final AnimationController _animationController;
+
+  // @override
+  // void initState() {
+  //   _animationController = AnimationController(
+  //       vsync: this,
+  //       duration: Duration(
+  //         milliseconds: 400,
+  //       ));
+  //   super.initState();
+  // }
+
+  // @override
+  // void dispose() {
+  //   _animationController.dispose();
+  //   super.dispose();
+  // }
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -91,7 +110,19 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   model.filteredUsers.isEmpty
                       ? Container()
-                      : _likeButtons(model)
+                      : _likeButtons(model),
+                  model.isLiked
+                      ? Center(
+                          child: Lottie.asset(
+                            '$animations/heart.json',
+                            // controller: _animationController,
+                            repeat: false,
+                            frameRate: FrameRate(
+                              100,
+                            ),
+                          ),
+                        )
+                      : Container(),
                 ],
               )),
         );
@@ -142,7 +173,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   model.isLiked = true;
                   model.isDisLiked = false;
                 });
-                await Future.delayed(Duration(milliseconds: 500));
+                await Future.delayed(Duration(seconds: 1));
 
                 setState(() {
                   model.isLiked = false;

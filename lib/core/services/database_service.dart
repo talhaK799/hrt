@@ -74,21 +74,21 @@ class DatabaseService {
     }
   }
 
-  //   getRequest(String otherUerId, String currentUserId) async {
-  //   try {
-  //     final snapshot = await _db
-  //         .collection("Requests")
-  //         .where("isActionTaken", isEqualTo: false)
-  //         .where("likeOneId", isEqualTo: currentUserId)
-  //         .where("likedbyId", isEqualTo: otherUerId)
-  //         .get();
-  //     return Matches.fromJson(
-  //         snapshot.docs.first.data(), snapshot.docs.first.id);
-  //   } catch (e) {
-  //     print("Exception@addNewRequests ==> $e");
-  //     return Matches();
-  //   }
-  // }
+  getRequest(String otherUserId, String currentUserId) async {
+    try {
+      final snapshot = await _db
+          .collection("Matches")
+          .where("isProgressed", isEqualTo: false)
+          .where("likedUserId", isEqualTo: currentUserId)
+          .where("likedByUserId", isEqualTo: otherUserId)
+          .get();
+      return Matches.fromJson(
+          snapshot.docs.first.data(), snapshot.docs.first.id);
+    } catch (e) {
+      print("Exception@addNewRequests ==> $e");
+      return Matches();
+    }
+  }
 
   /// Get User from database using this funciton
   getAppUser(id) async {
