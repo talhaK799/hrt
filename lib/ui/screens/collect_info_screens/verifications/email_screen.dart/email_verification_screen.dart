@@ -28,59 +28,50 @@ class EmailVerificationScreen extends StatelessWidget {
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Verify your Email',
-                      style: headingText.copyWith(
-                        color: blackColor,
-                        fontSize: 20.sp,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 60.h,
-                    ),
-                    Form(
-                      key: model.formKey,
-                      child: Column(
-                        children: [
-                          CustomTextField2(
-                            onChange: (val) {
-                              model.email = val;
-                            },
-                            hintText: 'Email',
-                            validator: (val) {
-                              if (val.isEmpty) {
-                                return 'Email Required';
-                              } else {
-                                // model.email = val;
-                                return null;
-                              }
-                            },
-                          ),
-                          SizedBox(
-                            height: 20.h,
-                          ),
-                          CustomButton(
-                            title: 'CONTINUE',
-                            onTap: () {
-                              FocusManager.instance.primaryFocus?.unfocus();
-                              // model.sendotptoEmail();
-                              if (model.formKey.currentState!.validate()) {
-                                model.sendotptoEmail();
-                              }
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                Text(
+                  'Verify your Email',
+                  style: headingText.copyWith(
+                    color: blackColor,
+                    fontSize: 20.sp,
+                  ),
                 ),
                 SizedBox(
-                  height: 30.h,
+                  height: 60.h,
+                ),
+                Form(
+                  key: model.formKey,
+                  child: Column(
+                    children: [
+                      CustomTextField2(
+                        onChange: (val) {
+                          model.email = val;
+                        },
+                        hintText: 'Email',
+                        validator: (val) {
+                          if (val.isEmpty) {
+                            return 'Email Required';
+                          } else {
+                            // model.email = val;
+                            return null;
+                          }
+                        },
+                      ),
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      CustomButton(
+                        title: 'CONTINUE',
+                        onTap: () {
+                          FocusManager.instance.primaryFocus?.unfocus();
+                          // model.sendotptoEmail();
+                          if (model.formKey.currentState!.validate()) {
+                            model.sendotptoEmail();
+                          }
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

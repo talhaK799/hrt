@@ -219,12 +219,17 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                 width: 120,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10.r),
-                  image: DecorationImage(
-                    image: NetworkImage(
-                      user.images![index],
-                    ),
-                    fit: BoxFit.cover,
-                  ),
+                  // image: DecorationImage(
+                  //   image: NetworkImage(
+                  //     user.images![index],
+                  //   ),
+                  //   fit: BoxFit.cover,
+                  // ),
+                ),
+                child: FadeInImage.assetNetwork(
+                  placeholder: '$logoPath/logo4.png',
+                  image: user.images![index],
+                  fit: BoxFit.cover,
                 ),
               );
             },

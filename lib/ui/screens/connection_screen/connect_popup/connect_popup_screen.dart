@@ -39,12 +39,13 @@ class ConnectPopupScreen extends StatelessWidget {
           ),
 
           SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
             child: Padding(
               padding: EdgeInsets.fromLTRB(
                 18,
                 200,
                 18,
-                0,
+                20,
               ),
               child: SizedBox(
                 width: 1.sw,

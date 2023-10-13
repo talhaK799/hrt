@@ -14,7 +14,7 @@ class ConnectionsProvider extends BaseViewModel {
   bool disLiked = false;
 
   final db = DatabaseService();
-  final currentUser = locator<AuthService>().appUser;
+  final currentUser = locator<AuthService>();
   AppUser user = AppUser();
   List<Matches> matches = [];
   // Matches match = Matches();
@@ -24,8 +24,9 @@ class ConnectionsProvider extends BaseViewModel {
   }
 
   getLikingUsers() async {
+    currentUser.appUser = await db.getAppUser(currentUser.appUser.id);
     setState(ViewState.busy);
-    matches = await db.getAllRequest(currentUser.id!);
+    matches = await db.getAllRequest(currentUser.appUser.id!);
     for (var m in matches) {
       user = await db.getAppUser(m.likedByUserId);
       likingUsers.add(user);
@@ -34,36 +35,37 @@ class ConnectionsProvider extends BaseViewModel {
   }
 
   like(AppUser user, Matches match) async {
-    print('user  id ${currentUser.id} liked ${user.id}');
-    if (await !currentUser.likedUsers!.contains(user.id)) {
-      currentUser.likedUsers!.add(user.id!);
+    print('user  id ${currentUser.appUser.id} liked ${user.id}');
+    if (await !currentUser.appUser.likedUsers!.contains(user.id)) {
+      currentUser.appUser.likedUsers!.add(user.id!);
     }
 
-    if (await user.likedUsers!.contains(currentUser.id)) {
-      Get.to(
-        ConnectPopupScreen(),
-      );
-    }
+    // if (await user.likedUsers!.contains(currentUser.appUser.id)) {
+
+    // }
 
     match.isAccepted = true;
     match.isRejected = false;
     match.isProgressed = true;
     bool isUpdatedMatch = await db.updateRequest(match);
-    bool isUpdated = await db.updateUserProfile(currentUser);
+    bool isUpdated = await db.updateUserProfile(currentUser.appUser);
 
     print('profile update ==> ${isUpdated} requestUpdate==>${isUpdatedMatch}');
     if (isUpdated && isUpdatedMatch) {
       likingUsers.remove(user);
+      Get.to(
+        ConnectPopupScreen(),
+      );
     }
     notifyListeners();
   }
 
   dilike(AppUser user, Matches match) async {
-    print('user  id ${currentUser.id} disliked ${user.id}');
-    if (await !currentUser.disLikedUsers!.contains(user.id)) {
-      currentUser.disLikedUsers!.add(user.id!);
-      if (await currentUser.likedUsers!.contains(user.id)) {
-        currentUser.likedUsers!.remove(user.id!);
+    print('user  id ${currentUser.appUser.id} disliked ${user.id}');
+    if (await !currentUser.appUser.disLikedUsers!.contains(user.id)) {
+      currentUser.appUser.disLikedUsers!.add(user.id!);
+      if (await currentUser.appUser.likedUsers!.contains(user.id)) {
+        currentUser.appUser.likedUsers!.remove(user.id!);
       }
     }
 
@@ -71,7 +73,7 @@ class ConnectionsProvider extends BaseViewModel {
     match.isAccepted = false;
     match.isProgressed = true;
     bool isUpdatedMatch = await db.updateRequest(match);
-    bool isUpdated = await db.updateUserProfile(currentUser);
+    bool isUpdated = await db.updateUserProfile(currentUser.appUser);
 
     print('profile update ==> ${isUpdated} requestUpdate==>${isUpdatedMatch}');
     if (isUpdated && isUpdatedMatch) {
