@@ -14,13 +14,13 @@ class NickNameProvider extends BaseViewModel {
   final formKey = GlobalKey<FormState>();
 
   addNickName() async {
-    // setState(ViewState.busy);
-    // bool isUpdated = await db.updateUserProfile(currentUser.appUser);
-    // setState(ViewState.idle);
-    // if (isUpdated) {
+    setState(ViewState.busy);
+    bool isUpdated = await db.updateUserProfile(currentUser.appUser);
+    setState(ViewState.idle);
+    if (isUpdated) {
     Get.to(
       IdentityScreen(),
     );
-    // }
+    }
   }
 }

@@ -16,8 +16,8 @@ class CustomBottomBarItem extends StatelessWidget {
     required this.icon2,
     required this.currentIndex,
     required this.activeIndex,
-    required this.onTap,
     this.size,
+    required this.onTap,
     Key? key,
   }) : super(key: key);
 

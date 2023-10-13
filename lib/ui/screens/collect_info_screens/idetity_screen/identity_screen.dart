@@ -7,7 +7,6 @@ import 'package:hart/ui/custom_widgets/custom_back_button.dart';
 import 'package:hart/ui/custom_widgets/custom_button.dart';
 import 'package:hart/ui/custom_widgets/custom_progress_indicator.dart';
 import 'package:hart/ui/screens/collect_info_screens/idetity_screen/identity_provider.dart';
-import 'package:hart/ui/screens/collect_info_screens/select_gender_screen/select_gender_screen.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 

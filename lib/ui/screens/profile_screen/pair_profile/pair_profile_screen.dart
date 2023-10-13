@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:hart/core/constants/colors.dart';
 import 'package:hart/ui/custom_widgets/custom_app_bar.dart';
 import 'package:hart/ui/custom_widgets/custom_button.dart';
@@ -31,8 +30,8 @@ class PairProfileScreen extends StatelessWidget {
                 children: [
                   CustomAppBar(title: 'Pair Profiles'),
                   sizeBox30,
-                  SvgPicture.asset(
-                    '$dynamicAsset/Subtract.svg',
+                  Image.asset(
+                    '$staticAsset/pairImage.png',
                   ),
                   sizeBox20,
                   Text(

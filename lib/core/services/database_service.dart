@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hart/core/models/app_user.dart';
 import 'package:hart/core/models/info_item.dart';
+import 'package:hart/core/models/matches.dart';
 
 class DatabaseService {
   final _db = FirebaseFirestore.instance;
@@ -26,6 +27,66 @@ class DatabaseService {
       debugPrint('Exception @DatabaseService/registerAppUser');
       debugPrint(s.toString());
       return false;
+    }
+  }
+
+  addRequest(Matches match) async {
+    // debugPrint("User @Id => ${user.id}");
+    try {
+      await _db
+          .collection('Matches')
+          .add(match.toJson())
+          .then((value) => debugPrint('Match published'));
+      return true;
+    } catch (e, s) {
+      debugPrint('Exception @DatabaseService/matchUser');
+      debugPrint(s.toString());
+      return false;
+    }
+  }
+
+  getAllRequest(String currentUserId) async {
+    List<Matches> list = [];
+    try {
+      final snapshot = await _db
+          .collection("Matches")
+          .where("isProgressed", isEqualTo: false)
+          .where("likedUserId", isEqualTo: currentUserId)
+          .get();
+      if (snapshot.docs.length > 0) {
+        snapshot.docs.forEach((element) {
+          list.add(Matches.fromJson(element.data(), element.id));
+        });
+      }
+    } catch (e) {
+      print("Exception@addNewRequests ==> $e");
+    }
+    return list;
+  }
+
+  updateRequest(Matches request) async {
+    try {
+      await _db.collection("Matches").doc(request.id).update(request.toJson());
+      return true;
+    } catch (e) {
+      print("Exception@addNewRequests ==> $e");
+      return false;
+    }
+  }
+
+  getRequest(String otherUserId, String currentUserId) async {
+    try {
+      final snapshot = await _db
+          .collection("Matches")
+          .where("isProgressed", isEqualTo: false)
+          .where("likedUserId", isEqualTo: currentUserId)
+          .where("likedByUserId", isEqualTo: otherUserId)
+          .get();
+      return Matches.fromJson(
+          snapshot.docs.first.data(), snapshot.docs.first.id);
+    } catch (e) {
+      print("Exception@addNewRequests ==> $e");
+      return Matches();
     }
   }
 
@@ -104,6 +165,27 @@ class DatabaseService {
       return list;
     } catch (e) {
       print('error occure while getting the data======>$e');
+    }
+  }
+
+  getAllUsers(AppUser appUser) async {
+    List<AppUser> list = [];
+    try {
+      final snapshot = await _db
+          .collection('app_user')
+          .where("id", isNotEqualTo: appUser.id)
+          .get();
+      for (var user in snapshot.docs) {
+        list.add(
+          AppUser.fromJson(user.data(), user.id),
+        );
+        // print('users --> ${user.data().keys}');
+      }
+      return list;
+    } catch (e, s) {
+      debugPrint('Exception @DatabaseService/getAppUsers==>$e');
+      debugPrint(s.toString());
+      return AppUser();
     }
   }
 

@@ -1,79 +1,131 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/constants/strings.dart';
 import 'package:hart/core/constants/style.dart';
+import 'package:hart/core/enums/view_state.dart';
+import 'package:hart/core/models/app_user.dart';
 import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/ui/custom_widgets/custom_button.dart';
 import 'package:hart/ui/screens/home/home_provider.dart';
+import 'package:lottie/lottie.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class HomeScreen extends StatefulWidget {
+  HomeScreen({
+    super.key,
+  });
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
+  // late final AnimationController _animationController;
+
+  // @override
+  // void initState() {
+  //   _animationController = AnimationController(
+  //       vsync: this,
+  //       duration: Duration(
+  //         milliseconds: 400,
+  //       ));
+  //   super.initState();
+  // }
+
+  // @override
+  // void dispose() {
+  //   _animationController.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => HomeProvider(),
       child: Consumer<HomeProvider>(builder: (context, model, child) {
-        return Scaffold(
-            body: Stack(
-          children: [
-            Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(24, 50, 24, 24),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        return ModalProgressHUD(
+          inAsyncCall: model.state == ViewState.busy,
+          child: Scaffold(
+              backgroundColor:
+                  model.filteredUsers.isEmpty ? primaryColor : whiteColor,
+              body: Stack(
+                children: [
+                  Column(
                     children: [
-                      // Text(
-                      //   'Hart',
-                      //   style: subHeadingText1,
-                      // ),
-                      Image.asset(
-                        '$logoPath/logo3.png',
-                        scale: 6.5,
-                        color: primaryColor,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          showFilter(context);
-                        },
-                        child: Image.asset(
-                          '$staticAsset/Filter.png',
-                          scale: 3,
+                      model.filteredUsers.isEmpty
+                          ? Container()
+                          : Padding(
+                              padding:
+                                  const EdgeInsets.fromLTRB(24, 50, 24, 24),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  // Text(
+                                  //   'Hart',
+                                  //   style: subHeadingText1,
+                                  // ),
+                                  Image.asset(
+                                    '$logoPath/logo3.png',
+                                    scale: 6.5,
+                                    color: primaryColor,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      showFilter(context);
+                                    },
+                                    child: Image.asset(
+                                      '$staticAsset/Filter.png',
+                                      scale: 3,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                      Expanded(
+                        child: PageView.builder(
+                          physics: BouncingScrollPhysics(),
+                          controller: model.pageController,
+                          itemCount: model.filteredUsers.length > 0
+                              ? model.filteredUsers.length
+                              : 1,
+                          itemBuilder: (context, index) {
+                            model.index = index;
+
+                            return model.filteredUsers.length == 0
+                                ? _staticScreen(context)
+                                : _homeScreenData(
+                                    model, model.filteredUsers[index]);
+                          },
+                          onPageChanged: (val) => model.changePage(val),
                         ),
-                      ),
+                      )
                     ],
                   ),
-                ),
-                Expanded(
-                  child: PageView.builder(
-                    physics: BouncingScrollPhysics(),
-                    controller: model.pageController,
-                    itemCount: 5,
-                    itemBuilder: (context, index) {
-                      return index == 4
-                          ? Center(
-                              child: Text(
-                                'No More Users',
-                                style:
-                                    headingText.copyWith(color: primaryColor),
-                              ),
-                            )
-                          : _homeScreenData(context, model);
-                    },
-                    onPageChanged: (val) => model.changePage(val),
-                  ),
-                ),
-              ],
-            ),
-            model.isLast ? Container() : _likeButtons(model)
-          ],
-        ));
+                  model.filteredUsers.isEmpty
+                      ? Container()
+                      : _likeButtons(model),
+                  model.isLiked
+                      ? Center(
+                          child: Lottie.asset(
+                            '$animations/heart.json',
+                            // controller: _animationController,
+                            repeat: false,
+                            frameRate: FrameRate(
+                              100,
+                            ),
+                          ),
+                        )
+                      : Container(),
+                ],
+              )),
+        );
       }),
     );
   }
@@ -86,18 +138,29 @@ class HomeScreen extends StatelessWidget {
         child: Row(
           children: [
             GestureDetector(
-              onTap: () {
-                model.disLike();
+              onTap: () async {
+                setState(() {
+                  model.isLiked = false;
+                  model.isDisLiked = true;
+                });
+                await Future.delayed(Duration(milliseconds: 500));
+
+                setState(() {
+                  model.isDisLiked = false;
+                });
+                model.disLike(model.filteredUsers[model.index]);
               },
               child: Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: model.isDislike ? greyColor2 : whiteColor,
+                  // color: model.isDislike ? greyColor2 : whiteColor,
+                  color: model.isDisLiked == true ? greyColor2 : whiteColor,
                   shape: BoxShape.circle,
                   boxShadow: boxShadow,
                 ),
                 child: Image.asset(
                   '$staticAsset/cross.png',
+                  color: model.isDisLiked == true ? whiteColor : null,
                   scale: 3.5,
                   color: model.isDislike ? whiteColor : null,
                 ),
@@ -107,17 +170,26 @@ class HomeScreen extends StatelessWidget {
               width: 15.w,
             ),
             GestureDetector(
-              onTap: () {
-                model.like();
+              onTap: () async {
+                setState(() {
+                  model.isLiked = true;
+                  model.isDisLiked = false;
+                });
+                await Future.delayed(Duration(seconds: 1));
+
+                setState(() {
+                  model.isLiked = false;
+                });
+                model.like(model.filteredUsers[model.index]);
               },
               child: Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: model.isLiked ? primaryColor : whiteColor,
+                  color: model.isLiked == true ? primaryColor : whiteColor,
                   shape: BoxShape.circle,
                   boxShadow: boxShadow,
                 ),
-                child: model.isLiked
+                child: model.isLiked == true
                     ? Image.asset(
                         '$staticAsset/likeWhite.png',
                         scale: 3.5,
@@ -134,41 +206,100 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  _homeScreenData(BuildContext context, HomeProvider model) {
+  _staticScreen(BuildContext context) {
+    return Stack(
+      children: [
+        ///
+        /// Background Image
+        ///
+        SingleChildScrollView(
+          physics: NeverScrollableScrollPhysics(),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 0.35.sh,
+              ),
+              Container(
+                width: double.infinity,
+                height: MediaQuery.of(context).size.height * 1,
+                child: SvgPicture.asset(
+                  '$staticAsset/circle.svg',
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ],
+          ),
+        ),
+
+        SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(
+              18,
+              50,
+              18,
+              0,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Nobody around',
+                  style: subHeadingTextWhite,
+                ),
+                sizeBox20,
+                Image.asset(
+                  '$staticAsset/Subtract.png',
+                ),
+                sizeBox20,
+                Text(
+                  'There is nobody matching your search preferences right now.',
+                  style: subHeadingText1.copyWith(
+                    color: blackColor,
+                  ),
+                ),
+                sizeBox10,
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 40, right: 20),
+                  child: RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: 'Try changing your search setting.',
+                          style: buttonTextStyle.copyWith(
+                            color: greyColor2,
+                          ),
+                        ),
+                        // TextSpan(
+                        //   text: 'Hart',
+                        //   style: subHeadingText1,
+                        // ),
+                        // TextSpan(
+                        //   text:
+                        //       ' members, a connection could be around in corner.',
+                        //   style: buttonTextStyle.copyWith(
+                        //     color: greyColor2,
+                        //   ),
+                        // )
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
+  _homeScreenData(HomeProvider model, AppUser user) {
     return SingleChildScrollView(
       physics: BouncingScrollPhysics(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Padding(
-          //   padding: const EdgeInsets.fromLTRB(24, 50, 24, 24),
-          //   child: Row(
-          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //     children: [
-          //       // Text(
-          //       //   'Hart',
-          //       //   style: subHeadingText1,
-          //       // ),
-          //       Image.asset(
-          //         '$logoPath/logo3.png',
-          //         scale: 6.5,
-          //         color: primaryColor,
-          //       ),
-          //       GestureDetector(
-          //         onTap: () {
-          //           showFilter(context);
-          //         },
-          //         child: Image.asset(
-          //           '$staticAsset/Filter.png',
-          //           scale: 3,
-          //         ),
-          //       ),
-          //     ],
-          //   ),
-          // ),
-          _imageSlider(
-            model,
-          ),
+          _imageSlider(model, user),
           SizedBox(
             height: 20.h,
           ),
@@ -180,7 +311,7 @@ class HomeScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Sarah',
+                  user.name!,
                   style: subHeadingText1,
                 ),
                 SizedBox(
@@ -225,15 +356,21 @@ class HomeScreen extends StatelessWidget {
                 SizedBox(
                   height: 15.h,
                 ),
-                Row(
-                  children: [
-                    _infoContainer('Friendship'),
-                    SizedBox(
+                SizedBox(
+                  height: 35.h,
+                  child: ListView.separated(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: ((context, index) {
+                      return _infoContainer(user.desire![index]);
+                    }),
+                    separatorBuilder: (context, index) => SizedBox(
                       width: 16.w,
                     ),
-                    _infoContainer('Marriage'),
-                  ],
+                    itemCount: user.desire!.length,
+                  ),
                 ),
+
                 SizedBox(
                   height: 20.h,
                 ),
@@ -244,32 +381,46 @@ class HomeScreen extends StatelessWidget {
                 SizedBox(
                   height: 15.h,
                 ),
-                Column(
-                  children: [
-                    Row(
-                      children: [
-                        _infoContainer('Art'),
-                        SizedBox(
-                          width: 16.w,
-                        ),
-                        _infoContainer('Music'),
-                        SizedBox(
-                          width: 16.w,
-                        ),
-                        _infoContainer('Hiking'),
-                        // SizedBox(
-                        //   width: 16.w,
-                        // ),
-                      ],
+                SizedBox(
+                  height: 35.h,
+                  child: ListView.separated(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: ((context, index) {
+                      return _infoContainer(user.identity![index]);
+                    }),
+                    separatorBuilder: (context, index) => SizedBox(
+                      width: 16.w,
                     ),
-                    sizeBox10,
-                    Row(
-                      children: [
-                        _infoContainer('Real connection'),
-                      ],
-                    )
-                  ],
+                    itemCount: user.identity!.length,
+                  ),
                 ),
+                // Column(
+                //   children: [
+                //     Row(
+                //       children: [
+                //         _infoContainer('Art'),
+                //         SizedBox(
+                //           width: 16.w,
+                //         ),
+                //         _infoContainer('Music'),
+                //         SizedBox(
+                //           width: 16.w,
+                //         ),
+                //         _infoContainer('Hiking'),
+                //         // SizedBox(
+                //         //   width: 16.w,
+                //         // ),
+                //       ],
+                //     ),
+                //     sizeBox10,
+                //     Row(
+                //       children: [
+                //         _infoContainer('Real connection'),
+                //       ],
+                //     )
+                //   ],
+                // ),
                 SizedBox(
                   height: 15.h,
                 ),
@@ -516,7 +667,7 @@ class HomeScreen extends StatelessWidget {
         });
   }
 
-  Container thumbIcon() {
+  thumbIcon() {
     return Container(
       width: 12.w,
       height: 12.h,
@@ -549,18 +700,23 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-_imageSlider(HomeProvider model) {
+_imageSlider(HomeProvider model, AppUser user) {
   return Stack(
     children: [
       CarouselSlider.builder(
-        itemCount: 5,
+        itemCount: user.images!.length,
         itemBuilder: (context, index, realIndex) {
           return Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('$dynamicAsset/image.png'),
-                fit: BoxFit.cover,
-              ),
+            // decoration: BoxDecoration(
+            //   image: DecorationImage(
+            //     image: NetworkImage(user.images![index].toString()),
+            //     fit: BoxFit.cover,
+            //   ),
+            // ),
+            child: FadeInImage.assetNetwork(
+              placeholder: '$logoPath/logo4.png',
+              image: user.images![index].toString(),
+              fit: BoxFit.fill,
             ),
           );
         },
@@ -568,10 +724,10 @@ _imageSlider(HomeProvider model) {
           onPageChanged: (index, reason) {
             model.updateIndex(index);
           },
-          height: 0.4.sh,
+          height: 250.h,
           aspectRatio: 16 / 9,
           viewportFraction: 1,
-          initialPage: model.currentIndex,
+          initialPage: 0,
           enableInfiniteScroll: false,
           scrollDirection: Axis.vertical,
         ),
@@ -591,8 +747,8 @@ _imageSlider(HomeProvider model) {
             ),
             child: DotsIndicator(
               axis: Axis.vertical,
-              dotsCount: 5,
-              position: model.currentIndex,
+              dotsCount: user.images!.length,
+              position: model.dotIndex,
               decorator: const DotsDecorator(
                 activeColor: primaryColor,
                 size: Size(7.0, 7.0),
