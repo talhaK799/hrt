@@ -151,6 +151,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               child: Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
+                  // color: model.isDislike ? greyColor2 : whiteColor,
                   color: model.isDisLiked == true ? greyColor2 : whiteColor,
                   shape: BoxShape.circle,
                   boxShadow: boxShadow,
@@ -159,6 +160,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   '$staticAsset/cross.png',
                   color: model.isDisLiked == true ? whiteColor : null,
                   scale: 3.5,
+                  color: model.isDislike ? whiteColor : null,
                 ),
               ),
             ),
@@ -471,6 +473,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   ),
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
+
                     child: ListView(
                       // crossAxisAlignment: CrossAxisAlignment.start,
                       physics: BouncingScrollPhysics(),
@@ -493,7 +496,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             ),
                           ],
                         ),
-                        sizeBox20,
+                        SizedBox(height: 0.05.sh),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -524,7 +527,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           endThumbIcon: thumbIcon(),
                           startThumbIcon: thumbIcon(),
                         ),
-                        sizeBox20,
+                        SizedBox(height: 40.h),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -551,7 +554,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           endThumbIcon: thumbIcon(),
                           startThumbIcon: thumbIcon(),
                         ),
-                        sizeBox30,
+                        SizedBox(height: 40.h),
+
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -590,7 +594,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             // ),
                           ],
                         ),
-                        sizeBox20,
+                        SizedBox(height: 40.h),
+
                         Text(
                           'Search by',
                           style: subHeadingText1,
@@ -621,7 +626,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             // ),
                           ],
                         ),
-                        sizeBox20,
+                        SizedBox(height: 40.h),
+
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [

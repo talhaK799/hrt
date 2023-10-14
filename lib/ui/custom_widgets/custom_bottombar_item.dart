@@ -30,7 +30,7 @@ class CustomBottomBarItem extends StatelessWidget {
               AssetImage(
                 '$staticAsset/$icon2',
               ),
-              size:size?? 23,
+              size: size ?? 23,
               color: primaryColor,
             )
           : ImageIcon(
@@ -38,7 +38,7 @@ class CustomBottomBarItem extends StatelessWidget {
                 '$staticAsset/$icon',
               ),
               color: greyColor2,
-              size:size?? 23,
+              size: size ?? 23,
             ),
     );
   }

@@ -14,6 +14,8 @@ import 'package:syncfusion_flutter_sliders/sliders.dart';
 class HomeProvider extends BaseViewModel {
   int dotIndex = 0;
   bool isLiked = false;
+  bool isDislike = false;
+
   bool isDisLiked = false;
   bool isRecent = false;
   bool isLast = false;
@@ -132,6 +134,9 @@ class HomeProvider extends BaseViewModel {
 
       print("Users ====> ${appUsers.length}");
     }
+    isLiked = false;
+    isDislike = false;
+    notifyListeners();
   }
 
   ///

@@ -57,9 +57,9 @@ class RootScreen extends StatelessWidget {
                 CustomBottomBarItem(
                   icon2: 'heartl.png',
                   icon: 'heartl.png',
+                  size: 28,
                   currentIndex: model.currentIndex,
                   activeIndex: 1,
-                  size: 28,
                   onTap: () {
                     model.updateIndex(1);
                   },
