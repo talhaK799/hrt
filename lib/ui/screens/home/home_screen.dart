@@ -10,6 +10,7 @@ import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/models/app_user.dart';
 import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/ui/custom_widgets/custom_button.dart';
+import 'package:hart/ui/custom_widgets/custom_drop_down.dart';
 import 'package:hart/ui/screens/home/home_provider.dart';
 import 'package:lottie/lottie.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -53,12 +54,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           inAsyncCall: model.state == ViewState.busy,
           child: Scaffold(
               backgroundColor:
-                  model.filteredUsers.isEmpty ? primaryColor : whiteColor,
+                  model.appUsers.isEmpty ? primaryColor : whiteColor,
               body: Stack(
                 children: [
                   Column(
                     children: [
-                      model.filteredUsers.isEmpty
+                      model.appUsers.isEmpty
                           ? Container()
                           : Padding(
                               padding:
@@ -92,25 +93,22 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         child: PageView.builder(
                           physics: BouncingScrollPhysics(),
                           controller: model.pageController,
-                          itemCount: model.filteredUsers.length > 0
-                              ? model.filteredUsers.length
+                          itemCount: model.appUsers.length > 0
+                              ? model.appUsers.length
                               : 1,
                           itemBuilder: (context, index) {
                             model.index = index;
 
-                            return model.filteredUsers.length == 0
+                            return model.appUsers.length == 0
                                 ? _staticScreen(context)
-                                : _homeScreenData(
-                                    model, model.filteredUsers[index]);
+                                : _homeScreenData(model, model.appUsers[index]);
                           },
                           onPageChanged: (val) => model.changePage(val),
                         ),
                       )
                     ],
                   ),
-                  model.filteredUsers.isEmpty
-                      ? Container()
-                      : _likeButtons(model),
+                  model.appUsers.isEmpty ? Container() : _likeButtons(model),
                   model.isLiked
                       ? Center(
                           child: Lottie.asset(
@@ -148,7 +146,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 setState(() {
                   model.isDisLiked = false;
                 });
-                model.disLike(model.filteredUsers[model.index]);
+                model.disLike(model.appUsers[model.index]);
               },
               child: Container(
                 padding: const EdgeInsets.all(20),
@@ -180,7 +178,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 setState(() {
                   model.isLiked = false;
                 });
-                model.like(model.filteredUsers[model.index]);
+                model.like(model.appUsers[model.index]);
               },
               child: Container(
                 padding: const EdgeInsets.all(20),
@@ -475,9 +473,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   ),
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
+
+                    child: ListView(
+                      // crossAxisAlignment: CrossAxisAlignment.start,
+                      physics: BouncingScrollPhysics(),
                       children: [
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -564,9 +563,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               'Looking For',
                               style: subHeadingTextStyle2,
                             ),
-                            Text(
-                              'Woman >',
-                              style: miniText.copyWith(color: greyColor2),
+                            CustomDropDownButton(
+                              value: model.gender,
+                              onchange: (val) {
+                                model.selectGender(val);
+                              },
+                              items: model.lookingFor,
                             ),
                           ],
                         ),
@@ -578,10 +580,18 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               'Location',
                               style: subHeadingTextStyle2,
                             ),
-                            Text(
-                              'Current location >',
-                              style: miniText.copyWith(color: greyColor2),
+
+                            CustomDropDownButton(
+                              value: model.country,
+                              onchange: (val) {
+                                model.selectCountry(val);
+                              },
+                              items: model.countries,
                             ),
+                            // Text(
+                            //   'Current location >',
+                            //   style: miniText.copyWith(color: greyColor2),
+                            // ),
                           ],
                         ),
                         SizedBox(height: 40.h),
@@ -600,12 +610,20 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 color: primaryColor,
                               ),
                             ),
-                            Text(
-                              'Any >',
-                              style: miniText.copyWith(
-                                color: primaryColor,
-                              ),
+                            CustomDropDownButton(
+                              value: model.desire,
+                              onchange: (val) {
+                                model.selectDesire(val);
+                              },
+                              color: lightRed,
+                              items: model.desires,
                             ),
+                            // Text(
+                            //   'Any >',
+                            //   style: miniText.copyWith(
+                            //     color: primaryColor,
+                            //   ),
+                            // ),
                           ],
                         ),
                         SizedBox(height: 40.h),

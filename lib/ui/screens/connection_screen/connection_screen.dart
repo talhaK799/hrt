@@ -108,7 +108,9 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                       ],
                     ),
                   )
-                : _staticScreen(context),
+                : model.state == ViewState.busy
+                    ? Container()
+                    : _staticScreen(context),
           ),
         );
       }),

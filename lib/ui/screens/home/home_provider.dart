@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/models/app_user.dart';
+import 'package:hart/core/models/filter.dart';
 import 'package:hart/core/models/matches.dart';
 import 'package:hart/core/services/auth_service.dart';
 import 'package:hart/core/services/database_service.dart';
@@ -20,16 +21,22 @@ class HomeProvider extends BaseViewModel {
   bool isLast = false;
   final currentUser = locator<AuthService>();
   final db = DatabaseService();
-  SfRangeValues ageValues = SfRangeValues(18, 30);
-  SfRangeValues distanceValues = SfRangeValues(3, 50);
   // final _db = DatabaseService();
   PageController? pageController;
   int index = 0;
   List<AppUser> users = [];
+  List<AppUser> appUsers = [];
   List<AppUser> filteredUsers = [];
+  String? gender;
+  String? desire;
+  String? country;
   Matches match = Matches();
+  Filtering filter = Filtering();
 
   HomeProvider() {
+    gender = lookingFor.first;
+    desire = desires.first;
+    country = countries.first;
     init();
     pageController = PageController(initialPage: 0);
     notifyListeners();
@@ -40,14 +47,14 @@ class HomeProvider extends BaseViewModel {
 
   getAllAppUsers() async {
     users = [];
-    filteredUsers = [];
+    appUsers = [];
     currentUser.appUser = await db.getAppUser(currentUser.appUser.id);
     setState(ViewState.busy);
     users = await db.getAllUsers(currentUser.appUser);
     for (var user in users) {
       if (!currentUser.appUser.likedUsers!.contains(user.id) &&
           !currentUser.appUser.disLikedUsers!.contains(user.id)) {
-        filteredUsers.add(user);
+        appUsers.add(user);
         notifyListeners();
       }
     }
@@ -112,10 +119,10 @@ class HomeProvider extends BaseViewModel {
 
       print('profile update ==> ${currentUser.appUser.likedUsers!.length}');
       if (isUpdated) {
-        filteredUsers.removeWhere((element) => element.id == user.id);
+        appUsers.removeWhere((element) => element.id == user.id);
 
         notifyListeners();
-        if (filteredUsers.length > 0) {
+        if (appUsers.length > 0) {
           dotIndex = 0;
           await pageController!.nextPage(
             duration: Duration(milliseconds: 500),
@@ -125,7 +132,7 @@ class HomeProvider extends BaseViewModel {
       }
       notifyListeners();
 
-      print("Users ====> ${filteredUsers.length}");
+      print("Users ====> ${appUsers.length}");
     }
     isLiked = false;
     isDislike = false;
@@ -142,13 +149,45 @@ class HomeProvider extends BaseViewModel {
 
     bool isUpdated = await db.updateUserProfile(currentUser.appUser);
     if (isUpdated) {
-      filteredUsers.removeWhere((element) => element.id == user.id);
+      appUsers.removeWhere((element) => element.id == user.id);
       pageController!.nextPage(
         duration: Duration(milliseconds: 500),
         curve: Curves.easeIn,
       );
     }
 
+    notifyListeners();
+  }
+
+  List<String> lookingFor = [
+    'Women',
+    'Men',
+    'Boys',
+    'Girs',
+  ];
+  List<String> desires = [
+    'Any',
+    'Friendship',
+    'Marriage',
+  ];
+  List<String> countries = [
+    'Pakistan',
+    'India',
+    'Afghanistan',
+  ];
+
+  selectGender(val) {
+    gender = val;
+    notifyListeners();
+  }
+
+  selectDesire(val) {
+    desire = val;
+    notifyListeners();
+  }
+
+  selectCountry(val) {
+    country = val;
     notifyListeners();
   }
 
@@ -166,4 +205,63 @@ class HomeProvider extends BaseViewModel {
     distanceValues = values;
     notifyListeners();
   }
+
+  /// ================================================= ///
+  /// ================ Filter ========================= ///
+  /// ================================================= ///
+  ///
+
+  SfRangeValues ageValues = SfRangeValues(18, 30);
+  SfRangeValues distanceValues = SfRangeValues(3, 50);
+  double start = 1.0;
+  double end = 1.0;
+  bool isFiltering = false;
+
+  applyAge(SfRangeValues changedValue) {
+    ageValues = changedValue;
+    start = changedValue.start;
+    end = changedValue.end;
+    filter.maxAge = end.toInt();
+    filter.minAge = start.toInt();
+
+    notifyListeners();
+  }
+
+  applyFilter() {
+    // searchedCards = [];
+    filteredUsers = [];
+    isFiltering = true;
+    notifyListeners();
+    filteredUsers = appUsers
+        .where((user) =>
+            (user.age! <= filter.maxAge! && user.age! >= filter.minAge!
+                    ? true
+                    : false) )
+        .toList();
+    notifyListeners();
+
+    // if (searchedUsers.isNotEmpty) {
+    //   for (var i = 0; i < searchedUsers.length; i++) {
+    //     searchedCards.add(CustomSwappingCard(user: searchedUsers[i]));
+    //   }
+    // }
+    // this.index = searchedUsers.length;
+    // print("Searched user ==> ${searchedUsers.length}");
+    Get.back();
+  }
+
+  resetFilter() async {
+    await getAllAppUsers();
+    start = 18.0;
+    end = 60.0;
+
+    ageValues = SfRangeValues(18, 60);
+    isFiltering = false;
+    filteredUsers = [];
+
+    filter = Filtering();
+    notifyListeners();
+    Get.back();
+  }
+
 }
