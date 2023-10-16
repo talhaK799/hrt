@@ -11,7 +11,7 @@ class AppUser {
   String? name;
   String? dob;
   String? nickName;
-  List<String>? identity;
+  String? identity;
   List<String>? lookingFor;
   List<String>? desire;
   List<String>? images;
@@ -53,7 +53,7 @@ class AppUser {
     data['dob'] = dob;
     data['age'] = age;
     data['nickName'] = nickName;
-    data['identity'] = identity ?? [];
+    data['identity'] = identity ?? "";
     data['lookingFor'] = lookingFor ?? [];
     data['desire'] = desire ?? [];
     data['images'] = images ?? [];
@@ -82,14 +82,15 @@ class AppUser {
     } else {
       lookingFor = [];
     }
-    if (json["identity"] != null) {
-      identity = [];
-      json["identity"].forEach((element) {
-        identity!.add(element);
-      });
-    } else {
-      identity = [];
-    }
+    identity = json['identity'];
+    // if (json["identity"] != null) {
+    //   identity = [];
+    //   json["identity"].forEach((element) {
+    //     identity!.add(element);
+    //   });
+    // } else {
+    //   identity = [];
+    // }
     if (json["desire"] != null) {
       desire = [];
       json["desire"].forEach((element) {

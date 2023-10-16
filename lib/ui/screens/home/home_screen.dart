@@ -78,6 +78,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                     color: primaryColor,
                                   ),
                                   GestureDetector(
+                                    behavior: HitTestBehavior.opaque,
                                     onTap: () {
                                       showFilter(context);
                                     },
@@ -742,12 +743,13 @@ _imageSlider(HomeProvider model, AppUser user) {
           onPageChanged: (index, reason) {
             model.updateIndex(index);
           },
-          height: 250.h,
+          height: 300.h,
           aspectRatio: 16 / 9,
           viewportFraction: 1,
           initialPage: 0,
           enableInfiniteScroll: false,
           scrollDirection: Axis.vertical,
+          enlargeFactor: 0.5,
         ),
       ),
       Padding(
@@ -765,7 +767,7 @@ _imageSlider(HomeProvider model, AppUser user) {
             ),
             child: DotsIndicator(
               axis: Axis.vertical,
-              dotsCount: user.images!.length,
+              dotsCount: user.images!.length > 0 ? user.images!.length : 1,
               position: model.dotIndex,
               decorator: const DotsDecorator(
                 activeColor: primaryColor,

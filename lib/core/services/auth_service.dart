@@ -95,10 +95,11 @@ class AuthService extends ChangeNotifier {
     // }
   }
 
-  logout({id}) async {
+  logout() async {
     await _auth.signOut();
     isLogin = false;
     user = null;
+    
   }
 }
 

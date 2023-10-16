@@ -7,7 +7,6 @@ import 'package:hart/core/view_models/base_view_model.dart';
 import 'package:hart/locator.dart';
 import 'package:hart/ui/screens/collect_info_screens/select_gender_screen/select_gender_screen.dart';
 
-import 'identity_screen.dart';
 
 class IdentityProvider extends BaseViewModel {
   DatabaseService _db = DatabaseService();
@@ -27,18 +26,21 @@ class IdentityProvider extends BaseViewModel {
   }
 
   select(index) {
-    items[index].isSelected = !items[index].isSelected!;
+    // items[index].isSelected = !items[index].isSelected!;
+
+    for (var i = 0; i < items.length; i++) {
+      if (index == i) {
+        items[i].isSelected = true;
+        currentUser.identity = items[i].title;
+      } else {
+        items[i].isSelected = false;
+      }
+    }
     notifyListeners();
   }
 
   addSelectedItems() async {
-    for (var element in items) {
-      if (element.isSelected == true) {
-        selectedItems.add(element.title!);
-      }
-    }
-
-    currentUser.identity = selectedItems;
+    // currentUser.identity = items[index].title;
     setState(ViewState.busy);
     bool isUpdated = await _db.updateUserProfile(currentUser);
     setState(ViewState.idle);
