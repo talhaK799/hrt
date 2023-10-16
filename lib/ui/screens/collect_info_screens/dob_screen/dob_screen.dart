@@ -74,7 +74,18 @@ class DOBScreen extends StatelessWidget {
                     onTap: () {
                       FocusManager.instance.primaryFocus?.unfocus();
                       if (model.age < 18) {
-                        Get.snackbar('Alert!!', 'Age must be 18 or above');
+                        Get.snackbar(
+                          'Alert!!',
+                          'Age must be 18 or above',
+                          colorText: primaryColor,
+                          messageText: Text(
+                            'Age must be 18 or above',
+                            style: miniText.copyWith(
+                              color: lightRed,
+                              fontSize: 15.sp,
+                            ),
+                          ),
+                        );
                       } else {
                         Get.to(
                           NickNameScreen(),

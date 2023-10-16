@@ -21,8 +21,8 @@ class PhoneCodeConfirmationScreen extends StatelessWidget {
         child: Scaffold(
           body: Padding(
             padding: EdgeInsets.only(
-              left: 50,
-              right: 50,
+              left: 35,
+              right: 35,
               top: 80,
             ),
             child: Column(
@@ -59,8 +59,8 @@ class PhoneCodeConfirmationScreen extends StatelessWidget {
                         model.phoneOtp = val;
                       },
                       defaultPinTheme: PinTheme(
-                        width: 40.w,
-                        height: 40.h,
+                        width: 50.w,
+                        height: 50.h,
                         decoration: BoxDecoration(
                           boxShadow: [
                             BoxShadow(

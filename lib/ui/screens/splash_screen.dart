@@ -7,6 +7,7 @@ import 'package:hart/core/constants/style.dart';
 import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/core/services/auth_service.dart';
 import 'package:hart/locator.dart';
+import 'package:hart/ui/screens/auth_screens/auth_screens.dart';
 import 'package:hart/ui/screens/auth_screens/forgot_password/phone_no_verification/phone_no_verification.dart';
 import 'package:hart/ui/screens/collect_info_screens/verifications/email_screen.dart/email_verification_screen.dart';
 import 'dart:async';
@@ -39,7 +40,7 @@ class _SplashScreenState extends State<SplashScreen> {
         Get.offAll(RootScreen());
       }
     } else {
-      Get.offAll(AuthService());
+      Get.offAll(AuthScreen());
     }
   }
 
