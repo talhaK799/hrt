@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/models/app_user.dart';
@@ -6,6 +8,7 @@ import 'package:hart/core/models/filter.dart';
 import 'package:hart/core/models/matches.dart';
 import 'package:hart/core/services/auth_service.dart';
 import 'package:hart/core/services/database_service.dart';
+import 'package:hart/core/services/location_service.dart';
 import 'package:hart/core/view_models/base_view_model.dart';
 import 'package:hart/locator.dart';
 import 'package:hart/ui/screens/connection_screen/connect_popup/connect_popup_screen.dart';
@@ -20,6 +23,8 @@ class HomeProvider extends BaseViewModel {
   bool isRecent = false;
   bool isLast = false;
   final currentUser = locator<AuthService>();
+  final _locService = locator<LocationService>();
+  Position? currentLocaion;
   final db = DatabaseService();
   // final _db = DatabaseService();
   PageController? pageController;
@@ -27,6 +32,7 @@ class HomeProvider extends BaseViewModel {
   List<AppUser> users = [];
   List<AppUser> appUsers = [];
   List<AppUser> filteredUsers = [];
+  List<Placemark> placemarks = [];
   String? gender;
   String? desire;
   String? country;
@@ -34,15 +40,30 @@ class HomeProvider extends BaseViewModel {
   Filtering filter = Filtering();
 
   HomeProvider() {
+    // currentLocation.determinePosition();
+    convertLatAndLongIntoAddress();
     gender = lookingFor.first;
     desire = desires.first;
-    country = countries.first;
     init();
     pageController = PageController(initialPage: 0);
     notifyListeners();
   }
   init() async {
-    await getAllAppUsers();
+    currentLocaion = await _locService.determinePosition();
+    await getAllAppUsers(); 
+  }
+
+  convertLatAndLongIntoAddress() async {
+    placemarks = [];
+    setState(ViewState.busy);
+    placemarks = await placemarkFromCoordinates(
+        currentLocaion!.latitude, currentLocaion!.longitude);
+    setState(ViewState.idle);
+    countries.insert(0, placemarks.first.country!);
+
+    country = countries.first;
+    notifyListeners();
+    print("country =>" + placemarks.first.country!);
   }
 
   getAllAppUsers() async {
@@ -197,12 +218,12 @@ class HomeProvider extends BaseViewModel {
   }
 
   selectAge(values) {
-    ageValues = values;
+    ageValues = SfRangeValues(18, values.end);
     notifyListeners();
   }
 
   selectDistance(values) {
-    distanceValues = values;
+    distanceValues = SfRangeValues(0, values.end);
     notifyListeners();
   }
 
@@ -212,7 +233,7 @@ class HomeProvider extends BaseViewModel {
   ///
 
   SfRangeValues ageValues = SfRangeValues(18, 30);
-  SfRangeValues distanceValues = SfRangeValues(3, 50);
+  SfRangeValues distanceValues = SfRangeValues(0, 70);
   double start = 1.0;
   double end = 1.0;
   bool isFiltering = false;
@@ -235,8 +256,8 @@ class HomeProvider extends BaseViewModel {
     filteredUsers = appUsers
         .where((user) =>
             (user.age! <= filter.maxAge! && user.age! >= filter.minAge!
-                    ? true
-                    : false) )
+                ? true
+                : false))
         .toList();
     notifyListeners();
 
@@ -263,5 +284,4 @@ class HomeProvider extends BaseViewModel {
     notifyListeners();
     Get.back();
   }
-
 }
