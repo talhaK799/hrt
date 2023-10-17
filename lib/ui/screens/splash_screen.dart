@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/constants/strings.dart';
 import 'package:hart/core/constants/style.dart';
 import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/core/services/auth_service.dart';
+import 'package:hart/core/services/location_service.dart';
 import 'package:hart/locator.dart';
 import 'package:hart/ui/screens/auth_screens/auth_screens.dart';
 import 'package:hart/ui/screens/auth_screens/forgot_password/phone_no_verification/phone_no_verification.dart';
 import 'package:hart/ui/screens/collect_info_screens/verifications/email_screen.dart/email_verification_screen.dart';
+import 'package:hart/ui/screens/collect_info_screens/verifications/phone_no_screen/add_phone_no.dart';
 import 'dart:async';
 
 import 'package:hart/ui/screens/root_screen/root_screen.dart';
@@ -23,10 +26,19 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   final _auth = locator<AuthService>();
+  final _location = locator<LocationService>();
   init() async {
     await Future.delayed(
       Duration(seconds: 2),
     );
+    Position position = await _location.determinePosition();
+    print(
+        'this is the current location ${position.latitude} === ${position.longitude}');
+
+    Get.to(
+      AddPhoneNumberScreen(),
+    );
+
     if (_auth.isLogin) {
       if (!_auth.appUser.isEmailVerified!) {
         Get.offAll(

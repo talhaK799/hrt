@@ -108,9 +108,12 @@ class AddPhoneNumberScreen extends StatelessWidget {
                   ),
                   showFlag: false,
 
-                  initialSelection: "+92",
+                  initialSelection: model.initialCountry,
+
                   onChanged: (value) {
-                    model.selectCountryCode(value.dialCode);
+                    model.selectCountryCode(
+                      value.dialCode,
+                    );
                   },
                 ),
               ),

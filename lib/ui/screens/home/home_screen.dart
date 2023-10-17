@@ -257,30 +257,21 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 ),
                 sizeBox10,
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 40, right: 20),
-                  child: RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: 'Try changing your search setting.',
-                          style: buttonTextStyle.copyWith(
-                            color: greyColor2,
-                          ),
-                        ),
-                        // TextSpan(
-                        //   text: 'Hart',
-                        //   style: subHeadingText1,
-                        // ),
-                        // TextSpan(
-                        //   text:
-                        //       ' members, a connection could be around in corner.',
-                        //   style: buttonTextStyle.copyWith(
-                        //     color: greyColor2,
-                        //   ),
-                        // )
-                      ],
+                  padding: const EdgeInsets.only(right: 20),
+                  child: Text(
+                    'Try changing your search setting.',
+                    style: buttonTextStyle.copyWith(
+                      color: greyColor2,
                     ),
                   ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+                  child: CustomButton(
+                      title: 'Change Setting',
+                      onTap: () {
+                        showFilter(context);
+                      }),
                 ),
               ],
             ),
@@ -503,7 +494,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               style: subHeadingTextStyle2,
                             ),
                             Text(
-                              '${model.ageValues.start.floor()} - ${model.ageValues.end.floor()}',
+                              ' ${model.ageValues.end.floor()}',
+                              // ${model.ageValues.start.floor()} -
                               style: miniText,
                             ),
                           ],
@@ -522,8 +514,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           showLabels: true,
                           min: 18,
                           max: 70.0,
-                          endThumbIcon: thumbIcon(),
-                          startThumbIcon: thumbIcon(),
+                          endThumbIcon: thumbIcon(false),
+                          startThumbIcon: thumbIcon(true),
                         ),
                         sizeBox20,
                         Row(
@@ -534,7 +526,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               style: subHeadingTextStyle2,
                             ),
                             Text(
-                              '${model.distanceValues.start.floor()} - ${model.distanceValues.end.floor()} KM',
+                              ' ${model.distanceValues.end.floor()} KM',
+                              // ${model.distanceValues.start.floor()} -
                               style: miniText,
                             ),
                           ],
@@ -549,8 +542,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           inactiveColor: greyColor,
                           showLabels: true,
                           max: 150.0,
-                          endThumbIcon: thumbIcon(),
-                          startThumbIcon: thumbIcon(),
+                          endThumbIcon: thumbIcon(false),
+                          startThumbIcon: thumbIcon(true),
                         ),
                         sizeBox30,
                         Row(
@@ -635,6 +628,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             Switch(
                               activeColor: primaryColor,
                               value: model.isRecent,
+                              trackOutlineWidth: MaterialStateProperty.all(10),
                               onChanged: (val) {
                                 model.recent(val);
                               },
@@ -650,7 +644,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             color: const Color(0xFFc48184),
                           ),
                         ),
-                        Spacer(),
                         CustomButton(
                           title: 'CONTINUE',
                           onTap: () {
@@ -680,19 +673,24 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         });
   }
 
-  thumbIcon() {
-    return Container(
-      width: 12.w,
-      height: 12.h,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: whiteColor,
-        border: Border.all(
-          width: 3,
-          color: primaryColor,
-        ),
-      ),
-    );
+  thumbIcon(isFixed) {
+    return isFixed
+        ? CircleAvatar(
+            backgroundColor: primaryColor,
+            maxRadius: 2,
+          )
+        : Container(
+            width: 12.w,
+            height: 12.h,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: whiteColor,
+              border: Border.all(
+                width: 3,
+                color: primaryColor,
+              ),
+            ),
+          );
   }
 
   _infoContainer(text) {

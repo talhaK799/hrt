@@ -134,7 +134,7 @@ class PermissionScreen extends StatelessWidget {
                 CustomButton(
                   title: 'FIX',
                   onTap: () {
-                    model.requestPermission();
+                    model.getPermissions();
                   },
                 ),
                 SizedBox(
