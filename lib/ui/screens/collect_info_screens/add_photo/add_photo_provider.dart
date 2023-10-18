@@ -1,7 +1,10 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/models/imag.dart';
+import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/core/services/auth_service.dart';
 import 'package:hart/core/services/database_service.dart';
 import 'package:hart/core/services/file_picker_service.dart';
@@ -11,6 +14,7 @@ import 'package:hart/locator.dart';
 import 'package:hart/ui/screens/collect_info_screens/permissions/permission_screen.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../../core/constants/style.dart';
 import '../../../../core/enums/view_state.dart';
 
 class AddPhotoProvider extends BaseViewModel {
@@ -60,17 +64,33 @@ class AddPhotoProvider extends BaseViewModel {
   }
 
   addUserImages() async {
-    setState(ViewState.busy);
-    imagesUrls=await fbStorage.uploadImagesList(selectedImages!, 'User Images');
-
-    currentUser.images = imagesUrls;
-    
-    bool isUpdated = await _db.updateUserProfile(currentUser);
-    setState(ViewState.idle);
-    if (isUpdated) {
-      Get.to(
-        PermissionScreen(),
+    if (selectedImages!.length < 1) {
+      Get.snackbar(
+        'Error!',
+        '',
+        colorText: primaryColor,
+        messageText: Text(
+          'Images must be selected',
+          style: miniText.copyWith(
+            color: lightRed,
+            fontSize: 15.sp,
+          ),
+        ),
       );
+    } else {
+      setState(ViewState.busy);
+      imagesUrls =
+          await fbStorage.uploadImagesList(selectedImages!, 'User Images');
+
+      currentUser.images = imagesUrls;
+
+      bool isUpdated = await _db.updateUserProfile(currentUser);
+      setState(ViewState.idle);
+      if (isUpdated) {
+        Get.to(
+          PermissionScreen(),
+        );
+      }
     }
   }
 }

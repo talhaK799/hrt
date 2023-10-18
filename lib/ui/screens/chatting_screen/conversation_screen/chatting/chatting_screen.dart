@@ -6,15 +6,15 @@ import 'package:hart/core/constants/strings.dart';
 import 'package:hart/core/constants/style.dart';
 import 'package:hart/ui/custom_widgets/custom_back_button.dart';
 import 'package:hart/ui/screens/chatting_screen/chat_info/chat_info_screen.dart';
-import 'package:hart/ui/screens/chatting_screen/conversation_screen/conversation_provider.dart';
+import 'package:hart/ui/screens/chatting_screen/conversation_screen/chatting/chatting_provider.dart';
 import 'package:provider/provider.dart';
 
-class ConversationScreen extends StatelessWidget {
+class ChattingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => ConversationProvider(),
-      child: Consumer<ConversationProvider>(builder: (context, model, child) {
+      create: (context) => ChattingProvider(),
+      child: Consumer<ChattingProvider>(builder: (context, model, child) {
         return Scaffold(
           backgroundColor: primaryColor,
           body: Stack(
@@ -69,40 +69,44 @@ class ConversationScreen extends StatelessWidget {
                       return Column(
                         children: [
                           Container(
-                            margin: model.messages[index].isSender == true
-                                ? EdgeInsets.only(
-                                    right: 100,
-                                  )
-                                : EdgeInsets.only(
-                                    left: 100,
-                                  ),
+                            // margin: model.messages[index].isSender == true
+                            //     ? EdgeInsets.only(
+                            //         right: 100,
+                            //       )
+                            //     : EdgeInsets.only(
+                            //         left: 100,
+                            //       ),
                             padding: EdgeInsets.all(15),
                             decoration: BoxDecoration(
-                                color: model.messages[index].isSender!
-                                    ? greyColor
-                                    : primaryColor,
+                                color:
+                                    // model.messages[index].isSender!
+                                    //     ? greyColor
+                                    //     :
+                                    primaryColor,
                                 borderRadius: BorderRadius.circular(12.r)),
                             child: Align(
-                              alignment: model.messages[index].isSender == true
-                                  ? Alignment.topRight
-                                  : Alignment.topLeft,
+                              // alignment: model.messages[index].isSender == true
+                              //     ? Alignment.topRight
+                              //     : Alignment.topLeft,
                               child: Text(
-                                model.messages[index].text!,
+                                model.messages[index].textMessage!,
                                 style: subtitleText.copyWith(
                                   fontSize: 12.sp,
-                                  color: model.messages[index].isSender!
-                                      ? blackColor
-                                      : whiteColor,
+                                  color:
+                                      // model.messages[index].isSender!
+                                      //     ? blackColor
+                                      //     :
+                                      whiteColor,
                                 ),
                               ),
                             ),
                           ),
                           sizeBox10,
                           Row(
-                            mainAxisAlignment:
-                                model.messages[index].isSender == true
-                                    ? MainAxisAlignment.start
-                                    : MainAxisAlignment.end,
+                            // mainAxisAlignment:
+                            //     model.messages[index].isSender == true
+                            //         ? MainAxisAlignment.start
+                            //         : MainAxisAlignment.end,
                             children: [
                               Padding(
                                 padding: const EdgeInsets.only(left: 40),
@@ -114,12 +118,13 @@ class ConversationScreen extends StatelessWidget {
                                 ),
                               ),
                               sizeBoxw10,
-                              model.messages[index].isSender == false
-                                  ? Image.asset(
-                                      '$staticAsset/Check.png',
-                                      scale: 3,
-                                    )
-                                  : Container(),
+                              // model.messages[index].isSender == false
+                              //     ? Image.asset(
+                              //         '$staticAsset/Check.png',
+                              //         scale: 3,
+                              //       )
+                              //     :
+                              Container(),
                             ],
                           )
                         ],
@@ -135,7 +140,7 @@ class ConversationScreen extends StatelessWidget {
               ///
               /// Text field
               ///
-              _chatFeild(),
+              _chatFeild(model),
             ],
           ),
         );
@@ -143,7 +148,7 @@ class ConversationScreen extends StatelessWidget {
     );
   }
 
-  _chatFeild() {
+  _chatFeild(ChattingProvider model) {
     return Align(
       alignment: Alignment.bottomCenter,
       child: Padding(
@@ -186,32 +191,16 @@ class ConversationScreen extends StatelessWidget {
                 scale: 3,
               ),
             ),
-            Container(
-              padding: EdgeInsets.fromLTRB(30, 20, 15, 30),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Image.asset(
-                    '$staticAsset/camera.png',
-                    scale: 3.5,
-                  ),
-                  sizeBoxw10,
-                  Image.asset(
-                    '$staticAsset/send.png',
-                    scale: 3.5,
-                  ),
-                ],
-              ),
-            ),
             Padding(
               padding: EdgeInsets.only(left: 40, top: 10),
               child: TextFormField(
                 style: subHeadingTextStyle.copyWith(
                   color: greyColor2,
                 ),
+                controller: model.messageController,
+                onChanged: (val) {
+                  model.message.textMessage = val;
+                },
                 decoration: InputDecoration(
                     contentPadding: EdgeInsets.only(
                       left: 45,
@@ -234,6 +223,32 @@ class ConversationScreen extends StatelessWidget {
                     //   ],
                     // ),
                     border: InputBorder.none),
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.fromLTRB(30, 20, 15, 30),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Image.asset(
+                    '$staticAsset/camera.png',
+                    scale: 3.5,
+                  ),
+                  sizeBoxw10,
+                  GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () {
+                      model.sendMessage();
+                    },
+                    child: Image.asset(
+                      '$staticAsset/send.png',
+                      scale: 3.5,
+                    ),
+                  ),
+                ],
               ),
             ),
           ],

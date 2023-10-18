@@ -39,16 +39,18 @@ class HomeProvider extends BaseViewModel {
 
   HomeProvider() {
     // currentLocation.determinePosition();
-    convertLatAndLongIntoAddress();
+
+    init();
     gender = lookingFor.first;
     desire = desires.first;
-    init();
     pageController = PageController(initialPage: 0);
     notifyListeners();
   }
   init() async {
     currentLocaion = await _locService.determinePosition();
-    await getAllAppUsers(); 
+    await getAllAppUsers();
+
+    convertLatAndLongIntoAddress();
   }
 
   convertLatAndLongIntoAddress() async {

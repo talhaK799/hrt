@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hart/ui/screens/chatting_screen/chatting_screen.dart';
+import 'package:hart/ui/screens/chatting_screen/conversation_screen.dart';
 import 'package:hart/ui/screens/connection_screen/connection_screen.dart';
 import 'package:hart/ui/screens/profile_screen/profile_screen.dart';
 import '../../../core/view_models/base_view_model.dart';
@@ -18,7 +18,7 @@ class RootViewModel extends BaseViewModel {
     allScreen = [
       HomeScreen(),
       ConnectionScreen(),
-      ChattingScreen(),
+      ConversationScreen(),
       ProfileScreen(),
     ];
   }

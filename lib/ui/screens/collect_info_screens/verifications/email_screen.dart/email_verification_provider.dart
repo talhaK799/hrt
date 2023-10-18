@@ -6,7 +6,6 @@ import 'package:hart/core/services/database_service.dart';
 import 'package:hart/core/view_models/base_view_model.dart';
 import 'package:email_otp/email_otp.dart';
 import 'package:hart/locator.dart';
-import 'package:hart/ui/screens/auth_screens/forgot_password/phone_no_verification/phone_no_verification.dart';
 import 'package:hart/ui/screens/collect_info_screens/verifications/email_screen.dart/code_confirmation_screen.dart';
 import 'package:hart/ui/screens/collect_info_screens/verifications/phone_no_screen/add_phone_no.dart';
 
