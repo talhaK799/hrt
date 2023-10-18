@@ -11,6 +11,7 @@ import 'package:hart/core/models/app_user.dart';
 import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/ui/custom_widgets/custom_button.dart';
 import 'package:hart/ui/custom_widgets/custom_drop_down.dart';
+import 'package:hart/ui/custom_widgets/custom_loader.dart';
 import 'package:hart/ui/screens/home/home_provider.dart';
 import 'package:lottie/lottie.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -26,25 +27,7 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
-  // late final AnimationController _animationController;
-
-  // @override
-  // void initState() {
-  //   _animationController = AnimationController(
-  //       vsync: this,
-  //       duration: Duration(
-  //         milliseconds: 400,
-  //       ));
-  //   super.initState();
-  // }
-
-  // @override
-  // void dispose() {
-  //   _animationController.dispose();
-  //   super.dispose();
-  // }
-
+class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -52,6 +35,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       child: Consumer<HomeProvider>(builder: (context, model, child) {
         return ModalProgressHUD(
           inAsyncCall: model.state == ViewState.busy,
+          progressIndicator: CustomLoader(),
           child: Scaffold(
               backgroundColor:
                   model.appUsers.isEmpty ? primaryColor : whiteColor,
@@ -110,6 +94,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     ],
                   ),
                   model.appUsers.isEmpty ? Container() : _likeButtons(model),
+
+                  ///
+                  /// Liking Animation
+                  ///
                   model.isLiked
                       ? Center(
                           child: Lottie.asset(
@@ -247,8 +235,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   style: subHeadingTextWhite,
                 ),
                 sizeBox20,
-                Image.asset(
-                  '$staticAsset/Subtract.png',
+                Center(
+                  child: Image.asset(
+                    '$staticAsset/Subtract.png',
+                    scale: 4,
+                    fit: BoxFit.cover,
+                  ),
                 ),
                 sizeBox20,
                 Text(

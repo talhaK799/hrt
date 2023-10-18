@@ -5,6 +5,7 @@ import 'package:hart/core/constants/strings.dart';
 import 'package:hart/core/constants/style.dart';
 import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/others/screen_utils.dart';
+import 'package:hart/ui/custom_widgets/custom_loader.dart';
 import 'package:hart/ui/custom_widgets/custom_text_feild.dart';
 import 'package:hart/ui/screens/base_screen.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -23,6 +24,7 @@ class SignUpWithEmail extends StatelessWidget {
           Consumer<SignUpwithEmailProvider>(builder: (context, model, child) {
         return ModalProgressHUD(
           inAsyncCall: model.state == ViewState.busy,
+          progressIndicator: CustomLoader(),
           child: BaseScreen(
             body: Padding(
               padding: const EdgeInsets.fromLTRB(30, 40, 30, 0),

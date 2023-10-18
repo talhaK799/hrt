@@ -7,6 +7,7 @@ import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/models/app_user.dart';
 import 'package:hart/core/models/matches.dart';
 import 'package:hart/core/others/screen_utils.dart';
+import 'package:hart/ui/custom_widgets/custom_loader.dart';
 import 'package:hart/ui/screens/connection_screen/connections_provider.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
@@ -24,6 +25,8 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
       child: Consumer<ConnectionsProvider>(builder: (context, model, child) {
         return ModalProgressHUD(
           inAsyncCall: model.state == ViewState.busy,
+          
+          progressIndicator: CustomLoader(),
           child: Scaffold(
             backgroundColor:
                 model.likingUsers.isNotEmpty ? whiteColor : primaryColor,

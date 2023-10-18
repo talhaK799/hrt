@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hart/core/models/app_user.dart';
+import 'package:hart/core/models/chat_message.dart';
+import 'package:hart/core/models/conversation.dart';
 import 'package:hart/core/models/info_item.dart';
 import 'package:hart/core/models/matches.dart';
 
@@ -60,6 +62,26 @@ class DatabaseService {
       }
     } catch (e) {
       print("Exception@addNewRequests ==> $e");
+    }
+    return list;
+  }
+
+  getAllMatches(String currentUserId) async {
+    List<Matches> list = [];
+    try {
+      final snapshot = await _db
+          .collection("Matches")
+          .where("isAccepted", isEqualTo: true)
+          .where("likedUserId", isEqualTo: currentUserId)
+          .get();
+      if (snapshot.docs.length > 0) {
+        snapshot.docs.forEach((element) {
+          list.add(Matches.fromJson(element.data(), element.id));
+        });
+        print('match data ===> ${list.first.likedByUserId}');
+      }
+    } catch (e) {
+      print("Exception@getAllMatches ==> $e");
     }
     return list;
   }
@@ -188,7 +210,75 @@ class DatabaseService {
       return AppUser();
     }
   }
+/// ========================================================== ///
+  /// ==================== Chat Section ======================== ///
+  /// ========================================================== ///
 
+  ///
+  /// add new message
+  ///
+  addNewUserMessage(
+      String messageFrom, String messageTo, Message message) async {
+    try {
+      ///
+      /// From User message
+      ///
+      await _db
+          .collection("Conversations")
+          .doc("${messageFrom}")
+          .collection("Chats")
+          .doc("${messageTo}")
+          .collection("messages")
+          .add(message.toJson());
+
+      // await _db
+      //     .collection("Conversations")
+      //     .doc("${messageFrom.id}")
+      //     .collection("Chats")
+      //     .doc("${messageTo.id}")
+      //     .set(messageTo.toJson());
+
+      ///
+      /// to user message
+      ///
+      await _db
+          .collection("Conversations")
+          .doc("${messageTo}")
+          .collection("Chats")
+          .doc("${messageFrom}")
+          .collection("messages")
+          .add(message.toJson());
+
+      // await _db
+      //     .collection("Conversations")
+      //     .doc("${messageTo.id}")
+      //     .collection("Chats")
+      //     .doc("${messageFrom.id}")
+      //     .set(messageFrom.toJson());
+    } catch (e) {
+      print('Exception@DatabaseServices/addNewMessage ==> $e');
+    }
+  }
+
+  Stream<QuerySnapshot>? getRealTimeChat(
+      String currentUserId, String toUserId) {
+    print("Current User id ==> $currentUserId");
+    print("to user id ==> $toUserId");
+    try {
+      Stream<QuerySnapshot> messageSnapshot = _db
+          .collection("Conversations")
+          .doc(currentUserId)
+          .collection("Chats")
+          .doc(toUserId)
+          .collection("messages")
+          .orderBy('sendAt', descending: true)
+          .snapshots();
+      return messageSnapshot;
+    } catch (e) {
+      print('Exception@GetUserMessagesStream=>$e');
+      return null;
+    }
+  }
   // updateClientFcm(token, id) async {
   //   await _db.collection("app_user").doc(id).update({'fcmToken': token}).then(
   //       (value) => debugPrint('fcm updated successfully'));

@@ -5,6 +5,7 @@ import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/ui/custom_widgets/custom_back_button.dart';
 import 'package:hart/ui/custom_widgets/custom_button.dart';
+import 'package:hart/ui/custom_widgets/custom_loader.dart';
 import 'package:hart/ui/custom_widgets/custom_progress_indicator.dart';
 import 'package:hart/ui/custom_widgets/custom_text_field_2.dart';
 import 'package:hart/ui/screens/collect_info_screens/idetity_screen/identity_screen.dart';
@@ -24,6 +25,7 @@ class NickNameScreen extends StatelessWidget {
       child: Consumer<NickNameProvider>(builder: (context, model, child) {
         return ModalProgressHUD(
           inAsyncCall: model.state==ViewState.busy,
+          progressIndicator: CustomLoader(),
           child: Scaffold(
             body: Padding(
               padding: EdgeInsets.only(

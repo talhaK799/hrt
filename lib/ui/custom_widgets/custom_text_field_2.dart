@@ -6,6 +6,7 @@ import 'package:hart/core/constants/style.dart';
 // ignore: must_be_immutable
 class CustomTextField2 extends StatelessWidget {
   String? hintText;
+  String? initialValue;
   final validator;
   final onChange;
   // bool? obscure;
@@ -17,6 +18,7 @@ class CustomTextField2 extends StatelessWidget {
     required this.onChange,
     required this.validator,
     this.controller,
+    this.initialValue,
     // this.obscure,
     // this.suffex,
   });
@@ -37,6 +39,7 @@ class CustomTextField2 extends StatelessWidget {
         Padding(
           padding: EdgeInsets.only(left: 0, top: 10),
           child: TextFormField(
+            initialValue: initialValue,
             validator: validator,
             onChanged: onChange,
             controller: controller,

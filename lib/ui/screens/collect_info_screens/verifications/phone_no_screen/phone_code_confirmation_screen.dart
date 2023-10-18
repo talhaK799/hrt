@@ -3,6 +3,7 @@ import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/ui/custom_widgets/custom_button.dart';
+import 'package:hart/ui/custom_widgets/custom_loader.dart';
 import 'package:hart/ui/screens/collect_info_screens/verifications/phone_no_screen/phone_no_provider.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:pinput/pinput.dart';
@@ -18,6 +19,7 @@ class PhoneCodeConfirmationScreen extends StatelessWidget {
     return Consumer<PhoneNoProvider>(builder: (context, model, child) {
       return ModalProgressHUD(
         inAsyncCall: model.state == ViewState.busy,
+        progressIndicator: CustomLoader(),
         child: Scaffold(
           body: Padding(
             padding: EdgeInsets.only(

@@ -62,8 +62,12 @@ class PhoneNoProvider extends BaseViewModel {
       // isTimeExpired = false;
       authService.appUser.phoneNumber = countryCode + appUser.phoneNumber!;
       print("Phone number ==> ${authService.appUser.phoneNumber}");
+      
+      setState(ViewState.busy);
       await verificationService.sendVerificationCodeThroughPhoneNumber(
           authService.appUser.phoneNumber!);
+          
+      setState(ViewState.idle);
       Get.to(() => PhoneCodeConfirmationScreen());
       // startTimer();
       notifyListeners();
@@ -77,7 +81,7 @@ class PhoneNoProvider extends BaseViewModel {
 
     if (msg == "Phone number is verified") {
       // // _timer.cancel();
-      // setState(ViewState.busy);
+      setState(ViewState.busy);
       // // _timer.cancel();
       authService.appUser.isPhoneNoVerified = true;
       authService.appUser.phoneNumber = countryCode + appUser.phoneNumber!;

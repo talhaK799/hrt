@@ -7,7 +7,7 @@ import 'package:hart/core/services/localization_services.dart';
 import 'package:hart/core/services/locato_storage_service.dart';
 import 'package:hart/core/view_models/theme_provider.dart';
 import 'package:hart/locator.dart';
-import 'package:hart/ui/screens/chatting_screen/chatting_provider.dart';
+import 'package:hart/ui/screens/chatting_screen/conversation_provider.dart';
 import 'package:hart/ui/screens/collect_info_screens/verifications/phone_no_screen/phone_no_provider.dart';
 import 'package:hart/ui/screens/home/home_provider.dart';
 import 'package:hart/ui/screens/splash_screen.dart';
@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
             create: (context) => HomeProvider(),
           ),
           ChangeNotifierProvider(
-            create: (context) => ChattingProvider(),
+            create: (context) => ConversationProvider(),
           ),
           ChangeNotifierProvider(
             create: (context) => EmailVerificationProvider(),
