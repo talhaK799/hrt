@@ -1,8 +1,7 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:hart/core/constants/colors.dart';
+import 'package:hart/core/constants/format_date.dart';
 import 'package:hart/core/constants/strings.dart';
 import 'package:hart/core/constants/style.dart';
 import 'package:hart/core/enums/view_state.dart';
@@ -12,178 +11,184 @@ import 'package:hart/ui/custom_widgets/custom_button.dart';
 import 'package:hart/ui/custom_widgets/custom_loader.dart';
 import 'package:hart/ui/screens/chatting_screen/conversation_provider.dart';
 import 'package:hart/ui/screens/chatting_screen/conversation_screen/chatting/chatting_screen.dart';
-import 'package:hart/ui/screens/chatting_screen/group_chatting/group_chatting_screen.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 class ConversationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Consumer<ConversationProvider>(builder: (context, model, child) {
-      return ModalProgressHUD(
-        inAsyncCall: model.state == ViewState.busy,
-        progressIndicator: CustomLoader(),
-        child: Scaffold(
-            backgroundColor: primaryColor,
-            body: Stack(
-              children: [
-                Padding(
-                  padding: EdgeInsets.fromLTRB(32, 50, 32, 16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Chat',
-                        style: subHeadingTextWhite,
-                      ),
-                      GestureDetector(
-                        child: Image.asset(
-                          '$staticAsset/more.png',
-                          scale: 3.5,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 100),
-                  child: Container(
-                    padding: EdgeInsets.all(24),
-                    decoration: const BoxDecoration(
-                      color: whiteColor,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(32),
-                        topRight: Radius.circular(32),
-                      ),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+    return ChangeNotifierProvider(
+      create: (context) => ConversationProvider(),
+      child: Consumer<ConversationProvider>(builder: (context, model, child) {
+        return ModalProgressHUD(
+          inAsyncCall: model.state == ViewState.busy,
+          progressIndicator: CustomLoader(),
+          child: Scaffold(
+              backgroundColor: primaryColor,
+              body: Stack(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(32, 50, 32, 16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Your Matches',
-                          style: subHeadingTextStyle2,
+                          'Chat',
+                          style: subHeadingTextWhite,
                         ),
-
-                        ///
-                        /// Matched Users List
-                        ///
-                        Container(
-                          height: 0.15.sh,
-                          child: ListView.separated(
-                            // shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            itemCount: model.matchedUsers.length,
-                            // model.matchedUsers.length,
-                            itemBuilder: (context, index) {
-                              return GestureDetector(
-                                onTap: () {
-                                  Get.to(
-                                    ChattingScreen(),
-                                  );
-                                },
-                                child: CircleAvatar(
-                                  // width: 60,
-                                  // height: 60,
-                                  foregroundImage:
-                                      model.matchedUsers[index].images!.isEmpty
-                                          ? null
-                                          : NetworkImage(model
-                                              .matchedUsers[index]
-                                              .images!
-                                              .first),
-                                  maxRadius: 35.r,
-                                  child: model
-                                          .matchedUsers[index].images!.isEmpty
-                                      ? Image.asset('$staticAsset/person.png')
-                                      : null,
-                                ),
-                              );
-                            },
-                            separatorBuilder: (context, index) => SizedBox(
-                              width: 15.w,
-                            ),
-                          ),
-                        ),
-                        Text(
-                          'All',
-                          style: subHeadingTextStyle2,
-                        ),
-                        sizeBox20,
-                        Expanded(
-                          child: ListView.separated(
-                            padding: EdgeInsets.zero,
-                            shrinkWrap: true,
-                            itemCount: 6,
-                            itemBuilder: (context, index) {
-                              return model.chats[index].isGroup == true
-
-                                  ///
-                                  ///Groups
-                                  ///
-                                  ? Slidable(
-                                      endActionPane: ActionPane(
-                                        extentRatio: 0.3,
-                                        motion: BehindMotion(),
-                                        children: [
-                                          SlidableAction(
-                                            backgroundColor: pinkColor,
-                                            foregroundColor: primaryColor,
-                                            autoClose: true,
-                                            icon: Icons.person_outline,
-                                            onPressed: (context) {
-                                              _disconnectionSheet(context);
-                                            },
-                                          ),
-                                          SlidableAction(
-                                            foregroundColor: primaryColor,
-                                            padding: EdgeInsets.only(
-                                              // left: 10,
-                                              right: 20,
-                                            ),
-                                            backgroundColor: pinkColor,
-                                            autoClose: true,
-                                            icon: Icons.close_sharp,
-                                            onPressed: (context) {
-                                              _leaveGroupBottomsheet(context);
-                                            },
-                                          ),
-                                        ],
-                                      ),
-                                      dragStartBehavior:
-                                          DragStartBehavior.start,
-                                      child: _normalChat(
-                                        model,
-                                        index,
-                                        () => Get.to(
-                                          GroupChattingScreen(),
-                                        ),
-                                      ),
-                                    )
-
-                                  ///
-                                  /// Normal Chats
-                                  ///
-                                  : _normalChat(
-                                      model,
-                                      index,
-                                      () => Get.to(
-                                        ChattingScreen(),
-                                      ),
-                                    );
-                            },
-                            separatorBuilder: (context, index) => SizedBox(
-                              height: 15.h,
-                            ),
+                        GestureDetector(
+                          child: Image.asset(
+                            '$staticAsset/more.png',
+                            scale: 3.5,
                           ),
                         ),
                       ],
                     ),
                   ),
-                )
-              ],
-            )),
-      );
-    });
+                  Padding(
+                    padding: const EdgeInsets.only(top: 100),
+                    child: Container(
+                      padding: EdgeInsets.all(24),
+                      decoration: const BoxDecoration(
+                        color: whiteColor,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(32),
+                          topRight: Radius.circular(32),
+                        ),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Your Matches',
+                            style: subHeadingTextStyle2,
+                          ),
+
+                          ///
+                          /// Matched Users List
+                          ///
+                          Container(
+                            height: 0.15.sh,
+                            child: ListView.separated(
+                              // shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: model.matchedUsers.length,
+                              // model.matchedUsers.length,
+                              itemBuilder: (context, index) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    Get.to(
+                                      ChattingScreen(
+                                        toUserId: model.matchedUsers[index].id!,
+                                      ),
+                                    );
+                                  },
+                                  child: CircleAvatar(
+                                    // width: 60,
+                                    // height: 60,
+                                    foregroundImage: model
+                                            .matchedUsers[index].images!.isEmpty
+                                        ? null
+                                        : NetworkImage(model
+                                            .matchedUsers[index].images!.first),
+                                    maxRadius: 35.r,
+                                    child: model
+                                            .matchedUsers[index].images!.isEmpty
+                                        ? Image.asset('$staticAsset/person.png')
+                                        : null,
+                                  ),
+                                );
+                              },
+                              separatorBuilder: (context, index) => SizedBox(
+                                width: 15.w,
+                              ),
+                            ),
+                          ),
+                          Text(
+                            'All',
+                            style: subHeadingTextStyle2,
+                          ),
+                          sizeBox20,
+                          Expanded(
+                            child: ListView.separated(
+                              padding: EdgeInsets.zero,
+                              shrinkWrap: true,
+                              itemCount: model.conversations.length,
+                              itemBuilder: (context, index) {
+                                return
+                                    //  model.chats[index].isGroup == true
+
+                                    //     ///
+                                    //     ///Groups
+                                    //     ///
+                                    //     ? Slidable(
+                                    //         endActionPane: ActionPane(
+                                    //           extentRatio: 0.3,
+                                    //           motion: BehindMotion(),
+                                    //           children: [
+                                    //             SlidableAction(
+                                    //               backgroundColor: pinkColor,
+                                    //               foregroundColor: primaryColor,
+                                    //               autoClose: true,
+                                    //               icon: Icons.person_outline,
+                                    //               onPressed: (context) {
+                                    //                 _disconnectionSheet(context);
+                                    //               },
+                                    //             ),
+                                    //             SlidableAction(
+                                    //               foregroundColor: primaryColor,
+                                    //               padding: EdgeInsets.only(
+                                    //                 // left: 10,
+                                    //                 right: 20,
+                                    //               ),
+                                    //               backgroundColor: pinkColor,
+                                    //               autoClose: true,
+                                    //               icon: Icons.close_sharp,
+                                    //               onPressed: (context) {
+                                    //                 _leaveGroupBottomsheet(context);
+                                    //               },
+                                    //             ),
+                                    //           ],
+                                    //         ),
+                                    //         dragStartBehavior:
+                                    //             DragStartBehavior.start,
+                                    //         child: _normalChat(
+                                    //           model,
+                                    //           index,
+                                    //           () => Get.to(
+                                    //             GroupChattingScreen(),
+                                    //           ),
+                                    //         ),
+                                    //       )
+
+                                    ///
+                                    /// Normal Chats
+                                    ///
+                                    // :
+                                    _normalChat(
+                                  model,
+                                  index,
+                                  () => Get.to(
+                                    ChattingScreen(
+                                      toUserId: model.conversations[index].id!,
+                                    ),
+                                  ),
+                                );
+                              },
+                              separatorBuilder: (context, index) => SizedBox(
+                                height: 15.h,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              )),
+        );
+      }),
+    );
   }
 
   _disconnectionSheet(BuildContext context) {
@@ -325,24 +330,31 @@ class ConversationScreen extends StatelessWidget {
       //           ConversationScreen(),
       //         );
       // },
-      leading: CircleAvatar(
-        radius: 35.r,
-        backgroundImage: AssetImage(
-          '$dynamicAsset/profile.png',
-        ),
-      ),
+      leading: model.conversations[index].imageUrl == null
+          ? CircleAvatar(
+              radius: 35.r,
+              backgroundImage: AssetImage(
+                '$staticAsset/person.png',
+              ),
+            )
+          : CircleAvatar(
+              radius: 35.r,
+              backgroundImage: NetworkImage(
+                model.conversations[index].imageUrl!,
+              ),
+            ),
       title: Text(
-        model.chats[index].name!,
+        model.conversations[index].name!,
         style: subHeadingTextStyle2,
       ),
       subtitle: Text(
-        model.chats[index].desscription!,
+        model.conversations[index].lastMessage!,
         style: subtitleText.copyWith(color: greyColor2),
       ),
       trailing: Column(
         children: [
           Text(
-            '04 : 30',
+            onlyTime.format(model.conversations[index].lastMessageAt!),
             style: miniText,
           ),
         ],

@@ -35,9 +35,9 @@ class _SplashScreenState extends State<SplashScreen> {
     print(
         'this is the current location ${position.latitude} === ${position.longitude}');
 
-    Get.to(
-      AddPhoneNumberScreen(),
-    );
+    // Get.to(
+    //   AddPhoneNumberScreen(),
+    // );
 
     if (_auth.isLogin) {
       if (!_auth.appUser.isEmailVerified!) {
