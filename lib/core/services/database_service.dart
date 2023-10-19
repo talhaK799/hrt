@@ -72,7 +72,7 @@ class DatabaseService {
       final snapshot = await _db
           .collection("Matches")
           .where("isAccepted", isEqualTo: true)
-          .where("likedUserId", isEqualTo: currentUserId)
+          .where("likedUserId", isEqualTo: currentUserId,)
           .get();
       if (snapshot.docs.length > 0) {
         snapshot.docs.forEach((element) {
@@ -210,7 +210,8 @@ class DatabaseService {
       return AppUser();
     }
   }
-/// ========================================================== ///
+
+  /// ========================================================== ///
   /// ==================== Chat Section ======================== ///
   /// ========================================================== ///
 
@@ -218,43 +219,43 @@ class DatabaseService {
   /// add new message
   ///
   addNewUserMessage(
-      String messageFrom, String messageTo, Message message) async {
+      Conversation messageFrom, Conversation messageTo, Message message) async {
     try {
       ///
       /// From User message
       ///
       await _db
           .collection("Conversations")
-          .doc("${messageFrom}")
+          .doc("${messageFrom.id}")
           .collection("Chats")
-          .doc("${messageTo}")
+          .doc("${messageTo.id}")
           .collection("messages")
           .add(message.toJson());
 
-      // await _db
-      //     .collection("Conversations")
-      //     .doc("${messageFrom.id}")
-      //     .collection("Chats")
-      //     .doc("${messageTo.id}")
-      //     .set(messageTo.toJson());
+      await _db
+          .collection("Conversations")
+          .doc("${messageFrom}")
+          .collection("Chats")
+          .doc("${messageTo.id}")
+          .set(messageTo.toJson());
 
       ///
       /// to user message
       ///
       await _db
           .collection("Conversations")
-          .doc("${messageTo}")
+          .doc("${messageTo.id}")
           .collection("Chats")
-          .doc("${messageFrom}")
+          .doc("${messageFrom.id}")
           .collection("messages")
           .add(message.toJson());
 
-      // await _db
-      //     .collection("Conversations")
-      //     .doc("${messageTo.id}")
-      //     .collection("Chats")
-      //     .doc("${messageFrom.id}")
-      //     .set(messageFrom.toJson());
+      await _db
+          .collection("Conversations")
+          .doc("${messageTo.id}")
+          .collection("Chats")
+          .doc("${messageFrom.id}")
+          .set(messageFrom.toJson());
     } catch (e) {
       print('Exception@DatabaseServices/addNewMessage ==> $e');
     }
@@ -279,6 +280,57 @@ class DatabaseService {
       return null;
     }
   }
+
+  Stream<QuerySnapshot>? getAllConverationList(String id) {
+    try {
+      Stream<QuerySnapshot> conversationSnapshot = _db
+          .collection("Conversations")
+          .doc(id)
+          .collection('Chats')
+          .orderBy("lastMessageAt", descending: true)
+          .snapshots();
+      return conversationSnapshot;
+    } catch (e) {
+      print("Exception@database/GetAllConversationList ==> $e");
+      return null;
+    }
+  }
+  //  messageSeen(String fromUserId, String toUserId) async {
+  //   try {
+  //     await _db
+  //         .collection("Conversations")
+  //         .doc("${fromUserId}")
+  //         .collection("Chats")
+  //         .doc("${toUserId}")
+  //         .update(
+  //       {
+  //         "isMessageSeen": true,
+  //         "noOfUnReadMsgs": 0,
+  //       },
+  //     );
+  //   } catch (e) {
+  //     print("Exception@Datbase/MessageSeen==>$e");
+  //   }
+  // }
+
+  // checkUnReadMsgs(String fromUserId, String toUserId) async {
+  //   try {
+  //     final snapshot = await _db
+  //         .collection("Conversations")
+  //         .doc(toUserId)
+  //         .collection('Chats')
+  //         .doc(fromUserId)
+  //         .get();
+  //     if (snapshot.exists) {
+  //       return Conversation.fromJson(snapshot.data());
+  //     } else {
+  //       return Conversation();
+  //     }
+  //   } catch (e) {
+  //     print("Exception@Database/checkUnReadMsgs ==> $e");
+  //     return Conversation();
+  //   }
+  // }
   // updateClientFcm(token, id) async {
   //   await _db.collection("app_user").doc(id).update({'fcmToken': token}).then(
   //       (value) => debugPrint('fcm updated successfully'));
