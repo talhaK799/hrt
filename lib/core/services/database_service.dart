@@ -5,6 +5,7 @@ import 'package:hart/core/models/chat_message.dart';
 import 'package:hart/core/models/conversation.dart';
 import 'package:hart/core/models/info_item.dart';
 import 'package:hart/core/models/matches.dart';
+import 'package:hart/core/models/user_match.dart';
 
 class DatabaseService {
   final _db = FirebaseFirestore.instance;
@@ -66,25 +67,67 @@ class DatabaseService {
     return list;
   }
 
-  getAllMatches(String currentUserId) async {
+  getProgressedRequest(String currentUserId) async {
     List<Matches> list = [];
     try {
       final snapshot = await _db
           .collection("Matches")
-          .where("isAccepted", isEqualTo: true)
-          .where("likedUserId", isEqualTo: currentUserId,)
+          .where("isProgressed", isEqualTo: true)
           .get();
       if (snapshot.docs.length > 0) {
         snapshot.docs.forEach((element) {
           list.add(Matches.fromJson(element.data(), element.id));
         });
-        print('match data ===> ${list.first.likedByUserId}');
       }
     } catch (e) {
-      print("Exception@getAllMatches ==> $e");
+      print("Exception@addNewRequests ==> $e");
     }
     return list;
   }
+
+  // addNewMatch(String userId, UserMatch match) async {
+  //   try {
+  //     final snapshot = await _db
+  //         .collection("All_Matches")
+  //         .doc(userId)
+  //         .collection("My_Matched")
+  //         .doc(match.userId)
+  //         .get();
+  //     if (!snapshot.exists) {
+  //       await _db
+  //           .collection("All_Matches")
+  //           .doc(userId)
+  //           .collection("My_Matched")
+  //           .doc(match.userId)
+  //           .set(match.toJson());
+  //     }
+
+  //     return true;
+  //   } catch (e) {
+  //     print("Exception@addNewMatch ==> $e");
+  //     return false;
+  //   }
+  // }
+
+  // getAllMatches(String currentUserId) async {
+  //   List<Matches> list = [];
+  //   try {
+  //     final snapshot = await _db
+  //         .collection("Matches")
+  //         .where("isAccepted", isEqualTo: true)
+  //         .where("likedUserId", isEqualTo: currentUserId,)
+  //         .get();
+  //     if (snapshot.docs.length > 0) {
+  //       snapshot.docs.forEach((element) {
+  //         list.add(Matches.fromJson(element.data(), element.id));
+  //       });
+  //       print('match data ===> ${list.first.likedByUserId}');
+  //     }
+  //   } catch (e) {
+  //     print("Exception@getAllMatches ==> $e");
+  //   }
+  //   return list;
+  // }
 
   updateRequest(Matches request) async {
     try {

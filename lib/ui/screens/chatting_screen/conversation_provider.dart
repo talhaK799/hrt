@@ -22,6 +22,7 @@ class ConversationProvider extends BaseViewModel {
   AppUser user = AppUser();
   Message message = Message();
   List<Matches> matches = [];
+  List<Matches> acceptedMatches = [];
   List<AppUser> matchedUsers = [];
 
   ConversationProvider() {
@@ -30,15 +31,39 @@ class ConversationProvider extends BaseViewModel {
   }
 
   getMatches() async {
+    matchedUsers = [];
+    matches = [];
+    acceptedMatches = [];
     setState(ViewState.busy);
     currentUser.appUser = await db.getAppUser(currentUser.appUser.id);
-    matches = await db.getAllMatches(currentUser.appUser.id!);
-    for (var m in matches) {
-      user = await db.getAppUser(m.likedByUserId);
+    matches = await db.getProgressedRequest(currentUser.appUser.id!);
+    for (var i = 0; i < matches.length; i++) {
+      if (matches[i].likedUserId == currentUser.appUser.id) {
+        print("Match found");
+        acceptedMatches.add(matches[i]);
+
+        notifyListeners();
+      } else if (matches[i].likedByUserId == currentUser.appUser.id) {
+        acceptedMatches.add(matches[i]);
+      } else {
+        print("Match not found");
+      }
+    }
+
+    for (var i = 0; i < acceptedMatches.length; i++) {
+      if (acceptedMatches[i].likedUserId == currentUser.appUser.id) {
+        acceptedMatches[i].otherUserId = acceptedMatches[i].likedByUserId;
+      } else if (acceptedMatches[i].likedByUserId == currentUser.appUser.id) {
+        acceptedMatches[i].otherUserId = acceptedMatches[i].likedUserId;
+      }
+    }
+    for (var m in acceptedMatches) {
+      user = await db.getAppUser(m.otherUserId);
       matchedUsers.add(user);
+      user = AppUser();
+      notifyListeners();
     }
     setState(ViewState.idle);
-    notifyListeners();
   }
 
   getConversations() async {
