@@ -6,6 +6,8 @@ class Matches {
   bool? isRejected;
   String? likedByUserId;
   String? likedUserId;
+  String? otherUserId;
+
 
   Matches({
     this.isAccepted,
@@ -15,6 +17,7 @@ class Matches {
     this.isRejected,
     this.likedByUserId,
     this.likedUserId,
+    this.otherUserId,
   });
 
   Matches.fromJson(json, id) {
@@ -24,6 +27,7 @@ class Matches {
     isRejected = json['isRejected'];
     likedByUserId = json['likedByUserId'];
     likedUserId = json['likedUserId'];
+    otherUserId = json['otherUserId'];
   }
 
   toJson() {
@@ -34,6 +38,7 @@ class Matches {
       'createdAt': DateTime.now(),
       'likedByUserId': likedByUserId ?? '',
       'likedUserId': likedUserId ?? '',
+      'otherUserId': otherUserId ?? '',
     };
   }
 }

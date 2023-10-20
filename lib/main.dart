@@ -8,6 +8,7 @@ import 'package:hart/core/services/locato_storage_service.dart';
 import 'package:hart/core/view_models/theme_provider.dart';
 import 'package:hart/locator.dart';
 import 'package:hart/ui/screens/chatting_screen/conversation_provider.dart';
+import 'package:hart/ui/screens/chatting_screen/conversation_screen/chatting/chatting_provider.dart';
 import 'package:hart/ui/screens/collect_info_screens/verifications/phone_no_screen/phone_no_provider.dart';
 import 'package:hart/ui/screens/home/home_provider.dart';
 import 'package:hart/ui/screens/splash_screen.dart';

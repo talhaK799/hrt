@@ -14,6 +14,7 @@ import '../../../../../core/services/auth_service.dart';
 class ChattingProvider extends BaseViewModel {
   final db = DatabaseService();
   final currentUser = locator<AuthService>();
+  
 
   TextEditingController messageController = TextEditingController();
   AppUser toUser = AppUser();

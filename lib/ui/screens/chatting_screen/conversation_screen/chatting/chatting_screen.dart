@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hart/core/constants/colors.dart';
+import 'package:hart/core/constants/format_date.dart';
 import 'package:hart/core/constants/strings.dart';
 import 'package:hart/core/constants/style.dart';
 import 'package:hart/core/enums/view_state.dart';
@@ -29,6 +30,9 @@ class ChattingScreen extends StatelessWidget {
             backgroundColor: primaryColor,
             body: Stack(
               children: [
+                ////
+                /// App Bar
+                ///
                 Padding(
                   padding: EdgeInsets.fromLTRB(32, 50, 32, 16),
                   child: CustomBackButton(),
@@ -36,12 +40,19 @@ class ChattingScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(60, 72, 24, 16),
                   child: ListTile(
-                    leading: CircleAvatar(
-                      radius: 35.r,
-                      backgroundImage: AssetImage('$dynamicAsset/profile.png'),
-                    ),
+                    leading: model.toUser.images!.isEmpty
+                        ? CircleAvatar(
+                            radius: 35.r,
+                            backgroundImage:
+                                AssetImage('$dynamicAsset/person.png'),
+                          )
+                        : CircleAvatar(
+                            radius: 35.r,
+                            backgroundImage:
+                                NetworkImage(model.toUser.images!.first),
+                          ),
                     title: Text(
-                      'Laiba',
+                      model.toUser.name!,
                       style: subHeadingTextStyle,
                     ),
                     subtitle: Text(
@@ -63,6 +74,10 @@ class ChattingScreen extends StatelessWidget {
                     ),
                   ),
                 ),
+
+                ////
+                /// Chats
+                ///
                 Padding(
                   padding: const EdgeInsets.only(top: 150),
                   child: Container(
@@ -72,73 +87,12 @@ class ChattingScreen extends StatelessWidget {
                       color: whiteColor,
                     ),
                     child: ListView.separated(
+                      physics: BouncingScrollPhysics(),
                       shrinkWrap: true,
                       reverse: true,
                       itemCount: model.messages.length,
                       itemBuilder: (context, index) {
-                        return Column(
-                          children: [
-                            Container(
-                              // margin: model.messages[index].isSender == true
-                              //     ? EdgeInsets.only(
-                              //         right: 100,
-                              //       )
-                              //     : EdgeInsets.only(
-                              //         left: 100,
-                              //       ),
-                              padding: EdgeInsets.all(15),
-                              decoration: BoxDecoration(
-                                  color:
-                                      // model.messages[index].isSender!
-                                      //     ? greyColor
-                                      //     :
-                                      primaryColor,
-                                  borderRadius: BorderRadius.circular(12.r)),
-                              child: Align(
-                                // alignment: model.messages[index].isSender == true
-                                //     ? Alignment.topRight
-                                //     : Alignment.topLeft,
-                                child: Text(
-                                  model.messages[index].textMessage!,
-                                  style: subtitleText.copyWith(
-                                    fontSize: 12.sp,
-                                    color:
-                                        // model.messages[index].isSender!
-                                        //     ? blackColor
-                                        //     :
-                                        whiteColor,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            sizeBox10,
-                            Row(
-                              // mainAxisAlignment:
-                              //     model.messages[index].isSender == true
-                              //         ? MainAxisAlignment.start
-                              //         : MainAxisAlignment.end,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 40),
-                                  child: Text(
-                                    '12 : 49',
-                                    style: miniText.copyWith(
-                                      color: greyColor2,
-                                    ),
-                                  ),
-                                ),
-                                sizeBoxw10,
-                                // model.messages[index].isSender == false
-                                //     ? Image.asset(
-                                //         '$staticAsset/Check.png',
-                                //         scale: 3,
-                                //       )
-                                //     :
-                                Container(),
-                              ],
-                            )
-                          ],
-                        );
+                        return _chatMessage(model, index);
                       },
                       separatorBuilder: (context, index) => SizedBox(
                         height: 15.h,
@@ -150,7 +104,41 @@ class ChattingScreen extends StatelessWidget {
                 ///
                 /// Text field
                 ///
-                _chatFeild(model),
+                _chatFeild(model, context),
+                // Align(
+                //   alignment: Alignment.bottomCenter,
+                //   child: Padding(
+                //     padding:
+                //         const EdgeInsets.only(bottom: 80, left: 32, right: 32),
+                //     child: Stack(
+                //       children: [
+                //         Container(
+                //           height: 0.45.sh,
+                //           decoration: BoxDecoration(
+                //               color: greyColor2,
+                //               image: DecorationImage(
+                //                 image: AssetImage('$dynamicAsset/image.png'),
+                //                 fit: BoxFit.cover,
+                //               ),
+                //               borderRadius: BorderRadius.circular(12.r)),
+                //           width: 1.sw,
+                //           alignment: Alignment.bottomCenter,
+                //           child: ElevatedButton(
+                //             onPressed: () {},
+                //             child: Text('Pick Image'),
+                //           ),
+                //         ),
+                //         // Align(
+                //         //   alignment: Alignment.bottomCenter,
+                //         //   child: ElevatedButton(
+                //         //     onPressed: () {},
+                //         //     child: Text('Pick Image'),
+                //         //   ),
+                //         // )
+                //       ],
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           ),
@@ -159,7 +147,82 @@ class ChattingScreen extends StatelessWidget {
     );
   }
 
-  _chatFeild(ChattingProvider model) {
+  _chatMessage(ChattingProvider model, int index) {
+    return Column(
+      children: [
+        Container(
+          margin:
+              model.messages[index].fromUserId == model.currentUser.appUser.id
+                  ? EdgeInsets.only(
+                      left: 100,
+                    )
+                  : EdgeInsets.only(
+                      right: 100,
+                    ),
+          padding: EdgeInsets.all(15),
+          decoration: BoxDecoration(
+            color:
+                model.messages[index].fromUserId == model.currentUser.appUser.id
+                    ? primaryColor
+                    : greyColor,
+            borderRadius:
+                model.messages[index].fromUserId == model.currentUser.appUser.id
+                    ? BorderRadius.only(
+                        topLeft: Radius.circular(12.r),
+                        topRight: Radius.circular(12.r),
+                        bottomLeft: Radius.circular(12.r),
+                      )
+                    : BorderRadius.only(
+                        topLeft: Radius.circular(12.r),
+                        topRight: Radius.circular(12.r),
+                        bottomRight: Radius.circular(12.r),
+                      ),
+          ),
+          child: Align(
+            alignment: Alignment.topLeft,
+            child: Text(
+              model.messages[index].textMessage!,
+              style: subtitleText.copyWith(
+                fontSize: 15.sp,
+                color: model.messages[index].fromUserId ==
+                        model.currentUser.appUser.id
+                    ? whiteColor
+                    : blackColor,
+              ),
+            ),
+          ),
+        ),
+        sizeBox10,
+        Row(
+          mainAxisAlignment:
+              model.messages[index].fromUserId == model.currentUser.appUser.id
+                  ? MainAxisAlignment.end
+                  : MainAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 40),
+              child: Text(
+                onlyTime.format(model.messages[index].sendAt!),
+                style: miniText.copyWith(
+                  color: greyColor2,
+                ),
+              ),
+            ),
+            sizeBoxw10,
+            // model.messages[index].isSender == false
+            //     ? Image.asset(
+            //         '$staticAsset/Check.png',
+            //         scale: 3,
+            //       )
+            //     :
+            Container(),
+          ],
+        )
+      ],
+    );
+  }
+
+  _chatFeild(ChattingProvider model, context) {
     return Align(
       alignment: Alignment.bottomCenter,
       child: Padding(
@@ -199,7 +262,7 @@ class ChattingScreen extends StatelessWidget {
               ),
               child: Image.asset(
                 '$staticAsset/voice.png',
-                scale: 3,
+                scale: 3.5,
               ),
             ),
             Padding(
@@ -214,8 +277,8 @@ class ChattingScreen extends StatelessWidget {
                 },
                 decoration: InputDecoration(
                     contentPadding: EdgeInsets.only(
-                      left: 45,
-                      right: 80,
+                      left: 35,
+                      right: 83,
                     ),
                     hintText: 'Type Something',
                     hintStyle: subHeadingTextStyle.copyWith(
@@ -244,9 +307,43 @@ class ChattingScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Image.asset(
-                    '$staticAsset/camera.png',
-                    scale: 3.5,
+                  GestureDetector(
+                    onTap: () {
+                      // showModalBottomSheet(
+                      //     context: context,
+                      //     useSafeArea: true,
+                      //     isScrollControlled: true,
+                      //     shape: RoundedRectangleBorder(
+                      //       borderRadius: BorderRadius.circular(
+                      //         20.0,
+                      //       ),
+                      //     ),
+                      //     builder: (context) {
+                      //       return Consumer<ChattingProvider>(
+                      //           builder: (context, model, child) {
+                      //         return Container(
+                      //           padding: EdgeInsets.only(
+                      //             left: 25,
+                      //             right: 25,
+                      //             top: 100,
+                      //             bottom: 30,
+                      //           ),
+                      //           child: Column(children: [
+                      //             CustomButton(
+                      //               title: 'Pick Image',
+                      //               textColor: primaryColor,
+                      //               color: pinkColor,
+                      //               onTap: () {},
+                      //             ),
+                      //           ]),
+                      //         );
+                      //       });
+                      //     });
+                    },
+                    child: Image.asset(
+                      '$staticAsset/camera.png',
+                      scale: 4,
+                    ),
                   ),
                   sizeBoxw10,
                   GestureDetector(
@@ -256,7 +353,7 @@ class ChattingScreen extends StatelessWidget {
                     },
                     child: Image.asset(
                       '$staticAsset/send.png',
-                      scale: 3.5,
+                      scale: 4,
                     ),
                   ),
                 ],
