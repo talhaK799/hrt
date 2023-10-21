@@ -31,9 +31,9 @@ class _SplashScreenState extends State<SplashScreen> {
     await Future.delayed(
       Duration(seconds: 2),
     );
-    Position position = await _location.determinePosition();
+    // Position position = await _location.determinePosition();
     print(
-        'this is the current location ${position.latitude} === ${position.longitude}');
+        'this is the current location ${_location.currentLocation!.latitude} === ${_location.currentLocation!.longitude}');
 
     // Get.to(
     //   AddPhoneNumberScreen(),

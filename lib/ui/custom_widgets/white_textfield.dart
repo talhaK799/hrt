@@ -7,7 +7,11 @@ import '../../core/constants/colors.dart';
 
 class CustomTextFieldWhite extends StatelessWidget {
   String? hintText;
+  final onChange;
+  final validator;
   CustomTextFieldWhite({
+    required this.onChange,
+    required this.validator,
     this.hintText,
   });
 
@@ -34,7 +38,7 @@ class CustomTextFieldWhite extends StatelessWidget {
             ),
             child: Image.asset(
               '$staticAsset/arrow.png',
-              scale: 3,
+              scale: 2.8,
               color: greyColor2,
             ),
           ),
@@ -44,15 +48,19 @@ class CustomTextFieldWhite extends StatelessWidget {
           child: TextFormField(
             // obscureText: obscure ?? false,
             obscuringCharacter: '*',
+            onChanged: onChange,
+            validator: validator,
             cursorColor: greyColor,
-            style: subHeadingTextStyle,
+            style: subHeadingTextStyle.copyWith(
+              color: blackColor,
+            ),
             decoration: InputDecoration(
                 contentPadding: EdgeInsets.zero,
                 hintText: hintText,
                 hintStyle: subHeadingTextStyle.copyWith(
                   color: greyColor2,
                 ),
-                errorStyle: subHeadingTextStyle,
+                errorStyle: subHeadingTextStyle.copyWith(color: primaryColor),
                 // suffix: suffex,
                 border: InputBorder.none),
           ),

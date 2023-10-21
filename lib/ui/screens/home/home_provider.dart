@@ -23,8 +23,8 @@ class HomeProvider extends BaseViewModel {
   bool isRecent = false;
   bool isLast = false;
   final currentUser = locator<AuthService>();
-  final _locService = locator<LocationService>();
-  Position? currentLocaion;
+  final currentLocaion = locator<LocationService>().currentLocation;
+  // Position? currentLocaion;
   final db = DatabaseService();
   // final _db = DatabaseService();
   PageController? pageController;
@@ -49,7 +49,6 @@ class HomeProvider extends BaseViewModel {
     notifyListeners();
   }
   init() async {
-    currentLocaion = await _locService.determinePosition();
     await getAllAppUsers();
 
     convertLatAndLongIntoAddress();
