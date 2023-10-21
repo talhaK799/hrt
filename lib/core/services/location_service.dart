@@ -1,8 +1,16 @@
 import 'package:geolocator/geolocator.dart';
-import 'package:get/get.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class LocationService {
+  Position? currentLocation;
+
+  LocationService() {
+    init();
+  }
+  
+  init() async {
+    currentLocation = await determinePosition();
+  }
+
   determinePosition() async {
     bool serviceEnabled;
     LocationPermission permission;
@@ -20,29 +28,8 @@ class LocationService {
         print('Location permissions are denied');
       }
     }
-
-    // if (permission == LocationPermission.deniedForever) {
-    //   print(
-    //       'Location permissions are permanently denied, we cannot request permissions.');
-    // }
     return await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.high,
     );
-  }
-
-  requestPermission() async {
-    final location = Permission.location;
-    final notification = Permission.notification;
-    if (await location.isDenied || await notification.isDenied) {
-      await location.request();
-      await notification.request();
-    } else {
-      Get.snackbar('alert!', 'Permissions granted');
-    }
-    // if (await notification.isDenied) {
-    //   await notification.request();
-    // } else {
-    //   Get.snackbar('alert!', 'notification permission granted');
-    // }
   }
 }

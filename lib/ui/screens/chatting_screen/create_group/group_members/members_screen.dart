@@ -41,6 +41,8 @@ class MembersScreen extends StatelessWidget {
                     /// TextField
                     ///
                     CustomTextFieldWhite(
+                      validator: (val) {},
+                      onChange: (val) {},
                       hintText: 'Enter your group name',
                     ),
                     sizeBox20,
@@ -108,5 +110,3 @@ class MembersScreen extends StatelessWidget {
   //   return CustomTextFieldWhite();
   // }
 }
-
-

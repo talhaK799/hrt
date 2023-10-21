@@ -20,7 +20,7 @@ class AuthService extends ChangeNotifier {
     user = _auth.currentUser;
     if (user != null) {
       isLogin = true;
-
+      print('current User==> ${_auth.currentUser!.uid}');
       appUser = (await _dbService.getAppUser(user!.uid));
     } else {
       isLogin = false;
@@ -99,7 +99,6 @@ class AuthService extends ChangeNotifier {
     await _auth.signOut();
     isLogin = false;
     user = null;
-    
   }
 }
 

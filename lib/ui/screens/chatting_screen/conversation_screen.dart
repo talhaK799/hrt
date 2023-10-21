@@ -83,20 +83,20 @@ class ConversationScreen extends StatelessWidget {
                                       ),
                                     );
                                   },
-                                  child: CircleAvatar(
-                                    // width: 60,
-                                    // height: 60,
-                                    foregroundImage: model
-                                            .matchedUsers[index].images!.isEmpty
-                                        ? null
-                                        : NetworkImage(model
-                                            .matchedUsers[index].images!.first),
-                                    maxRadius: 35.r,
-                                    child: model
-                                            .matchedUsers[index].images!.isEmpty
-                                        ? Image.asset('$staticAsset/person.png')
-                                        : null,
-                                  ),
+                                  child: model.matchedUsers[index].images!
+                                          .isNotEmpty
+                                      ? CircleAvatar(
+                                          backgroundImage: NetworkImage(model
+                                              .matchedUsers[index]
+                                              .images!
+                                              .first),
+                                          maxRadius: 35.r,
+                                        )
+                                      : CircleAvatar(
+                                          backgroundImage: AssetImage(
+                                              '$staticAsset/person.png'),
+                                          maxRadius: 35.r,
+                                        ),
                                 );
                               },
                               separatorBuilder: (context, index) => SizedBox(
@@ -321,15 +321,6 @@ class ConversationScreen extends StatelessWidget {
     return ListTile(
       contentPadding: EdgeInsets.zero,
       onTap: onTap,
-      //  () {
-      //   model.chats[index].isGroup == true
-      //       ? Get.to(
-      //           GroupChattingScreen(),
-      //         )
-      //       : Get.to(
-      //           ConversationScreen(),
-      //         );
-      // },
       leading: model.conversations[index].imageUrl == null
           ? CircleAvatar(
               radius: 35.r,

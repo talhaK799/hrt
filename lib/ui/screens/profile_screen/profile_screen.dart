@@ -4,6 +4,7 @@ import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/constants/strings.dart';
 import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/others/screen_utils.dart';
+import 'package:hart/ui/custom_widgets/custom_loader.dart';
 import 'package:hart/ui/custom_widgets/custom_profile_tile.dart';
 import 'package:hart/ui/screens/profile_screen/About/about_screen.dart';
 import 'package:hart/ui/screens/profile_screen/Help/help_screen.dart';
@@ -31,6 +32,7 @@ class ProfileScreen extends StatelessWidget {
       child: Consumer<ProfileProvider>(builder: (context, model, child) {
         return ModalProgressHUD(
           inAsyncCall: model.state == ViewState.busy,
+          progressIndicator: CustomLoader(),
           child: Scaffold(
             body: SingleChildScrollView(
               physics: BouncingScrollPhysics(),
@@ -48,17 +50,23 @@ class ProfileScreen extends StatelessWidget {
                       width: 100,
                       height: 100,
                       decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage(
-                              '$dynamicAsset/image.png',
-                            ),
-                            fit: BoxFit.cover),
+                        image: model.currentUser.images!.isEmpty
+                            ? DecorationImage(
+                                image: AssetImage(
+                                  '$dynamicAsset/image.png',
+                                ),
+                                fit: BoxFit.cover)
+                            : DecorationImage(
+                                image: NetworkImage(
+                                  model.currentUser.images!.first,
+                                ),
+                                fit: BoxFit.cover),
                         borderRadius: BorderRadius.circular(12.r),
                       ),
                     ),
                     sizeBox20,
                     Text(
-                      'Andreo',
+                      model.currentUser.name!,
                       style: descriptionTextStyle,
                     ),
                     sizeBox10,
@@ -67,7 +75,7 @@ class ProfileScreen extends StatelessWidget {
                         bottom: 5,
                       ),
                       child: Text(
-                        '23 man straight',
+                        '${model.currentUser.age} man ${model.currentUser.identity}',
                         style: buttonTextStyleGrey,
                       ),
                     ),
@@ -76,7 +84,7 @@ class ProfileScreen extends StatelessWidget {
                         bottom: 5,
                       ),
                       child: Text(
-                        'Currently in Spain',
+                        'Currently in ${model.country}',
                         style: buttonTextStyleGrey,
                       ),
                     ),

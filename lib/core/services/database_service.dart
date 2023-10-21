@@ -161,10 +161,10 @@ class DatabaseService {
     debugPrint('@getAppUser: id: $id');
     try {
       final snapshot = await _db.collection('app_user').doc(id).get();
-      debugPrint('Client Data: ${snapshot.data()}');
+      debugPrint('Client Data: ${snapshot.data()!}');
       return AppUser.fromJson(snapshot.data()!, snapshot.id);
     } catch (e, s) {
-      debugPrint('Exception @DatabaseService/getAppUser');
+      debugPrint('Exception @DatabaseService/getAppUser ==> error -> $e');
       debugPrint(s.toString());
       return AppUser();
     }
