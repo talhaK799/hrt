@@ -23,11 +23,11 @@ class AddPhotoProvider extends BaseViewModel {
   final fbStorage = locator<FirebaseStorageService>();
   final currentUser = locator<AuthService>().appUser;
   final ImagePicker imagePicker = ImagePicker();
-  List<XFile>? imageFileList = [];
+  // List<XFile>? imageFileList = [];
   List<File>? selectedImages = [];
   List<String>? imagesUrls = [];
 
-  bool isMultipleSelection = false;
+  // bool isMultipleSelection = false;
 
   List<PickImage> images = [
     PickImage(),
@@ -42,26 +42,47 @@ class AddPhotoProvider extends BaseViewModel {
   ];
 
   void selectImages() async {
-    imageFileList = [];
-    isMultipleSelection = true;
-    final List<XFile>? selectedImages = await imagePicker.pickMultiImage();
-    if (selectedImages!.isNotEmpty) {
-      imageFileList!.addAll(selectedImages);
+    // imageFileList = [];
+    // isMultipleSelection = true;
+    final List<XFile>? imagesList = await imagePicker.pickMultiImage();
+    if (imagesList!.isNotEmpty) {
+      // selectedImages!.add(File(imagesList[2].path));
+      for (int i = 0; i < imagesList.length; i++) {
+        images[selectedImages!.length].image = File(imagesList[i].path);
+        selectedImages!.add(
+          File(imagesList[i].path),
+        );
+      }
+      notifyListeners();
     }
-    print("Image List Length:" + imageFileList!.length.toString());
+    print(
+      "Image List Length:" + selectedImages!.length.toString(),
+    );
     notifyListeners();
   }
 
-  pickImge(index) async {
-    isMultipleSelection = false;
-    images[index].image = await _filePickerService.pickImage();
-    if (images[index].image != null) {
-      selectedImages!.add(images[index].image!);
+  pickImge() async {
+    // isMultipleSelection = false;
+    images[selectedImages!.length].image = await _filePickerService.pickImage();
+    if (images[selectedImages!.length].image != null) {
+      selectedImages!.add(images[selectedImages!.length].image!);
     } else {
       Get.snackbar('Error', 'unable to pick image');
     }
     notifyListeners();
   }
+
+  // removeImage(index) async {
+  //   images[index] = PickImage();
+  //   selectedImages!.removeAt(index);
+
+  //   for (var i = 0; i < selectedImages!.length; i++) {
+  //     images[i].image = selectedImages![i + 1];
+  //   }
+  //   print('selected images===> ${selectedImages!.length}');
+
+  //   notifyListeners();
+  // }
 
   addUserImages() async {
     if (selectedImages!.length < 1) {

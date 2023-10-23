@@ -25,7 +25,6 @@ class AddPhotoScreen extends StatelessWidget {
       child: Consumer<AddPhotoProvider>(builder: (context, model, child) {
         return ModalProgressHUD(
           inAsyncCall: model.state == ViewState.busy,
-          
           progressIndicator: CustomLoader(),
           child: Scaffold(
             body: SingleChildScrollView(
@@ -65,9 +64,11 @@ class AddPhotoScreen extends StatelessWidget {
                     ),
                     GridView.builder(
                         primary: false,
-                        itemCount: model.isMultipleSelection
-                            ? model.imageFileList!.length
-                            : model.images.length,
+                        itemCount:
+                            // model.isMultipleSelection
+                            //     ? model.imageFileList!.length
+                            //     :
+                            model.images.length,
                         shrinkWrap: true,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           mainAxisSpacing: 16,
@@ -76,48 +77,40 @@ class AddPhotoScreen extends StatelessWidget {
                         ),
                         itemBuilder: (context, index) {
                           return GestureDetector(
-                            onTap: () => model.pickImge(index),
+                            onTap: () => model.pickImge(),
                             child: Container(
                               width: 90.w,
                               height: 90.h,
                               decoration: BoxDecoration(
                                 color: greyColor,
-                                image: model.isMultipleSelection
-                                    ? model.imageFileList!.isNotEmpty
-                                        ? DecorationImage(
-                                            image: FileImage(
-                                              File(
-                                                model
-                                                    .imageFileList![index].path,
-                                              ),
-                                            ),
-                                            fit: BoxFit.cover)
-                                        : null
-                                    : model.images[index].image != null
-                                        ? DecorationImage(
-                                            image: FileImage(
-                                                model.images[index].image!),
-                                            fit: BoxFit.cover)
-                                        : null,
+                                image: model.images[index].image != null
+                                    ? DecorationImage(
+                                        image: FileImage(
+                                            model.images[index].image!),
+                                        fit: BoxFit.cover)
+                                    : null,
                                 borderRadius: BorderRadius.circular(
                                   12.r,
                                 ),
                               ),
-                              child: model.isMultipleSelection
-                                  ? model.imageFileList!.isEmpty
-                                      ? Center(
-                                          child: Image.asset(
-                                          '$staticAsset/Add.png',
-                                          scale: 3,
-                                        ))
-                                      : null
-                                  : model.images[index].image == null
-                                      ? Center(
-                                          child: Image.asset(
-                                          '$staticAsset/Add.png',
-                                          scale: 3,
-                                        ))
-                                      : null,
+                              child: model.images[index].image == null
+                                  ? Center(
+                                      child: Image.asset(
+                                      '$staticAsset/Add.png',
+                                      scale: 3,
+                                    ))
+                                  : GestureDetector(
+                                      onTap: () {
+                                        // model.removeImage(index);
+                                      },
+                                      child: Align(
+                                        alignment: Alignment.topRight,
+                                        child: Image.asset(
+                                          '$staticAsset/remove.png',
+                                          scale: 4,
+                                        ),
+                                      ),
+                                    ),
                             ),
                           );
                         }),

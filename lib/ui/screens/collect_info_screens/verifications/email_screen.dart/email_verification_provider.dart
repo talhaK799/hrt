@@ -7,7 +7,6 @@ import 'package:hart/core/view_models/base_view_model.dart';
 import 'package:email_otp/email_otp.dart';
 import 'package:hart/locator.dart';
 import 'package:hart/ui/screens/collect_info_screens/verifications/email_screen.dart/code_confirmation_screen.dart';
-import 'package:hart/ui/screens/collect_info_screens/verifications/phone_no_screen/add_phone_no.dart';
 
 class EmailVerificationProvider extends BaseViewModel {
   String email = '';
@@ -19,7 +18,7 @@ class EmailVerificationProvider extends BaseViewModel {
 
   final authService = locator<AuthService>();
   // CustomAuthResult customAuthResult = CustomAuthResult();
-  DatabaseService _databaseService = DatabaseService();
+  // DatabaseService _databaseService = DatabaseService();
 
   sendotptoEmail() async {
     emailOTP = EmailOTP();
@@ -38,7 +37,7 @@ class EmailVerificationProvider extends BaseViewModel {
     if (isOTPSend) {
       Get.snackbar("Success!", "OTP sent to your email");
       Get.to(
-        EmailOtpScreen(),
+        EmailOtpScreen(emailOTP: emailOTP,),
       );
       // startTimer();
       // otp = myauth.toString();
@@ -51,23 +50,23 @@ class EmailVerificationProvider extends BaseViewModel {
     // print("${_verificationService.twilioResponse.statusCode}");
   }
 
-  verifyOtp() async {
-    setState(ViewState.busy);
-    bool isVerify = await emailOTP.verifyOTP(otp: phoneOtp);
-    setState(ViewState.idle);
+  // verifyOtp() async {
+  //   setState(ViewState.busy);
+  //   bool isVerify = await emailOTP.verifyOTP(otp: phoneOtp);
+  //   setState(ViewState.idle);
 
-    if (isVerify == true) {
-      authService.appUser.isEmailVerified = true;
+  //   if (isVerify == true) {
+  //     authService.appUser.isEmailVerified = true;
 
-      setState(ViewState.busy);
-      await _databaseService.updateUserProfile(authService.appUser);
-      setState(ViewState.idle);
+  //     setState(ViewState.busy);
+  //     await _databaseService.updateUserProfile(authService.appUser);
+  //     setState(ViewState.idle);
 
-      Get.to(
-        AddPhoneNumberScreen(),
-      );
-    } else {
-      Get.snackbar("Error!", "Invalid OTP");
-    }
-  }
+  //     Get.to(
+  //       AddPhoneNumberScreen(),
+  //     );
+  //   } else {
+  //     Get.snackbar("Error!", "Invalid OTP");
+  //   }
+  // }
 }

@@ -59,7 +59,7 @@ class CustomProfileTile extends StatelessWidget {
                   ),
                   Image.asset(
                     '$staticAsset/arrow.png',
-                    scale: 3,
+                    scale: 3.5,
                     color: iconColor ?? blackColor,
                   ),
                 ],
