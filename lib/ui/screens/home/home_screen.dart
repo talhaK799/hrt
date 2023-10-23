@@ -149,7 +149,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   '$staticAsset/cross.png',
                   color: model.isDisLiked == true ? whiteColor : null,
                   scale: 3.5,
-                  color: model.isDislike ? whiteColor : null,
                 ),
               ),
             ),

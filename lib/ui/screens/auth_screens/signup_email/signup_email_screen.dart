@@ -133,6 +133,7 @@ class SignUpWithEmail extends StatelessWidget {
           height: 20.h,
         ),
         CustomTextField(
+          obscure: true,
           validator: (val) {
             if (val.isEmpty) {
               return 'Password is Required';
@@ -152,6 +153,7 @@ class SignUpWithEmail extends StatelessWidget {
           height: 20.h,
         ),
         CustomTextField(
+          obscure: true,
           validator: (val) {
             if (val.isEmpty) {
               return 'Password is Required';
