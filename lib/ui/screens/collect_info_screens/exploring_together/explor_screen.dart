@@ -7,6 +7,7 @@ import 'package:hart/ui/custom_widgets/custom_back_button.dart';
 import 'package:hart/ui/custom_widgets/custom_button.dart';
 import 'package:hart/ui/custom_widgets/custom_progress_indicator.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../../../../core/constants/style.dart';
 import '../add_photo/add_photo_screen.dart';
@@ -82,7 +83,9 @@ class ExploreScreen extends StatelessWidget {
                   CustomButton(
                     title: 'Invite partner',
                     onTap: () {
-                      // model.selectWoman();
+                      Share.share(
+                        'Join me on Feeld as my partner. You need to be logged in and tap on this link to accept the invite: https://feeld.app.link/j3Ge2crT7Db',
+                      );
                     },
                     color: pinkColor,
                     textColor: primaryColor,

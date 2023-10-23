@@ -98,18 +98,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   ///
                   /// Liking Animation
                   ///
-                  model.isLiked
-                      ? Center(
-                          child: Lottie.asset(
-                            '$animations/heart.json',
-                            // controller: _animationController,
-                            repeat: false,
-                            frameRate: FrameRate(
-                              100,
-                            ),
-                          ),
-                        )
-                      : Container(),
+                  // model.isLiked
+                  //     ? Center(
+                  //         child: Lottie.asset(
+                  //           '$animations/heart.json',
+                  //           // controller: _animationController,
+                  //           repeat: false,
+                  //           frameRate: FrameRate(
+                  //             100,
+                  //           ),
+                  //         ),
+                  //       )
+                  //     : Container(),
                 ],
               )),
         );
@@ -123,67 +123,121 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Align(
         alignment: Alignment.bottomLeft,
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            GestureDetector(
-              onTap: () async {
-                setState(() {
-                  model.isLiked = false;
-                  model.isDisLiked = true;
-                });
-                await Future.delayed(Duration(milliseconds: 500));
+            Row(
+              children: [
+                ////
+                /// DisLike button
+                ///
+                GestureDetector(
+                  onTap: () async {
+                    setState(() {
+                      model.isLiked = false;
+                      model.isDisLiked = true;
+                    });
+                    await Future.delayed(Duration(milliseconds: 500));
 
-                setState(() {
-                  model.isDisLiked = false;
-                });
-                model.disLike(model.appUsers[model.index]);
-              },
-              child: Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  // color: model.isDislike ? greyColor2 : whiteColor,
-                  color: model.isDisLiked == true ? greyColor2 : whiteColor,
-                  shape: BoxShape.circle,
-                  boxShadow: boxShadow,
+// <<<<<<< updateProfile
+                    setState(() {
+                      model.isDisLiked = false;
+                    });
+                    model.disLike(model.appUsers[model.index]);
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: model.isDisLiked == true ? greyColor2 : whiteColor,
+                      shape: BoxShape.circle,
+                      boxShadow: boxShadow,
+                    ),
+                    child: Image.asset(
+                      '$staticAsset/cross.png',
+                      color: model.isDisLiked == true ? whiteColor : null,
+                      scale: 3.5,
+                    ),
+                  ),
+// =======
+//                 setState(() {
+//                   model.isDisLiked = false;
+//                 });
+//                 model.disLike(model.appUsers[model.index]);
+//               },
+//               child: Container(
+//                 padding: const EdgeInsets.all(20),
+//                 decoration: BoxDecoration(
+//                   // color: model.isDislike ? greyColor2 : whiteColor,
+//                   color: model.isDisLiked == true ? greyColor2 : whiteColor,
+//                   shape: BoxShape.circle,
+//                   boxShadow: boxShadow,
+// >>>>>>> dev
                 ),
-                child: Image.asset(
-                  '$staticAsset/cross.png',
-                  color: model.isDisLiked == true ? whiteColor : null,
-                  scale: 3.5,
+                SizedBox(
+                  width: 15.w,
                 ),
+
+                ////
+                /// Like button
+                ///
+                GestureDetector(
+                  onTap: () async {
+                    setState(() {
+                      model.isLiked = true;
+                      model.isDisLiked = false;
+                    });
+                    await Future.delayed(Duration(seconds: 1));
+
+                    setState(() {
+                      model.isLiked = false;
+                    });
+                    model.like(model.appUsers[model.index]);
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: model.isLiked == true ? primaryColor : whiteColor,
+                      shape: BoxShape.circle,
+                      boxShadow: boxShadow,
+                    ),
+                    child: model.isLiked == true
+                        ? Image.asset(
+                            '$staticAsset/likeWhite.png',
+                            scale: 3.5,
+                          )
+                        : Image.asset(
+                            '$staticAsset/Like.png',
+                            scale: 3.5,
+                          ),
+                  ),
+                ),
+              ],
+            ),
+            ////
+            /// loader
+            ///
+            Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 12,
+                vertical: 4,
               ),
-            ),
-            SizedBox(
-              width: 15.w,
-            ),
-            GestureDetector(
-              onTap: () async {
-                setState(() {
-                  model.isLiked = true;
-                  model.isDisLiked = false;
-                });
-                await Future.delayed(Duration(seconds: 1));
-
-                setState(() {
-                  model.isLiked = false;
-                });
-                model.like(model.appUsers[model.index]);
-              },
-              child: Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: model.isLiked == true ? primaryColor : whiteColor,
-                  shape: BoxShape.circle,
-                  boxShadow: boxShadow,
-                ),
-                child: model.isLiked == true
-                    ? Image.asset(
-                        '$staticAsset/likeWhite.png',
-                        scale: 3.5,
-                      )
-                    : Image.asset(
-                        '$staticAsset/Like.png',
-                        scale: 3.5,
-                      ),
+              decoration: BoxDecoration(
+                color: primaryColor,
+                borderRadius: BorderRadius.circular(16.r),
+              ),
+              child: Row(
+                children: [
+                  Image.asset(
+                    '$staticAsset/loader.png',
+                    scale: 3,
+                  ),
+                  SizedBox(
+                    width: 10.h,
+                  ),
+                  Text(
+                    '2',
+                    style: buttonTextStyle,
+                  )
+                ],
               ),
             )
           ],
@@ -775,34 +829,34 @@ _imageSlider(HomeProvider model, AppUser user) {
           scale: 3,
         ),
       ),
-      Positioned(
-          right: 16,
-          bottom: 16,
-          child: Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 10,
-              vertical: 4,
-            ),
-            decoration: BoxDecoration(
-              color: primaryColor,
-              borderRadius: BorderRadius.circular(16.r),
-            ),
-            child: Row(
-              children: [
-                Image.asset(
-                  '$staticAsset/loader.png',
-                  scale: 3,
-                ),
-                SizedBox(
-                  width: 10.h,
-                ),
-                Text(
-                  '2',
-                  style: buttonTextStyle,
-                )
-              ],
-            ),
-          ))
+      // Positioned(
+      //     right: 16,
+      //     bottom: 16,
+      //     child: Container(
+      //       padding: const EdgeInsets.symmetric(
+      //         horizontal: 10,
+      //         vertical: 4,
+      //       ),
+      //       decoration: BoxDecoration(
+      //         color: primaryColor,
+      //         borderRadius: BorderRadius.circular(16.r),
+      //       ),
+      //       child: Row(
+      //         children: [
+      //           Image.asset(
+      //             '$staticAsset/loader.png',
+      //             scale: 3,
+      //           ),
+      //           SizedBox(
+      //             width: 10.h,
+      //           ),
+      //           Text(
+      //             '2',
+      //             style: buttonTextStyle,
+      //           )
+      //         ],
+      //       ),
+      //     ))
     ],
   );
 }
