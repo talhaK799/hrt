@@ -34,8 +34,8 @@ class _SplashScreenState extends State<SplashScreen> {
       Duration(seconds: 2),
     );
     // Position position = await _location.determinePosition();
-    print(
-        'this is the current location ${_location.currentLocation!.latitude} === ${_location.currentLocation!.longitude}');
+    // print(
+    //     'this is the current location ${_location.currentLocation!.latitude} === ${_location.currentLocation!.longitude}');
 
     // Get.to(
     //   AddPhotoScreen(),
