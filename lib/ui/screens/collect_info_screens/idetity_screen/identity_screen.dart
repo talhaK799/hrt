@@ -13,12 +13,13 @@ import 'package:provider/provider.dart';
 import '../../../../../core/constants/style.dart';
 
 class IdentityScreen extends StatelessWidget {
-  const IdentityScreen({super.key});
+  bool isUpdate;
+   IdentityScreen({this.isUpdate=false});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => IdentityProvider(),
+      create: (context) => IdentityProvider(isUpdate),
       child: Consumer<IdentityProvider>(builder: (context, model, child) {
         return ModalProgressHUD(
           inAsyncCall: model.state == ViewState.busy,

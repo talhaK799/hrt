@@ -126,15 +126,13 @@ class EditProfileScreen extends StatelessWidget {
             ),
           ),
           sizeBox20,
-          heading('Name'),
+          heading('Nick Name'),
           CustomProfileTile(
-            title: 'Name',
+            title: model.currentUser.appUser.nickName,
             textColor: greyColor2,
             iconColor: greyColor2,
             onTap: () {
-              Get.to(
-                NickNameScreen(),
-              );
+              model.changeNickName();
             },
           ),
 
@@ -145,9 +143,7 @@ class EditProfileScreen extends StatelessWidget {
           heading('Date of Birth'),
 
           CustomProfileTile(
-            title: model.pickedDate == null
-                ? 'xx / yy / zz'
-                : monthNameDate.format(model.pickedDate!),
+            title: model.currentUser.appUser.dob,
             textColor: greyColor2,
             iconColor: greyColor2,
             onTap: () {
@@ -162,13 +158,11 @@ class EditProfileScreen extends StatelessWidget {
           heading('Sexuality'),
 
           CustomProfileTile(
-            title: 'Straight',
+            title: model.currentUser.appUser.identity,
             textColor: greyColor2,
             iconColor: greyColor2,
             onTap: () {
-              Get.to(
-                IdentityScreen(),
-              );
+              model.changeSexuality();
             },
           ),
 
@@ -176,13 +170,11 @@ class EditProfileScreen extends StatelessWidget {
           heading('Desire'),
 
           CustomProfileTile(
-            title: 'Desire',
+            title: model.currentUser.appUser.desire!.first,
             textColor: greyColor2,
             iconColor: greyColor2,
             onTap: () {
-              Get.to(
-                FantasiesScreen(),
-              );
+              model.changeDesires();
             },
           ),
           // CustomTextFieldWhite(
@@ -199,16 +191,14 @@ class EditProfileScreen extends StatelessWidget {
           //   hintText: model.currentUser.appUser.desire!.first,
           // ),
           sizeBox20,
-          heading('Interests'),
+          heading('Looking For'),
 
           CustomProfileTile(
-            title: 'Interests',
+            title: model.currentUser.appUser.lookingFor,
             textColor: greyColor2,
             iconColor: greyColor2,
             onTap: () {
-              Get.to(
-                SelectGenderScreen(),
-              );
+              model.changeLookingFor();
             },
           ),
 

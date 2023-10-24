@@ -250,7 +250,7 @@ class DatabaseService {
     } catch (e, s) {
       debugPrint('Exception @DatabaseService/getAppUsers==>$e');
       debugPrint(s.toString());
-      return AppUser();
+      return [];
     }
   }
 

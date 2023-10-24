@@ -12,11 +12,14 @@ class FantasiesProvider extends BaseViewModel {
   // bool isFreindship = false;
   // bool isMarriage = false;
   int selections = 0;
-
+  bool updation = false;
   final currentUser = locator<AuthService>().appUser;
   DatabaseService _db = DatabaseService();
-  FantasiesProvider() {
+  FantasiesProvider(update) {
+    updation = update;
+    selectedItems = [];
     getItems();
+    notifyListeners();
   }
 
   List<InfoItem> items = [];
@@ -44,16 +47,21 @@ class FantasiesProvider extends BaseViewModel {
         selectedItems.add(element.title!);
       }
     }
-
+    currentUser.desire = [];
     currentUser.desire = selectedItems;
     setState(ViewState.busy);
     bool isUpdated = await _db.updateUserProfile(currentUser);
     setState(ViewState.idle);
     if (isUpdated) {
-      Get.to(
-        ExploreScreen(),
-      );
+      if (updation == true) {
+        Get.back(result: selectedItems);
+      } else {
+        Get.to(
+          ExploreScreen(),
+        );
+      }
     }
+    notifyListeners();
   }
 
   // selectMan() {
