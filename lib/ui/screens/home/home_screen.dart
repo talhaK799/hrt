@@ -806,11 +806,33 @@ _imageSlider(HomeProvider model, AppUser user) {
             //     fit: BoxFit.cover,
             //   ),
             // ),
-            child: FadeInImage.assetNetwork(
-              placeholder: '$logoPath/logo4.png',
-              image: user.images![index].toString(),
-              fit: BoxFit.fill,
-            ),
+            child: Image.network(
+                user.images![index].toString(),
+              fit: BoxFit.cover,
+              loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                if (loadingProgress == null) {
+                  return child;  // Return the image widget if it's fully loaded.
+                }
+                return Container(
+                  color: Colors.grey.withOpacity(0.1),
+                  child: Center(
+                    // Display a linear progress indicator until the image is fully loaded.
+                    child: CircularProgressIndicator(
+                      color: primaryColor,
+                      value: loadingProgress.expectedTotalBytes != null
+                          ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                          : null,
+                    ),
+                  ),
+                );
+              })
+            
+            // FadeInImage.assetNetwork(
+            //
+            //   placeholder: '$logoPath/logo4.png',
+            //   image: user.images![index].toString(),
+            //   fit: BoxFit.fill,
+            // ),
           );
         },
         options: CarouselOptions(

@@ -24,8 +24,8 @@ class AddPhotoProvider extends BaseViewModel {
   final currentUser = locator<AuthService>().appUser;
   final ImagePicker imagePicker = ImagePicker();
   // List<XFile>? imageFileList = [];
-  List<File>? selectedImages = [];
-  List<String>? imagesUrls = [];
+  List<File> selectedImages = [];
+  List<String> imagesUrls = [];
 
   // bool isMultipleSelection = false;
 
@@ -43,8 +43,8 @@ class AddPhotoProvider extends BaseViewModel {
 // [1 , null ,3, 4, 5]
   removeImage(index) async {
     images[index] = PickImage();
-    selectedImages!.removeAt(index);
-    List<File> imgs = selectedImages!;
+    selectedImages.removeAt(index);
+    List<File> imgs = selectedImages;
     for (var i = 0; i < images.length; i++) {
       images[i] = PickImage();
     }
