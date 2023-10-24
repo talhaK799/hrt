@@ -64,17 +64,18 @@ class PhoneCodeConfirmationScreen extends StatelessWidget {
                         width: 50.w,
                         height: 50.h,
                         decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                              color: greyColor,
-                              offset: const Offset(
-                                5.0,
-                                5.0,
-                              ),
-                              blurRadius: 10.0,
-                              spreadRadius: 2.0,
-                            )
-                          ],
+                          border: Border.all(color: Colors.grey),
+                          // boxShadow: [
+                          //   BoxShadow(
+                          //     color: greyColor,
+                          //     offset: const Offset(
+                          //       5.0,
+                          //       5.0,
+                          //     ),
+                          //     blurRadius: 10.0,
+                          //     spreadRadius: 2.0,
+                          //   )
+                          // ],
                           color: whiteColor,
                           borderRadius: BorderRadius.circular(
                             4.r,

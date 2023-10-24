@@ -84,8 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   : 1,
                               itemBuilder: (context, index) {
                                 model.index = index;
-
-                                return model.appUsers.length == 0
+                                return  model.appUsers.length == 0
                                     ? _staticScreen(context)
                                     : _homeScreenData(
                                         model, model.appUsers[index]);

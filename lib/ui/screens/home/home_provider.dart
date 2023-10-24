@@ -43,12 +43,13 @@ class HomeProvider extends BaseViewModel {
 
   HomeProvider() {
     // currentLocation.determinePosition();
-
+    setState(ViewState.busy);
     init();
     // gender = lookingFor.first;
     desire = desires.first;
     pageController = PageController(initialPage: 0);
-    notifyListeners();
+    setState(ViewState.idle);
+
   }
   init() async {
     await getAllAppUsers();
@@ -77,11 +78,15 @@ class HomeProvider extends BaseViewModel {
     setState(ViewState.busy);
     users = await db.getAllUsers(currentUser.appUser);
     for (var user in users) {
-      if (!currentUser.appUser.likedUsers!.contains(user.id) &&
-          !currentUser.appUser.disLikedUsers!.contains(user.id)) {
-        appUsers.add(user);
-        notifyListeners();
-      }
+     if(currentUser.appUser.likedUsers == null || currentUser.appUser.disLikedUsers == null){
+       appUsers.add(user);
+     }else{
+       if (!currentUser.appUser.likedUsers!.contains(user.id) &&
+           !currentUser.appUser.disLikedUsers!.contains(user.id)) {
+         appUsers.add(user);
+         notifyListeners();
+       }
+     }
     }
     setState(ViewState.idle);
   }
@@ -206,7 +211,7 @@ class HomeProvider extends BaseViewModel {
       SelectGenderScreen(
         isFileter: true,
       ),
-    );
+    ) ?? lookingFor;
     notifyListeners();
   }
 

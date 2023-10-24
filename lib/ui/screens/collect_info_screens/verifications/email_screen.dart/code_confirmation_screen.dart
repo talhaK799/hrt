@@ -66,21 +66,22 @@ class EmailOtpScreen extends StatelessWidget {
                             model.emailCode = value;
                           },
                           defaultPinTheme: PinTheme(
-                            width: 40.w,
-                            height: 40.h,
+                            width: 50.w,
+                            height: 50.h,
                             decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                  color: greyColor,
-                                  offset: const Offset(
-                                    5.0,
-                                    5.0,
-                                  ),
-                                  blurRadius: 10.0,
-                                  spreadRadius: 2.0,
-                                )
-                              ],
+                              // boxShadow: [
+                              //   BoxShadow(
+                              //     color: greyColor,
+                              //     offset: const Offset(
+                              //       5.0,
+                              //       5.0,
+                              //     ),
+                              //     blurRadius: 10.0,
+                              //     spreadRadius: 2.0,
+                              //   )
+                              // ],
                               color: whiteColor,
+                              border: Border.all(color: Colors.grey),
                               borderRadius: BorderRadius.circular(
                                 4.r,
                               ),

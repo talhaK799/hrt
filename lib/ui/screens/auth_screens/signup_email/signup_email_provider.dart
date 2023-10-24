@@ -42,7 +42,7 @@ class SignUpwithEmailProvider extends BaseViewModel {
       );
     }
 
-    notifyListeners();
+   setState(ViewState.idle);
   }
 
   toggleVisibilty() {

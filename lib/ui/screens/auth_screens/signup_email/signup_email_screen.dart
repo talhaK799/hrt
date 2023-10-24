@@ -137,7 +137,9 @@ class SignUpWithEmail extends StatelessWidget {
           validator: (val) {
             if (val.isEmpty) {
               return 'Password is Required';
-            } else {
+            } else if(val.length < 6) {
+              return "password should be 6 characters";
+            }else{
               return null;
             }
           },
