@@ -11,35 +11,48 @@ import 'select_gender_screen.dart';
 
 class SelectGenderProvider extends BaseViewModel {
   DatabaseService _db = DatabaseService();
-  
+
   final currentUser = locator<AuthService>().appUser;
   bool isClicked = false;
-  SelectGenderProvider() {
+  bool filter = false;
+
+  SelectGenderProvider(isFiltering) {
+    filter = isFiltering;
     getItems();
   }
 
   List<InfoItem> items = [];
-  List<String> selectedItems = [];
+  String? selectedItem;
 
   getItems() async {
     setState(ViewState.busy);
+    items = [];
     items = await _db.getPersonalities();
     setState(ViewState.idle);
   }
 
   select(index) {
-    items[index].isSelected = !items[index].isSelected!;
+    for (var item in items) {
+      if (item == items[index]) {
+        item.isSelected = true;
+        selectedItem = item.title;
+        if (!filter) {
+          currentUser.lookingFor = selectedItem;
+        }
+      } else {
+        item.isSelected = false;
+      }
+    }
+    // items[index].isSelected = !items[index].isSelected!;
     notifyListeners();
   }
 
   addSelectedItems() async {
-    for (var element in items) {
-      if (element.isSelected == true) {
-        selectedItems.add(element.title!);
-      }
-    }
-
-    currentUser.lookingFor = selectedItems;
+    // for (var element in items) {
+    //   if (element.isSelected == true) {
+    //     selectedItems.add(element.title!);
+    //   }
+    // }
     setState(ViewState.busy);
     bool isUpdated = await _db.updateUserProfile(currentUser);
     setState(ViewState.idle);

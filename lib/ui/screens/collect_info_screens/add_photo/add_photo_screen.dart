@@ -101,7 +101,7 @@ class AddPhotoScreen extends StatelessWidget {
                                     ))
                                   : GestureDetector(
                                       onTap: () {
-                                        // model.removeImage(index);
+                                        model.removeImage(index);
                                       },
                                       child: Align(
                                         alignment: Alignment.topRight,

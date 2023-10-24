@@ -14,6 +14,8 @@ import 'package:hart/locator.dart';
 import 'package:hart/ui/screens/connection_screen/connect_popup/connect_popup_screen.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
+import '../collect_info_screens/select_gender_screen/select_gender_screen.dart';
+
 class HomeProvider extends BaseViewModel {
   int dotIndex = 0;
   bool isLiked = false;
@@ -31,7 +33,7 @@ class HomeProvider extends BaseViewModel {
   List<AppUser> appUsers = [];
   List<AppUser> filteredUsers = [];
   List<Placemark> placemarks = [];
-  String? gender;
+  String lookingFor = 'Women';
   String? desire;
   String? country;
   Matches match = Matches();
@@ -41,7 +43,7 @@ class HomeProvider extends BaseViewModel {
     // currentLocation.determinePosition();
 
     init();
-    gender = lookingFor.first;
+    // gender = lookingFor.first;
     desire = desires.first;
     pageController = PageController(initialPage: 0);
     notifyListeners();
@@ -50,6 +52,7 @@ class HomeProvider extends BaseViewModel {
     await getAllAppUsers();
 
     convertLatAndLongIntoAddress();
+    notifyListeners();
   }
 
   convertLatAndLongIntoAddress() async {
@@ -176,12 +179,12 @@ class HomeProvider extends BaseViewModel {
     notifyListeners();
   }
 
-  List<String> lookingFor = [
-    'Women',
-    'Men',
-    'Boys',
-    'Girs',
-  ];
+  // List<String> lookingFor = [
+  //   'Women',
+  //   'Men',
+  //   'Boys',
+  //   'Girs',
+  // ];
   List<String> desires = [
     'Any',
     'Friendship',
@@ -193,8 +196,12 @@ class HomeProvider extends BaseViewModel {
     'Afghanistan',
   ];
 
-  selectGender(val) {
-    gender = val;
+  selectGender() async {
+    lookingFor = await Get.to(
+      SelectGenderScreen(
+        isFileter: true,
+      ),
+    );
     notifyListeners();
   }
 

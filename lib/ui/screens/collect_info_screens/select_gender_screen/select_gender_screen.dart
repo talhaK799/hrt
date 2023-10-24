@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hart/core/constants/colors.dart';
+import 'package:hart/core/constants/strings.dart';
 import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/ui/custom_widgets/custom_back_button.dart';
@@ -13,12 +15,15 @@ import 'package:provider/provider.dart';
 import '../../../../../core/constants/style.dart';
 
 class SelectGenderScreen extends StatelessWidget {
-  const SelectGenderScreen({super.key});
+  bool isFileter;
+  SelectGenderScreen({
+    this.isFileter = false,
+  });
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => SelectGenderProvider(),
+      create: (context) => SelectGenderProvider(isFileter),
       child: Consumer<SelectGenderProvider>(builder: (context, model, child) {
         return ModalProgressHUD(
           inAsyncCall: model.state == ViewState.busy,
@@ -38,6 +43,19 @@ class SelectGenderScreen extends StatelessWidget {
                       CustomBackButton(
                         isWhite: true,
                       ),
+
+                      ///
+                      /// Back Button
+                      ///
+                      // GestureDetector(
+                      //   behavior: HitTestBehavior.opaque,
+                      //   onTap: () {
+                      //   },
+                      //   child: Image.asset(
+                      //     '$staticAsset/back2.png',
+                      //     scale: 2.8,
+                      //   ),
+                      // ),
                       SizedBox(
                         height: 20.h,
                       ),
@@ -51,9 +69,12 @@ class SelectGenderScreen extends StatelessWidget {
                       SizedBox(
                         height: 20.h,
                       ),
-                      CustomProgressIndicator(
-                        value: 4,
-                      ),
+
+                      isFileter
+                          ? Container()
+                          : CustomProgressIndicator(
+                              value: 4,
+                            ),
                       SizedBox(
                         height: 40.h,
                       ),
@@ -89,7 +110,12 @@ class SelectGenderScreen extends StatelessWidget {
                       child: CustomButton(
                         title: 'CONTINUE',
                         onTap: () {
-                          model.addSelectedItems();
+                          if (isFileter) {
+                            print('selected item==> ${model.selectedItem}');
+                            Get.back(result: model.selectedItem);
+                          } else {
+                            model.addSelectedItems();
+                          }
                         },
                       ),
                     ),

@@ -12,6 +12,7 @@ import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/ui/custom_widgets/custom_button.dart';
 import 'package:hart/ui/custom_widgets/custom_drop_down.dart';
 import 'package:hart/ui/custom_widgets/custom_loader.dart';
+import 'package:hart/ui/screens/collect_info_screens/select_gender_screen/select_gender_screen.dart';
 import 'package:hart/ui/screens/home/home_provider.dart';
 import 'package:lottie/lottie.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -37,81 +38,86 @@ class _HomeScreenState extends State<HomeScreen> {
           inAsyncCall: model.state == ViewState.busy,
           progressIndicator: CustomLoader(),
           child: Scaffold(
-              backgroundColor:
-                  model.appUsers.isEmpty ? primaryColor : whiteColor,
-              body: Stack(
-                children: [
-                  Column(
+            backgroundColor: model.appUsers.isEmpty ? primaryColor : whiteColor,
+            body: model.state == ViewState.idle
+                ? Stack(
                     children: [
+                      Column(
+                        children: [
+                          model.appUsers.isEmpty
+                              ? Container()
+                              : Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(24, 50, 24, 24),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      // Text(
+                                      //   'Hart',
+                                      //   style: subHeadingText1,
+                                      // ),
+                                      Image.asset(
+                                        '$logoPath/logo3.png',
+                                        scale: 6.5,
+                                        color: primaryColor,
+                                      ),
+                                      GestureDetector(
+                                        behavior: HitTestBehavior.opaque,
+                                        onTap: () {
+                                          showFilter(context);
+                                        },
+                                        child: Image.asset(
+                                          '$staticAsset/Filter.png',
+                                          scale: 3,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                          Expanded(
+                            child: PageView.builder(
+                              physics: BouncingScrollPhysics(),
+                              controller: model.pageController,
+                              itemCount: model.appUsers.length > 0
+                                  ? model.appUsers.length
+                                  : 1,
+                              itemBuilder: (context, index) {
+                                model.index = index;
+
+                                return model.appUsers.length == 0
+                                    ? _staticScreen(context)
+                                    : _homeScreenData(
+                                        model, model.appUsers[index]);
+                              },
+                              onPageChanged: (val) => model.changePage(val),
+                            ),
+                          )
+                        ],
+                      ),
                       model.appUsers.isEmpty
                           ? Container()
-                          : Padding(
-                              padding:
-                                  const EdgeInsets.fromLTRB(24, 50, 24, 24),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  // Text(
-                                  //   'Hart',
-                                  //   style: subHeadingText1,
-                                  // ),
-                                  Image.asset(
-                                    '$logoPath/logo3.png',
-                                    scale: 6.5,
-                                    color: primaryColor,
-                                  ),
-                                  GestureDetector(
-                                    behavior: HitTestBehavior.opaque,
-                                    onTap: () {
-                                      showFilter(context);
-                                    },
-                                    child: Image.asset(
-                                      '$staticAsset/Filter.png',
-                                      scale: 3,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                      Expanded(
-                        child: PageView.builder(
-                          physics: BouncingScrollPhysics(),
-                          controller: model.pageController,
-                          itemCount: model.appUsers.length > 0
-                              ? model.appUsers.length
-                              : 1,
-                          itemBuilder: (context, index) {
-                            model.index = index;
+                          : _likeButtons(model),
 
-                            return model.appUsers.length == 0
-                                ? _staticScreen(context)
-                                : _homeScreenData(model, model.appUsers[index]);
-                          },
-                          onPageChanged: (val) => model.changePage(val),
-                        ),
-                      )
+                      ///
+                      /// Liking Animation
+                      ///
+                      // model.isLiked
+                      //     ? Center(
+                      //         child: Lottie.asset(
+                      //           '$animations/heart.json',
+                      //           // controller: _animationController,
+                      //           repeat: false,
+                      //           frameRate: FrameRate(
+                      //             100,
+                      //           ),
+                      //         ),
+                      //       )
+                      //     : Container(),
                     ],
-                  ),
-                  model.appUsers.isEmpty ? Container() : _likeButtons(model),
-
-                  ///
-                  /// Liking Animation
-                  ///
-                  // model.isLiked
-                  //     ? Center(
-                  //         child: Lottie.asset(
-                  //           '$animations/heart.json',
-                  //           // controller: _animationController,
-                  //           repeat: false,
-                  //           frameRate: FrameRate(
-                  //             100,
-                  //           ),
-                  //         ),
-                  //       )
-                  //     : Container(),
-                ],
-              )),
+                  )
+                : Container(),
+          ),
         );
       }),
     );
@@ -585,13 +591,38 @@ class _HomeScreenState extends State<HomeScreen> {
                               'Looking For',
                               style: subHeadingTextStyle2,
                             ),
-                            CustomDropDownButton(
-                              value: model.gender,
-                              onchange: (val) {
-                                model.selectGender(val);
+                            GestureDetector(
+                              behavior: HitTestBehavior.translucent,
+                              onTap: () async {
+                                await model.selectGender();
                               },
-                              items: model.lookingFor,
-                            ),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    model.lookingFor,
+                                    style: buttonTextStyle.copyWith(
+                                      color: greyColor2,
+                                    ),
+                                  ),
+                                  sizeBoxw10,
+                                  Icon(
+                                    Icons.arrow_forward_ios,
+                                    color: greyColor2,
+                                    size: 15,
+                                  ),
+                                ],
+                              ),
+                            )
+                            // CustomDropDownButton(
+                            //   value: model.gender,
+                            //   onchange: (val) {
+                            //     // model.selectGender(val);
+                            //     Get.to(
+                            //       SelectGenderScreen(),
+                            //     );
+                            //   },
+                            //   items: model.lookingFor,
+                            // ),
                           ],
                         ),
                         sizeBox20,
