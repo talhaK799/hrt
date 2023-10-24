@@ -45,7 +45,7 @@ class EditProfileProvider extends BaseViewModel {
   updateProfile() async {
     currentUser.appUser.dob = pickedDate.toString();
     currentUser.appUser.desire!.add(desire);
-    currentUser.appUser.lookingFor!.add(interst);
+    currentUser.appUser.lookingFor = interst;
     setState(ViewState.busy);
     bool isUpdated = await db.updateUserProfile(currentUser.appUser);
 

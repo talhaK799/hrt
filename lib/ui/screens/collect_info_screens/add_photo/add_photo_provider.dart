@@ -40,6 +40,25 @@ class AddPhotoProvider extends BaseViewModel {
     PickImage(),
     PickImage(),
   ];
+// [1 , null ,3, 4, 5]
+  removeImage(index) async {
+    images[index] = PickImage();
+    selectedImages!.removeAt(index);
+    List<File> imgs = selectedImages!;
+    for (var i = 0; i < images.length; i++) {
+      images[i] = PickImage();
+    }
+    for (var i = 0; i < imgs.length; i++) {
+      images[i].image = imgs[i];
+
+      print('selected $i path :=> ${imgs[i].path}');
+      // await Future.delayed(Duration(seconds: 1));
+    }
+
+    print('selected images===> ${imgs.length}');
+
+    notifyListeners();
+  }
 
   void selectImages() async {
     // imageFileList = [];
@@ -71,18 +90,6 @@ class AddPhotoProvider extends BaseViewModel {
     }
     notifyListeners();
   }
-
-  // removeImage(index) async {
-  //   images[index] = PickImage();
-  //   selectedImages!.removeAt(index);
-
-  //   for (var i = 0; i < selectedImages!.length; i++) {
-  //     images[i].image = selectedImages![i + 1];
-  //   }
-  //   print('selected images===> ${selectedImages!.length}');
-
-  //   notifyListeners();
-  // }
 
   addUserImages() async {
     if (selectedImages!.length < 1) {

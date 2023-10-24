@@ -31,8 +31,9 @@ class EmailVerificationProvider extends BaseViewModel {
         userEmail: email,
         otpLength: 4,
         otpType: OTPType.digitsOnly);
-    setState(ViewState.idle);
     bool isOTPSend = await emailOTP.sendOTP();
+    
+    setState(ViewState.idle);
 
     if (isOTPSend) {
       Get.snackbar("Success!", "OTP sent to your email");
