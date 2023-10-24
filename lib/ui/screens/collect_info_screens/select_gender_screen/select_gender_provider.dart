@@ -15,10 +15,13 @@ class SelectGenderProvider extends BaseViewModel {
   final currentUser = locator<AuthService>().appUser;
   bool isClicked = false;
   bool filter = false;
+  bool updattion = false;
 
-  SelectGenderProvider(isFiltering) {
+  SelectGenderProvider(isFiltering, update) {
     filter = isFiltering;
+    updattion = update;
     getItems();
+    notifyListeners();
   }
 
   List<InfoItem> items = [];
@@ -57,9 +60,13 @@ class SelectGenderProvider extends BaseViewModel {
     bool isUpdated = await _db.updateUserProfile(currentUser);
     setState(ViewState.idle);
     if (isUpdated) {
-      Get.to(
-        FantasiesScreen(),
-      );
+      if (updattion == true) {
+        Get.back(result: selectedItem);
+      } else {
+        Get.to(
+          FantasiesScreen(),
+        );
+      }
     }
   }
   // bool isMan = false;

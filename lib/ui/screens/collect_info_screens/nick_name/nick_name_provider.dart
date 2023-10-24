@@ -12,15 +12,26 @@ class NickNameProvider extends BaseViewModel {
   final currentUser = locator<AuthService>();
   final db = DatabaseService();
   final formKey = GlobalKey<FormState>();
+  String nickName = '';
+  bool isprof = false;
+
+  NickNameProvider(isProfUpdt) {
+    isprof = isProfUpdt;
+  }
 
   addNickName() async {
+    currentUser.appUser.nickName = nickName;
     setState(ViewState.busy);
     bool isUpdated = await db.updateUserProfile(currentUser.appUser);
     setState(ViewState.idle);
     if (isUpdated) {
-    Get.to(
-      IdentityScreen(),
-    );
+      isprof==true
+          ? Get.back(
+              result: nickName,
+            )
+          : Get.to(
+              IdentityScreen(),
+            );
     }
   }
 }

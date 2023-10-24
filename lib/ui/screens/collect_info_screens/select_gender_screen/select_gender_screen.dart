@@ -16,14 +16,16 @@ import '../../../../../core/constants/style.dart';
 
 class SelectGenderScreen extends StatelessWidget {
   bool isFileter;
+  bool isUpdate;
   SelectGenderScreen({
     this.isFileter = false,
+    this.isUpdate=false,
   });
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => SelectGenderProvider(isFileter),
+      create: (context) => SelectGenderProvider(isFileter,isUpdate),
       child: Consumer<SelectGenderProvider>(builder: (context, model, child) {
         return ModalProgressHUD(
           inAsyncCall: model.state == ViewState.busy,

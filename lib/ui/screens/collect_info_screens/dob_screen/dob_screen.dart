@@ -15,12 +15,15 @@ import 'package:provider/provider.dart';
 import '../../../../core/constants/style.dart';
 
 class DOBScreen extends StatelessWidget {
-  const DOBScreen({super.key});
+  bool isUpdate;
+  DOBScreen({
+    this.isUpdate = false,
+  });
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => DobProvider(),
+      create: (context) => DobProvider(isUpdate),
       child: Consumer<DobProvider>(builder: (context, model, child) {
         return ModalProgressHUD(
           inAsyncCall: model.state == ViewState.busy,
@@ -74,25 +77,7 @@ class DOBScreen extends StatelessWidget {
                   CustomButton(
                     title: 'CONTINUE',
                     onTap: () {
-                      FocusManager.instance.primaryFocus?.unfocus();
-                      if (model.age < 18) {
-                        Get.snackbar(
-                          'Alert!!',
-                          'Age must be 18 or above',
-                          colorText: primaryColor,
-                          messageText: Text(
-                            'Age must be 18 or above',
-                            style: miniText.copyWith(
-                              color: lightRed,
-                              fontSize: 15.sp,
-                            ),
-                          ),
-                        );
-                      } else {
-                        Get.to(
-                          NickNameScreen(),
-                        );
-                      }
+                      model.addDob();
                     },
                   ),
                   SizedBox(

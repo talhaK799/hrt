@@ -16,15 +16,16 @@ import 'package:provider/provider.dart';
 import '../../../../../core/constants/style.dart';
 
 class NickNameScreen extends StatelessWidget {
-  const NickNameScreen({super.key});
+  bool isUpdate;
+  NickNameScreen({this.isUpdate = false});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => NickNameProvider(),
+      create: (context) => NickNameProvider(isUpdate),
       child: Consumer<NickNameProvider>(builder: (context, model, child) {
         return ModalProgressHUD(
-          inAsyncCall: model.state==ViewState.busy,
+          inAsyncCall: model.state == ViewState.busy,
           progressIndicator: CustomLoader(),
           child: Scaffold(
             body: Padding(
@@ -70,7 +71,7 @@ class NickNameScreen extends StatelessWidget {
                             if (val.isEmpty) {
                               return "Nick Name Required";
                             } else {
-                              model.currentUser.appUser.nickName = val;
+                              model.nickName = val;
                               return null;
                             }
                           },

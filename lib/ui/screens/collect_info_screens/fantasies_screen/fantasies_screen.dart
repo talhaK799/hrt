@@ -13,12 +13,13 @@ import 'package:provider/provider.dart';
 import '../../../../../core/constants/style.dart';
 
 class FantasiesScreen extends StatelessWidget {
-  const FantasiesScreen({super.key});
+  bool isUpdate;
+  FantasiesScreen({this.isUpdate = false});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => FantasiesProvider(),
+      create: (context) => FantasiesProvider(isUpdate),
       child: Consumer<FantasiesProvider>(builder: (context, model, child) {
         return ModalProgressHUD(
           inAsyncCall: model.state == ViewState.busy,
