@@ -19,6 +19,8 @@ import '../collect_info_screens/select_gender_screen/select_gender_screen.dart';
 class HomeProvider extends BaseViewModel {
   int dotIndex = 0;
   bool isLiked = false;
+  bool isDislike = false;
+
   bool isDisLiked = false;
   bool isRecent = false;
   bool isLast = false;
@@ -157,6 +159,9 @@ class HomeProvider extends BaseViewModel {
 
       print("Users ====> ${appUsers.length}");
     }
+    isLiked = false;
+    isDislike = false;
+    notifyListeners();
   }
 
   ///

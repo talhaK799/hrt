@@ -144,6 +144,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     });
                     await Future.delayed(Duration(milliseconds: 500));
 
+// <<<<<<< updateProfile
                     setState(() {
                       model.isDisLiked = false;
                     });
@@ -162,6 +163,20 @@ class _HomeScreenState extends State<HomeScreen> {
                       scale: 3.5,
                     ),
                   ),
+// =======
+//                 setState(() {
+//                   model.isDisLiked = false;
+//                 });
+//                 model.disLike(model.appUsers[model.index]);
+//               },
+//               child: Container(
+//                 padding: const EdgeInsets.all(20),
+//                 decoration: BoxDecoration(
+//                   // color: model.isDislike ? greyColor2 : whiteColor,
+//                   color: model.isDisLiked == true ? greyColor2 : whiteColor,
+//                   shape: BoxShape.circle,
+//                   boxShadow: boxShadow,
+// >>>>>>> dev
                 ),
                 SizedBox(
                   width: 15.w,
@@ -501,6 +516,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
+
                     child: ListView(
                       // crossAxisAlignment: CrossAxisAlignment.start,
                       physics: BouncingScrollPhysics(),
@@ -523,7 +539,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ],
                         ),
-                        sizeBox20,
+                        SizedBox(height: 0.05.sh),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -555,7 +571,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           endThumbIcon: thumbIcon(false),
                           startThumbIcon: thumbIcon(true),
                         ),
-                        sizeBox20,
+                        SizedBox(height: 40.h),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -583,7 +599,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           endThumbIcon: thumbIcon(false),
                           startThumbIcon: thumbIcon(true),
                         ),
-                        sizeBox30,
+                        SizedBox(height: 40.h),
+
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -647,7 +664,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             // ),
                           ],
                         ),
-                        sizeBox20,
+                        SizedBox(height: 40.h),
+
                         Text(
                           'Search by',
                           style: subHeadingText1,
@@ -678,7 +696,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             // ),
                           ],
                         ),
-                        sizeBox20,
+                        SizedBox(height: 40.h),
+
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
