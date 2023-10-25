@@ -38,85 +38,87 @@ class _HomeScreenState extends State<HomeScreen> {
           inAsyncCall: model.state == ViewState.busy,
           progressIndicator: CustomLoader(),
           child: Scaffold(
-            backgroundColor: model.appUsers.isEmpty ? primaryColor : whiteColor,
-            body: model.state == ViewState.idle
-                ? Stack(
-                    children: [
-                      Column(
-                        children: [
-                          model.appUsers.isEmpty
-                              ? Container()
-                              : Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(24, 50, 24, 24),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      // Text(
-                                      //   'Hart',
-                                      //   style: subHeadingText1,
-                                      // ),
-                                      Image.asset(
-                                        '$logoPath/logo3.png',
-                                        scale: 6.5,
-                                        color: primaryColor,
-                                      ),
-                                      GestureDetector(
-                                        behavior: HitTestBehavior.opaque,
-                                        onTap: () {
-                                          showFilter(context);
-                                        },
-                                        child: Image.asset(
-                                          '$staticAsset/Filter.png',
-                                          scale: 3,
+              backgroundColor:
+                  model.appUsers.isEmpty ? primaryColor : whiteColor,
+              body: Stack(
+                children: [
+                  model.state == ViewState.busy
+                      ? Container(
+                          color: whiteColor,
+                          width: 1.sw,
+                          height: 1.sh,
+                        )
+                      : Column(
+                          children: [
+                            model.appUsers.isEmpty
+                                ? Container()
+                                : Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        24, 50, 24, 24),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        // Text(
+                                        //   'Hart',
+                                        //   style: subHeadingText1,
+                                        // ),
+                                        Image.asset(
+                                          '$logoPath/logo3.png',
+                                          scale: 6.5,
+                                          color: primaryColor,
                                         ),
-                                      ),
-                                    ],
+                                        GestureDetector(
+                                          behavior: HitTestBehavior.opaque,
+                                          onTap: () {
+                                            showFilter(context);
+                                          },
+                                          child: Image.asset(
+                                            '$staticAsset/Filter.png',
+                                            scale: 3,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                          Expanded(
-                            child: PageView.builder(
-                              physics: BouncingScrollPhysics(),
-                              controller: model.pageController,
-                              itemCount: model.appUsers.length > 0
-                                  ? model.appUsers.length
-                                  : 1,
-                              itemBuilder: (context, index) {
-                                model.index = index;
-                                return  model.appUsers.length == 0
-                                    ? _staticScreen(context)
-                                    : _homeScreenData(
-                                        model, model.appUsers[index]);
-                              },
-                              onPageChanged: (val) => model.changePage(val),
-                            ),
-                          )
-                        ],
-                      ),
-                      model.appUsers.isEmpty
-                          ? Container()
-                          : _likeButtons(model),
+                            Expanded(
+                              child: PageView.builder(
+                                physics: BouncingScrollPhysics(),
+                                controller: model.pageController,
+                                itemCount: model.appUsers.length > 0
+                                    ? model.appUsers.length
+                                    : 1,
+                                itemBuilder: (context, index) {
+                                  model.index = index;
+                                  return model.appUsers.length == 0
+                                      ? _staticScreen(context)
+                                      : _homeScreenData(
+                                          model, model.appUsers[index]);
+                                },
+                                onPageChanged: (val) => model.changePage(val),
+                              ),
+                            )
+                          ],
+                        ),
+                  model.appUsers.isEmpty ? Container() : _likeButtons(model),
 
-                      ///
-                      /// Liking Animation
-                      ///
-                      // model.isLiked
-                      //     ? Center(
-                      //         child: Lottie.asset(
-                      //           '$animations/heart.json',
-                      //           // controller: _animationController,
-                      //           repeat: false,
-                      //           frameRate: FrameRate(
-                      //             100,
-                      //           ),
-                      //         ),
-                      //       )
-                      //     : Container(),
-                    ],
-                  )
-                : Container(),
-          ),
+                  ///
+                  /// Liking Animation
+                  ///
+                  // model.isLiked
+                  //     ? Center(
+                  //         child: Lottie.asset(
+                  //           '$animations/heart.json',
+                  //           // controller: _animationController,
+                  //           repeat: false,
+                  //           frameRate: FrameRate(
+                  //             100,
+                  //           ),
+                  //         ),
+                  //       )
+                  //     : Container(),
+                ],
+              )),
         );
       }),
     );
@@ -515,7 +517,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
-
                     child: ListView(
                       // crossAxisAlignment: CrossAxisAlignment.start,
                       physics: BouncingScrollPhysics(),
@@ -799,40 +800,40 @@ _imageSlider(HomeProvider model, AppUser user) {
         itemCount: user.images!.length,
         itemBuilder: (context, index, realIndex) {
           return Container(
-            // decoration: BoxDecoration(
-            //   image: DecorationImage(
-            //     image: NetworkImage(user.images![index].toString()),
-            //     fit: BoxFit.cover,
-            //   ),
-            // ),
-            child: Image.network(
-                user.images![index].toString(),
-              fit: BoxFit.cover,
-              loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-                if (loadingProgress == null) {
-                  return child;  // Return the image widget if it's fully loaded.
-                }
-                return Container(
-                  color: Colors.grey.withOpacity(0.1),
-                  child: Center(
-                    // Display a linear progress indicator until the image is fully loaded.
-                    child: CircularProgressIndicator(
-                      color: primaryColor,
-                      value: loadingProgress.expectedTotalBytes != null
-                          ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
-                          : null,
-                    ),
-                  ),
-                );
-              })
-            
-            // FadeInImage.assetNetwork(
-            //
-            //   placeholder: '$logoPath/logo4.png',
-            //   image: user.images![index].toString(),
-            //   fit: BoxFit.fill,
-            // ),
-          );
+              // decoration: BoxDecoration(
+              //   image: DecorationImage(
+              //     image: NetworkImage(user.images![index].toString()),
+              //     fit: BoxFit.cover,
+              //   ),
+              // ),
+              child: Image.network(user.images![index].toString(),
+                  fit: BoxFit.cover, loadingBuilder: (BuildContext context,
+                      Widget child, ImageChunkEvent? loadingProgress) {
+            if (loadingProgress == null) {
+              return child; // Return the image widget if it's fully loaded.
+            }
+            return Container(
+              color: Colors.grey.withOpacity(0.1),
+              child: Center(
+                // Display a linear progress indicator until the image is fully loaded.
+                child: CircularProgressIndicator(
+                  color: primaryColor,
+                  value: loadingProgress.expectedTotalBytes != null
+                      ? loadingProgress.cumulativeBytesLoaded /
+                          loadingProgress.expectedTotalBytes!
+                      : null,
+                ),
+              ),
+            );
+          })
+
+              // FadeInImage.assetNetwork(
+              //
+              //   placeholder: '$logoPath/logo4.png',
+              //   image: user.images![index].toString(),
+              //   fit: BoxFit.fill,
+              // ),
+              );
         },
         options: CarouselOptions(
           onPageChanged: (index, reason) {

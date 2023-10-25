@@ -12,12 +12,13 @@ import 'package:provider/provider.dart';
 import '../../../../../core/constants/style.dart';
 
 class EmailVerificationScreen extends StatelessWidget {
-  const EmailVerificationScreen({super.key});
+  bool isPhoneLogin;
+   EmailVerificationScreen({this.isPhoneLogin=false});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => EmailVerificationProvider(),
+      create: (context) => EmailVerificationProvider(isPhoneLogin),
       child:
           Consumer<EmailVerificationProvider>(builder: (context, model, child) {
         return ModalProgressHUD(
