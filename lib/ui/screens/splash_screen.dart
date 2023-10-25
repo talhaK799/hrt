@@ -42,11 +42,10 @@ class _SplashScreenState extends State<SplashScreen> {
     // );
 
     if (_auth.isLogin) {
-      if (_auth.appUser.isEmailVerified ==false) {
-        Get.offAll(
-          EmailVerificationScreen()
-        );
-      } else if (_auth.appUser.isPhoneNoVerified == false) {
+      // if (_auth.appUser.isEmailVerified == false) {
+      //   Get.offAll(EmailVerificationScreen());
+      // } else
+      if (_auth.appUser.isPhoneNoVerified == false) {
         Get.offAll(
           PhoneNoVerificationScreen(),
         );

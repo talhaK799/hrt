@@ -12,41 +12,53 @@ class EmailVerificationProvider extends BaseViewModel {
   String email = '';
   String phoneOtp = '';
   EmailOTP emailOTP = EmailOTP();
+  bool isPhone = false;
   final formKey = GlobalKey<FormState>();
 
   // TextEditingController pinController = TextEditingController();
-
+  EmailVerificationProvider(phone) {
+    isPhone = phone;
+  }
   final authService = locator<AuthService>();
   // CustomAuthResult customAuthResult = CustomAuthResult();
   // DatabaseService _databaseService = DatabaseService();
 
   sendotptoEmail() async {
-    emailOTP = EmailOTP();
+    // emailOTP = EmailOTP();
+    Get.to(
+      EmailOtpScreen(
+        emailOTP: emailOTP,
+        isphone: isPhone,
+      ),
+    );
 
-    print(email);
-    setState(ViewState.busy);
-    await emailOTP.setConfig(
-        appEmail: "talhakhurshed799@gmail.com",
-        appName: "Hart",
-        userEmail: email,
-        otpLength: 4,
-        otpType: OTPType.digitsOnly);
-    bool isOTPSend = await emailOTP.sendOTP();
-    
-    setState(ViewState.idle);
+    // print(email);
+    // setState(ViewState.busy);
+    // await emailOTP.setConfig(
+    //     appEmail: "talhakhurshed799@gmail.com",
+    //     appName: "Hart",
+    //     userEmail: email,
+    //     otpLength: 4,
+    //     otpType: OTPType.digitsOnly);
+    // bool isOTPSend = await emailOTP.sendOTP();
 
-    if (isOTPSend) {
-      Get.snackbar("Success!", "OTP sent to your email");
-      Get.to(
-        EmailOtpScreen(emailOTP: emailOTP,),
-      );
-      // startTimer();
-      // otp = myauth.toString();
-      // print("OTP sent ==> ${myauth.toString()}");
-    } else {
-      print("Oops, OTP send failed");
-      Get.snackbar("Error!", "Send again opt");
-    }
+    // setState(ViewState.idle);
+
+    // if (isOTPSend) {
+    //   Get.snackbar("Success!", "OTP sent to your email");
+    //   Get.to(
+    //     EmailOtpScreen(
+    //       emailOTP: emailOTP,
+    //       isphone: isPhone,
+    //     ),
+    //   );
+    //   // startTimer();
+    //   // otp = myauth.toString();
+    //   // print("OTP sent ==> ${myauth.toString()}");
+    // } else {
+    //   print("Oops, OTP send failed");
+    //   Get.snackbar("Error!", "Send again opt");
+    // }
     // await _verificationService.sendCodeToEmail();
     // print("${_verificationService.twilioResponse.statusCode}");
   }

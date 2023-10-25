@@ -128,7 +128,7 @@ class EditProfileScreen extends StatelessWidget {
           sizeBox20,
           heading('Nick Name'),
           CustomProfileTile(
-            title: model.currentUser.appUser.nickName,
+            title: model.currentUser.appUser.nickName??"No Name",
             textColor: greyColor2,
             iconColor: greyColor2,
             onTap: () {

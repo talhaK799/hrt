@@ -15,12 +15,13 @@ import '../../../../../core/constants/style.dart';
 
 class EmailOtpScreen extends StatelessWidget {
   EmailOTP? emailOTP;
-  EmailOtpScreen({this.emailOTP});
+  bool isphone;
+  EmailOtpScreen({this.emailOTP,this.isphone=false,});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => EmailOtpProvider(emailOTP!),
+      create: (context) => EmailOtpProvider(emailOTP!,isphone),
       child: Consumer<EmailOtpProvider>(builder: (context, model, child) {
         return ModalProgressHUD(
           inAsyncCall: model.state == ViewState.busy,

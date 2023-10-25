@@ -66,7 +66,7 @@ class ProfileScreen extends StatelessWidget {
                     ),
                     sizeBox20,
                     Text(
-                      model.currentUser.name!,
+                      model.currentUser.name ?? 'No Name',
                       style: descriptionTextStyle,
                     ),
                     sizeBox10,

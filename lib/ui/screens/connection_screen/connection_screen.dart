@@ -25,11 +25,9 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
       child: Consumer<ConnectionsProvider>(builder: (context, model, child) {
         return ModalProgressHUD(
           inAsyncCall: model.state == ViewState.busy,
-          
           progressIndicator: CustomLoader(),
           child: Scaffold(
-            backgroundColor:
-                model.likingUsers.isNotEmpty ? whiteColor : primaryColor,
+            backgroundColor: primaryColor,
             body: model.likingUsers.isNotEmpty
                 ? Padding(
                     padding: EdgeInsets.fromLTRB(22, 50, 22, 10),
@@ -112,7 +110,11 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                     ),
                   )
                 : model.state == ViewState.busy
-                    ? Container()
+                    ? Container(
+                        color: whiteColor,
+                        width: 1.sw,
+                        height: 1.sh,
+                      )
                     : _staticScreen(context),
           ),
         );
