@@ -3,6 +3,9 @@ class Message {
   String? fromUserId;
   String? toUserId;
   String? textMessage;
+  String? imageUrl;
+  String? voiceUrl;
+
   DateTime? sendAt;
   String? type;
 
@@ -11,6 +14,7 @@ class Message {
     this.messageId,
     this.sendAt,
     this.textMessage,
+    this.imageUrl,
     this.toUserId,
     this.type,
   });
@@ -19,6 +23,7 @@ class Message {
     this.messageId = id;
     this.fromUserId = json["fromUserId"];
     this.toUserId = json["toUserId"];
+    this.imageUrl = json["imageUrl"] ?? "";
     this.textMessage = json["textMessage"] ?? "";
     this.sendAt = json["sendAt"].toDate();
     this.type = json["type"];
@@ -29,6 +34,7 @@ class Message {
       "fromUserId": this.fromUserId,
       "toUserId": this.toUserId,
       "textMessage": this.textMessage,
+      "imageUrl": this.imageUrl,
       "sendAt": this.sendAt,
       "type": this.type,
     };

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hart/core/enums/view_state.dart';
@@ -6,6 +8,8 @@ import 'package:hart/core/models/chat_message.dart';
 import 'package:hart/core/models/conversation.dart';
 import 'package:hart/core/models/matches.dart';
 import 'package:hart/core/services/database_service.dart';
+import 'package:hart/core/services/file_picker_service.dart';
+import 'package:hart/core/services/firebase_storage_service.dart';
 import 'package:hart/core/view_models/base_view_model.dart';
 import 'package:hart/locator.dart';
 
@@ -14,7 +18,8 @@ import '../../../../../core/services/auth_service.dart';
 class ChattingProvider extends BaseViewModel {
   final db = DatabaseService();
   final currentUser = locator<AuthService>();
-  
+  final storage = FirebaseStorageService();
+  final filePicker = FilePickerService();
 
   TextEditingController messageController = TextEditingController();
   AppUser toUser = AppUser();
@@ -25,6 +30,8 @@ class ChattingProvider extends BaseViewModel {
   Conversation conversation = Conversation();
 
   Stream<QuerySnapshot>? messageStream;
+  bool isSelect = false;
+  File? image;
   List<Matches> matches = [];
   List<AppUser> matchedUsers = [];
 
@@ -45,43 +52,65 @@ class ChattingProvider extends BaseViewModel {
   }
 
   List<Message> messages = [];
-  sendMessage() {
+  sendMessage() async {
+    // message.textMessage = '';
+
+    ///
+    /// message from
+    ///
+
+    isSelect = false;
+    conversationFrom.id = currentUser.appUser.id;
+    conversationFrom.lastMessage = message.textMessage;
+    conversationFrom.lastMessageAt = DateTime.now();
+    conversationFrom.imageUrl = currentUser.appUser.images!.first;
+    conversationFrom.name = currentUser.appUser.name;
+    conversationFrom.isMessageSeen = false;
+    conversationFrom.noOfUnReadMsgs = 0;
+
+    ///
+    /// message to
+    ///
+    conversationTo.id = toUser.id;
+    conversationTo.lastMessage = message.textMessage;
+    conversationTo.lastMessageAt = DateTime.now();
+    conversationTo.name = toUser.name;
+    conversationTo.imageUrl = toUser.images!.first;
+    conversationTo.isMessageSeen = true;
+    conversationTo.noOfUnReadMsgs = 0;
     print('message : ${message.textMessage}');
-    if (message.textMessage!.isNotEmpty || message.textMessage != null) {
-      ///
-      /// message from
-      ///
-
-      conversationFrom.id = currentUser.appUser.id;
-      conversationFrom.lastMessage = message.textMessage;
-      conversationFrom.lastMessageAt = DateTime.now();
-      conversationFrom.imageUrl = currentUser.appUser.images!.first;
-      conversationFrom.name = currentUser.appUser.name;
-      conversationFrom.isMessageSeen = false;
-      conversationFrom.noOfUnReadMsgs = 0;
-
-      ///
-      /// message to
-      ///
-      conversationTo.id = toUser.id;
-      conversationTo.lastMessage = message.textMessage;
-      conversationTo.lastMessageAt = DateTime.now();
-      conversationTo.name = toUser.name;
-      conversationTo.imageUrl = toUser.images!.first;
-      conversationTo.isMessageSeen = true;
-      conversationTo.noOfUnReadMsgs = 0;
-
+    if (message.textMessage != null) {
       ///
       /// messages
       ///
       message.fromUserId = currentUser.appUser.id;
       message.toUserId = toUser.id;
       message.sendAt = DateTime.now();
-      message.type = "text";
-      db.addNewUserMessage(conversationFrom, conversationTo, message);
+      message.type = 'text';
+      print('Text message');
+
+      await db.addNewUserMessage(conversationFrom, conversationTo, message);
+
+      // message.type = "text";
       // _databaseService.updateUserMessageReceived(true, conversationTo.id);
       print("new message added");
+
       messageController.clear();
+      message = Message();
+      isSelect = false;
+      notifyListeners();
+    } else if (image != null) {
+      message.fromUserId = currentUser.appUser.id;
+      message.toUserId = toUser.id;
+      message.sendAt = DateTime.now();
+
+      message.imageUrl = await storage.uploadImage(image!, 'Chat Images');
+      print('image url : ${message.imageUrl}');
+      message.type = 'image';
+      await db.addNewUserMessage(conversationFrom, conversationTo, message);
+
+      print('image sent');
+      image = null;
       message = Message();
       notifyListeners();
     } else {
@@ -109,5 +138,16 @@ class ChattingProvider extends BaseViewModel {
       },
     );
     setState(ViewState.idle);
+  }
+
+  selectImage() {
+    isSelect = !isSelect;
+    notifyListeners();
+  }
+
+  pickImage() async {
+    image = await filePicker.pickImage();
+
+    notifyListeners();
   }
 }

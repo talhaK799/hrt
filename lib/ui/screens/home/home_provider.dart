@@ -234,7 +234,7 @@ class HomeProvider extends BaseViewModel {
   }
 
   selectAge(values) {
-    ageValues = SfRangeValues(18, values.end);
+    ageValues = SfRangeValues(values.start, values.end);
     notifyListeners();
   }
 

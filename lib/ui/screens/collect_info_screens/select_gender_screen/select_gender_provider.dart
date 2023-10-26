@@ -21,10 +21,10 @@ class SelectGenderProvider extends BaseViewModel {
     filter = isFiltering;
     updattion = update;
     getItems();
-    notifyListeners();
   }
 
   List<InfoItem> items = [];
+  List<String> selections = [];
   String? selectedItem;
 
   getItems() async {
@@ -34,40 +34,51 @@ class SelectGenderProvider extends BaseViewModel {
     setState(ViewState.idle);
   }
 
+  /// single selection
+
   select(index) {
-    for (var item in items) {
-      if (item == items[index]) {
-        item.isSelected = true;
-        selectedItem = item.title;
-        if (!filter) {
-          currentUser.lookingFor = selectedItem;
+    if (filter) {
+      for (var item in items) {
+        if (item == items[index]) {
+          item.isSelected = true;
+          selectedItem = item.title;
+        } else {
+          item.isSelected = false;
         }
-      } else {
-        item.isSelected = false;
       }
+    } else {
+      items[index].isSelected = !items[index].isSelected!;
     }
-    // items[index].isSelected = !items[index].isSelected!;
+
     notifyListeners();
   }
 
   addSelectedItems() async {
-    // for (var element in items) {
-    //   if (element.isSelected == true) {
-    //     selectedItems.add(element.title!);
-    //   }
-    // }
-    setState(ViewState.busy);
+    currentUser.lookingFor = [];
+    for (var element in items) {
+      if (element.isSelected == true) {
+        print('element==> ${element.title}');
+        selections.add(element.title!);
+      }
+    }
+    currentUser.lookingFor = selections;
+    // print('first element==> ${selections.first}');
+    // setState(ViewState.busy);
+
     bool isUpdated = await _db.updateUserProfile(currentUser);
-    setState(ViewState.idle);
+    // setState(ViewState.idle);
     if (isUpdated) {
-      if (updattion == true) {
-        Get.back(result: selectedItem);
+      if (updattion) {
+        Get.back(result: selections);
       } else {
         Get.to(
           FantasiesScreen(),
         );
       }
     }
+
+    notifyListeners();
+    // }
   }
   // bool isMan = false;
   // bool isWoman = false;

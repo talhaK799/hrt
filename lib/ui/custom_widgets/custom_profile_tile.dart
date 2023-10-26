@@ -9,6 +9,7 @@ class CustomProfileTile extends StatelessWidget {
   final title;
   String? icon;
   bool? isWhite;
+  bool? isList;
   Color? color;
   Color? iconColor;
   Color? textColor;
@@ -21,6 +22,7 @@ class CustomProfileTile extends StatelessWidget {
     this.iconColor,
     this.textColor,
     this.isWhite = true,
+    this.isList,
     required this.onTap,
   });
 
@@ -51,12 +53,30 @@ class CustomProfileTile extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    title,
-                    style: buttonTextStyle.copyWith(
-                      color: textColor ?? blackColor,
-                    ),
-                  ),
+                  isList == true
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            for (var i = 0; i < title.length; i++)
+                              Padding(
+                                padding: EdgeInsets.only(right: 5),
+                                child: Text(
+                                  title.length <= 3
+                                      ? '${title[i].toString()}, '
+                                      : '. . . .',
+                                  style: buttonTextStyle.copyWith(
+                                    color: textColor ?? blackColor,
+                                  ),
+                                ),
+                              ),
+                          ],
+                        )
+                      : Text(
+                          title,
+                          style: buttonTextStyle.copyWith(
+                            color: textColor ?? blackColor,
+                          ),
+                        ),
                   Image.asset(
                     '$staticAsset/arrow.png',
                     scale: 3.5,

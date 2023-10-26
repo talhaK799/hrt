@@ -80,70 +80,121 @@ class ChattingScreen extends StatelessWidget {
                 ///
                 Padding(
                   padding: const EdgeInsets.only(top: 150),
-                  child: Container(
-                    height: 1.sh,
-                    padding: EdgeInsets.fromLTRB(24, 24, 24, 90),
-                    decoration: BoxDecoration(
-                      color: whiteColor,
-                    ),
-                    child: ListView.separated(
-                      physics: BouncingScrollPhysics(),
-                      shrinkWrap: true,
-                      reverse: true,
-                      itemCount: model.messages.length,
-                      itemBuilder: (context, index) {
-                        return _chatMessage(model, index);
-                      },
-                      separatorBuilder: (context, index) => SizedBox(
-                        height: 15.h,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Container(
+                          height: 1.sh,
+                          padding: EdgeInsets.fromLTRB(24, 24, 24, 90),
+                          decoration: BoxDecoration(
+                            color: whiteColor,
+                          ),
+                          child: ListView.separated(
+                            physics: BouncingScrollPhysics(),
+                            shrinkWrap: true,
+                            reverse: true,
+                            itemCount: model.messages.length,
+                            itemBuilder: (context, index) {
+                              return _chatMessage(model, index);
+                            },
+                            separatorBuilder: (context, index) => SizedBox(
+                              height: 15.h,
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
+                      Container(
+                        color: whiteColor,
+                        width: 1.sw,
+                        child: _chatFeild(model, context),
+                      )
+                    ],
                   ),
                 ),
 
                 ///
                 /// Text field
                 ///
-                _chatFeild(model, context),
-                // Align(
-                //   alignment: Alignment.bottomCenter,
-                //   child: Padding(
-                //     padding:
-                //         const EdgeInsets.only(bottom: 80, left: 32, right: 32),
-                //     child: Stack(
-                //       children: [
-                //         Container(
-                //           height: 0.45.sh,
-                //           decoration: BoxDecoration(
-                //               color: greyColor2,
-                //               image: DecorationImage(
-                //                 image: AssetImage('$dynamicAsset/image.png'),
-                //                 fit: BoxFit.cover,
-                //               ),
-                //               borderRadius: BorderRadius.circular(12.r)),
-                //           width: 1.sw,
-                //           alignment: Alignment.bottomCenter,
-                //           child: ElevatedButton(
-                //             onPressed: () {},
-                //             child: Text('Pick Image'),
-                //           ),
-                //         ),
-                //         // Align(
-                //         //   alignment: Alignment.bottomCenter,
-                //         //   child: ElevatedButton(
-                //         //     onPressed: () {},
-                //         //     child: Text('Pick Image'),
-                //         //   ),
-                //         // )
-                //       ],
-                //     ),
-                //   ),
-                // ),
+
+                ///
+                /// Send Image
+                ///
+                model.isSelect ? sendImageContainer(model) : Container(),
               ],
             ),
           ),
         );
       }),
+    );
+  }
+
+  sendImageContainer(ChattingProvider model) {
+    return Padding(
+      padding: EdgeInsets.only(
+        bottom: 80,
+        left: 32,
+        right: 32,
+        top: 0.43.sh,
+      ),
+      child: Stack(
+        children: [
+          Container(
+            height: 0.45.sh,
+            decoration: BoxDecoration(
+                color: greyColor2,
+                image: model.image != null
+                    ? DecorationImage(
+                        image: FileImage(model.image!),
+                        fit: BoxFit.cover,
+                      )
+                    : null,
+                borderRadius: BorderRadius.circular(12.r)),
+            width: 1.sw,
+            alignment: Alignment.bottomCenter,
+            child: model.image == null
+                ? ElevatedButton(
+                    onPressed: () {
+                      model.pickImage();
+                    },
+                    child: Text('Pick Image'),
+                  )
+                : Container(),
+          ),
+          model.image != null
+              ? Padding(
+                  padding: const EdgeInsets.only(
+                    top: 10,
+                    left: 10,
+                  ),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: primaryColor,
+                    ),
+                    child: IconButton(
+                      onPressed: () {
+                        model.image = null;
+
+                        model.setState(ViewState.idle);
+                      },
+                      icon: Icon(
+                        Icons.close,
+                      ),
+                      color: whiteColor,
+                    ),
+                  ),
+                )
+              : Container(),
+          // Align(
+          //   alignment: Alignment.bottomCenter,
+          //   child: ElevatedButton(
+          //     onPressed: () {},
+          //     child: Text('Pick Image'),
+          //   ),
+          // )
+        ],
+      ),
     );
   }
 
@@ -159,7 +210,9 @@ class ChattingScreen extends StatelessWidget {
                   : EdgeInsets.only(
                       right: 100,
                     ),
-          padding: EdgeInsets.all(15),
+          padding: model.messages[index].type == 'image'
+              ? EdgeInsets.all(3)
+              : EdgeInsets.all(15),
           decoration: BoxDecoration(
             color:
                 model.messages[index].fromUserId == model.currentUser.appUser.id
@@ -178,19 +231,31 @@ class ChattingScreen extends StatelessWidget {
                         bottomRight: Radius.circular(12.r),
                       ),
           ),
-          child: Align(
-            alignment: Alignment.topLeft,
-            child: Text(
-              model.messages[index].textMessage!,
-              style: subtitleText.copyWith(
-                fontSize: 15.sp,
-                color: model.messages[index].fromUserId ==
-                        model.currentUser.appUser.id
-                    ? whiteColor
-                    : blackColor,
-              ),
-            ),
-          ),
+          child: model.messages[index].type == 'text'
+              ? Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    model.messages[index].textMessage!,
+                    style: subtitleText.copyWith(
+                      fontSize: 15.sp,
+                      color: model.messages[index].fromUserId ==
+                              model.currentUser.appUser.id
+                          ? whiteColor
+                          : blackColor,
+                    ),
+                  ))
+              : Container(
+                  height: 200,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12.r),
+                    image: DecorationImage(
+                      image: NetworkImage(
+                        model.messages[index].imageUrl!,
+                      ),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
         ),
         sizeBox10,
         Row(
@@ -268,12 +333,19 @@ class ChattingScreen extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(left: 40, top: 10),
               child: TextFormField(
+                // validator: (val) {
+                //   if (val!.isNotEmpty) {
+
+                //     model.setState(ViewState.idle);
+                //   }
+                // },
                 style: subHeadingTextStyle.copyWith(
                   color: greyColor2,
                 ),
                 controller: model.messageController,
                 onChanged: (val) {
                   model.message.textMessage = val;
+                  model.setState(ViewState.idle);
                 },
                 decoration: InputDecoration(
                     contentPadding: EdgeInsets.only(
@@ -308,54 +380,25 @@ class ChattingScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   GestureDetector(
-                    onTap: () {
-                      // showModalBottomSheet(
-                      //     context: context,
-                      //     useSafeArea: true,
-                      //     isScrollControlled: true,
-                      //     shape: RoundedRectangleBorder(
-                      //       borderRadius: BorderRadius.circular(
-                      //         20.0,
-                      //       ),
-                      //     ),
-                      //     builder: (context) {
-                      //       return Consumer<ChattingProvider>(
-                      //           builder: (context, model, child) {
-                      //         return Container(
-                      //           padding: EdgeInsets.only(
-                      //             left: 25,
-                      //             right: 25,
-                      //             top: 100,
-                      //             bottom: 30,
-                      //           ),
-                      //           child: Column(children: [
-                      //             CustomButton(
-                      //               title: 'Pick Image',
-                      //               textColor: primaryColor,
-                      //               color: pinkColor,
-                      //               onTap: () {},
-                      //             ),
-                      //           ]),
-                      //         );
-                      //       });
-                      //     });
-                    },
+                    onTap: () => model.selectImage(),
                     child: Image.asset(
                       '$staticAsset/camera.png',
                       scale: 4,
                     ),
                   ),
                   sizeBoxw10,
-                  GestureDetector(
-                    behavior: HitTestBehavior.opaque,
-                    onTap: () {
-                      model.sendMessage();
-                    },
-                    child: Image.asset(
-                      '$staticAsset/send.png',
-                      scale: 4,
-                    ),
-                  ),
+                  model.messageController.text.isNotEmpty || model.image != null
+                      ? GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onTap: () {
+                            model.sendMessage();
+                          },
+                          child: Image.asset(
+                            '$staticAsset/send.png',
+                            scale: 4,
+                          ),
+                        )
+                      : Container(),
                 ],
               ),
             ),

@@ -133,13 +133,13 @@ class SignUpWithEmail extends StatelessWidget {
           height: 20.h,
         ),
         CustomTextField(
-          obscure: true,
+          obscure: model.isVisible,
           validator: (val) {
             if (val.isEmpty) {
               return 'Password is Required';
-            } else if(val.length < 6) {
+            } else if (val.length < 6) {
               return "password should be 6 characters";
-            }else{
+            } else {
               return null;
             }
           },
@@ -149,13 +149,30 @@ class SignUpWithEmail extends StatelessWidget {
           },
           hintText: 'Password',
           prefixIcon: 'password.png',
+          suffex: Padding(
+            padding: const EdgeInsets.only(right: 15),
+            child: GestureDetector(
+              onTap: () {
+                model.toggleVisibilty();
+              },
+              child: model.isVisible
+                  ? Icon(
+                      Icons.visibility,
+                      color: whiteColor,
+                    )
+                  : Icon(
+                      Icons.visibility_off_outlined,
+                      color: whiteColor,
+                    ),
+            ),
+          ),
           controller: model.passwordController,
         ),
         SizedBox(
           height: 20.h,
         ),
         CustomTextField(
-          obscure: true,
+          obscure: model.isConfirVisibe,
           validator: (val) {
             if (val.isEmpty) {
               return 'Password is Required';
@@ -174,6 +191,23 @@ class SignUpWithEmail extends StatelessWidget {
           hintText: 'Confirm Password',
           prefixIcon: 'password.png',
           controller: model.confirmPasswordController,
+          suffex: Padding(
+            padding: const EdgeInsets.only(right: 15),
+            child: GestureDetector(
+              onTap: () {
+                model.toggleConfirmVisibilty();
+              },
+              child: model.isConfirVisibe
+                  ? Icon(
+                      Icons.visibility,
+                      color: whiteColor,
+                    )
+                  : Icon(
+                      Icons.visibility_off_outlined,
+                      color: whiteColor,
+                    ),
+            ),
+          ),
         ),
         SizedBox(
           height: 40.h,

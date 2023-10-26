@@ -18,8 +18,8 @@ class SignUpwithEmailProvider extends BaseViewModel {
   final formKey = GlobalKey<FormState>();
   CustomAuthResult authResult = CustomAuthResult();
   final authService = locator<AuthService>();
-  bool isVisible = false;
-  bool isConfirVisibe = false;
+  bool isVisible = true;
+  bool isConfirVisibe = true;
   AppUser appuser = AppUser();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
@@ -42,7 +42,7 @@ class SignUpwithEmailProvider extends BaseViewModel {
       );
     }
 
-   setState(ViewState.idle);
+    setState(ViewState.idle);
   }
 
   toggleVisibilty() {
