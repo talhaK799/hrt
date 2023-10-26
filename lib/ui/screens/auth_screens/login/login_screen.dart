@@ -95,7 +95,7 @@ class LoginScreen extends StatelessWidget {
                           height: 20.h,
                         ),
                         CustomTextField(
-                          obscure: true,
+                          obscure: model.isvisible,
                           validator: (val) {
                             if (val.isEmpty) {
                               return 'Password is Required';
@@ -110,6 +110,23 @@ class LoginScreen extends StatelessWidget {
                           },
                           hintText: 'Password',
                           prefixIcon: 'password.png',
+                          suffex: Padding(
+                            padding: const EdgeInsets.only(right: 15),
+                            child: GestureDetector(
+                              onTap: () {
+                                model.toggleVisible();
+                              },
+                              child: model.isvisible
+                                  ? Icon(
+                                      Icons.visibility,
+                                      color: whiteColor,
+                                    )
+                                  : Icon(
+                                      Icons.visibility_off_outlined,
+                                      color: whiteColor,
+                                    ),
+                            ),
+                          ),
                           // controller: model.passwordController,
                         ),
 

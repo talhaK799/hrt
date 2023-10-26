@@ -128,7 +128,7 @@ class EditProfileScreen extends StatelessWidget {
           sizeBox20,
           heading('Nick Name'),
           CustomProfileTile(
-            title: model.currentUser.appUser.nickName??"No Name",
+            title: model.currentUser.appUser.nickName ?? "No Name",
             textColor: greyColor2,
             iconColor: greyColor2,
             onTap: () {
@@ -170,7 +170,10 @@ class EditProfileScreen extends StatelessWidget {
           heading('Desire'),
 
           CustomProfileTile(
-            title: model.currentUser.appUser.desire!.first,
+            isList: true,
+            title: model.currentUser.appUser.desire!.isEmpty
+                ? 'No Data'
+                : model.currentUser.appUser.desire,
             textColor: greyColor2,
             iconColor: greyColor2,
             onTap: () {
@@ -194,7 +197,12 @@ class EditProfileScreen extends StatelessWidget {
           heading('Looking For'),
 
           CustomProfileTile(
-            title: model.currentUser.appUser.lookingFor,
+            isList: true,
+            title:
+                // 'Men',
+                model.currentUser.appUser.lookingFor!.isEmpty
+                    ? 'No Data'
+                    : model.currentUser.appUser.lookingFor,
             textColor: greyColor2,
             iconColor: greyColor2,
             onTap: () {

@@ -10,6 +10,7 @@ import 'package:hart/core/services/auth_service.dart';
 import 'package:hart/core/services/location_service.dart';
 import 'package:hart/locator.dart';
 import 'package:hart/ui/screens/auth_screens/auth_screens.dart';
+import 'package:hart/ui/screens/auth_screens/firebase_phone_login/phone_login_screen.dart';
 import 'package:hart/ui/screens/auth_screens/forgot_password/phone_no_verification/phone_no_verification.dart';
 import 'package:hart/ui/screens/collect_info_screens/add_photo/add_photo_screen.dart';
 import 'package:hart/ui/screens/collect_info_screens/exploring_together/explor_screen.dart';
@@ -47,7 +48,7 @@ class _SplashScreenState extends State<SplashScreen> {
       // } else
       if (_auth.appUser.isPhoneNoVerified == false) {
         Get.offAll(
-          PhoneNoVerificationScreen(),
+          PhoneLoginScreen(),
         );
       } else {
         Get.offAll(RootScreen());

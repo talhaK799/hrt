@@ -13,6 +13,7 @@ class LoginProvider extends BaseViewModel {
   final AuthService authService = locator<AuthService>();
   CustomAuthResult authResult = CustomAuthResult();
   final fmkey = GlobalKey<FormState>();
+  bool isvisible = true;
   AppUser appUser = AppUser();
 
   login(context) async {
@@ -22,13 +23,18 @@ class LoginProvider extends BaseViewModel {
 
     setState(ViewState.idle);
     if (authResult.user != null) {
-    Get.to(
-      RootScreen(),
-    );
+      Get.offAll(
+        RootScreen(),
+      );
     } else {
-      showMyDialog(context,authResult.errorMessage);
+      showMyDialog(context, authResult.errorMessage);
     }
 
+    notifyListeners();
+  }
+
+  toggleVisible() {
+    isvisible = !isvisible;
     notifyListeners();
   }
 }

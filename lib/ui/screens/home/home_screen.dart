@@ -219,34 +219,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ],
             ),
-            ////
-            /// loader
-            ///
-            Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 12,
-                vertical: 4,
-              ),
-              decoration: BoxDecoration(
-                color: primaryColor,
-                borderRadius: BorderRadius.circular(16.r),
-              ),
-              child: Row(
-                children: [
-                  Image.asset(
-                    '$staticAsset/loader.png',
-                    scale: 3,
-                  ),
-                  SizedBox(
-                    width: 10.h,
-                  ),
-                  Text(
-                    '2',
-                    style: buttonTextStyle,
-                  )
-                ],
-              ),
-            )
           ],
         ),
       ),
@@ -353,11 +325,43 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  user.name!,
+                  user.name ?? 'No name',
                   style: subHeadingText1,
                 ),
-                SizedBox(
-                  height: 15.h,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      height: 15.h,
+                    ),
+                    Container(
+                      width: 70,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color: primaryColor,
+                        borderRadius: BorderRadius.circular(16.r),
+                      ),
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            '$staticAsset/loader.png',
+                            scale: 2,
+                            color: pinkColor2,
+                          ),
+                          SizedBox(
+                            width: 10.h,
+                          ),
+                          Text(
+                            '2',
+                            style: buttonTextStyle,
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
                 Row(
                   children: [
@@ -527,7 +531,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           children: [
                             Text(
                               'Reset',
-                              style: miniText,
+                              style: miniText.copyWith(
+                                fontSize: 14.sp,
+                              ),
                             ),
                             Text(
                               'Filters',
@@ -535,7 +541,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             Text(
                               'Done',
-                              style: miniText,
+                              style: miniText.copyWith(
+                                fontSize: 14.sp,
+                              ),
                             ),
                           ],
                         ),
@@ -548,8 +556,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               style: subHeadingTextStyle2,
                             ),
                             Text(
-                              ' ${model.ageValues.end.floor()}',
-                              // ${model.ageValues.start.floor()} -
+                              '${model.ageValues.start.floor()} - ${model.ageValues.end.floor()}',
                               style: miniText,
                             ),
                           ],
@@ -569,7 +576,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           min: 18,
                           max: 70.0,
                           endThumbIcon: thumbIcon(false),
-                          startThumbIcon: thumbIcon(true),
+                          startThumbIcon: thumbIcon(false),
                         ),
                         SizedBox(height: 40.h),
                         Row(
@@ -696,7 +703,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             // ),
                           ],
                         ),
-                        SizedBox(height: 40.h),
+                        SizedBox(height: 20.h),
 
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -726,14 +733,16 @@ class _HomeScreenState extends State<HomeScreen> {
                             color: const Color(0xFFc48184),
                           ),
                         ),
+                        SizedBox(
+                          height: 0.2.sh,
+                        ),
                         CustomButton(
                           title: 'CONTINUE',
                           onTap: () {
                             Get.back();
                           },
                         ),
-
-                        sizeBox30,
+                        sizeBox20,
                       ],
                     ),
                   ),
@@ -800,52 +809,57 @@ _imageSlider(HomeProvider model, AppUser user) {
         itemCount: user.images!.length,
         itemBuilder: (context, index, realIndex) {
           return Container(
-              // decoration: BoxDecoration(
-              //   image: DecorationImage(
-              //     image: NetworkImage(user.images![index].toString()),
-              //     fit: BoxFit.cover,
-              //   ),
-              // ),
-              child: Image.network(user.images![index].toString(),
-                  fit: BoxFit.cover, loadingBuilder: (BuildContext context,
-                      Widget child, ImageChunkEvent? loadingProgress) {
-            if (loadingProgress == null) {
-              return child; // Return the image widget if it's fully loaded.
-            }
-            return Container(
-              color: Colors.grey.withOpacity(0.1),
-              child: Center(
-                // Display a linear progress indicator until the image is fully loaded.
-                child: CircularProgressIndicator(
-                  color: primaryColor,
-                  value: loadingProgress.expectedTotalBytes != null
-                      ? loadingProgress.cumulativeBytesLoaded /
-                          loadingProgress.expectedTotalBytes!
-                      : null,
-                ),
-              ),
-            );
-          })
+            height: 300.h,
+            // decoration: BoxDecoration(
+            //   image: DecorationImage(
+            //     image: NetworkImage(user.images![index].toString()),
+            //     fit: BoxFit.cover,
+            //   ),
+            // ),
+            child: Image.network(
+              user.images![index].toString(),
+              fit: BoxFit.cover,
+              loadingBuilder: (BuildContext context, Widget child,
+                  ImageChunkEvent? loadingProgress) {
+                if (loadingProgress == null) {
+                  return child; // Return the image widget if it's fully loaded.
+                }
+                return Container(
+                  color: Colors.grey.withOpacity(0.1),
+                  child: Center(
+                    // Display a linear progress indicator until the image is fully loaded.
+                    child: CircularProgressIndicator(
+                      color: primaryColor,
+                      value: loadingProgress.expectedTotalBytes != null
+                          ? loadingProgress.cumulativeBytesLoaded /
+                              loadingProgress.expectedTotalBytes!
+                          : null,
+                    ),
+                  ),
+                );
+              },
+            ),
 
-              // FadeInImage.assetNetwork(
-              //
-              //   placeholder: '$logoPath/logo4.png',
-              //   image: user.images![index].toString(),
-              //   fit: BoxFit.fill,
-              // ),
-              );
+            // FadeInImage.assetNetwork(
+            //
+            //   placeholder: '$logoPath/logo4.png',
+            //   image: user.images![index].toString(),
+            //   fit: BoxFit.fill,
+            // ),
+          );
         },
         options: CarouselOptions(
           onPageChanged: (index, reason) {
             model.updateIndex(index);
           },
           height: 300.h,
-          aspectRatio: 16 / 9,
+          // aspectRatio: 1,
           viewportFraction: 1,
           initialPage: 0,
+
           enableInfiniteScroll: false,
           scrollDirection: Axis.vertical,
-          enlargeFactor: 0.5,
+          enlargeFactor: 0.6,
         ),
       ),
       Padding(

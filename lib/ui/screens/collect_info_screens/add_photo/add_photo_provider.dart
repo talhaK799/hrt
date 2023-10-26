@@ -11,7 +11,7 @@ import 'package:hart/core/services/file_picker_service.dart';
 import 'package:hart/core/services/firebase_storage_service.dart';
 import 'package:hart/core/view_models/base_view_model.dart';
 import 'package:hart/locator.dart';
-import 'package:hart/ui/screens/collect_info_screens/permissions/permission_screen.dart';
+import 'package:hart/ui/screens/root_screen/root_screen.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/constants/style.dart';
@@ -67,24 +67,24 @@ class AddPhotoProvider extends BaseViewModel {
     if (imagesList!.isNotEmpty) {
       // selectedImages!.add(File(imagesList[2].path));
       for (int i = 0; i < imagesList.length; i++) {
-        images[selectedImages!.length].image = File(imagesList[i].path);
-        selectedImages!.add(
+        images[selectedImages.length].image = File(imagesList[i].path);
+        selectedImages.add(
           File(imagesList[i].path),
         );
       }
       notifyListeners();
     }
     print(
-      "Image List Length:" + selectedImages!.length.toString(),
+      "Image List Length:" + selectedImages.length.toString(),
     );
     notifyListeners();
   }
 
   pickImge() async {
     // isMultipleSelection = false;
-    images[selectedImages!.length].image = await _filePickerService.pickImage();
-    if (images[selectedImages!.length].image != null) {
-      selectedImages!.add(images[selectedImages!.length].image!);
+    images[selectedImages.length].image = await _filePickerService.pickImage();
+    if (images[selectedImages.length].image != null) {
+      selectedImages.add(images[selectedImages.length].image!);
     } else {
       Get.snackbar('Error', 'unable to pick image');
     }
@@ -92,7 +92,7 @@ class AddPhotoProvider extends BaseViewModel {
   }
 
   addUserImages() async {
-    if (selectedImages!.length < 1) {
+    if (selectedImages.length < 1) {
       Get.snackbar(
         'Error!',
         '',
@@ -108,15 +108,15 @@ class AddPhotoProvider extends BaseViewModel {
     } else {
       setState(ViewState.busy);
       imagesUrls =
-          await fbStorage.uploadImagesList(selectedImages!, 'User Images');
+          await fbStorage.uploadImagesList(selectedImages, 'User Images');
 
       currentUser.images = imagesUrls;
 
       bool isUpdated = await _db.updateUserProfile(currentUser);
       setState(ViewState.idle);
       if (isUpdated) {
-        Get.to(
-          PermissionScreen(),
+        Get.offAll(
+          RootScreen(),
         );
       }
     }
