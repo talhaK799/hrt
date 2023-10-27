@@ -21,16 +21,16 @@ class EmailOtpProvider extends BaseViewModel {
     notifyListeners();
   }
   verifyOtp() async {
-    // setState(ViewState.busy);
-    // bool isVerify = await emailOTP!.verifyOTP(otp: emailCode);
-    // // setState(ViewState.idle);
+    setState(ViewState.busy);
+    bool isVerify = await emailOTP!.verifyOTP(otp: emailCode);
+    // setState(ViewState.idle);
 
-    // if (isVerify == true) {
-    //   authService.appUser.isEmailVerified = true;
+    if (isVerify == true) {
+      authService.appUser.isEmailVerified = true;
 
-    //   // setState(ViewState.busy);
-    //   await _databaseService.updateUserProfile(authService.appUser);
-    //   setState(ViewState.idle);
+      // setState(ViewState.busy);
+      // await _databaseService.updateUserProfile(authService.appUser);
+      setState(ViewState.idle);
     if (phone == false) {
       Get.to(
         DOBScreen(),
@@ -40,8 +40,8 @@ class EmailOtpProvider extends BaseViewModel {
         AddPhoneNumberScreen(),
       );
     }
-    // } else {
-    //   Get.snackbar("Error!", "Invalid OTP");
-    // }
+    } else {
+      Get.snackbar("Error!", "Invalid OTP");
+    }
   }
 }

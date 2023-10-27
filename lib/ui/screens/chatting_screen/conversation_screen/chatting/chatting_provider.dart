@@ -60,6 +60,7 @@ class ChattingProvider extends BaseViewModel {
     ///
 
     isSelect = false;
+    notifyListeners();
     conversationFrom.id = currentUser.appUser.id;
     conversationFrom.lastMessage = message.textMessage;
     conversationFrom.lastMessageAt = DateTime.now();
@@ -78,8 +79,9 @@ class ChattingProvider extends BaseViewModel {
     conversationTo.imageUrl = toUser.images!.first;
     conversationTo.isMessageSeen = true;
     conversationTo.noOfUnReadMsgs = 0;
+
     print('message : ${message.textMessage}');
-    if (message.textMessage != null) {
+    if (message.textMessage != null && image == null) {
       ///
       /// messages
       ///
@@ -97,7 +99,6 @@ class ChattingProvider extends BaseViewModel {
 
       messageController.clear();
       message = Message();
-      isSelect = false;
       notifyListeners();
     } else if (image != null) {
       message.fromUserId = currentUser.appUser.id;
@@ -110,6 +111,7 @@ class ChattingProvider extends BaseViewModel {
       await db.addNewUserMessage(conversationFrom, conversationTo, message);
 
       print('image sent');
+      messageController.clear();
       image = null;
       message = Message();
       notifyListeners();

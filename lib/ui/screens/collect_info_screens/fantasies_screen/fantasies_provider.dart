@@ -49,10 +49,10 @@ class FantasiesProvider extends BaseViewModel {
     }
     currentUser.desire = [];
     currentUser.desire = selectedItems;
-    setState(ViewState.busy);
-    bool isUpdated = await _db.updateUserProfile(currentUser);
-    setState(ViewState.idle);
-    if (isUpdated) {
+    // setState(ViewState.busy);
+    // bool isUpdated = await _db.updateUserProfile(currentUser);
+    // setState(ViewState.idle);
+    // if (isUpdated) {
       if (updation == true) {
         Get.back(result: selectedItems);
       } else {
@@ -60,7 +60,7 @@ class FantasiesProvider extends BaseViewModel {
           ExploreScreen(),
         );
       }
-    }
+    // }
     notifyListeners();
   }
 
