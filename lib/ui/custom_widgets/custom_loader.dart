@@ -20,3 +20,26 @@ class CustomLoader extends StatelessWidget {
     );
   }
 }
+
+
+
+
+class CustomLoaderWhite extends StatelessWidget {
+  const CustomLoaderWhite({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Lottie.asset(
+        '$animations/loader_white.json',
+        repeat: true,
+        frameRate: FrameRate(
+          100,
+        ),
+      ),
+    );
+  }
+}
+
