@@ -65,9 +65,9 @@ class SelectGenderProvider extends BaseViewModel {
     // print('first element==> ${selections.first}');
     // setState(ViewState.busy);
 
-    bool isUpdated = await _db.updateUserProfile(currentUser);
+    // bool isUpdated = await _db.updateUserProfile(currentUser);
     // setState(ViewState.idle);
-    if (isUpdated) {
+    // if (isUpdated) {
       if (updattion) {
         Get.back(result: selections);
       } else {
@@ -75,7 +75,7 @@ class SelectGenderProvider extends BaseViewModel {
           FantasiesScreen(),
         );
       }
-    }
+    // }
 
     notifyListeners();
     // }

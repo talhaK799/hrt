@@ -32,23 +32,27 @@ class CustomProfileTile extends StatelessWidget {
       onTap: onTap,
       child: Container(
         padding: EdgeInsets.all(16),
-        margin: EdgeInsets.only(bottom: 16),
+        // margin: EdgeInsets.only(bottom: 16),
         decoration: BoxDecoration(
           color: color ?? whiteColor,
-          boxShadow: isWhite == true ? boxShadow : null,
+          // boxShadow: isWhite == true ? boxShadow : null,
           borderRadius: BorderRadius.circular(12.r),
         ),
         child: Row(
           children: [
             icon != null
-                ? Image.asset(
-                    '$staticAsset/$icon',
-                    scale: 3,
+                ? Row(
+                    children: [
+                      Image.asset(
+                        '$staticAsset/$icon',
+                        scale: 3,
+                      ),
+                      SizedBox(
+                        width: 20.w,
+                      ),
+                    ],
                   )
                 : Container(),
-            SizedBox(
-              width: 20.w,
-            ),
             Expanded(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

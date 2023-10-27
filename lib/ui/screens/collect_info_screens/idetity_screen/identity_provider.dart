@@ -46,16 +46,16 @@ class IdentityProvider extends BaseViewModel {
   addSelectedItems() async {
     // currentUser.identity = items[index].title;
     currentUser.identity = identity;
-    setState(ViewState.busy);
-    bool isUpdated = await _db.updateUserProfile(currentUser);
-    setState(ViewState.idle);
-    if (isUpdated) {
+    // setState(ViewState.busy);
+    // bool isUpdated = await _db.updateUserProfile(currentUser);
+    // setState(ViewState.idle);
+    // if (isUpdated) {
       if (updation == true) {
         Get.back(result: identity);
       } else {
         Get.to(SelectGenderScreen());
       }
-    }
+    // }
     notifyListeners();
   }
 }

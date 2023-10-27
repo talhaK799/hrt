@@ -12,6 +12,7 @@ import 'package:hart/ui/screens/profile_screen/Notifications/notification_screen
 import 'package:hart/ui/screens/profile_screen/app_setting/app_setting_screen.dart';
 import 'package:hart/ui/screens/profile_screen/edit_profile/edit_profile_screen.dart';
 import 'package:hart/ui/screens/profile_screen/kings_hart/king_hart_screen.dart';
+import 'package:hart/ui/screens/profile_screen/maestro_screen/maestro_screen.dart';
 import 'package:hart/ui/screens/profile_screen/our_community/community_screen.dart';
 import 'package:hart/ui/screens/profile_screen/pair_profile/pair_profile_screen.dart';
 import 'package:hart/ui/screens/profile_screen/premium_setting/premium_screen.dart';
@@ -46,28 +47,68 @@ class ProfileScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      width: 100,
-                      height: 100,
-                      decoration: BoxDecoration(
-                        image: model.currentUser.images!.isEmpty
-                            ? DecorationImage(
-                                image: AssetImage(
-                                  '$dynamicAsset/image.png',
-                                ),
-                                fit: BoxFit.cover)
-                            : DecorationImage(
-                                image: NetworkImage(
-                                  model.currentUser.images!.first,
-                                ),
-                                fit: BoxFit.cover),
-                        borderRadius: BorderRadius.circular(12.r),
-                      ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Container(
+                          width: 120,
+                          height: 120,
+                          decoration: BoxDecoration(
+                            image: model.currentUser.images!.isEmpty
+                                ? DecorationImage(
+                                    image: AssetImage(
+                                      '$dynamicAsset/image.png',
+                                    ),
+                                    fit: BoxFit.cover)
+                                : DecorationImage(
+                                    image: NetworkImage(
+                                      model.currentUser.images!.first,
+                                    ),
+                                    fit: BoxFit.cover),
+                            // borderRadius: BorderRadius.circular(12.r),
+                          ),
+                        ),
+                        Container(
+                          width: 100,
+                          height: 100,
+                          decoration: BoxDecoration(
+                            image: model.currentUser.images!.isEmpty
+                                ? DecorationImage(
+                                    image: AssetImage(
+                                      '$dynamicAsset/image.png',
+                                    ),
+                                    fit: BoxFit.cover)
+                                : DecorationImage(
+                                    image: NetworkImage(
+                                      model.currentUser.images!.first,
+                                    ),
+                                    fit: BoxFit.cover),
+                            // borderRadius: BorderRadius.circular(12.r),
+                          ),
+                        ),
+                      ],
                     ),
                     sizeBox20,
-                    Text(
-                      model.currentUser.name ?? 'No Name',
-                      style: descriptionTextStyle,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          model.currentUser.name ?? 'No Name',
+                          style: descriptionTextStyle,
+                        ),
+                        GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onTap: () {
+                            Get.to(
+                              EditProfileScreen(),
+                            );
+                          },
+                          child: Image.asset(
+                            '$staticAsset/edit2.png',
+                            scale: 3,
+                          ),
+                        ),
+                      ],
                     ),
                     sizeBox10,
                     Padding(
@@ -106,6 +147,7 @@ class ProfileScreen extends StatelessWidget {
                         );
                       },
                     ),
+                    sizeBox10,
                     CustomProfileTile(
                       onTap: () {
                         Get.to(
@@ -119,6 +161,7 @@ class ProfileScreen extends StatelessWidget {
                       icon: 'kings.png',
                       isWhite: false,
                     ),
+                    sizeBox10,
                     CustomProfileTile(
                       onTap: () {
                         Get.to(
@@ -136,11 +179,31 @@ class ProfileScreen extends StatelessWidget {
                     CustomProfileTile(
                       onTap: () {
                         Get.to(
+                          MaestroScreen(),
+                        );
+                      },
+                      title: 'BECOME A MAESTRO',
+                      color: pinkColor,
+                      textColor: primaryColor,
+                      iconColor: primaryColor,
+                      icon: 'uplift.png',
+                      isWhite: false,
+                    ),
+                    sizeBox20,
+                    Divider(
+                      color: greyColor2,
+                    ),
+                    CustomProfileTile(
+                      onTap: () {
+                        Get.to(
                           PairProfileScreen(),
                         );
                       },
                       title: 'Pair Profile with my partner',
                       icon: 'pair.png',
+                    ),
+                    Divider(
+                      color: greyColor2,
                     ),
                     CustomProfileTile(
                       onTap: () {
@@ -151,10 +214,16 @@ class ProfileScreen extends StatelessWidget {
                       title: 'Edit Profile',
                       icon: 'edit.png',
                     ),
+                    Divider(
+                      color: greyColor2,
+                    ),
                     CustomProfileTile(
                       onTap: () {},
                       title: 'Search Setting',
                       icon: 'searchpro.png',
+                    ),
+                    Divider(
+                      color: greyColor2,
                     ),
                     CustomProfileTile(
                       onTap: () {
@@ -165,10 +234,16 @@ class ProfileScreen extends StatelessWidget {
                       title: 'App Setting',
                       icon: 'setting.png',
                     ),
+                    Divider(
+                      color: greyColor2,
+                    ),
                     CustomProfileTile(
                       onTap: () {},
                       title: 'Share My Profile',
                       icon: 'share.png',
+                    ),
+                    Divider(
+                      color: greyColor2,
                     ),
                     CustomProfileTile(
                       onTap: () {
@@ -179,11 +254,19 @@ class ProfileScreen extends StatelessWidget {
                       title: 'Notifications',
                       icon: 'notifications.png',
                     ),
+                    Divider(
+                      color: greyColor2,
+                    ),
+                    sizeBox20,
                     Text(
                       'HART',
                       style: subHeadingTextStyle.copyWith(
                         color: primaryColor,
                       ),
+                    ),
+                    sizeBox20,
+                    Divider(
+                      color: greyColor2,
                     ),
                     sizeBox10,
                     CustomProfileTile(
@@ -194,6 +277,9 @@ class ProfileScreen extends StatelessWidget {
                       },
                       title: 'Our Community',
                     ),
+                    Divider(
+                      color: greyColor2,
+                    ),
                     CustomProfileTile(
                       onTap: () {
                         Get.to(
@@ -201,6 +287,9 @@ class ProfileScreen extends StatelessWidget {
                         );
                       },
                       title: 'About',
+                    ),
+                    Divider(
+                      color: greyColor2,
                     ),
                     CustomProfileTile(
                       onTap: () {
@@ -210,6 +299,9 @@ class ProfileScreen extends StatelessWidget {
                       },
                       title: 'Help',
                     ),
+                    Divider(
+                      color: greyColor2,
+                    ),
                     CustomProfileTile(
                       onTap: () {
                         model.logout();
@@ -217,6 +309,9 @@ class ProfileScreen extends StatelessWidget {
                       title: 'Logout',
                       textColor: redColor,
                       iconColor: redColor,
+                    ),
+                    Divider(
+                      color: greyColor2,
                     ),
                   ],
                 ),

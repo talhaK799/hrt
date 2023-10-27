@@ -21,10 +21,10 @@ class NickNameProvider extends BaseViewModel {
 
   addNickName() async {
     currentUser.appUser.nickName = nickName;
-    setState(ViewState.busy);
-    bool isUpdated = await db.updateUserProfile(currentUser.appUser);
-    setState(ViewState.idle);
-    if (isUpdated) {
+    // setState(ViewState.busy);
+    // bool isUpdated = await db.updateUserProfile(currentUser.appUser);
+    // setState(ViewState.idle);
+    // if (isUpdated) {
       isprof==true
           ? Get.back(
               result: nickName,
@@ -32,6 +32,6 @@ class NickNameProvider extends BaseViewModel {
           : Get.to(
               IdentityScreen(),
             );
-    }
+    // }
   }
 }

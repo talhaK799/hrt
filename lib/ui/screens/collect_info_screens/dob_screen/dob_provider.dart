@@ -59,11 +59,11 @@ class DobProvider extends BaseViewModel {
     age = now!.year - pickedDate!.year;
 
     if (age >= 18) {
-      setState(ViewState.busy);
+      // setState(ViewState.busy);
       currentUser.appUser.dob = dob;
       currentUser.appUser.age = age;
-      bool isProfUpdated = await db.updateUserProfile(currentUser.appUser);
-      if (isProfUpdated) {
+      // bool isProfUpdated = await db.updateUserProfile(currentUser.appUser);
+      // if (isProfUpdated) {
         print('updatrion==> $updation');
         if (updation) {
           Get.back(result: dob);
@@ -72,8 +72,8 @@ class DobProvider extends BaseViewModel {
             NickNameScreen(),
           );
         }
-      }
-      setState(ViewState.idle);
+      // }
+      // setState(ViewState.idle);
     } else {
       Get.snackbar(
         'Alert!!',

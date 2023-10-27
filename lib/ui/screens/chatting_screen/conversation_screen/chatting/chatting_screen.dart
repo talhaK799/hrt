@@ -86,7 +86,7 @@ class ChattingScreen extends StatelessWidget {
                       Expanded(
                         child: Container(
                           height: 1.sh,
-                          padding: EdgeInsets.fromLTRB(24, 24, 24, 90),
+                          padding: EdgeInsets.fromLTRB(24, 0, 24, 0),
                           decoration: BoxDecoration(
                             color: whiteColor,
                           ),
@@ -130,71 +130,76 @@ class ChattingScreen extends StatelessWidget {
   }
 
   sendImageContainer(ChattingProvider model) {
-    return Padding(
-      padding: EdgeInsets.only(
-        bottom: 80,
-        left: 32,
-        right: 32,
-        top: 0.43.sh,
-      ),
-      child: Stack(
-        children: [
-          Container(
-            height: 0.45.sh,
-            decoration: BoxDecoration(
-                color: greyColor2,
-                image: model.image != null
-                    ? DecorationImage(
-                        image: FileImage(model.image!),
-                        fit: BoxFit.cover,
-                      )
-                    : null,
-                borderRadius: BorderRadius.circular(12.r)),
-            width: 1.sw,
-            alignment: Alignment.bottomCenter,
-            child: model.image == null
-                ? ElevatedButton(
-                    onPressed: () {
-                      model.pickImage();
-                    },
-                    child: Text('Pick Image'),
-                  )
-                : Container(),
+    return Column(
+      children: [
+        Spacer(),
+        Padding(
+          padding: EdgeInsets.only(
+            bottom: 80,
+            left: 32,
+            right: 32,
+            top: 0,
           ),
-          model.image != null
-              ? Padding(
-                  padding: const EdgeInsets.only(
-                    top: 10,
-                    left: 10,
-                  ),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: primaryColor,
-                    ),
-                    child: IconButton(
-                      onPressed: () {
-                        model.image = null;
-
-                        model.setState(ViewState.idle);
-                      },
-                      icon: Icon(
-                        Icons.close,
+          child: Stack(
+            children: [
+              Container(
+                height: 0.45.sh,
+                decoration: BoxDecoration(
+                    color: greyColor2,
+                    image: model.image != null
+                        ? DecorationImage(
+                            image: FileImage(model.image!),
+                            fit: BoxFit.cover,
+                          )
+                        : null,
+                    borderRadius: BorderRadius.circular(12.r)),
+                width: 1.sw,
+                alignment: Alignment.bottomCenter,
+                child: model.image == null
+                    ? ElevatedButton(
+                        onPressed: () {
+                          model.pickImage();
+                        },
+                        child: Text('Pick Image'),
+                      )
+                    : Container(),
+              ),
+              model.image != null
+                  ? Padding(
+                      padding: const EdgeInsets.only(
+                        top: 10,
+                        left: 10,
                       ),
-                      color: whiteColor,
-                    ),
-                  ),
-                )
-              : Container(),
-          // Align(
-          //   alignment: Alignment.bottomCenter,
-          //   child: ElevatedButton(
-          //     onPressed: () {},
-          //     child: Text('Pick Image'),
-          //   ),
-          // )
-        ],
-      ),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: primaryColor,
+                        ),
+                        child: IconButton(
+                          onPressed: () {
+                            model.image = null;
+
+                            model.setState(ViewState.idle);
+                          },
+                          icon: Icon(
+                            Icons.close,
+                          ),
+                          color: whiteColor,
+                        ),
+                      ),
+                    )
+                  : Container(),
+              // Align(
+              //   alignment: Alignment.bottomCenter,
+              //   child: ElevatedButton(
+              //     onPressed: () {},
+              //     child: Text('Pick Image'),
+              //   ),
+              // )
+            ],
+          ),
+        ),
+      ],
     );
   }
 
@@ -244,17 +249,37 @@ class ChattingScreen extends StatelessWidget {
                           : blackColor,
                     ),
                   ))
-              : Container(
-                  height: 200,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12.r),
-                    image: DecorationImage(
-                      image: NetworkImage(
-                        model.messages[index].imageUrl!,
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      height: 200,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12.r),
+                        image: DecorationImage(
+                          image: NetworkImage(
+                            model.messages[index].imageUrl!,
+                          ),
+                          fit: BoxFit.cover,
+                        ),
                       ),
-                      fit: BoxFit.cover,
                     ),
-                  ),
+                    model.messages[index].textMessage!.isNotEmpty
+                        ? Padding(
+                            padding: const EdgeInsets.only(left: 10, right: 10),
+                            child: Text(
+                              model.messages[index].textMessage!,
+                              style: subtitleText.copyWith(
+                                fontSize: 15.sp,
+                                color: model.messages[index].fromUserId ==
+                                        model.currentUser.appUser.id
+                                    ? whiteColor
+                                    : blackColor,
+                              ),
+                            ),
+                          )
+                        : Container(),
+                  ],
                 ),
         ),
         sizeBox10,

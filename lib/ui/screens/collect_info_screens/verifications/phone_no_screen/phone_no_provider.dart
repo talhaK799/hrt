@@ -86,14 +86,14 @@ class PhoneNoProvider extends BaseViewModel {
       authService.appUser.isPhoneNoVerified = true;
       authService.appUser.phoneNumber = countryCode + appUser.phoneNumber!;
 
-      bool isUpdatedProfile =
-          await _databaseService.updateUserProfile(authService.appUser);
+      // bool isUpdatedProfile =
+      //     await _databaseService.updateUserProfile(authService.appUser);
       setState(ViewState.idle);
-      if (isUpdatedProfile) {
+      // if (isUpdatedProfile) {
         Get.to(
           DOBScreen(),
         );
-      }
+      // }
     }
   }
 }
