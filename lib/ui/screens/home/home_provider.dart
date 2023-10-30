@@ -79,6 +79,7 @@ class HomeProvider extends BaseViewModel {
     setState(ViewState.busy);
     users = await db.getAllUsers(currentUser.appUser);
     for (var user in users) {
+      appUsers.add(user);
       if (currentUser.appUser.likedUsers == null ||
           currentUser.appUser.disLikedUsers == null) {
         appUsers.add(user);

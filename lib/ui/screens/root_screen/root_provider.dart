@@ -17,7 +17,7 @@ class RootViewModel extends BaseViewModel {
   List<Widget> allScreen = [];
   int currentIndex = 0;
 
-  RootViewModel() {
+  RootViewModel(this.currentIndex) {
     allScreen = [
       HomeScreen(),
       ConnectionScreen(),
@@ -26,7 +26,6 @@ class RootViewModel extends BaseViewModel {
     ];
   }
 
-  
   closeApp(BuildContext context) {
     CoolAlert.show(
       barrierDismissible: false,
@@ -40,6 +39,7 @@ class RootViewModel extends BaseViewModel {
       },
     );
   }
+
   updateIndex(int index) async {
     currentIndex = index;
 
@@ -50,6 +50,4 @@ class RootViewModel extends BaseViewModel {
     isSearch = val;
     notifyListeners();
   }
-
-  
 }

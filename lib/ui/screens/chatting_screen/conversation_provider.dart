@@ -67,6 +67,7 @@ class ConversationProvider extends BaseViewModel {
   }
 
   getConversations() async {
+    setState(ViewState.busy);
     stream = await db.getAllConverationList(currentUser.appUser.id!);
     stream!.listen((event) {
       conversations = [];
@@ -75,6 +76,7 @@ class ConversationProvider extends BaseViewModel {
           conversations.add(
             Conversation.fromJson(element.data()),
           );
+
           notifyListeners();
 
           print("Conversation == > ${conversations.first.toJson()}");
@@ -84,6 +86,15 @@ class ConversationProvider extends BaseViewModel {
         notifyListeners();
       }
     });
+    setState(ViewState.busy);
+    if (conversations.isNotEmpty) {
+      for (var i = 0; i < conversations.length; i++) {
+        conversations[i].appUser = AppUser();
+        conversations[i].appUser =
+            await db.getAppUser(conversations[i].toUserId);
+      }
+    }
+    setState(ViewState.idle);
   }
 
   List<Conversation> conversations = [];

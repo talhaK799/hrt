@@ -3,23 +3,27 @@ import 'package:get/get.dart';
 import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/constants/strings.dart';
 import 'package:hart/core/constants/style.dart';
+import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/ui/custom_widgets/custom_app_bar.dart';
 import 'package:hart/ui/screens/chatting_screen/create_group/create_group_provider.dart';
 import 'package:hart/ui/screens/chatting_screen/create_group/group_members/members_screen.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 import '../../../custom_widgets/custom_button.dart';
 
 class CreateGroupScreen extends StatelessWidget {
-  const CreateGroupScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => CreateGroupProvider(),
-      child: Consumer<CreateGroupProvider>(builder: (context, model, child) {
-        return Scaffold(
+    return
+        // ChangeNotifierProvider(
+        //   create: (context) => CreateGroupProvider(),
+        //   child:
+        Consumer<CreateGroupProvider>(builder: (context, model, child) {
+      return ModalProgressHUD(
+        inAsyncCall: model.state == ViewState.busy,
+        child: Scaffold(
           body: Padding(
             padding: const EdgeInsets.fromLTRB(24, 55, 24, 0),
             child: Stack(
@@ -52,7 +56,7 @@ class CreateGroupScreen extends StatelessWidget {
                           padding: EdgeInsets.zero,
                           primary: false,
                           shrinkWrap: true,
-                          itemCount: model.memebers.length,
+                          itemCount: model.matchedUsers.length,
                           itemBuilder: (context, index) {
                             return ListTile(
                               onTap: () {
@@ -65,19 +69,20 @@ class CreateGroupScreen extends StatelessWidget {
                                 ),
                               ),
                               title: Text(
-                                model.memebers[index].name!,
+                                model.matchedUsers[index].name!,
                                 style: subHeadingTextStyle2,
                               ),
                               subtitle: Text(
-                                model.memebers[index].description!,
+                                model.matchedUsers[index].nickName!,
                                 style: subtitleText,
                               ),
-                              trailing: model.memebers[index].isChecked == true
-                                  ? Image.asset(
-                                      '$staticAsset/tick.png',
-                                      scale: 3.5,
-                                    )
-                                  : null,
+                              trailing:
+                                  model.matchedUsers[index].isSelected == true
+                                      ? Image.asset(
+                                          '$staticAsset/tick.png',
+                                          scale: 3.5,
+                                        )
+                                      : null,
                             );
                           },
                           separatorBuilder: (context, index) => SizedBox(
@@ -114,8 +119,10 @@ class CreateGroupScreen extends StatelessWidget {
               ],
             ),
           ),
-        );
-      }),
-    );
+        ),
+      );
+    }
+            // ),
+            );
   }
 }

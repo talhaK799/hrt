@@ -18,27 +18,30 @@ class AppUser {
   List<String>? likedUsers;
   List<String>? disLikedUsers;
   List<String>? users;
+  bool? isSelected;
 
-  AppUser(
-      {this.id,
-      this.email,
-      this.password,
-      this.phoneNumber,
-      this.isEmailVerified,
-      this.isPhoneNoVerified,
-      this.isLiked,
-      this.isDesLiked,
-      this.name,
-      this.dob,
-      this.nickName,
-      this.identity,
-      this.lookingFor,
-      this.desire,
-      this.images,
-      this.disLikedUsers,
-      this.likedUsers,
-      this.age,
-      this.users});
+  AppUser({
+    this.id,
+    this.email,
+    this.password,
+    this.phoneNumber,
+    this.isEmailVerified,
+    this.isPhoneNoVerified,
+    this.isLiked,
+    this.isDesLiked,
+    this.name,
+    this.dob,
+    this.nickName,
+    this.identity,
+    this.lookingFor,
+    this.desire,
+    this.images,
+    this.disLikedUsers,
+    this.likedUsers,
+    this.age,
+    this.users,
+    this.isSelected = false,
+  });
 
   toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
@@ -64,14 +67,14 @@ class AppUser {
 
   AppUser.fromJson(json, id) {
     this.id = id;
-    email = json['email'];
-    name = json['name'];
+    email = json['email'] ?? "";
+    name = json['name'] ?? "No Name";
     phoneNumber = json['phoneNumber'];
     isEmailVerified = json['isEmailVerified'] ?? false;
     isPhoneNoVerified = json['isPhoneNoVerified'] ?? false;
     isLiked = json['isLiked'] ?? false;
     isDesLiked = json['isDesLiked'] ?? false;
-    nickName = json['nickName'];
+    nickName = json['nickName'] ?? "noname";
     dob = json['dob'];
     age = json['age'] ?? 0;
     // lookingFor = json['lookingFor'];

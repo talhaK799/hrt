@@ -251,7 +251,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    user.name!,
+                    user.name!.toString(),
                     style: bodyTextStyle,
                   ),
                   sizeBox10,

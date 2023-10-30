@@ -6,6 +6,7 @@ import 'package:hart/core/constants/format_date.dart';
 import 'package:hart/core/constants/strings.dart';
 import 'package:hart/core/constants/style.dart';
 import 'package:hart/core/enums/view_state.dart';
+import 'package:hart/core/models/conversation.dart';
 import 'package:hart/ui/custom_widgets/custom_back_button.dart';
 import 'package:hart/ui/custom_widgets/custom_loader.dart';
 import 'package:hart/ui/screens/chatting_screen/chat_info/chat_info_screen.dart';
@@ -15,13 +16,15 @@ import 'package:provider/provider.dart';
 
 class ChattingScreen extends StatelessWidget {
   String toUserId;
+  Conversation conversation;
   ChattingScreen({
     required this.toUserId,
+    required this.conversation,
   });
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => ChattingProvider(toUserId),
+      create: (context) => ChattingProvider(toUserId, conversation),
       child: Consumer<ChattingProvider>(builder: (context, model, child) {
         return ModalProgressHUD(
           inAsyncCall: model.state == ViewState.busy,
@@ -40,19 +43,14 @@ class ChattingScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(60, 72, 24, 16),
                   child: ListTile(
-                    leading: model.toUser.images!.isEmpty
-                        ? CircleAvatar(
-                            radius: 35.r,
-                            backgroundImage:
-                                AssetImage('$dynamicAsset/person.png'),
-                          )
-                        : CircleAvatar(
-                            radius: 35.r,
-                            backgroundImage:
-                                NetworkImage(model.toUser.images!.first),
-                          ),
+                    leading: CircleAvatar(
+                      radius: 35.r,
+                      backgroundImage: AssetImage('$dynamicAsset/person.png'),
+                    ),
                     title: Text(
-                      model.toUser.name!,
+                      conversation.isGroupChat == true
+                          ? model.conversation.name!
+                          : model.toUser.name!,
                       style: subHeadingTextStyle,
                     ),
                     subtitle: Text(
@@ -416,7 +414,10 @@ class ChattingScreen extends StatelessWidget {
                       ? GestureDetector(
                           behavior: HitTestBehavior.opaque,
                           onTap: () {
-                            model.sendMessage();
+                            model.conversation.isGroupChat == true
+                                ? model.sendGroupMessage()
+                                : model.sendNewMessage();
+                            // model.sendMessage();
                           },
                           child: Image.asset(
                             '$staticAsset/send.png',

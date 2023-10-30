@@ -10,6 +10,7 @@ import 'package:hart/locator.dart';
 import 'package:hart/ui/screens/auth_screens/firebase_phone_login/phone_login_provider.dart';
 import 'package:hart/ui/screens/chatting_screen/conversation_provider.dart';
 import 'package:hart/ui/screens/chatting_screen/conversation_screen/chatting/chatting_provider.dart';
+import 'package:hart/ui/screens/chatting_screen/create_group/create_group_provider.dart';
 import 'package:hart/ui/screens/collect_info_screens/verifications/phone_no_screen/phone_no_provider.dart';
 import 'package:hart/ui/screens/home/home_provider.dart';
 import 'package:hart/ui/screens/splash_screen.dart';
@@ -47,6 +48,9 @@ class MyApp extends StatelessWidget {
           ),
           ChangeNotifierProvider(
             create: (context) => PhoneNoProvider(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => CreateGroupProvider(),
           ),
         ],
         child: Consumer<ThemeProvider>(builder: (context, model, child) {

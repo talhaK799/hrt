@@ -5,6 +5,7 @@ import 'package:hart/core/constants/format_date.dart';
 import 'package:hart/core/constants/strings.dart';
 import 'package:hart/core/constants/style.dart';
 import 'package:hart/core/enums/view_state.dart';
+import 'package:hart/core/models/conversation.dart';
 import 'package:hart/core/models/radio_button.dart';
 import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/ui/custom_widgets/custom_button.dart';
@@ -13,6 +14,8 @@ import 'package:hart/ui/screens/chatting_screen/conversation_provider.dart';
 import 'package:hart/ui/screens/chatting_screen/conversation_screen/chatting/chatting_screen.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
+
+import 'chat_info/chat_info_screen.dart';
 
 class ConversationScreen extends StatelessWidget {
   @override
@@ -37,6 +40,12 @@ class ConversationScreen extends StatelessWidget {
                           style: subHeadingTextWhite,
                         ),
                         GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onTap: () {
+                            Get.to(
+                              ChatInfoScreen(),
+                            );
+                          },
                           child: Image.asset(
                             '$staticAsset/more.png',
                             scale: 3.5,
@@ -80,6 +89,7 @@ class ConversationScreen extends StatelessWidget {
                                     Get.to(
                                       ChattingScreen(
                                         toUserId: model.matchedUsers[index].id!,
+                                        conversation: Conversation(),
                                       ),
                                     );
                                   },
@@ -170,7 +180,9 @@ class ConversationScreen extends StatelessWidget {
                                   index,
                                   () => Get.to(
                                     ChattingScreen(
-                                      toUserId: model.conversations[index].id!,
+                                      toUserId:
+                                          model.conversations[index].toUserId!,
+                                      conversation: model.conversations[index],
                                     ),
                                   ),
                                 );
@@ -330,12 +342,11 @@ class ConversationScreen extends StatelessWidget {
             )
           : CircleAvatar(
               radius: 35.r,
-              backgroundImage: NetworkImage(
-                model.conversations[index].imageUrl!,
-              ),
+              backgroundImage:
+                  NetworkImage(model.conversations[index].imageUrl!),
             ),
       title: Text(
-        model.conversations[index].name!,
+        "${model.conversations[index].name}",
         style: subHeadingTextStyle2,
       ),
       subtitle: Text(
