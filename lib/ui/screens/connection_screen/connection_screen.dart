@@ -131,10 +131,8 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
         SingleChildScrollView(
           physics: NeverScrollableScrollPhysics(),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              SizedBox(
-                height: 0.35.sh,
-              ),
               Container(
                 width: double.infinity,
                 height: MediaQuery.of(context).size.height * 1,
