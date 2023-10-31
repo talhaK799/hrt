@@ -19,17 +19,17 @@ class SelectGenderScreen extends StatelessWidget {
   bool isUpdate;
   SelectGenderScreen({
     this.isFileter = false,
-    this.isUpdate=false,
+    this.isUpdate = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => SelectGenderProvider(isFileter,isUpdate),
+      create: (context) => SelectGenderProvider(isFileter, isUpdate),
       child: Consumer<SelectGenderProvider>(builder: (context, model, child) {
         return ModalProgressHUD(
           inAsyncCall: model.state == ViewState.busy,
-          progressIndicator: CustomLoader(),
+          // progressIndicator: CustomLoader(),
           child: Scaffold(
             body: Padding(
               padding: EdgeInsets.only(
