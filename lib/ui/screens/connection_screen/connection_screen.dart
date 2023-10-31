@@ -27,7 +27,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
           inAsyncCall: model.state == ViewState.busy,
           progressIndicator: CustomLoader(),
           child: Scaffold(
-            backgroundColor: primaryColor,
+            backgroundColor: Colors.white,
             body: model.likingUsers.isNotEmpty
                 ? Padding(
                     padding: EdgeInsets.fromLTRB(22, 50, 22, 10),
@@ -164,7 +164,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                 ),
                 sizeBox20,
                 Image.asset(
-                  '$dynamicAsset/Subtract.png',
+                  '$staticAsset/connection.png',
                 ),
                 sizeBox20,
                 Text(
