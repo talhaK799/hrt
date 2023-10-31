@@ -14,7 +14,7 @@ import '../../../../../core/constants/style.dart';
 
 class IdentityScreen extends StatelessWidget {
   bool isUpdate;
-   IdentityScreen({this.isUpdate=false});
+  IdentityScreen({this.isUpdate = false});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class IdentityScreen extends StatelessWidget {
       child: Consumer<IdentityProvider>(builder: (context, model, child) {
         return ModalProgressHUD(
           inAsyncCall: model.state == ViewState.busy,
-          progressIndicator: CustomLoader(),
+          // progressIndicator: CustomLoader(),
           child: Scaffold(
             body: Padding(
               padding: EdgeInsets.only(

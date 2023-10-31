@@ -12,9 +12,7 @@ import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/ui/custom_widgets/custom_button.dart';
 import 'package:hart/ui/custom_widgets/custom_drop_down.dart';
 import 'package:hart/ui/custom_widgets/custom_loader.dart';
-import 'package:hart/ui/screens/collect_info_screens/select_gender_screen/select_gender_screen.dart';
 import 'package:hart/ui/screens/home/home_provider.dart';
-import 'package:lottie/lottie.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
@@ -313,10 +311,12 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ////
-          /// Images Slider
           ///
-          _imageSlider(model, user, context),
+          /// Iamge slider
+          ///
+          ///
+          ///
+          _imageSlider(model, user),
           SizedBox(
             height: 20.h,
           ),
@@ -328,7 +328,7 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  user.name ?? 'Ali Khan',
+                  user.name ?? 'Jacqline Fernandus',
                   style: subHeadingText1,
                 ),
                 Row(
@@ -805,69 +805,67 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-_imageSlider(HomeProvider model, AppUser user, context) {
+_imageSlider(HomeProvider model, AppUser user) {
   return Stack(
     children: [
-      Container(
-        height: MediaQuery.of(context).size.height*0.38,
-        child:
-        CarouselSlider.builder(
-          itemCount: user.images!.length,
-          itemBuilder: (context, index, realIndex) {
-            return Container(
-              height: MediaQuery.of(context).size.height*0.38,
-              // decoration: BoxDecoration(
-              //   image: DecorationImage(
-              //     image: NetworkImage(user.images![index].toString()),
-              //     fit: BoxFit.cover,
-              //   ),
-              // ),
-              child: Image.network(
-                user.images![index].toString(),
-                fit: BoxFit.cover,
-                height: MediaQuery.of(context).size.height*0.38,
-                loadingBuilder: (BuildContext context, Widget child,
-                    ImageChunkEvent? loadingProgress) {
-                  if (loadingProgress == null) {
-                    return child; // Return the image widget if it's fully loaded.
-                  }
-                  return Container(
-                    color: Colors.grey.withOpacity(0.1),
-                    child: Center(
-                      // Display a linear progress indicator until the image is fully loaded.
-                      child: CircularProgressIndicator(
-                        color: primaryColor,
-                        value: loadingProgress.expectedTotalBytes != null
-                            ? loadingProgress.cumulativeBytesLoaded /
-                            loadingProgress.expectedTotalBytes!
-                            : null,
-                      ),
+      CarouselSlider.builder(
+        itemCount: user.images!.length,
+        itemBuilder: (context, index, realIndex) {
+          return Container(
+            height: 0.35.sh,
+            // decoration: BoxDecoration(
+            //   image: DecorationImage(
+            //     image: NetworkImage(user.images![index].toString()),
+            //     fit: BoxFit.cover,
+            //   ),
+            // ),
+            child: Image.network(
+              user.images![index].toString(),
+              height: 0.35.sh,
+              fit: BoxFit.cover,
+              loadingBuilder: (BuildContext context, Widget child,
+                  ImageChunkEvent? loadingProgress) {
+                if (loadingProgress == null) {
+                  return child; // Return the image widget if it's fully loaded.
+                }
+                return Container(
+                  height: 0.35.sh,
+                  color: Colors.grey.withOpacity(0.1),
+                  child: Center(
+                    // Display a linear progress indicator until the image is fully loaded.
+                    child: CircularProgressIndicator(
+                      color: primaryColor,
+                      value: loadingProgress.expectedTotalBytes != null
+                          ? loadingProgress.cumulativeBytesLoaded /
+                              loadingProgress.expectedTotalBytes!
+                          : null,
                     ),
-                  );
-                },
-              ),
+                  ),
+                );
+              },
+            ),
 
-              // FadeInImage.assetNetwork(
-              //
-              //   placeholder: '$logoPath/logo4.png',
-              //   image: user.images![index].toString(),
-              //   fit: BoxFit.fill,
-              // ),
-            );
+            // FadeInImage.assetNetwork(
+            //
+            //   placeholder: '$logoPath/logo4.png',
+            //   image: user.images![index].toString(),
+            //   fit: BoxFit.fill,
+            // ),
+          );
+        },
+        options: CarouselOptions(
+          onPageChanged: (index, reason) {
+            model.updateIndex(index);
           },
-          options: CarouselOptions(
-            onPageChanged: (index, reason) {
-              model.updateIndex(index);
-            },
-            height: 300.h,
-            // aspectRatio: 1,
-            viewportFraction: 1,
-            initialPage: 0,
+          height: 0.35.sh,
 
-            enableInfiniteScroll: false,
-            scrollDirection: Axis.vertical,
-            enlargeFactor: 0.6,
-          ),
+          // aspectRatio: 1,
+          viewportFraction: 1,
+          initialPage: 0,
+
+          enableInfiniteScroll: false,
+          scrollDirection: Axis.vertical,
+          enlargeFactor: 0.6,
         ),
       ),
       Padding(
@@ -904,6 +902,34 @@ _imageSlider(HomeProvider model, AppUser user, context) {
           scale: 3,
         ),
       ),
+      // Positioned(
+      //     right: 16,
+      //     bottom: 16,
+      //     child: Container(
+      //       padding: const EdgeInsets.symmetric(
+      //         horizontal: 10,
+      //         vertical: 4,
+      //       ),
+      //       decoration: BoxDecoration(
+      //         color: primaryColor,
+      //         borderRadius: BorderRadius.circular(16.r),
+      //       ),
+      //       child: Row(
+      //         children: [
+      //           Image.asset(
+      //             '$staticAsset/loader.png',
+      //             scale: 3,
+      //           ),
+      //           SizedBox(
+      //             width: 10.h,
+      //           ),
+      //           Text(
+      //             '2',
+      //             style: buttonTextStyle,
+      //           )
+      //         ],
+      //       ),
+      //     ))
     ],
   );
 }
