@@ -5,7 +5,6 @@ class Message {
   String? textMessage;
   String? imageUrl;
   String? voiceUrl;
-
   DateTime? sendAt;
   String? type;
 

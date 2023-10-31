@@ -27,6 +27,21 @@ class FilePickerService {
     return selectedImage;
   }
 
+  pickImageWithCompressionFromCamera() async {
+    File? selectedImage;
+    final image50 = await _imagePicker.pickImage(
+      source: ImageSource.camera,
+    );
+    // final image100 = await _imagePicker.pickImage(
+    //     source: ImageSource.gallery, imageQuality: 100);
+    if (image50 != null) selectedImage = File(image50.path);
+
+    debugPrint('Image50 Size: ${await image50?.length()}');
+    // debugPrint('Image100 Size: ${await image100?.length()}');
+
+    return selectedImage;
+  }
+
   pickImageWithoutCompression() async {
     File? selectedImage;
     final _filePicker = FilePicker.platform;

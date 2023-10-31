@@ -8,10 +8,13 @@ import '../../custom_widgets/custom_bottombar_item.dart';
 import 'root_provider.dart';
 
 class RootScreen extends StatelessWidget {
+  int? index = 0;
+
+  RootScreen({this.index = 0});
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => RootViewModel(),
+      create: (context) => RootViewModel(this.index!),
       child: Consumer<RootViewModel>(builder: (context, model, child) {
         return WillPopScope(
           onWillPop: () => model.closeApp(context),

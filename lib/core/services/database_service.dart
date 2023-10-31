@@ -162,12 +162,11 @@ class DatabaseService {
     try {
       final snapshot = await _db.collection('app_user').doc(id).get();
       debugPrint('Client Data: ${snapshot.data()}');
-      if(snapshot.data() == null){
+      if (snapshot.data() == null) {
         return AppUser();
-      }else{
+      } else {
         return AppUser.fromJson(snapshot.data(), snapshot.id);
       }
-
     } catch (e, s) {
       debugPrint('Exception @DatabaseService/getAppUser ==> error -> $e');
       debugPrint(s.toString());
@@ -259,90 +258,112 @@ class DatabaseService {
     }
   }
 
+  getMatchedUsers(AppUser appUser) async {
+    List<AppUser> list = [];
+    try {
+      final snapshot = await _db
+          .collection('app_user')
+          .where("id", whereIn: appUser.likedUsers)
+          .get();
+      for (var user in snapshot.docs) {
+        list.add(
+          AppUser.fromJson(user.data(), user.id),
+        );
+        // print('users --> ${user.data().keys}');
+      }
+      return list;
+    } catch (e, s) {
+      debugPrint('Exception @DatabaseService/getAppUsers==>$e');
+      debugPrint(s.toString());
+      return list;
+    }
+  }
+
   /// ========================================================== ///
   /// ==================== Chat Section ======================== ///
   /// ========================================================== ///
 
-  ///
-  /// add new message
-  ///
-  addNewUserMessage(
-      Conversation messageFrom, Conversation messageTo, Message message) async {
-    try {
-      ///
-      /// From User message
-      ///
-      await _db
-          .collection("Conversations")
-          .doc("${messageFrom.id}")
-          .collection("Chats")
-          .doc("${messageTo.id}")
-          .collection("messages")
-          .add(message.toJson());
+  // ///
+  // /// add new message
+  // ///
+  // addNewUserMessage(
+  //     Conversation messageFrom, Conversation messageTo, Message message) async {
+  //   try {
+  //     ///
+  //     /// From User message
+  //     ///
+  //     await _db
+  //         .collection("Conversations")
+  //         .doc("${messageFrom.id}")
+  //         .collection("Chats")
+  //         .doc("${messageTo.id}")
+  //         .collection("messages")
+  //         .add(message.toJson());
 
-      await _db
-          .collection("Conversations")
-          .doc("${messageFrom}")
-          .collection("Chats")
-          .doc("${messageTo.id}")
-          .set(messageTo.toJson());
+  //     await _db
+  //         .collection("Conversations")
+  //         .doc("${messageFrom}")
+  //         .collection("Chats")
+  //         .doc("${messageTo.id}")
+  //         .set(messageTo.toJson());
 
-      ///
-      /// to user message
-      ///
-      await _db
-          .collection("Conversations")
-          .doc("${messageTo.id}")
-          .collection("Chats")
-          .doc("${messageFrom.id}")
-          .collection("messages")
-          .add(message.toJson());
+  //     ///
+  //     /// to user message
+  //     ///
+  //     await _db
+  //         .collection("Conversations")
+  //         .doc("${messageTo.id}")
+  //         .collection("Chats")
+  //         .doc("${messageFrom.id}")
+  //         .collection("messages")
+  //         .add(message.toJson());
 
-      await _db
-          .collection("Conversations")
-          .doc("${messageTo.id}")
-          .collection("Chats")
-          .doc("${messageFrom.id}")
-          .set(messageFrom.toJson());
-    } catch (e) {
-      print('Exception@DatabaseServices/addNewMessage ==> $e');
-    }
-  }
+  //     await _db
+  //         .collection("Conversations")
+  //         .doc("${messageTo.id}")
+  //         .collection("Chats")
+  //         .doc("${messageFrom.id}")
+  //         .set(messageFrom.toJson());
+  //   } catch (e) {
+  //     print('Exception@DatabaseServices/addNewMessage ==> $e');
+  //   }
+  // }
 
-  Stream<QuerySnapshot>? getRealTimeChat(
-      String currentUserId, String toUserId) {
-    print("Current User id ==> $currentUserId");
-    print("to user id ==> $toUserId");
-    try {
-      Stream<QuerySnapshot> messageSnapshot = _db
-          .collection("Conversations")
-          .doc(currentUserId)
-          .collection("Chats")
-          .doc(toUserId)
-          .collection("messages")
-          .orderBy('sendAt', descending: true)
-          .snapshots();
-      return messageSnapshot;
-    } catch (e) {
-      print('Exception@GetUserMessagesStream=>$e');
-      return null;
-    }
-  }
+  // Stream<QuerySnapshot>? getRealTimeChat(
+  //     String currentUserId, String toUserId) {
+  //   print("Current User id ==> $currentUserId");
+  //   print("to user id ==> $toUserId");
+  //   try {
+  //     Stream<QuerySnapshot> messageSnapshot = _db
+  //         .collection("Conversations")
+  //         .doc(currentUserId)
+  //         .collection("Chats")
+  //         .doc(toUserId)
+  //         .collection("messages")
+  //         .orderBy('sendAt', descending: true)
+  //         .snapshots();
+  //     return messageSnapshot;
+  //   } catch (e) {
+  //     print('Exception@GetUserMessagesStream=>$e');
+  //     return null;
+  //   }
+  // }
 
-  Stream<QuerySnapshot>? getAllConverationList(String id) {
-    try {
-      Stream<QuerySnapshot> conversationSnapshot = _db
-          .collection("Conversations")
-          .doc(id)
-          .collection('Chats')
-          .orderBy("lastMessageAt", descending: true)
-          .snapshots();
-      return conversationSnapshot;
-    } catch (e) {
-      print("Exception@database/GetAllConversationList ==> $e");
-      return null;
-    }
-  }
+  // Stream<QuerySnapshot>? getAllConverationList(String id) {
+  //   try {
+  //     Stream<QuerySnapshot> conversationSnapshot = _db
+  //         .collection("Conversations")
+  //         .doc(id)
+  //         .collection('Chats')
+  //         .orderBy("lastMessageAt", descending: true)
+  //         .snapshots();
+  //     return conversationSnapshot;
+  //   } catch (e) {
+  //     print("Exception@database/GetAllConversationList ==> $e");
+  //     return null;
+  //   }
+  // }
+
   //  messageSeen(String fromUserId, String toUserId) async {
   //   try {
   //     await _db
@@ -383,4 +404,133 @@ class DatabaseService {
   //   await _db.collection("app_user").doc(id).update({'fcmToken': token}).then(
   //       (value) => debugPrint('fcm updated successfully'));
   // }
+
+  /// ====================== Chat new algorithm ============================///
+  ///
+  ///
+  /// add new message
+  ///
+  newMessages(Conversation conversation, Message message, String currentUserId,
+      String toUserId) async {
+    print("object ===> ${conversation.conversationId}");
+    try {
+      ///
+      /// Check previous conversation
+      ///
+      final snapshot = await _db
+          .collection("Conversations")
+          .doc("${currentUserId}")
+          .collection("MyConversation")
+          .doc("${toUserId}")
+          .get();
+
+      if (snapshot.exists) {
+        Conversation createdConversation =
+            Conversation.fromJson(snapshot.data());
+        conversation.conversationId = createdConversation.conversationId;
+        print("object ===> ${conversation.toJson()}");
+      }
+
+      ///
+      /// my converstion list
+      ///
+      await _db
+          .collection("Conversations")
+          .doc("${currentUserId}")
+          .collection("MyConversation")
+          .doc("${toUserId}")
+          .set(conversation.toJson());
+
+      ///
+      /// to user converstion list
+      ///
+      await _db
+          .collection("Conversations")
+          .doc("${toUserId}")
+          .collection("MyConversation")
+          .doc("${currentUserId}")
+          .set(conversation.toJson());
+
+      ///
+      /// Messages
+      ///
+
+      await _db
+          .collection("messages")
+          .doc("${conversation.conversationId}")
+          .collection("realtime-messages")
+          .add(message.toJson());
+    } catch (e) {
+      print('Exception@DatabaseServices/addNewMessage ==> $e');
+    }
+  }
+
+  Stream<QuerySnapshot>? getAllConverationList(String id) {
+    try {
+      Stream<QuerySnapshot> conversationSnapshot = _db
+          .collection("Conversations")
+          .doc(id)
+          .collection('MyConversation')
+          .orderBy("lastMessageAt", descending: true)
+          .snapshots();
+      return conversationSnapshot;
+    } catch (e) {
+      print("Exception@database/GetAllConversationList ==> $e");
+      return null;
+    }
+  }
+
+  Stream<QuerySnapshot>? getRealTimeMessages(currentUserId) {
+    try {
+      Stream<QuerySnapshot> messageSnapshot = _db
+          .collection("messages")
+          .doc(currentUserId)
+          .collection("realtime-messages")
+          .orderBy('sendAt', descending: true)
+          .snapshots();
+      return messageSnapshot;
+    } catch (e) {
+      print('Exception@GetUserMessagesStream=>$e');
+      return null;
+    }
+  }
+
+  createGroup(Conversation conversation, Message message) async {
+    try {
+      await _db
+          .collection("Conversations")
+          .doc("${conversation.fromUserId}")
+          .collection("MyConversation")
+          .doc("${conversation.groupId}")
+          .set(conversation.toJson());
+
+      ///
+      /// Messages
+      ///
+
+      await _db
+          .collection("messages")
+          .doc("${conversation.conversationId}")
+          .collection("realtime-messages")
+          .add(message.toJson());
+      return true;
+    } catch (e) {
+      print('Exception@DatabaseServices/addNewMessage ==> $e');
+      return false;
+    }
+  }
+
+  sendGroupMessage(Conversation conversation, Message message) async {
+    try {
+      await _db
+          .collection("messages")
+          .doc("${conversation.conversationId}")
+          .collection("realtime-messages")
+          .add(message.toJson());
+      return true;
+    } catch (e) {
+      print('Exception@DatabaseServices/addNewMessage ==> $e');
+      return false;
+    }
+  }
 }
