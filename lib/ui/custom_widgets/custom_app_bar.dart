@@ -12,13 +12,14 @@ class CustomAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      // mainAxisAlignment: Ma,
       children: [
         CustomBackButton(
           isWhite: true,
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 20, top: 25),
+          padding: const EdgeInsets.only(left: 20, top: 0),
           child: Text(
             title,
             style: subHeadingTextWhite.copyWith(

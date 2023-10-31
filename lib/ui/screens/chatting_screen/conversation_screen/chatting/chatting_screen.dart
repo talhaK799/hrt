@@ -6,17 +6,19 @@ import 'package:hart/core/constants/format_date.dart';
 import 'package:hart/core/constants/strings.dart';
 import 'package:hart/core/constants/style.dart';
 import 'package:hart/core/enums/view_state.dart';
+import 'package:hart/core/models/app_user.dart';
+import 'package:hart/core/models/chat_message.dart';
 import 'package:hart/core/models/conversation.dart';
 import 'package:hart/ui/custom_widgets/custom_back_button.dart';
+import 'package:hart/ui/custom_widgets/custom_button.dart';
 import 'package:hart/ui/custom_widgets/custom_loader.dart';
-import 'package:hart/ui/screens/chatting_screen/chat_info/chat_info_screen.dart';
 import 'package:hart/ui/screens/chatting_screen/conversation_screen/chatting/chatting_provider.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 class ChattingScreen extends StatelessWidget {
-  String toUserId;
-  Conversation conversation;
+  final String toUserId;
+  final Conversation conversation;
   ChattingScreen({
     required this.toUserId,
     required this.conversation,
@@ -36,40 +38,61 @@ class ChattingScreen extends StatelessWidget {
                 ////
                 /// App Bar
                 ///
+                // Padding(
+                //   padding: EdgeInsets.fromLTRB(32, 50, 32, 16),
+                //   child: CustomBackButton(),
+                // ),
                 Padding(
-                  padding: EdgeInsets.fromLTRB(32, 50, 32, 16),
-                  child: CustomBackButton(),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(60, 72, 24, 16),
-                  child: ListTile(
-                    leading: CircleAvatar(
-                      radius: 35.r,
-                      backgroundImage: AssetImage('$dynamicAsset/person.png'),
-                    ),
-                    title: Text(
-                      conversation.isGroupChat == true
-                          ? model.conversation.name!
-                          : model.toUser.name!,
-                      style: subHeadingTextStyle,
-                    ),
-                    subtitle: Text(
-                      'online',
-                      style: miniText.copyWith(
-                        color: whiteColor,
+                  padding: const EdgeInsets.fromLTRB(20, 42, 14, 0),
+                  child: Row(
+                    children: [
+                      CustomBackButton(),
+                      Expanded(
+                        child: ListTile(
+                          leading: model.conversation.isGroupChat!
+                              ? CircleAvatar(
+                                  radius: 35.r,
+                                  backgroundImage:
+                                      AssetImage('$dynamicAsset/person.png'),
+                                )
+                              : model.toUser.images!.isNotEmpty
+                                  ? CircleAvatar(
+                                      radius: 35.r,
+                                      backgroundImage: NetworkImage(
+                                        '${model.toUser.images!.first}',
+                                      ),
+                                    )
+                                  : CircleAvatar(
+                                      radius: 35.r,
+                                      backgroundImage: AssetImage(
+                                          '$dynamicAsset/person.png'),
+                                    ),
+                          title: Text(
+                            conversation.isGroupChat == true
+                                ? "${model.conversation.name}"
+                                : "${model.toUser.name}",
+                            style: subHeadingTextStyle,
+                          ),
+                          // subtitle: Text(
+                          //   'online',
+                          //   style: miniText.copyWith(
+                          //     color: whiteColor,
+                          //   ),
+                          // ),
+                          // trailing: GestureDetector(
+                          //   onTap: () {
+                          //     Get.to(
+                          //       ChatInfoScreen(),
+                          //     );
+                          //   },
+                          //   child: Image.asset(
+                          //     '$staticAsset/more.png',
+                          //     scale: 3.5,
+                          //   ),
+                          // ),
+                        ),
                       ),
-                    ),
-                    trailing: GestureDetector(
-                      onTap: () {
-                        Get.to(
-                          ChatInfoScreen(),
-                        );
-                      },
-                      child: Image.asset(
-                        '$staticAsset/more.png',
-                        scale: 3.5,
-                      ),
-                    ),
+                    ],
                   ),
                 ),
 
@@ -77,14 +100,14 @@ class ChattingScreen extends StatelessWidget {
                 /// Chats
                 ///
                 Padding(
-                  padding: const EdgeInsets.only(top: 150),
+                  padding: const EdgeInsets.only(top: 120),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
                         child: Container(
                           height: 1.sh,
-                          padding: EdgeInsets.fromLTRB(24, 0, 24, 0),
+                          padding: EdgeInsets.fromLTRB(24, 0, 14, 0),
                           decoration: BoxDecoration(
                             color: whiteColor,
                           ),
@@ -94,7 +117,25 @@ class ChattingScreen extends StatelessWidget {
                             reverse: true,
                             itemCount: model.messages.length,
                             itemBuilder: (context, index) {
-                              return _chatMessage(model, index);
+                              return model.messages[index].type == "text"
+                                  ? TextMessageCard(
+                                      message: model.messages[index],
+                                      user: model.currentUser.appUser,
+                                    )
+                                  : model.messages[index].type == "GroupCreated"
+                                      ? JoinORLeaveGroup(
+                                          message: model.messages[index],
+                                          currentUser:
+                                              model.currentUser.appUser,
+                                        )
+                                      : model.messages[index].type == "image"
+                                          ? ImageMessageCard(
+                                              message: model.messages[index],
+                                              appUser:
+                                                  model.currentUser.appUser,
+                                            )
+                                          : Container();
+                              // return _chatMessage(model, index);
                             },
                             separatorBuilder: (context, index) => SizedBox(
                               height: 15.h,
@@ -125,6 +166,59 @@ class ChattingScreen extends StatelessWidget {
         );
       }),
     );
+  }
+
+  imagePickingBottomSheet(context, ChattingProvider model) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return Container(
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(height: 20),
+                    GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () {
+                        Get.back();
+                      },
+                      child: Icon(Icons.close),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 20),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 30),
+                  child: Column(
+                    children: [
+                      CustomButton(
+                        title: 'Gallery',
+                        onTap: () {
+                          Get.back();
+                          model.pickImage();
+                        },
+                      ),
+                      SizedBox(height: 20),
+                      CustomButton(
+                        title: 'Camera',
+                        onTap: () {
+                          Get.back();
+                          model.pickImageFromGallery();
+                        },
+                      ),
+                      SizedBox(height: 30),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        });
   }
 
   sendImageContainer(ChattingProvider model) {
@@ -187,125 +281,9 @@ class ChattingScreen extends StatelessWidget {
                       ),
                     )
                   : Container(),
-              // Align(
-              //   alignment: Alignment.bottomCenter,
-              //   child: ElevatedButton(
-              //     onPressed: () {},
-              //     child: Text('Pick Image'),
-              //   ),
-              // )
             ],
           ),
         ),
-      ],
-    );
-  }
-
-  _chatMessage(ChattingProvider model, int index) {
-    return Column(
-      children: [
-        Container(
-          margin:
-              model.messages[index].fromUserId == model.currentUser.appUser.id
-                  ? EdgeInsets.only(
-                      left: 100,
-                    )
-                  : EdgeInsets.only(
-                      right: 100,
-                    ),
-          padding: model.messages[index].type == 'image'
-              ? EdgeInsets.all(3)
-              : EdgeInsets.all(15),
-          decoration: BoxDecoration(
-            color:
-                model.messages[index].fromUserId == model.currentUser.appUser.id
-                    ? primaryColor
-                    : greyColor,
-            borderRadius:
-                model.messages[index].fromUserId == model.currentUser.appUser.id
-                    ? BorderRadius.only(
-                        topLeft: Radius.circular(12.r),
-                        topRight: Radius.circular(12.r),
-                        bottomLeft: Radius.circular(12.r),
-                      )
-                    : BorderRadius.only(
-                        topLeft: Radius.circular(12.r),
-                        topRight: Radius.circular(12.r),
-                        bottomRight: Radius.circular(12.r),
-                      ),
-          ),
-          child: model.messages[index].type == 'text'
-              ? Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    model.messages[index].textMessage!,
-                    style: subtitleText.copyWith(
-                      fontSize: 15.sp,
-                      color: model.messages[index].fromUserId ==
-                              model.currentUser.appUser.id
-                          ? whiteColor
-                          : blackColor,
-                    ),
-                  ))
-              : Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      height: 200,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12.r),
-                        image: DecorationImage(
-                          image: NetworkImage(
-                            model.messages[index].imageUrl!,
-                          ),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    model.messages[index].textMessage!.isNotEmpty
-                        ? Padding(
-                            padding: const EdgeInsets.only(left: 10, right: 10),
-                            child: Text(
-                              model.messages[index].textMessage!,
-                              style: subtitleText.copyWith(
-                                fontSize: 15.sp,
-                                color: model.messages[index].fromUserId ==
-                                        model.currentUser.appUser.id
-                                    ? whiteColor
-                                    : blackColor,
-                              ),
-                            ),
-                          )
-                        : Container(),
-                  ],
-                ),
-        ),
-        sizeBox10,
-        Row(
-          mainAxisAlignment:
-              model.messages[index].fromUserId == model.currentUser.appUser.id
-                  ? MainAxisAlignment.end
-                  : MainAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 40),
-              child: Text(
-                onlyTime.format(model.messages[index].sendAt!),
-                style: miniText.copyWith(
-                  color: greyColor2,
-                ),
-              ),
-            ),
-            sizeBoxw10,
-            // model.messages[index].isSender == false
-            //     ? Image.asset(
-            //         '$staticAsset/Check.png',
-            //         scale: 3,
-            //       )
-            //     :
-            Container(),
-          ],
-        )
       ],
     );
   }
@@ -314,7 +292,7 @@ class ChattingScreen extends StatelessWidget {
     return Align(
       alignment: Alignment.bottomCenter,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Stack(
           children: [
             Container(
@@ -343,18 +321,18 @@ class ChattingScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(32.r),
                   border: Border.all(color: whiteColor3)),
             ),
-            Container(
-              padding: EdgeInsets.fromLTRB(30, 20, 0, 30),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-              ),
-              child: Image.asset(
-                '$staticAsset/voice.png',
-                scale: 3.5,
-              ),
-            ),
+            // Container(
+            //   padding: EdgeInsets.fromLTRB(30, 20, 0, 30),
+            //   decoration: BoxDecoration(
+            //     shape: BoxShape.circle,
+            //   ),
+            //   child: Image.asset(
+            //     '$staticAsset/voice.png',
+            //     scale: 3.5,
+            //   ),
+            // ),
             Padding(
-              padding: EdgeInsets.only(left: 40, top: 10),
+              padding: EdgeInsets.only(left: 0, top: 10),
               child: TextFormField(
                 // validator: (val) {
                 //   if (val!.isNotEmpty) {
@@ -403,7 +381,10 @@ class ChattingScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   GestureDetector(
-                    onTap: () => model.selectImage(),
+                    // onTap: () => model.selectImage(),
+                    onTap: () {
+                      imagePickingBottomSheet(context, model);
+                    },
                     child: Image.asset(
                       '$staticAsset/camera.png',
                       scale: 4,
@@ -430,6 +411,197 @@ class ChattingScreen extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class ImageMessageCard extends StatelessWidget {
+  final Message message;
+  final AppUser appUser;
+  ImageMessageCard({required this.message, required this.appUser});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          margin: message.fromUserId == appUser.id
+              ? EdgeInsets.only(
+                  left: 100,
+                )
+              : EdgeInsets.only(
+                  right: 100,
+                ),
+          padding:
+              message.type == 'image' ? EdgeInsets.all(3) : EdgeInsets.all(15),
+          decoration: BoxDecoration(
+            color: message.fromUserId == appUser.id ? primaryColor : greyColor,
+            borderRadius: message.fromUserId == appUser.id
+                ? BorderRadius.only(
+                    topLeft: Radius.circular(12.r),
+                    topRight: Radius.circular(12.r),
+                    bottomLeft: Radius.circular(12.r),
+                  )
+                : BorderRadius.only(
+                    topLeft: Radius.circular(12.r),
+                    topRight: Radius.circular(12.r),
+                    bottomRight: Radius.circular(12.r),
+                  ),
+          ),
+          child: message.type == 'text'
+              ? Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    message.textMessage!,
+                    style: subtitleText.copyWith(
+                      fontSize: 15.sp,
+                      color: message.fromUserId == appUser.id
+                          ? whiteColor
+                          : blackColor,
+                    ),
+                  ))
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      height: 200,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12.r),
+                        image: DecorationImage(
+                          image: NetworkImage(
+                            message.imageUrl!,
+                          ),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    message.textMessage!.isNotEmpty
+                        ? Padding(
+                            padding: const EdgeInsets.only(left: 10, right: 10),
+                            child: Text(
+                              message.textMessage!,
+                              style: subtitleText.copyWith(
+                                fontSize: 15.sp,
+                                color: message.fromUserId == appUser.id
+                                    ? whiteColor
+                                    : blackColor,
+                              ),
+                            ),
+                          )
+                        : Container(),
+                  ],
+                ),
+        ),
+        sizeBox10,
+        Row(
+          mainAxisAlignment: message.fromUserId == appUser.id
+              ? MainAxisAlignment.end
+              : MainAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 40),
+              child: Text(
+                onlyTime.format(message.sendAt!),
+                style: miniText.copyWith(
+                  color: greyColor2,
+                ),
+              ),
+            ),
+            sizeBoxw10,
+            // model.messages[index].isSender == false
+            //     ? Image.asset(
+            //         '$staticAsset/Check.png',
+            //         scale: 3,
+            //       )
+            //     :
+            Container(),
+          ],
+        )
+      ],
+    );
+  }
+}
+
+class TextMessageCard extends StatelessWidget {
+  final Message message;
+  final AppUser user;
+  TextMessageCard({required this.message, required this.user});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+      child: Align(
+        alignment: (message.fromUserId != user.id
+            ? Alignment.topLeft
+            : Alignment.topRight),
+        child: Column(
+          crossAxisAlignment: message.fromUserId != user.id
+              ? CrossAxisAlignment.start
+              : CrossAxisAlignment.end,
+          children: [
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+              decoration: BoxDecoration(
+                color: message.fromUserId == user.id ? primaryColor : greyColor,
+                borderRadius: message.fromUserId == user.id
+                    ? BorderRadius.only(
+                        topLeft: Radius.circular(12.r),
+                        topRight: Radius.circular(12.r),
+                        bottomLeft: Radius.circular(12.r),
+                      )
+                    : BorderRadius.only(
+                        topLeft: Radius.circular(12.r),
+                        topRight: Radius.circular(12.r),
+                        bottomRight: Radius.circular(12.r),
+                      ),
+              ),
+              child: Text(
+                message.textMessage!,
+                style: subtitleText.copyWith(
+                  fontSize: 15.sp,
+                  color:
+                      message.fromUserId == user.id ? whiteColor : blackColor,
+                ),
+              ),
+            ),
+            // sizeBox10,
+            Text(
+              onlyTime.format(message.sendAt!),
+              style: miniText.copyWith(
+                color: greyColor2,
+              ),
+            ),
+            // sizeBoxw10
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class JoinORLeaveGroup extends StatelessWidget {
+  final Message message;
+  final AppUser currentUser;
+
+  JoinORLeaveGroup({required this.message, required this.currentUser});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      // padding: EdgeInsets.symmetric(horizontal: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(width: 7),
+          Expanded(child: Divider(thickness: 1)),
+          SizedBox(width: 7),
+          Text("${message.textMessage}"),
+          SizedBox(width: 7),
+          Expanded(child: Divider(thickness: 1)),
+          SizedBox(width: 7),
+        ],
       ),
     );
   }

@@ -34,21 +34,23 @@ class ChattingProvider extends BaseViewModel {
   List<Matches> matches = [];
   List<AppUser> matchedUsers = [];
 
-  ChattingProvider(UserId, conversation) {
+  ChattingProvider(userId, conversation) {
+    this.conversation = conversation;
+    this.conversation.isGroupChat = this.conversation.isGroupChat ?? false;
     message = Message();
     toUser = AppUser();
-    this.conversation = conversation;
-
-    this.conversation.isGroupChat == true ? getUser(UserId) : null;
-    this.conversation.isGroupChat == true ? getAllMessages() : null;
+    this.conversation.isGroupChat == false ? getUser(userId) : null;
+    this.conversation.isGroupChat == true ? getAllMessages() : getAllMessages();
   }
 
-  getUser(UserId) async {
+  getUser(userId) async {
     setState(ViewState.busy);
-    print(UserId);
-    toUser = await db.getAppUser(UserId);
+    print(userId);
+
+    toUser = await db.getAppUser(userId);
+
     setState(ViewState.idle);
-    getAllMessages();
+    // getAllMessages();
     // if (this.conversation.conversationId != null && toUser.id != null) {
     //   getAllMessages(this.conversation.conversationId!);
     // }
@@ -145,13 +147,27 @@ class ChattingProvider extends BaseViewModel {
     );
   }
 
-  selectImage() {
-    isSelect = !isSelect;
-    notifyListeners();
-  }
+  // selectImage() {
+  //   isSelect = !isSelect;
+  //   notifyListeners();
+  // }
 
   pickImage() async {
     image = await filePicker.pickImage();
+
+    if (image != null) {
+      isSelect = !isSelect;
+    }
+
+    notifyListeners();
+  }
+
+  pickImageFromGallery() async {
+    image = await filePicker.pickImageWithCompressionFromCamera();
+
+    if (image != null) {
+      isSelect = !isSelect;
+    }
 
     notifyListeners();
   }

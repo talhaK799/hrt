@@ -3,7 +3,6 @@ import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/models/app_user.dart';
 import 'package:hart/core/models/chat_message.dart';
 import 'package:hart/core/models/conversation.dart';
-import 'package:hart/core/models/group_members.dart';
 import 'package:hart/core/services/auth_service.dart';
 import 'package:hart/core/services/database_service.dart';
 import 'package:hart/core/view_models/base_view_model.dart';
@@ -25,6 +24,19 @@ class CreateGroupProvider extends BaseViewModel {
   CreateGroupProvider() {
     getLikedUsers();
   }
+
+  init() async {
+    setState(ViewState.busy);
+    message = Message();
+    conversation = Conversation();
+    isEnable = false;
+    isCreated = false;
+    matchedUsers = [];
+    selectedUsers = [];
+    await getLikedUsers();
+    setState(ViewState.idle);
+  }
+
   check(ind) {
     matchedUsers[ind].isSelected = !matchedUsers[ind].isSelected!;
     for (var i = 0; i < matchedUsers.length; i++) {
@@ -73,7 +85,7 @@ class CreateGroupProvider extends BaseViewModel {
       message.fromUserId = currentUser.appUser.id;
       message.sendAt = DateTime.now();
       message.textMessage = "Group created";
-      message.type = "GroupChat";
+      message.type = "GroupCreated";
 
       for (var i = 0; i < selectedUsers.length; i++) {
         conversation.joinedUsers!.add(selectedUsers[i].id!);
@@ -85,6 +97,7 @@ class CreateGroupProvider extends BaseViewModel {
         message.fromUserId = selectedUsers[i].id;
         message.sendAt = DateTime.now();
         message.textMessage = "Added to group";
+        message.type = "added";
         conversation.lastMessage = "Added";
         conversation.lastMessageAt = DateTime.now();
         conversation.fromUserId = selectedUsers[i].id;

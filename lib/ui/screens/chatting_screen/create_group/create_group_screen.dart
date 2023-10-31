@@ -13,7 +13,19 @@ import 'package:provider/provider.dart';
 
 import '../../../custom_widgets/custom_button.dart';
 
-class CreateGroupScreen extends StatelessWidget {
+class CreateGroupScreen extends StatefulWidget {
+  @override
+  State<CreateGroupScreen> createState() => _CreateGroupScreenState();
+}
+
+class _CreateGroupScreenState extends State<CreateGroupScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Provider.of<CreateGroupProvider>(context, listen: false).init();
+  }
+
   @override
   Widget build(BuildContext context) {
     return
@@ -62,18 +74,26 @@ class CreateGroupScreen extends StatelessWidget {
                               onTap: () {
                                 model.check(index);
                               },
-                              leading: CircleAvatar(
-                                radius: 35.r,
-                                backgroundImage: AssetImage(
-                                  '$dynamicAsset/profile.png',
-                                ),
-                              ),
+                              leading:
+                                  model.matchedUsers[index].images!.isNotEmpty
+                                      ? CircleAvatar(
+                                          radius: 35.r,
+                                          backgroundImage: NetworkImage(
+                                            '${model.matchedUsers[index].images!.first}',
+                                          ),
+                                        )
+                                      : CircleAvatar(
+                                          radius: 35.r,
+                                          backgroundImage: AssetImage(
+                                            '$dynamicAsset/profile.png',
+                                          ),
+                                        ),
                               title: Text(
-                                model.matchedUsers[index].name!,
+                                "${model.matchedUsers[index].name}",
                                 style: subHeadingTextStyle2,
                               ),
                               subtitle: Text(
-                                model.matchedUsers[index].nickName!,
+                                "${model.matchedUsers[index].nickName}",
                                 style: subtitleText,
                               ),
                               trailing:
@@ -101,7 +121,6 @@ class CreateGroupScreen extends StatelessWidget {
                         ? CustomButton(
                             title: 'Continue',
                             onTap: () {
-                              print("Done");
                               FocusManager.instance.primaryFocus?.unfocus();
                               Get.to(
                                 MembersScreen(),
@@ -110,7 +129,9 @@ class CreateGroupScreen extends StatelessWidget {
                           )
                         : CustomButton(
                             title: 'Continue',
-                            onTap: null,
+                            onTap: () {
+                              Get.snackbar("Error!", "Please select members");
+                            },
                             textColor: primaryColor,
                             color: pinkColor,
                           ),

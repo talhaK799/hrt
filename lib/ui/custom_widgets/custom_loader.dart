@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hart/core/constants/strings.dart';
 import 'package:lottie/lottie.dart';
 
 class CustomLoader extends StatelessWidget {
@@ -11,7 +10,7 @@ class CustomLoader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Lottie.asset(
-        '$animations/loader.json',
+        'assets/animations/hart_red.json',
         repeat: true,
         frameRate: FrameRate(
           100,
@@ -20,9 +19,6 @@ class CustomLoader extends StatelessWidget {
     );
   }
 }
-
-
-
 
 class CustomLoaderWhite extends StatelessWidget {
   const CustomLoaderWhite({
@@ -33,7 +29,7 @@ class CustomLoaderWhite extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Lottie.asset(
-        '$animations/loader_white.json',
+        'assets/animations/hart_red.json',
         repeat: true,
         frameRate: FrameRate(
           100,
@@ -42,4 +38,3 @@ class CustomLoaderWhite extends StatelessWidget {
     );
   }
 }
-
