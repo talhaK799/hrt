@@ -195,6 +195,10 @@ class ChattingProvider extends BaseViewModel {
     conversation.isMessageSeen = false;
     conversation.noOfUnReadMsgs = 0;
     conversation.name = toUser.name;
+    conversation.isGroupChat = false;
+    conversation.isMessageSeen = false;
+    conversation.leftedUsers = [];
+    conversation.joinedUsers = [];
 
     print('message : ${message.textMessage}');
     if (message.textMessage != null && image == null) {
