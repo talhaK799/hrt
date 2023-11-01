@@ -24,8 +24,8 @@ class ChattingProvider extends BaseViewModel {
   AppUser toUser = AppUser();
   Message message = Message();
 
-  // Conversation conversationTo = Conversation();
-  // Conversation conversationFrom = Conversation();
+  Conversation conversationTo = Conversation();
+  Conversation conversationFrom = Conversation();
   Conversation conversation = Conversation();
 
   Stream<QuerySnapshot>? messageStream;
@@ -128,7 +128,7 @@ class ChattingProvider extends BaseViewModel {
 
   getAllMessages() async {
     setState(ViewState.busy);
-    messageStream = await db.getRealTimeMessages(conversation.conversationId);
+    messageStream = db.getRealTimeMessages(conversation.conversationId);
     setState(ViewState.idle);
     messageStream!.listen(
       (event) {
@@ -182,23 +182,41 @@ class ChattingProvider extends BaseViewModel {
     // message.textMessage = '';
 
     ///
-    /// message from
+    /// conversation From
+    ///
+    conversationFrom.conversationId = conversation.conversationId ?? uuid.v4();
+    conversation.conversationId = conversationFrom.conversationId;
+    conversationFrom.lastMessage = message.textMessage;
+    conversationFrom.lastMessageAt = DateTime.now();
+    conversationFrom.fromUserId = currentUser.appUser.id;
+    conversationFrom.toUserId = toUser.id;
+    conversationFrom.isMessageSeen = false;
+    conversationFrom.noOfUnReadMsgs = 0;
+    conversationFrom.name = toUser.name;
+    conversationFrom.isGroupChat = false;
+    conversationFrom.isMessageSeen = false;
+    conversationFrom.leftedUsers = [];
+    conversationFrom.joinedUsers = [];
+
+    ///
+    /// Conversation To
     ///
 
     isSelect = false;
     notifyListeners();
-    conversation.conversationId = conversation.conversationId ?? uuid.v4();
-    conversation.lastMessage = message.textMessage;
-    conversation.lastMessageAt = DateTime.now();
-    conversation.fromUserId = currentUser.appUser.id;
-    conversation.toUserId = toUser.id;
-    conversation.isMessageSeen = false;
-    conversation.noOfUnReadMsgs = 0;
-    conversation.name = toUser.name;
-    conversation.isGroupChat = false;
-    conversation.isMessageSeen = false;
-    conversation.leftedUsers = [];
-    conversation.joinedUsers = [];
+
+    conversationTo.conversationId = conversationFrom.conversationId;
+    conversationTo.lastMessage = message.textMessage;
+    conversationTo.lastMessageAt = DateTime.now();
+    conversationTo.fromUserId = toUser.id;
+    conversationTo.toUserId = currentUser.appUser.id;
+    conversationTo.isMessageSeen = false;
+    conversationTo.noOfUnReadMsgs = 0;
+    conversationTo.name = toUser.name;
+    conversationTo.isGroupChat = false;
+    conversationTo.isMessageSeen = false;
+    conversationTo.leftedUsers = [];
+    conversationTo.joinedUsers = [];
 
     print('message : ${message.textMessage}');
     if (message.textMessage != null && image == null) {
@@ -209,18 +227,16 @@ class ChattingProvider extends BaseViewModel {
       message.toUserId = toUser.id;
       message.sendAt = DateTime.now();
       message.type = 'text';
-      print('Text message');
-      print("Conversation id ===> ${this.conversation.conversationId}");
+      messages.insert(0, message);
+      notifyListeners();
 
-      // await db.addNewUserMessage(conversationFrom, conversationTo, message);
+      db.newMessages(conversationFrom, conversationTo, message,
+          currentUser.appUser.id!, toUser.id!);
+      if (messages.isEmpty) {
+        getAllMessages();
+      }
 
-      print("Conversation ===> ${conversation.toJson()}");
-      db.newMessages(
-          conversation, message, currentUser.appUser.id!, toUser.id!);
-
-      // message.type = "text";
-      // _databaseService.updateUserMessageReceived(true, conversationTo.id);
-      print("new message added");
+      notifyListeners();
 
       messageController.clear();
       message = Message();
@@ -233,11 +249,15 @@ class ChattingProvider extends BaseViewModel {
       message.imageUrl = await storage.uploadImage(image!, 'Chat Images');
       print('image url : ${message.imageUrl}');
       message.type = 'image';
-      // await db.addNewUserMessage(conversationFrom, conversationTo, message);
-      db.newMessages(
-          conversation, message, currentUser.appUser.id!, toUser.id!);
+      messages.insert(0, message);
+      notifyListeners();
 
-      print('image sent');
+      db.newMessages(conversationFrom, conversationTo, message,
+          currentUser.appUser.id!, toUser.id!);
+      if (messages.isEmpty) {
+        getAllMessages();
+      }
+
       messageController.clear();
       image = null;
       message = Message();
@@ -252,42 +272,19 @@ class ChattingProvider extends BaseViewModel {
   /// ================================================= ///
   ///
   sendGroupMessage() async {
-    // message.textMessage = '';
-
-    ///
-    /// message from
-    ///
-
     isSelect = false;
     notifyListeners();
-    // conversation.conversationId = conversation.conversationId ?? uuid.v4();
-    // conversation.lastMessage = message.textMessage;
-    // conversation.lastMessageAt = DateTime.now();
-    // conversation.fromUserId = currentUser.appUser.id;
-    // conversation.toUserId = toUser.id;
-    // conversation.isMessageSeen = false;
-    // conversation.noOfUnReadMsgs = 0;
-    // conversation.name = toUser.name;
 
     print('message : ${message.textMessage}');
     if (message.textMessage != null && image == null) {
-      ///
-      /// messages
-      ///
       message.fromUserId = currentUser.appUser.id;
       message.toUserId = conversation.conversationId;
       message.sendAt = DateTime.now();
       message.type = 'text';
-      print('Text message');
-      print("Conversation id ===> ${this.conversation.conversationId}");
-
-      // await db.addNewUserMessage(conversationFrom, conversationTo, message);
-
-      print("Conversation ===> ${conversation.toJson()}");
+      messages.insert(0, message);
+      notifyListeners();
       db.sendGroupMessage(conversation, message);
 
-      // message.type = "text";
-      // _databaseService.updateUserMessageReceived(true, conversationTo.id);
       print("new message added");
 
       messageController.clear();
@@ -301,6 +298,8 @@ class ChattingProvider extends BaseViewModel {
       message.imageUrl = await storage.uploadImage(image!, 'Chat Images');
       print('image url : ${message.imageUrl}');
       message.type = 'image';
+      messages.insert(0, message);
+      notifyListeners();
       db.sendGroupMessage(conversation, message);
 
       print('image sent');

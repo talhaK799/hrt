@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 import 'package:get/get.dart';
 import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/constants/format_date.dart';
@@ -16,17 +17,35 @@ import 'package:hart/ui/screens/chatting_screen/conversation_screen/chatting/cha
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
-class ChattingScreen extends StatelessWidget {
+class ChattingScreen extends StatefulWidget {
   final String toUserId;
   final Conversation conversation;
   ChattingScreen({
     required this.toUserId,
     required this.conversation,
   });
+
+  @override
+  State<ChattingScreen> createState() => _ChattingScreenState();
+}
+
+class _ChattingScreenState extends State<ChattingScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _init();
+  }
+
+  void _init() async {
+    // await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
+  }
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => ChattingProvider(toUserId, conversation),
+      create: (context) =>
+          ChattingProvider(widget.toUserId, widget.conversation),
       child: Consumer<ChattingProvider>(builder: (context, model, child) {
         return ModalProgressHUD(
           inAsyncCall: model.state == ViewState.busy,
@@ -68,7 +87,7 @@ class ChattingScreen extends StatelessWidget {
                                           '$dynamicAsset/person.png'),
                                     ),
                           title: Text(
-                            conversation.isGroupChat == true
+                            widget.conversation.isGroupChat == true
                                 ? "${model.conversation.name}"
                                 : "${model.toUser.name}",
                             style: subHeadingTextStyle,

@@ -77,7 +77,7 @@ class CreateGroupProvider extends BaseViewModel {
       conversation.lastMessageAt = DateTime.now();
       conversation.fromUserId = currentUser.appUser.id;
       conversation.isGroupChat = true;
-      conversation.imageUrl = currentUser.appUser.images!.first;
+      // conversation.imageUrl = currentUser.appUser.images!.first;
       conversation.isMessageSeen = false;
       conversation.leftedUsers = [];
       conversation.joinedUsers = [];
