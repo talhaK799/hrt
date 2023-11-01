@@ -13,10 +13,25 @@ import 'package:hart/ui/screens/collect_info_screens/verifications/phone_no_scre
 import 'package:hart/ui/screens/home/home_provider.dart';
 import 'package:hart/ui/screens/splash_screen.dart';
 import 'package:provider/provider.dart';
+// import 'package:window_manager/window_manager.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
+  // WindowOptions windowOptions = WindowOptions(
+  //   size: Size(800, 600),
+  //   center: true,
+  //   backgroundColor: Colors.transparent,
+  //   skipTaskbar: false,
+  //   titleBarStyle: TitleBarStyle.hidden,
+  // );
+
+  // windowManager.waitUntilReadyToShow(windowOptions, () async {
+  //   await windowManager.show();
+  //   await windowManager.focus();
+  // });
+
   await setupLocator();
   final langCode = await locator<LocalStorageService>().getSelectedLanguage();
   runApp(MyApp(langCode));

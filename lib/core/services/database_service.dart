@@ -410,9 +410,8 @@ class DatabaseService {
   ///
   /// add new message
   ///
-  newMessages(Conversation conversation, Message message, String currentUserId,
-      String toUserId) async {
-    print("object ===> ${conversation.conversationId}");
+  newMessages(Conversation conversationFrom, Conversation conversationTo,
+      Message message, String currentUserId, String toUserId) async {
     try {
       ///
       /// Check previous conversation
@@ -427,29 +426,59 @@ class DatabaseService {
       if (snapshot.exists) {
         Conversation createdConversation =
             Conversation.fromJson(snapshot.data());
-        conversation.conversationId = createdConversation.conversationId;
-        print("object ===> ${conversation.toJson()}");
+        conversationFrom.conversationId = createdConversation.conversationId;
+        await _db
+            .collection("Conversations")
+            .doc("${currentUserId}")
+            .collection("MyConversation")
+            .doc("${toUserId}")
+            .update({
+          "lastMessage": conversationFrom.lastMessage,
+        });
+      } else {
+        ///
+        /// my converstion list
+        ///
+        await _db
+            .collection("Conversations")
+            .doc("${currentUserId}")
+            .collection("MyConversation")
+            .doc("${toUserId}")
+            .set(conversationFrom.toJson());
       }
 
       ///
-      /// my converstion list
+      /// Check previous conversation
       ///
-      await _db
+      final snap = await _db
           .collection("Conversations")
-          .doc("${currentUserId}")
-          .collection("MyConversation")
           .doc("${toUserId}")
-          .set(conversation.toJson());
+          .collection("MyConversation")
+          .doc("${currentUserId}")
+          .get();
 
-      ///
-      /// to user converstion list
-      ///
-      await _db
-          .collection("Conversations")
-          .doc("${toUserId}")
-          .collection("MyConversation")
-          .doc("${currentUserId}")
-          .set(conversation.toJson());
+      if (snap.exists) {
+        Conversation createdConversation = Conversation.fromJson(snap.data());
+        conversationTo.conversationId = createdConversation.conversationId;
+        await _db
+            .collection("Conversations")
+            .doc("${toUserId}")
+            .collection("MyConversation")
+            .doc("${currentUserId}")
+            .update({
+          "lastMessage": conversationTo.lastMessage,
+        });
+      } else {
+        ///
+        /// to user converstion list
+        ///
+        await _db
+            .collection("Conversations")
+            .doc("${toUserId}")
+            .collection("MyConversation")
+            .doc("${currentUserId}")
+            .set(conversationTo.toJson());
+      }
 
       ///
       /// Messages
@@ -457,7 +486,7 @@ class DatabaseService {
 
       await _db
           .collection("messages")
-          .doc("${conversation.conversationId}")
+          .doc("${conversationTo.conversationId}")
           .collection("realtime-messages")
           .add(message.toJson());
     } catch (e) {
