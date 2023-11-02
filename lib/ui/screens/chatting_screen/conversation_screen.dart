@@ -5,14 +5,16 @@ import 'package:hart/core/constants/format_date.dart';
 import 'package:hart/core/constants/strings.dart';
 import 'package:hart/core/constants/style.dart';
 import 'package:hart/core/enums/view_state.dart';
+import 'package:hart/core/models/conversation.dart';
 import 'package:hart/core/models/radio_button.dart';
 import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/ui/custom_widgets/custom_button.dart';
-import 'package:hart/ui/custom_widgets/custom_loader.dart';
+import 'package:hart/ui/custom_widgets/custom_loaders/red_hart.dart';
 import 'package:hart/ui/screens/chatting_screen/conversation_provider.dart';
 import 'package:hart/ui/screens/chatting_screen/conversation_screen/chatting/chatting_screen.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
+import 'create_group/create_group_screen.dart';
 
 class ConversationScreen extends StatelessWidget {
   @override
@@ -22,7 +24,7 @@ class ConversationScreen extends StatelessWidget {
       child: Consumer<ConversationProvider>(builder: (context, model, child) {
         return ModalProgressHUD(
           inAsyncCall: model.state == ViewState.busy,
-          progressIndicator: CustomLoader(),
+          progressIndicator: RedHartLoader(),
           child: Scaffold(
               backgroundColor: primaryColor,
               body: Stack(
@@ -37,6 +39,13 @@ class ConversationScreen extends StatelessWidget {
                           style: subHeadingTextWhite,
                         ),
                         GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onTap: () {
+                            Get.to(CreateGroupScreen());
+                            // Get.to(
+                            // ChatInfoScreen(),
+                            // );
+                          },
                           child: Image.asset(
                             '$staticAsset/more.png',
                             scale: 3.5,
@@ -70,6 +79,7 @@ class ConversationScreen extends StatelessWidget {
                           Container(
                             height: 0.15.sh,
                             child: ListView.separated(
+                              physics: BouncingScrollPhysics(),
                               // shrinkWrap: true,
                               scrollDirection: Axis.horizontal,
                               itemCount: model.matchedUsers.length,
@@ -80,6 +90,7 @@ class ConversationScreen extends StatelessWidget {
                                     Get.to(
                                       ChattingScreen(
                                         toUserId: model.matchedUsers[index].id!,
+                                        conversation: Conversation(),
                                       ),
                                     );
                                   },
@@ -112,6 +123,7 @@ class ConversationScreen extends StatelessWidget {
                           Expanded(
                             child: ListView.separated(
                               padding: EdgeInsets.zero,
+                              physics: BouncingScrollPhysics(),
                               shrinkWrap: true,
                               itemCount: model.conversations.length,
                               itemBuilder: (context, index) {
@@ -170,7 +182,9 @@ class ConversationScreen extends StatelessWidget {
                                   index,
                                   () => Get.to(
                                     ChattingScreen(
-                                      toUserId: model.conversations[index].id!,
+                                      toUserId:
+                                          model.conversations[index].toUserId!,
+                                      conversation: model.conversations[index],
                                     ),
                                   ),
                                 );
@@ -321,31 +335,47 @@ class ConversationScreen extends StatelessWidget {
     return ListTile(
       contentPadding: EdgeInsets.zero,
       onTap: onTap,
-      leading: model.conversations[index].imageUrl == null
-          ? CircleAvatar(
-              radius: 35.r,
-              backgroundImage: AssetImage(
-                '$staticAsset/person.png',
-              ),
-            )
-          : CircleAvatar(
-              radius: 35.r,
-              backgroundImage: NetworkImage(
-                model.conversations[index].imageUrl!,
-              ),
-            ),
+      leading: model.conversations[index].isGroupChat == true
+          ? model.conversations[index].imageUrl == null
+              ? CircleAvatar(
+                  radius: 35.r,
+                  backgroundImage: AssetImage(
+                    '$staticAsset/person.png',
+                  ),
+                )
+              : CircleAvatar(
+                  radius: 35.r,
+                  backgroundImage:
+                      NetworkImage(model.conversations[index].imageUrl!),
+                )
+          : model.conversations[index].appUser!.images!.isEmpty
+              ? CircleAvatar(
+                  radius: 35.r,
+                  backgroundImage: AssetImage(
+                    '$staticAsset/person.png',
+                  ),
+                )
+              : CircleAvatar(
+                  radius: 35.r,
+                  backgroundImage: NetworkImage(
+                      model.conversations[index].appUser!.images!.first),
+                ),
       title: Text(
-        model.conversations[index].name!,
+        "${model.conversations[index].isGroupChat == true ? model.conversations[index].name : model.conversations[index].appUser!.name}",
         style: subHeadingTextStyle2,
       ),
       subtitle: Text(
-        model.conversations[index].lastMessage!,
+        model.conversations[index].isGroupChat == true
+            ? ""
+            : "${model.conversations[index].lastMessage!}",
         style: subtitleText.copyWith(color: greyColor2),
       ),
       trailing: Column(
         children: [
           Text(
-            onlyTime.format(model.conversations[index].lastMessageAt!),
+            model.conversations[index].isGroupChat == true
+                ? ""
+                : onlyTime.format(model.conversations[index].lastMessageAt!),
             style: miniText,
           ),
         ],

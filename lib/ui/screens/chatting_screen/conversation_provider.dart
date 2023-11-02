@@ -67,6 +67,7 @@ class ConversationProvider extends BaseViewModel {
   }
 
   getConversations() async {
+    setState(ViewState.busy);
     stream = await db.getAllConverationList(currentUser.appUser.id!);
     stream!.listen((event) {
       conversations = [];
@@ -76,9 +77,9 @@ class ConversationProvider extends BaseViewModel {
             Conversation.fromJson(element.data()),
           );
           notifyListeners();
-
           print("Conversation == > ${conversations.first.toJson()}");
         });
+        getUsers();
       } else {
         conversations = [];
         notifyListeners();
@@ -86,34 +87,49 @@ class ConversationProvider extends BaseViewModel {
     });
   }
 
+  getUsers() async {
+    setState(ViewState.busy);
+    if (conversations.isNotEmpty) {
+      for (var i = 0; i < conversations.length; i++) {
+        conversations[i].appUser = AppUser();
+        if (conversations[i].isGroupChat == false) {
+          conversations[i].appUser =
+              await db.getAppUser(conversations[i].toUserId);
+          print("User data ===> ${conversations[i].appUser!.toJson()}");
+        }
+      }
+    }
+    setState(ViewState.idle);
+  }
+
   List<Conversation> conversations = [];
-  List<Chat> chats = [
-    Chat(
-      name: 'Group',
-      desscription: 'Lorem ipsum dolor sit amet consectet.',
-      isGroup: true,
-    ),
-    // Chat(
-    //   name: 'Joseph',
-    //   desscription: 'Lorem ipsum dolor sit amet consectet.',
-    // ),
-    // Chat(
-    //   name: 'Joseph',
-    //   desscription: 'Lorem ipsum dolor sit amet consectet.',
-    // ),
-    // Chat(
-    //   name: 'Joseph',
-    //   desscription: 'Lorem ipsum dolor sit amet consectet.',
-    // ),
-    // Chat(
-    //   name: 'Joseph',
-    //   desscription: 'Lorem ipsum dolor sit amet consectet.',
-    // ),
-    // Chat(
-    //   name: 'Joseph',
-    //   desscription: 'Lorem ipsum dolor sit amet consectet.',
-    // ),
-  ];
+  // List<Chat> chats = [
+  //   // Chat(
+  //   //   name: 'Group',
+  //   //   desscription: 'Lorem ipsum dolor sit amet consectet.',
+  //   //   isGroup: true,
+  //   // ),
+  //   // Chat(
+  //   //   name: 'Joseph',
+  //   //   desscription: 'Lorem ipsum dolor sit amet consectet.',
+  //   // ),
+  //   // Chat(
+  //   //   name: 'Joseph',
+  //   //   desscription: 'Lorem ipsum dolor sit amet consectet.',
+  //   // ),
+  //   // Chat(
+  //   //   name: 'Joseph',
+  //   //   desscription: 'Lorem ipsum dolor sit amet consectet.',
+  //   // ),
+  //   // Chat(
+  //   //   name: 'Joseph',
+  //   //   desscription: 'Lorem ipsum dolor sit amet consectet.',
+  //   // ),
+  //   // Chat(
+  //   //   name: 'Joseph',
+  //   //   desscription: 'Lorem ipsum dolor sit amet consectet.',
+  //   // ),
+  // ];
 
   List<RadioButton> buttons = [
     RadioButton(

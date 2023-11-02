@@ -12,9 +12,7 @@ import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/ui/custom_widgets/custom_button.dart';
 import 'package:hart/ui/custom_widgets/custom_drop_down.dart';
 import 'package:hart/ui/custom_widgets/custom_loader.dart';
-import 'package:hart/ui/screens/collect_info_screens/select_gender_screen/select_gender_screen.dart';
 import 'package:hart/ui/screens/home/home_provider.dart';
-import 'package:lottie/lottie.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
@@ -313,6 +311,11 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          ///
+          /// Iamge slider
+          ///
+          ///
+          ///
           _imageSlider(model, user),
           SizedBox(
             height: 20.h,
@@ -325,7 +328,7 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  user.name ?? 'No name',
+                  user.name ?? 'Jacqline Fernandus',
                   style: subHeadingText1,
                 ),
                 Row(
@@ -809,7 +812,7 @@ _imageSlider(HomeProvider model, AppUser user) {
         itemCount: user.images!.length,
         itemBuilder: (context, index, realIndex) {
           return Container(
-            height: 300.h,
+            height: 0.35.sh,
             // decoration: BoxDecoration(
             //   image: DecorationImage(
             //     image: NetworkImage(user.images![index].toString()),
@@ -818,6 +821,7 @@ _imageSlider(HomeProvider model, AppUser user) {
             // ),
             child: Image.network(
               user.images![index].toString(),
+              height: 0.35.sh,
               fit: BoxFit.cover,
               loadingBuilder: (BuildContext context, Widget child,
                   ImageChunkEvent? loadingProgress) {
@@ -825,6 +829,7 @@ _imageSlider(HomeProvider model, AppUser user) {
                   return child; // Return the image widget if it's fully loaded.
                 }
                 return Container(
+                  height: 0.35.sh,
                   color: Colors.grey.withOpacity(0.1),
                   child: Center(
                     // Display a linear progress indicator until the image is fully loaded.
@@ -852,7 +857,8 @@ _imageSlider(HomeProvider model, AppUser user) {
           onPageChanged: (index, reason) {
             model.updateIndex(index);
           },
-          height: 300.h,
+          height: 0.35.sh,
+
           // aspectRatio: 1,
           viewportFraction: 1,
           initialPage: 0,

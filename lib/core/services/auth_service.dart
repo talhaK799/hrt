@@ -53,6 +53,7 @@ class AuthService extends ChangeNotifier {
         customAuthResult.status = true;
         customAuthResult.user = credentials.user;
         appUser.id = credentials.user!.uid;
+
         this.appUser = appUser;
 
         await _dbService.registerAppUser(appUser);
@@ -155,8 +156,7 @@ class AuthService extends ChangeNotifier {
           this.appUser = signUpUser;
         } else {
           appUser.id = userCredential.user!.uid;
-          
-          
+
           this.appUser = appUser;
           await _dbService.registerAppUser(appUser);
         }

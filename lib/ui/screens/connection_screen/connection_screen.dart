@@ -27,7 +27,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
           inAsyncCall: model.state == ViewState.busy,
           progressIndicator: CustomLoader(),
           child: Scaffold(
-            backgroundColor: primaryColor,
+            backgroundColor: Colors.white,
             body: model.likingUsers.isNotEmpty
                 ? Padding(
                     padding: EdgeInsets.fromLTRB(22, 50, 22, 10),
@@ -131,10 +131,8 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
         SingleChildScrollView(
           physics: NeverScrollableScrollPhysics(),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              SizedBox(
-                height: 0.35.sh,
-              ),
               Container(
                 width: double.infinity,
                 height: MediaQuery.of(context).size.height * 1,
@@ -164,7 +162,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                 ),
                 sizeBox20,
                 Image.asset(
-                  '$dynamicAsset/Subtract.png',
+                  '$staticAsset/connection.png',
                 ),
                 sizeBox20,
                 Text(
@@ -251,7 +249,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    user.name!,
+                    user.name!.toString(),
                     style: bodyTextStyle,
                   ),
                   sizeBox10,

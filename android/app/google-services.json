@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "674419690889",
+    "project_id": "hart-68bb3",
+    "storage_bucket": "hart-68bb3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:674419690889:android:1b057e65d9ac783a326558",
+        "android_client_info": {
+          "package_name": "hart.flutter.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "674419690889-gjidbkgcl3pobf08l28p0m04d8n0aal6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "hart.flutter.app",
+            "certificate_hash": "fb8f081689bdfc939d45ab5c9c807cd3bab5dc11"
+          }
+        },
+        {
+          "client_id": "674419690889-j64qdd1si81a8rb20i5rnhir8eha70j1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "hart.flutter.app",
+            "certificate_hash": "a7aa2f999d30271d749255a6c3e4a7955be4c074"
+          }
+        },
+        {
+          "client_id": "674419690889-8jceq5p7uvnv7t60geqr9aeradvu1qas.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDC5vKNEVg_UA-Es4h_CrxbL89fcdxOWvQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "674419690889-8jceq5p7uvnv7t60geqr9aeradvu1qas.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "674419690889-t5sti7l9e4gakaq47shsohoh6er8gahe.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "hart.flutter.app",
+                "app_store_id": "6468466908"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

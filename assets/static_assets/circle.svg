@@ -1,3 +1,11 @@
-<svg width="375" height="500" viewBox="0 0 375 500" fill="none" xmlns="http://www.w3.org/2000/svg">
-<circle cx="85" cy="352" r="352" fill="white"/>
+<svg width="375" height="812" viewBox="0 0 375 812" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_805_3579)">
+<rect width="375" height="812" rx="32" fill="#980000"/>
+<circle cx="85" cy="664" r="352" fill="white"/>
+</g>
+<defs>
+<clipPath id="clip0_805_3579">
+<rect width="375" height="812" rx="32" fill="white"/>
+</clipPath>
+</defs>
 </svg>
