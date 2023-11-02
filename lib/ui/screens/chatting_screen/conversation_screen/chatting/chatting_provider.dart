@@ -227,7 +227,7 @@ class ChattingProvider extends BaseViewModel {
       message.sendAt = FieldValue.serverTimestamp();
       message.type = 'text';
       messages.add(message);
-      notifyListeners();
+      // notifyListeners();
 
       db.newMessages(conversationFrom, conversationTo, message,
           currentUser.appUser.id!, toUser.id!);
@@ -235,7 +235,7 @@ class ChattingProvider extends BaseViewModel {
         getAllMessages();
       }
 
-      notifyListeners();
+      // notifyListeners();
 
       messageController.clear();
       message = Message();
@@ -249,7 +249,7 @@ class ChattingProvider extends BaseViewModel {
       print('image url : ${message.imageUrl}');
       message.type = 'image';
       messages.add(message);
-      notifyListeners();
+      // notifyListeners();
 
       db.newMessages(conversationFrom, conversationTo, message,
           currentUser.appUser.id!, toUser.id!);
@@ -260,7 +260,7 @@ class ChattingProvider extends BaseViewModel {
       messageController.clear();
       image = null;
       message = Message();
-      notifyListeners();
+      // notifyListeners();
     } else {
       print("message is null");
     }
@@ -281,7 +281,7 @@ class ChattingProvider extends BaseViewModel {
       message.sendAt = FieldValue.serverTimestamp();
       message.type = 'text';
       messages.add(message);
-      notifyListeners();
+      // notifyListeners();
       db.sendGroupMessage(conversation, message);
 
       print("new message added");
@@ -298,7 +298,7 @@ class ChattingProvider extends BaseViewModel {
       print('image url : ${message.imageUrl}');
       message.type = 'image';
       messages.add(message);
-      notifyListeners();
+      // notifyListeners();
       db.sendGroupMessage(conversation, message);
 
       print('image sent');

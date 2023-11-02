@@ -27,7 +27,9 @@ class Message {
     this.toUserId = json["toUserId"];
     this.imageUrl = json["imageUrl"] ?? "";
     this.textMessage = json["textMessage"] ?? "";
-    this.sendat = DateTime.parse(json["sendAt"].toDate().toString());
+    this.sendat = sendAt != null
+        ? DateTime.parse(json["sendAt"].toDate().toString())
+        : DateTime.now();
     this.type = json["type"];
   }
 
