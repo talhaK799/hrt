@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Message {
   String? messageId;
   String? fromUserId;
@@ -5,7 +7,8 @@ class Message {
   String? textMessage;
   String? imageUrl;
   String? voiceUrl;
-  DateTime? sendAt;
+  FieldValue? sendAt;
+  DateTime? sendat;
   String? type;
 
   Message({
@@ -24,7 +27,7 @@ class Message {
     this.toUserId = json["toUserId"];
     this.imageUrl = json["imageUrl"] ?? "";
     this.textMessage = json["textMessage"] ?? "";
-    this.sendAt = json["sendAt"].toDate();
+    this.sendat = DateTime.parse(json["sendAt"].toDate().toString());
     this.type = json["type"];
   }
 
