@@ -281,7 +281,7 @@ class ChattingProvider extends BaseViewModel {
       message.toUserId = conversation.conversationId;
       message.sendAt = DateTime.now();
       message.type = 'text';
-      messages.insert(0, message);
+      messages.add(message);
       notifyListeners();
       db.sendGroupMessage(conversation, message);
 

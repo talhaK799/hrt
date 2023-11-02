@@ -101,7 +101,7 @@ class _ChattingScreenState extends State<ChattingScreen> {
                           trailing: GestureDetector(
                             onTap: () {
                               Get.to(
-                                ChatInfoScreen(),
+                                ChatInfoScreen(user: model.toUser,),
                               );
                             },
                             child: Image.asset(
