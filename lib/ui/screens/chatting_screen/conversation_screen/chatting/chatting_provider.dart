@@ -136,7 +136,6 @@ class ChattingProvider extends BaseViewModel {
         if (event.docs.length > 0) {
           event.docs.forEach((element) {
             messages.add(Message.fromJson(element.data(), element.id));
-            print('Message from stream');
           });
           notifyListeners();
         } else {
@@ -187,7 +186,7 @@ class ChattingProvider extends BaseViewModel {
     conversationFrom.conversationId = conversation.conversationId ?? uuid.v4();
     conversation.conversationId = conversationFrom.conversationId;
     conversationFrom.lastMessage = message.textMessage;
-    conversationFrom.lastMessageAt = DateTime.now();
+    conversationFrom.lastMessageAt = FieldValue.serverTimestamp();
     conversationFrom.fromUserId = currentUser.appUser.id;
     conversationFrom.toUserId = toUser.id;
     conversationFrom.isMessageSeen = false;
@@ -207,7 +206,7 @@ class ChattingProvider extends BaseViewModel {
 
     conversationTo.conversationId = conversationFrom.conversationId;
     conversationTo.lastMessage = message.textMessage;
-    conversationTo.lastMessageAt = DateTime.now();
+    conversationTo.lastMessageAt = FieldValue.serverTimestamp();
     conversationTo.fromUserId = toUser.id;
     conversationTo.toUserId = currentUser.appUser.id;
     conversationTo.isMessageSeen = false;
@@ -225,7 +224,7 @@ class ChattingProvider extends BaseViewModel {
       ///
       message.fromUserId = currentUser.appUser.id;
       message.toUserId = toUser.id;
-      message.sendAt = DateTime.now();
+      message.sendAt = FieldValue.serverTimestamp();
       message.type = 'text';
       messages.add(message);
       notifyListeners();
@@ -244,7 +243,7 @@ class ChattingProvider extends BaseViewModel {
     } else if (image != null) {
       message.fromUserId = currentUser.appUser.id;
       message.toUserId = toUser.id;
-      message.sendAt = DateTime.now();
+      message.sendAt = FieldValue.serverTimestamp();
 
       message.imageUrl = await storage.uploadImage(image!, 'Chat Images');
       print('image url : ${message.imageUrl}');
@@ -279,9 +278,9 @@ class ChattingProvider extends BaseViewModel {
     if (message.textMessage != null && image == null) {
       message.fromUserId = currentUser.appUser.id;
       message.toUserId = conversation.conversationId;
-      message.sendAt = DateTime.now();
+      message.sendAt = FieldValue.serverTimestamp();
       message.type = 'text';
-      messages.insert(0, message);
+      messages.add(message);
       notifyListeners();
       db.sendGroupMessage(conversation, message);
 
@@ -293,7 +292,7 @@ class ChattingProvider extends BaseViewModel {
     } else if (image != null) {
       message.fromUserId = currentUser.appUser.id;
       message.toUserId = toUser.id;
-      message.sendAt = DateTime.now();
+      message.sendAt = FieldValue.serverTimestamp();
 
       message.imageUrl = await storage.uploadImage(image!, 'Chat Images');
       print('image url : ${message.imageUrl}');

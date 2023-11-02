@@ -521,7 +521,7 @@ class ImageMessageCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 40),
               child: Text(
-                onlyTime.format(message.sendAt!),
+                onlyTime.format(message.sendat!),
                 style: miniText.copyWith(
                   color: greyColor2,
                 ),
@@ -587,7 +587,7 @@ class TextMessageCard extends StatelessWidget {
             ),
             // sizeBox10,
             Text(
-              onlyTime.format(message.sendAt!),
+              onlyTime.format(message.sendat!),
               style: miniText.copyWith(
                 color: greyColor2,
               ),

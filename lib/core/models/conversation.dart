@@ -40,12 +40,14 @@
 //   }
 // }
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hart/core/models/app_user.dart';
 
 class Conversation {
   String? conversationId;
   String? lastMessage;
-  DateTime? lastMessageAt;
+  FieldValue? lastMessageAt;
+  DateTime? lastMessageat;
   bool? isMessageSeen;
   int? noOfUnReadMsgs;
   bool? isGroupChat;
@@ -95,7 +97,8 @@ class Conversation {
 
   Conversation.fromJson(json) {
     this.conversationId = json["conversationId"];
-    this.lastMessageAt = json['lastMessageAt'].toDate();
+    this.lastMessageat =
+        DateTime.parse(json['lastMessageAt'].toDate().toString());
     this.imageUrl = json['imageUrl'];
     this.name = json['name'] ?? 'User';
     this.lastMessage = json['lastMessage'] ?? "";
