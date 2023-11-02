@@ -549,6 +549,24 @@ class DatabaseService {
     }
   }
 
+    getGroupMembers(String id) {
+      List<String> members=[];
+    try {
+       _db
+          .collection("Conversations")
+          .doc(id)
+          .collection('MyConversation')
+          // .orderBy("lastMessageAt", descending: true)
+          .snapshots();
+
+          
+      return ;
+    } catch (e) {
+      print("Exception@database/GetAllConversationList ==> $e");
+      return null;
+    }
+  }
+
   sendGroupMessage(Conversation conversation, Message message) async {
     try {
       await _db

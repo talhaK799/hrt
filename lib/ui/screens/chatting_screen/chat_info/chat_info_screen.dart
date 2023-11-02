@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/constants/strings.dart';
 import 'package:hart/core/constants/style.dart';
+import 'package:hart/core/models/app_user.dart';
 import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/ui/custom_widgets/custom_app_bar.dart';
 
@@ -12,7 +13,8 @@ import 'package:provider/provider.dart';
 import 'chat_info_provider.dart';
 
 class ChatInfoScreen extends StatelessWidget {
-  const ChatInfoScreen({super.key});
+  AppUser user;
+  ChatInfoScreen({required this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,7 @@ class ChatInfoScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomAppBar(
-                    title: 'Laiba',
+                    title: user.name,
                   ),
                   sizeBox30,
                   GestureDetector(

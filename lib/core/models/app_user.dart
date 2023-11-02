@@ -55,7 +55,7 @@ class AppUser {
     data['isDesLiked'] = isDesLiked ?? false;
     data['dob'] = dob;
     data['age'] = age;
-    data['nickName'] = nickName;
+    data['nickName'] = nickName ?? "User";
     data['identity'] = identity ?? "";
     data['lookingFor'] = lookingFor ?? "";
     data['desire'] = desire ?? [];
@@ -68,7 +68,7 @@ class AppUser {
   AppUser.fromJson(json, id) {
     this.id = id;
     email = json['email'] ?? "";
-    name = json['name'] ?? "No Name";
+    name = json['name'] ?? "User";
     phoneNumber = json['phoneNumber'];
     isEmailVerified = json['isEmailVerified'] ?? false;
     isPhoneNoVerified = json['isPhoneNoVerified'] ?? false;

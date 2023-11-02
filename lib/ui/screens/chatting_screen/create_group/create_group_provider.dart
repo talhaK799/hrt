@@ -58,6 +58,7 @@ class CreateGroupProvider extends BaseViewModel {
     setState(ViewState.idle);
     for (var i = 0; i < matchedUsers.length; i++) {
       matchedUsers[i].isSelected = false;
+      
     }
     filterSelectedUsers();
   }

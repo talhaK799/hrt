@@ -39,9 +39,9 @@ class GroupChattingScreen extends StatelessWidget {
                   ),
                   trailing: GestureDetector(
                     onTap: () {
-                      Get.to(
-                        GroupDetailScreen(),
-                      );
+                      // Get.to(
+                      //   GroupDetailScreen(),
+                      // );
                     },
                     child: Image.asset(
                       '$staticAsset/more.png',
