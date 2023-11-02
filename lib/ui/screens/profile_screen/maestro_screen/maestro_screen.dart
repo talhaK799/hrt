@@ -28,9 +28,9 @@ class MaestroScreen extends StatelessWidget {
                   physics: NeverScrollableScrollPhysics(),
                   child: Column(
                     children: [
-                      SizedBox(
-                        height: 0.35.sh,
-                      ),
+                      // SizedBox(
+                      //   height: 0.35.sh,
+                      // ),
                       Container(
                         width: double.infinity,
                         height: MediaQuery.of(context).size.height * 1,
