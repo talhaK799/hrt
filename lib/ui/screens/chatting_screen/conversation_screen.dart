@@ -375,7 +375,7 @@ class ConversationScreen extends StatelessWidget {
           Text(
             model.conversations[index].isGroupChat == true
                 ? ""
-                : onlyTime.format(model.conversations[index].lastMessageAt!),
+                : onlyTime.format(model.conversations[index].lastMessageat!),
             style: miniText,
           ),
         ],
