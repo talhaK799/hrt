@@ -97,8 +97,8 @@ class Conversation {
     this.conversationId = json["conversationId"];
     this.lastMessageAt = json['lastMessageAt'].toDate();
     this.imageUrl = json['imageUrl'];
-    this.name = json['name'];
-    this.lastMessage = json['lastMessage'];
+    this.name = json['name'] ?? 'User';
+    this.lastMessage = json['lastMessage'] ?? "";
     this.isMessageSeen = json["isMessageSeen"] ?? false;
     this.noOfUnReadMsgs = json["noOfUnReadMsgs"] ?? 0;
     this.fromUserId = json["fromUserId"] ?? "";

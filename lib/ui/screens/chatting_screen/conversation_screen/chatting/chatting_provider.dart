@@ -227,7 +227,7 @@ class ChattingProvider extends BaseViewModel {
       message.toUserId = toUser.id;
       message.sendAt = DateTime.now();
       message.type = 'text';
-      messages.insert(0, message);
+      messages.add(message);
       notifyListeners();
 
       db.newMessages(conversationFrom, conversationTo, message,
@@ -249,7 +249,7 @@ class ChattingProvider extends BaseViewModel {
       message.imageUrl = await storage.uploadImage(image!, 'Chat Images');
       print('image url : ${message.imageUrl}');
       message.type = 'image';
-      messages.insert(0, message);
+      messages.add(message);
       notifyListeners();
 
       db.newMessages(conversationFrom, conversationTo, message,
@@ -298,7 +298,7 @@ class ChattingProvider extends BaseViewModel {
       message.imageUrl = await storage.uploadImage(image!, 'Chat Images');
       print('image url : ${message.imageUrl}');
       message.type = 'image';
-      messages.insert(0, message);
+      messages.add(message);
       notifyListeners();
       db.sendGroupMessage(conversation, message);
 

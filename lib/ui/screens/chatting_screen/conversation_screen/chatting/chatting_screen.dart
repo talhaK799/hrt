@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 import 'package:get/get.dart';
 import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/constants/format_date.dart';
@@ -17,6 +16,8 @@ import 'package:hart/ui/screens/chatting_screen/conversation_screen/chatting/cha
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
+import '../../chat_info/chat_info_screen.dart';
+
 class ChattingScreen extends StatefulWidget {
   final String toUserId;
   final Conversation conversation;
@@ -32,7 +33,6 @@ class ChattingScreen extends StatefulWidget {
 class _ChattingScreenState extends State<ChattingScreen> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _init();
   }
@@ -98,17 +98,17 @@ class _ChattingScreenState extends State<ChattingScreen> {
                           //     color: whiteColor,
                           //   ),
                           // ),
-                          // trailing: GestureDetector(
-                          //   onTap: () {
-                          //     Get.to(
-                          //       ChatInfoScreen(),
-                          //     );
-                          //   },
-                          //   child: Image.asset(
-                          //     '$staticAsset/more.png',
-                          //     scale: 3.5,
-                          //   ),
-                          // ),
+                          trailing: GestureDetector(
+                            onTap: () {
+                              Get.to(
+                                ChatInfoScreen(),
+                              );
+                            },
+                            child: Image.asset(
+                              '$staticAsset/more.png',
+                              scale: 3.5,
+                            ),
+                          ),
                         ),
                       ),
                     ],
