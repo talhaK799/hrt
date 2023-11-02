@@ -39,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
     //     'this is the current location ${_location.currentLocation!.latitude} === ${_location.currentLocation!.longitude}');
 
     // Get.to(
-    //   AddPhotoScreen(),
+    //   AuthScreen(),
     // );
 
     if (_auth.isLogin) {

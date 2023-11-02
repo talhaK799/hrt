@@ -5,6 +5,7 @@ import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/constants/strings.dart';
 import 'package:hart/core/constants/style.dart';
 import 'package:hart/core/others/screen_utils.dart';
+import 'package:hart/ui/custom_widgets/custom_button.dart';
 import 'package:hart/ui/screens/profile_screen/maestro_screen/maestro_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -99,84 +100,28 @@ class MaestroScreen extends StatelessWidget {
                           ),
                         ),
                         sizeBox20,
+// BoxDecoration(
+//                             borderRadius: BorderRadius.only(
+//                               topLeft: Radius.circular(16.r),
+//                               topRight: Radius.circular(16.r),
+//                             ),
+//                             border: Border.all(color: pinkColor2, width: 1.5),
+//                           ),
+                        priceTable(),
 
-                        Container(
-                          width: 1.sw,
-                          height: 0.3.sh,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(16.r),
-                              topRight: Radius.circular(16.r),
-                            ),
-                            border: Border.all(color: pinkColor2, width: 1.5),
-                          ),
-                          child: Column(
-                            children: [
-                              Container(
-                                // color: pinkColor,
-                                padding: EdgeInsets.only(
-                                  left: 24,
-                                  top: 16,
-                                  right: 16,
-                                  bottom: 16,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: pinkColor,
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(16.r),
-                                    topRight: Radius.circular(16.r),
-                                  ),
-                                  border: Border(
-                                    bottom: BorderSide(
-                                      color: pinkColor2,
-                                    ),
-                                    left: BorderSide(width: 0),
-                                    top: BorderSide(width: 0),
-                                    right: BorderSide(width: 0),
-                                  ),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      '\$25',
-                                      style: bodyTextStyle.copyWith(
-                                        color: primaryColor,
-                                      ),
-                                    ),
-                                    Column(
-                                      children: [
-                                        Text(
-                                          '30 days',
-                                          style: bodyTextStyle.copyWith(
-                                            color: primaryColor,
-                                          ),
-                                        ),
-                                        Text(
-                                          '(6.20 per week)',
-                                          style: buttonTextStyleGrey.copyWith(
-                                            color: lightRed,
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
+                        sizeBox30,
+                        CustomButton(
+                          title: 'BECOME A MAESTRO',
+                          onTap: () {},
                         ),
-
                         sizeBox20,
-                        // Padding(
-                        //   padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-                        //   child: CustomButton(
-                        //       title: 'Change Setting',
-                        //       onTap: () {
-                        //         showFilter(context);
-                        //       }),
-                        // ),
+                        CustomButton(
+                          title: 'Skip',
+                          color: pinkColor,
+                          textColor: primaryColor,
+                          onTap: () {},
+                        ),
+                        sizeBox20,
                       ],
                     ),
                   ),
@@ -185,5 +130,134 @@ class MaestroScreen extends StatelessWidget {
             ),
           );
         }));
+  }
+
+  priceTable() {
+    return Column(
+      children: [
+        Container(
+          // color: pinkColor,
+          padding: EdgeInsets.only(
+            left: 24,
+            top: 16,
+            right: 16,
+            bottom: 16,
+          ),
+          decoration: BoxDecoration(
+            color: pinkColor,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(16.r),
+              topRight: Radius.circular(16.r),
+            ),
+            border: Border.all(color: pinkColor2, width: 1.5),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                '\$25',
+                style: bodyTextStyle.copyWith(
+                  color: primaryColor,
+                ),
+              ),
+              Column(
+                children: [
+                  Text(
+                    '30 days',
+                    style: bodyTextStyle.copyWith(
+                      color: primaryColor,
+                    ),
+                  ),
+                  Text(
+                    '(6.20 per week)',
+                    style: buttonTextStyleGrey.copyWith(
+                      color: lightRed,
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
+        Container(
+          // color: pinkColor,
+          padding: EdgeInsets.only(
+            left: 24,
+            top: 16,
+            right: 16,
+            bottom: 16,
+          ),
+          decoration: BoxDecoration(
+            border: Border.all(color: pinkColor2, width: 1.5),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                '\$59',
+                style: bodyTextStyle.copyWith(
+                  color: primaryColor,
+                ),
+              ),
+              Column(
+                children: [
+                  Text(
+                    '90 days',
+                    style: bodyTextStyle.copyWith(
+                      color: primaryColor,
+                    ),
+                  ),
+                  Text(
+                    '(4.20 per week)',
+                    style: buttonTextStyleGrey.copyWith(
+                      color: lightRed,
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
+        Container(
+          // color: pinkColor,
+          padding: EdgeInsets.only(
+            left: 24,
+            top: 16,
+            right: 16,
+            bottom: 16,
+          ),
+          decoration: BoxDecoration(
+            border: Border.all(color: pinkColor2, width: 1.5),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                '\$160',
+                style: bodyTextStyle.copyWith(
+                  color: primaryColor,
+                ),
+              ),
+              Column(
+                children: [
+                  Text(
+                    '1 year',
+                    style: bodyTextStyle.copyWith(
+                      color: primaryColor,
+                    ),
+                  ),
+                  Text(
+                    '(3.20 per week)',
+                    style: buttonTextStyleGrey.copyWith(
+                      color: lightRed,
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
+      ],
+    );
   }
 }
