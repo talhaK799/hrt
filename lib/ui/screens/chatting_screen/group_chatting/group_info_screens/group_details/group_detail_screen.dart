@@ -41,7 +41,9 @@ class GroupDetailScreen extends StatelessWidget {
                     GestureDetector(
                       onTap: () {
                         Get.to(
-                          AddPeopleScreen(group: group,),
+                          AddPeopleScreen(
+                            group: group,
+                          ),
                         );
                       },
                       child: Row(
@@ -76,11 +78,16 @@ class GroupDetailScreen extends StatelessWidget {
                       ],
                     ),
                     sizeBox20,
-                    Text(
-                      'Leave',
-                      style: bodyTextStyle.copyWith(
-                        color: primaryColor,
-                        fontWeight: FontWeight.w700,
+                    GestureDetector(
+                      onTap: () {
+                        model.leaveGroup();
+                      },
+                      child: Text(
+                        'Leave',
+                        style: bodyTextStyle.copyWith(
+                          color: primaryColor,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                     ),
                     sizeBox30,
@@ -100,7 +107,46 @@ class GroupDetailScreen extends StatelessWidget {
                       itemBuilder: (context, index) {
                         return ListTile(
                           contentPadding: EdgeInsets.zero,
-                          onTap: () {},
+                          onTap: () {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: Text(
+                                      'Are you sure?',
+                                      style: bodyTextStyle.copyWith(
+                                          color: primaryColor),
+                                    ),
+                                    content: Text(
+                                        'Do you realy want to remove this member'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          model.removeMember(index);
+                                          Get.back();
+                                        },
+                                        child: Text(
+                                          'YES',
+                                          style: buttonTextStyle2.copyWith(
+                                            color: lightRed,
+                                          ),
+                                        ),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          Get.back();
+                                        },
+                                        child: Text(
+                                          'NO',
+                                          style: buttonTextStyle2.copyWith(
+                                            color: lightRed,
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  );
+                                });
+                          },
                           leading: model.groupMembers[index].images!.isEmpty
                               ? CircleAvatar(
                                   radius: 35.r,

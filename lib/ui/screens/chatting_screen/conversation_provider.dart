@@ -68,6 +68,7 @@ class ConversationProvider extends BaseViewModel {
 
   getConversations() async {
     setState(ViewState.busy);
+    print('current id ${currentUser.appUser.id}');
     stream = await db.getAllConverationList(currentUser.appUser.id!);
     stream!.listen((event) {
       conversations = [];
@@ -77,6 +78,7 @@ class ConversationProvider extends BaseViewModel {
             Conversation.fromJson(element.data()),
           );
           notifyListeners();
+          // print("groupId == > ${conversations[1].conversationId}");
           print("Conversation == > ${conversations.first.toJson()}");
         });
         getUsers();
@@ -85,6 +87,12 @@ class ConversationProvider extends BaseViewModel {
         notifyListeners();
       }
     });
+  }
+
+  dispose() {
+    super.dispose();
+    stream = null;
+    notifyListeners();
   }
 
   getUsers() async {

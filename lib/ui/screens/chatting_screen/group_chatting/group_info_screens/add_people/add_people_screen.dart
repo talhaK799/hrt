@@ -54,11 +54,11 @@ class AddPeopleScreen extends StatelessWidget {
                       Expanded(
                         child: Padding(
                           padding: const EdgeInsets.only(bottom: 95),
-                          child: model.selectedUsers.isNotEmpty
+                          child: model.addingUsers.isNotEmpty
                               ? ListView.separated(
                                   primary: false,
                                   shrinkWrap: true,
-                                  itemCount: model.selectedUsers.length,
+                                  itemCount: model.addingUsers.length,
                                   itemBuilder: (context, index) {
                                     return ListTile(
                                       onTap: () {
@@ -71,21 +71,21 @@ class AddPeopleScreen extends StatelessWidget {
                                         ),
                                       ),
                                       title: Text(
-                                        model.selectedUsers[index].name!,
+                                        model.addingUsers[index].name!,
                                         style: subHeadingTextStyle2,
                                       ),
                                       subtitle: Text(
-                                        model.selectedUsers[index].nickName!,
+                                        model.addingUsers[index].nickName!,
                                         style: subtitleText,
                                       ),
-                                      trailing: model.selectedUsers[index]
-                                                  .isSelected ==
-                                              true
-                                          ? Image.asset(
-                                              '$staticAsset/tick.png',
-                                              scale: 3.5,
-                                            )
-                                          : null,
+                                      trailing:
+                                          model.addingUsers[index].isSelected ==
+                                                  true
+                                              ? Image.asset(
+                                                  '$staticAsset/tick.png',
+                                                  scale: 3.5,
+                                                )
+                                              : null,
                                     );
                                   },
                                   separatorBuilder: (context, index) =>
@@ -100,7 +100,7 @@ class AddPeopleScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  model.selectedUsers.isNotEmpty
+                  model.addingUsers.isNotEmpty
                       ? Align(
                           alignment: Alignment.bottomCenter,
                           child: Padding(
@@ -109,9 +109,7 @@ class AddPeopleScreen extends StatelessWidget {
                                 ? CustomButton(
                                     title: 'Continue',
                                     onTap: () {
-                                      // Get.to(
-                                      //   MembersScreen(),
-                                      // );
+                                      model.addNewMember();
                                     },
                                   )
                                 : CustomButton(
