@@ -101,6 +101,7 @@ class _ChattingScreenState extends State<ChattingScreen> {
                           //   ),
                           // ),
                           trailing: GestureDetector(
+                            behavior: HitTestBehavior.opaque,
                             onTap: () {
                               model.conversation.isGroupChat == true
                                   ? Get.to(

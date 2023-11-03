@@ -47,7 +47,7 @@ class AppUser {
     final Map<String, dynamic> data = Map<String, dynamic>();
     data['id'] = id;
     data['email'] = email;
-    data['name'] = name;
+    data['name'] = name ?? 'User';
     data['phoneNumber'] = phoneNumber;
     data['isEmailVerified'] = isEmailVerified ?? false;
     data['isPhoneNoVerified'] = isPhoneNoVerified ?? false;
@@ -74,7 +74,7 @@ class AppUser {
     isPhoneNoVerified = json['isPhoneNoVerified'] ?? false;
     isLiked = json['isLiked'] ?? false;
     isDesLiked = json['isDesLiked'] ?? false;
-    nickName = json['nickName'] ?? "noname";
+    nickName = json['nickName'] ?? "User";
     dob = json['dob'];
     age = json['age'] ?? 0;
     // lookingFor = json['lookingFor'];

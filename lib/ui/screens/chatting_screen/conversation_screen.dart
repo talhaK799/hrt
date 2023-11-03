@@ -367,7 +367,7 @@ class ConversationScreen extends StatelessWidget {
       subtitle: Text(
         model.conversations[index].isGroupChat == true
             ? ""
-            : "${model.conversations[index].lastMessage!}",
+            : model.conversations[index].lastMessage ?? '',
         style: subtitleText.copyWith(color: greyColor2),
       ),
       trailing: Column(
@@ -375,7 +375,8 @@ class ConversationScreen extends StatelessWidget {
           Text(
             model.conversations[index].isGroupChat == true
                 ? ""
-                : onlyTime.format(model.conversations[index].lastMessageat!),
+                : onlyTime.format(
+                    model.conversations[index].lastMessageat ?? DateTime.now()),
             style: miniText,
           ),
         ],
