@@ -11,6 +11,7 @@ import 'package:hart/core/services/database_service.dart';
 import 'package:hart/core/services/location_service.dart';
 import 'package:hart/core/view_models/base_view_model.dart';
 import 'package:hart/locator.dart';
+import 'package:hart/ui/screens/collect_info_screens/fantasies_screen/fantasies_screen.dart';
 import 'package:hart/ui/screens/connection_screen/connect_popup/connect_popup_screen.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
@@ -36,7 +37,7 @@ class HomeProvider extends BaseViewModel {
   List<AppUser> filteredUsers = [];
   List<Placemark> placemarks = [];
   String lookingFor = 'Women';
-  String? desire;
+  String desire = 'har';
   String? country;
   Matches match = Matches();
   Filtering filter = Filtering();
@@ -46,7 +47,7 @@ class HomeProvider extends BaseViewModel {
 
     init();
     // gender = lookingFor.first;
-    desire = desires.first;
+    // desire = desires.first;
     pageController = PageController(initialPage: 0);
   }
   init() async {
@@ -219,8 +220,13 @@ class HomeProvider extends BaseViewModel {
     notifyListeners();
   }
 
-  selectDesire(val) {
-    desire = val;
+  selectDesire() async {
+    desire = await Get.to(
+          FantasiesScreen(
+            isFilter: true,
+          ),
+        ) ??
+        desire;
     notifyListeners();
   }
 

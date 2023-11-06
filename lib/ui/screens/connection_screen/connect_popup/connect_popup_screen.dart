@@ -6,6 +6,7 @@ import 'package:hart/core/constants/strings.dart';
 import 'package:hart/core/constants/style.dart';
 import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/ui/custom_widgets/custom_button.dart';
+import 'package:hart/ui/screens/root_screen/root_screen.dart';
 
 class ConnectPopupScreen extends StatelessWidget {
   const ConnectPopupScreen({Key? key}) : super(key: key);
@@ -91,7 +92,11 @@ class ConnectPopupScreen extends StatelessWidget {
                     sizeBox30,
                     CustomButton(
                       title: 'Say“Hello!”',
-                      onTap: () {},
+                      onTap: () {
+                        Get.offAll(RootScreen(
+                          index: 2,
+                        ));
+                      },
                     ),
                     sizeBox20,
                     CustomButton(

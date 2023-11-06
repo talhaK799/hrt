@@ -13,10 +13,13 @@ class FantasiesProvider extends BaseViewModel {
   // bool isMarriage = false;
   int selections = 0;
   bool updation = false;
+  String desire = '';
+  bool filtering = false;
   final currentUser = locator<AuthService>().appUser;
   DatabaseService _db = DatabaseService();
-  FantasiesProvider(update) {
+  FantasiesProvider(update, filter) {
     updation = update;
+    filtering = filter;
     selectedItems = [];
     getItems();
     notifyListeners();
@@ -32,13 +35,26 @@ class FantasiesProvider extends BaseViewModel {
   }
 
   select(index) {
-    items[index].isSelected = !items[index].isSelected!;
-    if (items[index].isSelected == true) {
-      selections++;
+    if (filtering) {
+      for (var item in items) {
+        // / filter ===> single item selection to be implemented
+        if (item == items[index]) {
+          item.isSelected = true;
+          desire = item.title!;
+        } else {
+          item.isSelected = false;
+        }
+      }
+      notifyListeners();
     } else {
-      selections--;
+      items[index].isSelected = !items[index].isSelected!;
+      if (items[index].isSelected == true) {
+        selections++;
+      } else {
+        selections--;
+      }
+      notifyListeners();
     }
-    notifyListeners();
   }
 
   addSelectedItems() async {
@@ -53,13 +69,13 @@ class FantasiesProvider extends BaseViewModel {
     // bool isUpdated = await _db.updateUserProfile(currentUser);
     // setState(ViewState.idle);
     // if (isUpdated) {
-      if (updation == true) {
-        Get.back(result: selectedItems);
-      } else {
-        Get.to(
-          ExploreScreen(),
-        );
-      }
+    if (updation == true) {
+      Get.back(result: selectedItems);
+    } else {
+      Get.to(
+        ExploreScreen(),
+      );
+    }
     // }
     notifyListeners();
   }

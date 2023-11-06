@@ -41,6 +41,7 @@ class ChattingProvider extends BaseViewModel {
     toUser = AppUser();
     this.conversation.isGroupChat == false ? getUser(userId) : null;
     this.conversation.isGroupChat == true ? getAllMessages() : getAllMessages();
+    // notifyListeners();
   }
 
   getUser(userId) async {
@@ -50,6 +51,7 @@ class ChattingProvider extends BaseViewModel {
     toUser = await db.getAppUser(userId);
 
     setState(ViewState.idle);
+    // notifyListeners();
     // getAllMessages();
     // if (this.conversation.conversationId != null && toUser.id != null) {
     //   getAllMessages(this.conversation.conversationId!);
@@ -127,6 +129,7 @@ class ChattingProvider extends BaseViewModel {
   // }
 
   getAllMessages() async {
+    print('gettin all messages  ${conversation.conversationId}');
     setState(ViewState.busy);
     messageStream = db.getRealTimeMessages(conversation.conversationId);
     setState(ViewState.idle);
@@ -136,6 +139,7 @@ class ChattingProvider extends BaseViewModel {
         if (event.docs.length > 0) {
           event.docs.forEach((element) {
             messages.add(Message.fromJson(element.data(), element.id));
+            print('message===> ${messages.first.textMessage}');
           });
           notifyListeners();
         } else {
@@ -144,6 +148,13 @@ class ChattingProvider extends BaseViewModel {
         }
       },
     );
+
+    // notifyListeners();
+  }
+
+  disposestream() {
+    // super.dispose();
+    messageStream = null;
   }
 
   // selectImage() {
@@ -227,7 +238,7 @@ class ChattingProvider extends BaseViewModel {
       message.sendAt = FieldValue.serverTimestamp();
       message.type = 'text';
       messages.add(message);
-      // notifyListeners();
+      notifyListeners();
 
       db.newMessages(conversationFrom, conversationTo, message,
           currentUser.appUser.id!, toUser.id!);
@@ -249,7 +260,7 @@ class ChattingProvider extends BaseViewModel {
       print('image url : ${message.imageUrl}');
       message.type = 'image';
       messages.add(message);
-      // notifyListeners();
+      notifyListeners();
 
       db.newMessages(conversationFrom, conversationTo, message,
           currentUser.appUser.id!, toUser.id!);

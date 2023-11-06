@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/others/screen_utils.dart';
@@ -14,12 +15,16 @@ import '../../../../../core/constants/style.dart';
 
 class FantasiesScreen extends StatelessWidget {
   bool isUpdate;
-  FantasiesScreen({this.isUpdate = false});
+  bool isFilter;
+  FantasiesScreen({
+    this.isUpdate = false,
+    this.isFilter = false,
+  });
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => FantasiesProvider(isUpdate),
+      create: (context) => FantasiesProvider(isUpdate, isFilter),
       child: Consumer<FantasiesProvider>(builder: (context, model, child) {
         return ModalProgressHUD(
           inAsyncCall: model.state == ViewState.busy,
@@ -52,32 +57,39 @@ class FantasiesScreen extends StatelessWidget {
                       SizedBox(
                         height: 20.h,
                       ),
-                      CustomProgressIndicator(
-                        value: 5,
-                      ),
-                      SizedBox(
-                        height: 20.h,
-                      ),
-                      Text(
-                        'Selected tags will appear publicaly  on  your  profile. You can edit them in setting.',
-                        style: descriptionTextStyle.copyWith(
-                          color: blackColor,
-                          fontSize: 12.sp,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20.h,
-                      ),
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: Text(
-                          'Selected ${model.selections}',
-                          style: descriptionTextStyle.copyWith(
-                            color: blackColor,
-                            fontSize: 12.sp,
-                          ),
-                        ),
-                      ),
+                      isFilter
+                          ? Container()
+                          : Column(
+                              children: [
+                                CustomProgressIndicator(
+                                  value: 5,
+                                ),
+                                SizedBox(
+                                  height: 20.h,
+                                ),
+                                Text(
+                                  'Selected tags will appear publicaly  on  your  profile. You can edit them in setting.',
+                                  style: descriptionTextStyle.copyWith(
+                                    color: blackColor,
+                                    fontSize: 12.sp,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 20.h,
+                                ),
+                                Align(
+                                  alignment: Alignment.topRight,
+                                  child: Text(
+                                    'Selected ${model.selections}',
+                                    style: descriptionTextStyle.copyWith(
+                                      color: blackColor,
+                                      fontSize: 12.sp,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+
                       // SizedBox(
                       //   height: 40.h,
                       // ),
@@ -114,7 +126,11 @@ class FantasiesScreen extends StatelessWidget {
                         title: 'CONTINUE',
                         onTap: () {
                           FocusManager.instance.primaryFocus?.unfocus();
-                          model.addSelectedItems();
+                          if (isFilter) {
+                            Get.back(result: model.desire);
+                          } else {
+                            model.addSelectedItems();
+                          }
                         },
                       ),
                     ),

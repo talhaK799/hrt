@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -13,19 +15,24 @@ import 'package:hart/core/view_models/base_view_model.dart';
 import 'package:hart/locator.dart';
 import 'package:hart/ui/screens/auth_screens/firebase_phone_login/opt_screen.dart';
 import 'package:hart/ui/screens/collect_info_screens/dob_screen/dob_screen.dart';
-import 'package:hart/ui/screens/collect_info_screens/verifications/email_screen.dart/email_verification_screen.dart';
 
 class PhoneLoginProvider extends BaseViewModel {
   final authService = locator<AuthService>();
   // AppUser appUser = AppUser();
   final verificationService = locator<VerificationService>();
   final locationService = locator<LocationService>();
+  TextEditingController otpController = TextEditingController();
 
   CustomAuthResult customAuthResult = CustomAuthResult();
   Position? currentLocation;
   List<Placemark> placemarks = [];
   final formKey = GlobalKey<FormState>();
   String verificationId = '';
+  late Timer _timer;
+  bool isResend = false;
+  bool isEnable = false;
+
+  int otpTime = 5;
 
   // DatabaseService _databaseService = DatabaseService();
 
@@ -76,7 +83,7 @@ class PhoneLoginProvider extends BaseViewModel {
           this.verificationId = verificationId;
           print("codeSent verificationId ===> $verificationId");
           // customSnackBar(context, "SMS Code Sent");
-          // isResend = false;
+          isResend = false;
 
           notifyListeners();
 
@@ -85,50 +92,73 @@ class PhoneLoginProvider extends BaseViewModel {
       );
       setState(ViewState.idle);
       if (isSent) {
-        Get.to(() => OtpVerificationScreen());
+        startTimer();
+        if (!isResend) {
+          Get.to(() => OtpVerificationScreen());
+        }
+        isEnable = false;
       } else {
         Get.snackbar("Error!", "Please try again");
       }
       // startTimer();
+      // if (!isResend) {
+      //   Get.to(() => OtpVerificationScreen());
+      // }
+      // isEnable = false;
       notifyListeners();
     }
   }
 
   verifyPhoneOtp() async {
-    setState(ViewState.busy);
-    customAuthResult = await authService.loginWithPhoneNumber(
-      appUser,
-      appUser.phoneNumber!,
-      phoneOtp,
-    );
-    if (customAuthResult.user != null) {
-      authService.appUser.isPhoneNoVerified = true;
-      Get.to(DOBScreen());
-      // Get.to(
-      //   EmailVerificationScreen(
-      //     isPhoneLogin: true,
-      //   ),
-      // );
+    if (otpController.text == '') {
+      Get.snackbar('Error!!', "Otp must be Entered");
+    } else {
+      // _timer.cancel();
+      // notifyListeners();
+      setState(ViewState.busy);
+      customAuthResult = await authService.loginWithPhoneNumber(
+        appUser,
+        appUser.phoneNumber!,
+        phoneOtp,
+      );
+      if (customAuthResult.user != null) {
+        _timer.cancel();
+        notifyListeners();
+        authService.appUser.isPhoneNoVerified = true;
+        Get.to(DOBScreen());
+        // Get.to(
+        //   EmailVerificationScreen(
+        //     isPhoneLogin: true,
+        //   ),
+        // );
+      }
+      setState(ViewState.idle);
     }
-    setState(ViewState.idle);
-    // var msg = await verificationService.verifyPhoneNumber(
-    //     authService.appUser.phoneNumber, phoneOtp);
-    // print("msg ==>$msg");
+  }
 
-    // if (msg == "Phone number is verified") {
-    //   // // _timer.cancel();
-    //   // // _timer.cancel();
-    //   authService.appUser.isPhoneNoVerified = true;
-    //   authService.appUser.phoneNumber = countryCode + appUser.phoneNumber!;
+  void startTimer() async {
+    await Future.delayed(Duration(seconds: 2));
+    const oneSecond = Duration(seconds: 1);
+    _timer = Timer.periodic(
+      oneSecond,
+      (Timer timer) {
+        if (otpTime == 0) {
+          timer.cancel();
+          print("When time 0 Second ====> $otpTime");
+          // isTimeExpired = true;
+          isResend = true;
+          isEnable = true;
+          otpTime = 5;
+          // isSent = false;
+          // print("Second ====> $otpTime ==>$isTimeExpired");
+          notifyListeners();
+        } else {
+          otpTime--;
 
-    //   bool isUpdatedProfile =
-    //       await _databaseService.updateUserProfile(authService.appUser);
-    //   setState(ViewState.idle);
-    //   if (isUpdatedProfile) {
-    //     Get.to(
-    //       DOBScreen(),
-    //     );
-    //   }
-    // }
+          // print("Second <=> $otpTime ==> $isTimeExpired");
+          notifyListeners();
+        }
+      },
+    );
   }
 }

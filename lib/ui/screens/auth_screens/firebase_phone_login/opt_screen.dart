@@ -56,7 +56,13 @@ class OtpVerificationScreen extends StatelessWidget {
                     ),
                     Pinput(
                       length: 6,
+                      controller: model.otpController,
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'code must be entered';
+                        }
+                      },
                       onChanged: (val) {
                         model.phoneOtp = val;
                       },
@@ -95,7 +101,7 @@ class OtpVerificationScreen extends StatelessWidget {
                         color: blackColor, fontWeight: FontWeight.w500),
                     children: [
                       TextSpan(
-                        text: '30s',
+                        text: model.otpTime.toString(),
                         style: descriptionTextStyle.copyWith(
                           color: primaryColor,
                         ),
@@ -103,6 +109,16 @@ class OtpVerificationScreen extends StatelessWidget {
                     ],
                   ),
                 ),
+                sizeBox10,
+                model.isEnable
+                    ? CustomButton(
+                        title: 'Resend Code',
+                        color: pinkColor,
+                        textColor: primaryColor,
+                        onTap: () {
+                          model.sentOTP();
+                        })
+                    : Container(),
                 Spacer(),
                 CustomButton(
                   title: 'CONTINUE',

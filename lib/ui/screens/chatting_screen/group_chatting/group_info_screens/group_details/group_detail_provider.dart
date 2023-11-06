@@ -36,6 +36,10 @@ class GroupDetailProvider extends BaseViewModel {
       (element) => element == groupMembers[index].id,
     );
 
+    if (!group.leftedUsers!.contains(groupMembers[index].id)) {
+      group.leftedUsers!.add(groupMembers[index].id!);
+    }
+
     setState(ViewState.busy);
     for (var user in groupMembers) {
       group.fromUserId = user.id;
@@ -51,6 +55,10 @@ class GroupDetailProvider extends BaseViewModel {
     group.joinedUsers!.removeWhere(
       (element) => element == currentUser.appUser.id,
     );
+
+    if(!group.leftedUsers!.contains(currentUser.appUser.id)){
+      group.leftedUsers!.add(currentUser.appUser.id!);
+    }
 
     setState(ViewState.busy);
     for (var user in groupMembers) {

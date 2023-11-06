@@ -690,14 +690,36 @@ class _HomeScreenState extends State<HomeScreen> {
                                 color: primaryColor,
                               ),
                             ),
-                            CustomDropDownButton(
-                              value: model.desire,
-                              onchange: (val) {
-                                model.selectDesire(val);
+                            GestureDetector(
+                              behavior: HitTestBehavior.translucent,
+                              onTap: () async {
+                                await model.selectDesire();
                               },
-                              color: lightRed,
-                              items: model.desires,
+                              child: Row(
+                                children: [
+                                  Text(
+                                    model.desire,
+                                    style: buttonTextStyle.copyWith(
+                                      color: primaryColor,
+                                    ),
+                                  ),
+                                  sizeBoxw10,
+                                  Icon(
+                                    Icons.arrow_forward_ios,
+                                    color: primaryColor,
+                                    size: 15,
+                                  ),
+                                ],
+                              ),
                             ),
+                            // CustomDropDownButton(
+                            //   value: model.desire,
+                            //   onchange: (val) {
+                            //     model.selectDesire();
+                            //   },
+                            //   color: lightRed,
+                            //   items: model.desires,
+                            // ),
                             // Text(
                             //   'Any >',
                             //   style: miniText.copyWith(
