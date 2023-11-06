@@ -2,7 +2,6 @@ import 'package:get/get.dart';
 import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/models/app_user.dart';
 import 'package:hart/core/models/conversation.dart';
-import 'package:hart/core/models/group_members.dart';
 import 'package:hart/core/services/auth_service.dart';
 import 'package:hart/core/services/database_service.dart';
 import 'package:hart/core/view_models/base_view_model.dart';
@@ -66,6 +65,9 @@ class AddPeopleProvider extends BaseViewModel {
     filterSelectedUsers();
     for (var i = 0; i < selectedUsers.length; i++) {
       group.joinedUsers!.add(selectedUsers[i].id!);
+      if (group.leftedUsers!.contains(selectedUsers[i].id)) {
+        group.leftedUsers!.remove(selectedUsers[i].id!);
+      }
     }
     // bool isAded = await db.updateGroup(group);
 

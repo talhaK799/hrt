@@ -39,6 +39,12 @@ class _ChattingScreenState extends State<ChattingScreen> {
     _init();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    Provider.of<ChattingProvider>(context, listen: false).disposestream;
+  }
+
   void _init() async {
     // await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
   }
@@ -70,13 +76,13 @@ class _ChattingScreenState extends State<ChattingScreen> {
                       CustomBackButton(),
                       Expanded(
                         child: ListTile(
-                          leading: model.conversation.isGroupChat!
+                          leading: model.conversation.isGroupChat == true
                               ? CircleAvatar(
                                   radius: 35.r,
                                   backgroundImage:
-                                      AssetImage('$dynamicAsset/person.png'),
+                                      AssetImage('$staticAsset/person.png'),
                                 )
-                              : model.toUser.images!.isNotEmpty
+                              : model.toUser.images != null
                                   ? CircleAvatar(
                                       radius: 35.r,
                                       backgroundImage: NetworkImage(
@@ -85,8 +91,8 @@ class _ChattingScreenState extends State<ChattingScreen> {
                                     )
                                   : CircleAvatar(
                                       radius: 35.r,
-                                      backgroundImage: AssetImage(
-                                          '$dynamicAsset/person.png'),
+                                      backgroundImage:
+                                          AssetImage('$staticAsset/person.png'),
                                     ),
                           title: Text(
                             widget.conversation.isGroupChat == true
@@ -141,36 +147,47 @@ class _ChattingScreenState extends State<ChattingScreen> {
                           decoration: BoxDecoration(
                             color: whiteColor,
                           ),
-                          child: ListView.separated(
-                            physics: BouncingScrollPhysics(),
-                            shrinkWrap: true,
-                            reverse: true,
-                            itemCount: model.messages.length,
-                            itemBuilder: (context, index) {
-                              return model.messages[index].type == "text"
-                                  ? TextMessageCard(
-                                      message: model.messages[index],
-                                      user: model.currentUser.appUser,
-                                    )
-                                  : model.messages[index].type == "GroupCreated"
-                                      ? JoinORLeaveGroup(
-                                          message: model.messages[index],
-                                          currentUser:
-                                              model.currentUser.appUser,
-                                        )
-                                      : model.messages[index].type == "image"
-                                          ? ImageMessageCard(
-                                              message: model.messages[index],
-                                              appUser:
-                                                  model.currentUser.appUser,
-                                            )
-                                          : Container();
-                              // return _chatMessage(model, index);
-                            },
-                            separatorBuilder: (context, index) => SizedBox(
-                              height: 15.h,
-                            ),
-                          ),
+                          child: model.state == ViewState.idle
+                              ? ListView.separated(
+                                  physics: BouncingScrollPhysics(),
+                                  shrinkWrap: true,
+                                  reverse: true,
+                                  itemCount: model.messages.length,
+                                  itemBuilder: (context, index) {
+                                    return model.messages[index].type == "text"
+                                        ? TextMessageCard(
+                                            message: model.messages[index],
+                                            user: model.currentUser.appUser,
+                                          )
+                                        : model.messages[index].type ==
+                                                "GroupCreated"
+                                            ? JoinORLeaveGroup(
+                                                message: model.messages[index],
+                                                currentUser:
+                                                    model.currentUser.appUser,
+                                              )
+                                            : model.messages[index].type ==
+                                                    "image"
+                                                ? ImageMessageCard(
+                                                    message:
+                                                        model.messages[index],
+                                                    appUser: model
+                                                        .currentUser.appUser,
+                                                  )
+                                                : Container();
+                                    // return _chatMessage(model, index);
+                                  },
+                                  separatorBuilder: (context, index) =>
+                                      SizedBox(
+                                    height: 15.h,
+                                  ),
+                                )
+                              : Center(
+                                  child: Text(
+                                    'No messages',
+                                    style: subHeadingText1,
+                                  ),
+                                ),
                         ),
                       ),
                       Container(
@@ -588,7 +605,7 @@ class TextMessageCard extends StatelessWidget {
                       ),
               ),
               child: Text(
-                message.textMessage!,
+                message.textMessage ?? "",
                 style: subtitleText.copyWith(
                   fontSize: 15.sp,
                   color:
@@ -598,7 +615,7 @@ class TextMessageCard extends StatelessWidget {
             ),
             // sizeBox10,
             Text(
-              onlyTime.format(message.sendat!),
+              onlyTime.format(message.sendat ?? DateTime.now()),
               style: miniText.copyWith(
                 color: greyColor2,
               ),
