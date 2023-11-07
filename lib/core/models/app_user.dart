@@ -7,6 +7,7 @@ class AppUser {
   bool? isPhoneNoVerified;
   bool? isLiked;
   bool? isDesLiked;
+  int? likesCount;
   // bool? isMuteNotification;
   int? age;
   String? name;
@@ -32,7 +33,7 @@ class AppUser {
     this.isLiked,
     this.isDesLiked,
     this.muteIds,
-    // this.isMuteNotification=false,
+    this.likesCount,
     this.name,
     this.dob,
     this.nickName,
@@ -57,14 +58,12 @@ class AppUser {
     data['isPhoneNoVerified'] = isPhoneNoVerified ?? false;
     data['isLiked'] = isLiked ?? false;
     data['isDesLiked'] = isDesLiked ?? false;
-    // data['isMuteNotification'] = isMuteNotification ?? false;
-
     data['dob'] = dob;
     data['age'] = age;
+    data['likesCount??0'] = likesCount??0;
     data['nickName'] = nickName ?? "User";
     data['identity'] = identity ?? "";
     data['lookingFor'] = lookingFor ?? "";
-
     data['desire'] = desire ?? [];
     data['muteIds'] = muteIds ?? [];
     data['images'] = images ?? [];
@@ -86,6 +85,7 @@ class AppUser {
     nickName = json['nickName'] ?? "User";
     dob = json['dob'];
     age = json['age'] ?? 0;
+    likesCount = json['likesCount'] ?? 10;
     // lookingFor = json['lookingFor'];
     if (json["lookingFor"] != null) {
       lookingFor = [];

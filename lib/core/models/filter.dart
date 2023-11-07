@@ -11,8 +11,8 @@ class Filtering {
     // this.countries,
     this.maxAge = 60,
     // this.maxHeight = 200,
-    this.desire = 'Singles',
-    this.lookingFor = 'Woman',
+    this.desire = '',
+    this.lookingFor = '',
     this.minAge = 18,
     // this.minHeight = 1,
   });
