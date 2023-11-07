@@ -15,6 +15,7 @@ import 'package:hart/ui/custom_widgets/custom_loader.dart';
 import 'package:hart/ui/screens/chatting_screen/conversation_screen/chatting/chatting_provider.dart';
 import 'package:hart/ui/screens/chatting_screen/create_group/create_group_screen.dart';
 import 'package:hart/ui/screens/chatting_screen/group_chatting/group_info_screens/group_details/group_detail_screen.dart';
+import 'package:hart/ui/screens/chatting_screen/user_details/user_detail_screen.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
@@ -83,16 +84,23 @@ class _ChattingScreenState extends State<ChattingScreen> {
                                       AssetImage('$staticAsset/person.png'),
                                 )
                               : model.toUser.images != null
-                                  ? CircleAvatar(
-                                      radius: 35.r,
-                                      backgroundImage: NetworkImage(
-                                        '${model.toUser.images!.first}',
+                                  ? GestureDetector(
+                                      onTap: () {
+                                        Get.to(UserDetailScreen(user: model.toUser,));
+                                      },
+                                      child: CircleAvatar(
+                                        radius: 35.r,
+                                        backgroundImage: NetworkImage(
+                                          '${model.toUser.images!.first}',
+                                        ),
                                       ),
                                     )
-                                  : CircleAvatar(
-                                      radius: 35.r,
-                                      backgroundImage:
-                                          AssetImage('$staticAsset/person.png'),
+                                  : GestureDetector(
+                                      child: CircleAvatar(
+                                        radius: 35.r,
+                                        backgroundImage: AssetImage(
+                                            '$staticAsset/person.png'),
+                                      ),
                                     ),
                           title: Text(
                             widget.conversation.isGroupChat == true
@@ -118,6 +126,7 @@ class _ChattingScreenState extends State<ChattingScreen> {
                                   : Get.to(
                                       ChatInfoScreen(
                                         user: model.toUser,
+                                        conversation: model.conversation,
                                       ),
                                     );
                             },

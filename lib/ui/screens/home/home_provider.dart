@@ -38,7 +38,7 @@ class HomeProvider extends BaseViewModel {
   List<Placemark> placemarks = [];
   String lookingFor = 'Women';
   String desire = 'har';
-  String? country;
+  String country = '';
   Matches match = Matches();
   Filtering filter = Filtering();
 
@@ -66,9 +66,8 @@ class HomeProvider extends BaseViewModel {
     placemarks = await placemarkFromCoordinates(
         currentLocaion!.latitude, currentLocaion!.longitude);
     setState(ViewState.idle);
-    countries.insert(0, placemarks.first.country!);
 
-    country = countries.first;
+    country = placemarks.first.country!;
     notifyListeners();
     print("country =>" + placemarks.first.country!);
   }
@@ -193,22 +192,9 @@ class HomeProvider extends BaseViewModel {
     notifyListeners();
   }
 
-  // List<String> lookingFor = [
-  //   'Women',
-  //   'Men',
-  //   'Boys',
-  //   'Girs',
-  // ];
-  List<String> desires = [
-    'Any',
-    'Friendship',
-    'Marriage',
-  ];
-  List<String> countries = [
-    'Pakistan',
-    'India',
-    'Afghanistan',
-  ];
+  ///
+  ///  filter
+  ///
 
   selectGender() async {
     lookingFor = await Get.to(
@@ -277,20 +263,17 @@ class HomeProvider extends BaseViewModel {
     isFiltering = true;
     notifyListeners();
     filteredUsers = appUsers
-        .where((user) =>
-            (user.age! <= filter.maxAge! && user.age! >= filter.minAge!
-                ? true
-                : false))
+        .where((user) => (user.age! <= filter.maxAge! &&
+                user.age! >= filter.minAge! &&
+                user.desire!.contains(desire) &&
+                user.lookingFor!.contains(lookingFor)
+            ? true
+            : false))
         .toList();
+
+    print('filtered User===> ${filteredUsers.length}');
     notifyListeners();
 
-    // if (searchedUsers.isNotEmpty) {
-    //   for (var i = 0; i < searchedUsers.length; i++) {
-    //     searchedCards.add(CustomSwappingCard(user: searchedUsers[i]));
-    //   }
-    // }
-    // this.index = searchedUsers.length;
-    // print("Searched user ==> ${searchedUsers.length}");
     Get.back();
   }
 

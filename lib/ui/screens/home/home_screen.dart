@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:country_picker/country_picker.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -36,8 +37,13 @@ class _HomeScreenState extends State<HomeScreen> {
           inAsyncCall: model.state == ViewState.busy,
           progressIndicator: CustomLoader(),
           child: Scaffold(
-              backgroundColor:
-                  model.appUsers.isEmpty ? primaryColor : whiteColor,
+              backgroundColor: model.isFiltering == true
+                  ? model.filteredUsers.isEmpty
+                      ? primaryColor
+                      : whiteColor
+                  : model.appUsers.isEmpty
+                      ? primaryColor
+                      : whiteColor,
               body: Stack(
                 children: [
                   model.state == ViewState.busy
@@ -83,22 +89,37 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: PageView.builder(
                                 physics: BouncingScrollPhysics(),
                                 controller: model.pageController,
-                                itemCount: model.appUsers.length > 0
-                                    ? model.appUsers.length
-                                    : 1,
+                                itemCount: model.isFiltering == true
+                                    ? model.filteredUsers.length > 0
+                                        ? model.filteredUsers.length
+                                        : 1
+                                    : model.appUsers.length > 0
+                                        ? model.appUsers.length
+                                        : 1,
                                 itemBuilder: (context, index) {
                                   model.index = index;
-                                  return model.appUsers.length == 0
-                                      ? _staticScreen(context)
-                                      : _homeScreenData(
-                                          model, model.appUsers[index]);
+                                  return model.isFiltering == true
+                                      ? model.filteredUsers.length == 0
+                                          ? _staticScreen(context)
+                                          : _homeScreenData(
+                                              model, model.filteredUsers[index])
+                                      : model.appUsers.length == 0
+                                          ? _staticScreen(context)
+                                          : _homeScreenData(
+                                              model, model.appUsers[index]);
                                 },
                                 onPageChanged: (val) => model.changePage(val),
                               ),
                             )
                           ],
                         ),
-                  model.appUsers.isEmpty ? Container() : _likeButtons(model),
+                  model.isFiltering == true
+                      ? model.filteredUsers.isEmpty
+                          ? Container()
+                          : _likeButtons(model)
+                      : model.appUsers.isEmpty
+                          ? Container()
+                          : _likeButtons(model),
 
                   ///
                   /// Liking Animation
@@ -143,7 +164,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     });
                     await Future.delayed(Duration(milliseconds: 500));
 
-// <<<<<<< updateProfile
                     setState(() {
                       model.isDisLiked = false;
                     });
@@ -532,20 +552,32 @@ class _HomeScreenState extends State<HomeScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              'Reset',
-                              style: miniText.copyWith(
-                                fontSize: 14.sp,
+                            GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: () {
+                                model.resetFilter();
+                              },
+                              child: Text(
+                                'Reset',
+                                style: miniText.copyWith(
+                                  fontSize: 14.sp,
+                                ),
                               ),
                             ),
                             Text(
                               'Filters',
                               style: subHeadingText1,
                             ),
-                            Text(
-                              'Done',
-                              style: miniText.copyWith(
-                                fontSize: 14.sp,
+                            GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: () {
+                                Get.back();
+                              },
+                              child: Text(
+                                'Done',
+                                style: miniText.copyWith(
+                                  fontSize: 14.sp,
+                                ),
                               ),
                             ),
                           ],
@@ -661,13 +693,41 @@ class _HomeScreenState extends State<HomeScreen> {
                               style: subHeadingTextStyle2,
                             ),
 
-                            CustomDropDownButton(
-                              value: model.country,
-                              onchange: (val) {
-                                model.selectCountry(val);
+                            GestureDetector(
+                              behavior: HitTestBehavior.translucent,
+                              onTap: () {
+                                showCountryPicker(
+                                  context: context,
+                                  onSelect: (countery) {
+                                    // model.country = countery.displayName;
+                                    model.selectCountry(countery.name);
+                                  },
+                                );
                               },
-                              items: model.countries,
-                            ),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    model.country,
+                                    style: buttonTextStyle.copyWith(
+                                      color: greyColor2,
+                                    ),
+                                  ),
+                                  sizeBoxw10,
+                                  Icon(
+                                    Icons.arrow_forward_ios,
+                                    color: greyColor2,
+                                    size: 15,
+                                  ),
+                                ],
+                              ),
+                            )
+                            // CustomDropDownButton(
+                            //   value: model.country,
+                            //   onchange: (val) {
+                            //     model.selectCountry(val);
+                            //   },
+                            //   items: model.countries,
+                            // ),
                             // Text(
                             //   'Current location >',
                             //   style: miniText.copyWith(color: greyColor2),
@@ -764,7 +824,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         CustomButton(
                           title: 'CONTINUE',
                           onTap: () {
-                            Get.back();
+                            model.applyFilter();
                           },
                         ),
                         sizeBox20,

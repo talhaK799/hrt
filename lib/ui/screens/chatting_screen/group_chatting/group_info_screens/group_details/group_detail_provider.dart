@@ -56,7 +56,7 @@ class GroupDetailProvider extends BaseViewModel {
       (element) => element == currentUser.appUser.id,
     );
 
-    if(!group.leftedUsers!.contains(currentUser.appUser.id)){
+    if (!group.leftedUsers!.contains(currentUser.appUser.id)) {
       group.leftedUsers!.add(currentUser.appUser.id!);
     }
 
@@ -71,8 +71,18 @@ class GroupDetailProvider extends BaseViewModel {
     notifyListeners();
   }
 
-  changeMute(val) {
+  changeMute(val) async {
     isMute = val;
+    if (isMute) {
+      if (!currentUser.appUser.muteIds!.contains(group.groupId!)) {
+        currentUser.appUser.muteIds!.add(group.groupId!);
+      }
+    } else {
+      currentUser.appUser.muteIds!.remove(group.groupId!);
+    }
+
+    await _db.updateUserProfile(currentUser.appUser);
+    print('muteId==> ${currentUser.appUser.muteIds!.length}');
     notifyListeners();
   }
 }
