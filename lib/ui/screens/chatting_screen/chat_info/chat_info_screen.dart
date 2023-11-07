@@ -4,7 +4,7 @@ import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/constants/strings.dart';
 import 'package:hart/core/constants/style.dart';
 import 'package:hart/core/models/app_user.dart';
-import 'package:hart/core/others/screen_utils.dart';
+import 'package:hart/core/models/conversation.dart';
 import 'package:hart/ui/custom_widgets/custom_app_bar.dart';
 
 import 'package:hart/ui/screens/chatting_screen/create_group/create_group_screen.dart';
@@ -14,12 +14,16 @@ import 'chat_info_provider.dart';
 
 class ChatInfoScreen extends StatelessWidget {
   AppUser user;
-  ChatInfoScreen({required this.user});
+  Conversation conversation;
+  ChatInfoScreen({
+    required this.user,
+    required this.conversation,
+  });
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => ChatInfoProvider(),
+      create: (context) => ChatInfoProvider(conversation),
       child: Consumer<ChatInfoProvider>(builder: (context, model, child) {
         return Scaffold(
           body: SingleChildScrollView(

@@ -7,12 +7,14 @@ class AppUser {
   bool? isPhoneNoVerified;
   bool? isLiked;
   bool? isDesLiked;
+  // bool? isMuteNotification;
   int? age;
   String? name;
   String? dob;
   String? nickName;
   String? identity;
   List<String>? lookingFor;
+  List<String>? muteIds;
   List<String>? desire;
   List<String>? images;
   List<String>? likedUsers;
@@ -29,6 +31,8 @@ class AppUser {
     this.isPhoneNoVerified,
     this.isLiked,
     this.isDesLiked,
+    this.muteIds,
+    // this.isMuteNotification=false,
     this.name,
     this.dob,
     this.nickName,
@@ -53,12 +57,16 @@ class AppUser {
     data['isPhoneNoVerified'] = isPhoneNoVerified ?? false;
     data['isLiked'] = isLiked ?? false;
     data['isDesLiked'] = isDesLiked ?? false;
+    // data['isMuteNotification'] = isMuteNotification ?? false;
+
     data['dob'] = dob;
     data['age'] = age;
     data['nickName'] = nickName ?? "User";
     data['identity'] = identity ?? "";
     data['lookingFor'] = lookingFor ?? "";
+
     data['desire'] = desire ?? [];
+    data['muteIds'] = muteIds ?? [];
     data['images'] = images ?? [];
     data['likedUsers'] = likedUsers ?? [];
     data['disLikedUsers'] = disLikedUsers ?? [];
@@ -74,6 +82,7 @@ class AppUser {
     isPhoneNoVerified = json['isPhoneNoVerified'] ?? false;
     isLiked = json['isLiked'] ?? false;
     isDesLiked = json['isDesLiked'] ?? false;
+    // isMuteNotification = json['isMuteNotification'] ?? false;
     nickName = json['nickName'] ?? "User";
     dob = json['dob'];
     age = json['age'] ?? 0;
@@ -85,6 +94,14 @@ class AppUser {
       });
     } else {
       lookingFor = [];
+    }
+    if (json["muteIds"] != null) {
+      muteIds = [];
+      json["muteIds"].forEach((element) {
+        muteIds!.add(element);
+      });
+    } else {
+      muteIds = [];
     }
     identity = json['identity'];
     // if (json["identity"] != null) {

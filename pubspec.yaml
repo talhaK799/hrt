@@ -51,6 +51,7 @@ dependencies:
   twilio_phone_verify: ^2.0.0
   uuid: ^4.0.0
   flutter_windowmanager: ^0.2.0
+  country_picker: ^2.0.22
 
 dev_dependencies:
   flutter_test:

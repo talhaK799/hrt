@@ -10,6 +10,7 @@ import 'package:hart/ui/custom_widgets/custom_app_bar.dart';
 import 'package:hart/ui/custom_widgets/custom_loader.dart';
 import 'package:hart/ui/screens/chatting_screen/group_chatting/group_info_screens/add_people/add_people_screen.dart';
 import 'package:hart/ui/screens/chatting_screen/group_chatting/group_info_screens/group_details/group_detail_provider.dart';
+import 'package:hart/ui/screens/chatting_screen/user_details/user_detail_screen.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
@@ -70,6 +71,7 @@ class GroupDetailScreen extends StatelessWidget {
                         ),
                         Switch(
                           activeColor: primaryColor,
+                          inactiveTrackColor: greyColor,
                           value: model.isMute,
                           onChanged: (val) {
                             model.changeMute(val);
@@ -107,45 +109,13 @@ class GroupDetailScreen extends StatelessWidget {
                       itemBuilder: (context, index) {
                         return ListTile(
                           contentPadding: EdgeInsets.zero,
+                          onLongPress: () {
+                            _removeUser(context, model, index);
+                          },
                           onTap: () {
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    title: Text(
-                                      'Are you sure?',
-                                      style: bodyTextStyle.copyWith(
-                                          color: primaryColor),
-                                    ),
-                                    content: Text(
-                                        'Do you realy want to remove this member'),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () {
-                                          model.removeMember(index);
-                                          Get.back();
-                                        },
-                                        child: Text(
-                                          'YES',
-                                          style: buttonTextStyle2.copyWith(
-                                            color: lightRed,
-                                          ),
-                                        ),
-                                      ),
-                                      TextButton(
-                                        onPressed: () {
-                                          Get.back();
-                                        },
-                                        child: Text(
-                                          'NO',
-                                          style: buttonTextStyle2.copyWith(
-                                            color: lightRed,
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  );
-                                });
+                            Get.to(
+                              UserDetailScreen(user: model.groupMembers[index]),
+                            );
                           },
                           leading: model.groupMembers[index].images!.isEmpty
                               ? CircleAvatar(
@@ -186,5 +156,45 @@ class GroupDetailScreen extends StatelessWidget {
         );
       }),
     );
+  }
+
+  Future<dynamic> _removeUser(
+      BuildContext context, GroupDetailProvider model, int index) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              'Are you sure?',
+              style: bodyTextStyle.copyWith(color: primaryColor),
+            ),
+            content: Text('Do you realy want to remove this member'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  model.removeMember(index);
+                  Get.back();
+                },
+                child: Text(
+                  'YES',
+                  style: buttonTextStyle2.copyWith(
+                    color: lightRed,
+                  ),
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  Get.back();
+                },
+                child: Text(
+                  'NO',
+                  style: buttonTextStyle2.copyWith(
+                    color: lightRed,
+                  ),
+                ),
+              )
+            ],
+          );
+        });
   }
 }
