@@ -13,6 +13,8 @@ import 'package:hart/core/view_models/base_view_model.dart';
 import 'package:hart/locator.dart';
 import 'package:hart/ui/screens/collect_info_screens/fantasies_screen/fantasies_screen.dart';
 import 'package:hart/ui/screens/connection_screen/connect_popup/connect_popup_screen.dart';
+import 'package:hart/ui/screens/profile_screen/maestro_screen/maestro_screen.dart';
+import 'package:hart/ui/screens/profile_screen/premium_setting/premium_screen.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 import '../collect_info_screens/select_gender_screen/select_gender_screen.dart';
@@ -36,8 +38,8 @@ class HomeProvider extends BaseViewModel {
   List<AppUser> appUsers = [];
   List<AppUser> filteredUsers = [];
   List<Placemark> placemarks = [];
-  String lookingFor = 'Women';
-  String desire = 'har';
+  String lookingFor = 'Woman';
+  String desire = 'Singles';
   String country = '';
   Matches match = Matches();
   Filtering filter = Filtering();
@@ -120,55 +122,63 @@ class HomeProvider extends BaseViewModel {
     ///if currentUser likes other users
     ///
     if (await !currentUser.appUser.likedUsers!.contains(user.id)) {
-      currentUser.appUser.likedUsers!.add(user.id!);
+      if (currentUser.appUser.likedUsers!.length <=
+          currentUser.appUser.likesCount!) {
+        currentUser.appUser.likedUsers!.add(user.id!);
 
-      ///
-      /// if other user likes currentUser
-      ///
-      if (await user.likedUsers!.contains(currentUser.appUser.id)) {
-        print('liked user id in user list ${user.likedUsers!.first}');
-        match = await db.getRequest(
-          user.id!,
-          currentUser.appUser.id!,
-        );
-        print(
-            'match likedById ${match.likedByUserId}=== likedId ${match.likedUserId}');
-
-        match.isAccepted = true;
-        match.isProgressed = true;
-        bool isReqUpdated = await db.updateRequest(match);
-        if (isReqUpdated) {
-          Get.to(
-            ConnectPopupScreen(),
+        ///
+        /// if other user liked currentUser
+        ///
+        if (await user.likedUsers!.contains(currentUser.appUser.id)) {
+          print('liked user id in user list ${user.likedUsers!.first}');
+          match = await db.getRequest(
+            user.id!,
+            currentUser.appUser.id!,
           );
+          print(
+              'match likedById ${match.likedByUserId}=== likedId ${match.likedUserId}');
+
+          match.isAccepted = true;
+          match.isProgressed = true;
+          bool isReqUpdated = await db.updateRequest(match);
+          if (isReqUpdated) {
+            Get.to(
+              ConnectPopupScreen(),
+            );
+          } else {
+            print('request faild ==> $isReqUpdated');
+          }
         } else {
-          print('request faild ==> $isReqUpdated');
+          await db.addRequest(match);
         }
-      } else {
-        await db.addRequest(match);
-      }
 
-      bool isUpdated = await db.updateUserProfile(currentUser.appUser);
+        bool isUpdated = await db.updateUserProfile(currentUser.appUser);
 
-      print('profile update ==> ${currentUser.appUser.likedUsers!.length}');
-      if (isUpdated) {
-        appUsers.removeWhere((element) => element.id == user.id);
+        print('profile update ==> ${currentUser.appUser.likedUsers!.length}');
+        if (isUpdated) {
+          appUsers.removeWhere((element) => element.id == user.id);
 
+          notifyListeners();
+          if (appUsers.length > 0) {
+            dotIndex = 0;
+            await pageController!.nextPage(
+              duration: Duration(milliseconds: 500),
+              curve: Curves.easeIn,
+            );
+          }
+        }
         notifyListeners();
-        if (appUsers.length > 0) {
-          dotIndex = 0;
-          await pageController!.nextPage(
-            duration: Duration(milliseconds: 500),
-            curve: Curves.easeIn,
-          );
-        }
-      }
-      notifyListeners();
 
-      print("Users ====> ${appUsers.length}");
+        print("Users ====> ${appUsers.first.name}");
+      } else {
+        Get.to(
+          MaestroScreen(),
+        );
+      }
+      isLiked = false;
+      isDislike = false;
     }
-    isLiked = false;
-    isDislike = false;
+
     notifyListeners();
   }
 
@@ -177,19 +187,23 @@ class HomeProvider extends BaseViewModel {
   ///
   disLike(AppUser user) async {
     if (await !currentUser.appUser.disLikedUsers!.contains(user.id)) {
-      currentUser.appUser.disLikedUsers!.add(user.id!);
-    }
+      if (currentUser.appUser.likedUsers!.length <=
+          currentUser.appUser.likesCount!) {
+        currentUser.appUser.disLikedUsers!.add(user.id!);
+        bool isUpdated = await db.updateUserProfile(currentUser.appUser);
+        if (isUpdated) {
+          appUsers.removeWhere((element) => element.id == user.id);
+          pageController!.nextPage(
+            duration: Duration(milliseconds: 500),
+            curve: Curves.easeIn,
+          );
+        }
 
-    bool isUpdated = await db.updateUserProfile(currentUser.appUser);
-    if (isUpdated) {
-      appUsers.removeWhere((element) => element.id == user.id);
-      pageController!.nextPage(
-        duration: Duration(milliseconds: 500),
-        curve: Curves.easeIn,
-      );
+        notifyListeners();
+      } else {
+        Get.to(MaestroScreen());
+      }
     }
-
-    notifyListeners();
   }
 
   ///
@@ -257,10 +271,14 @@ class HomeProvider extends BaseViewModel {
     notifyListeners();
   }
 
-  applyFilter() {
+  applyFilter() async {
     // searchedCards = [];
+    filter.lookingFor = lookingFor;
+    filter.desire = desire;
     filteredUsers = [];
     isFiltering = true;
+    print(
+        "filter===> ${filter.minAge} ${filter.lookingFor} ${filter.desire}  ");
     notifyListeners();
     filteredUsers = appUsers
         .where((user) => (user.age! <= filter.maxAge! &&
@@ -271,7 +289,7 @@ class HomeProvider extends BaseViewModel {
             : false))
         .toList();
 
-    print('filtered User===> ${filteredUsers.length}');
+    print('filtered User===> ${filteredUsers.first.name}');
     notifyListeners();
 
     Get.back();
@@ -286,6 +304,8 @@ class HomeProvider extends BaseViewModel {
     isFiltering = false;
     filteredUsers = [];
 
+    print(
+        "filter===> ${filter.minAge} ${filter.lookingFor} ${filter.desire}  ");
     filter = Filtering();
     notifyListeners();
     Get.back();

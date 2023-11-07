@@ -11,7 +11,6 @@ import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/models/app_user.dart';
 import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/ui/custom_widgets/custom_button.dart';
-import 'package:hart/ui/custom_widgets/custom_drop_down.dart';
 import 'package:hart/ui/custom_widgets/custom_loader.dart';
 import 'package:hart/ui/screens/home/home_provider.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -390,7 +389,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     // _infoContainer('23 men straight'),
                     Text(
-                      '23 Women Straight',
+                      '${user.age} Women Straight',
                       style: buttonTextStyle2,
                     ),
                   ],
@@ -456,12 +455,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: ((context, index) {
-                      return _infoContainer(user.identity![index]);
+                      return _infoContainer(user.lookingFor![index]);
                     }),
                     separatorBuilder: (context, index) => SizedBox(
                       width: 16.w,
                     ),
-                    itemCount: user.identity!.length,
+                    itemCount: user.lookingFor!.length,
                   ),
                 ),
                 // Column(
