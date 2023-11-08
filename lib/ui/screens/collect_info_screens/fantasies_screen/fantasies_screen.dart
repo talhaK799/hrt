@@ -57,7 +57,7 @@ class FantasiesScreen extends StatelessWidget {
                       SizedBox(
                         height: 20.h,
                       ),
-                      isFilter
+                      isFilter || isUpdate
                           ? Container()
                           : Column(
                               children: [

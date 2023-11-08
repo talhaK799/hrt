@@ -52,9 +52,11 @@ class IdentityScreen extends StatelessWidget {
                       SizedBox(
                         height: 20.h,
                       ),
-                      CustomProgressIndicator(
-                        value: 3,
-                      ),
+                      isUpdate
+                          ? Container()
+                          : CustomProgressIndicator(
+                              value: 3,
+                            ),
                       SizedBox(
                         height: 40.h,
                       ),

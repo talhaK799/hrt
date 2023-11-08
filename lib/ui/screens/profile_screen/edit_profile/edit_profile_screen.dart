@@ -105,7 +105,7 @@ class EditProfileScreen extends StatelessWidget {
             behavior: HitTestBehavior.translucent,
             onTap: () {
               Get.to(
-                AddPhotoScreen(),
+                AddPhotoScreen(isUpdate: true,),
               );
             },
             child: Container(

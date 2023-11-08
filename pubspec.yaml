@@ -52,6 +52,7 @@ dependencies:
   uuid: ^4.0.0
   flutter_windowmanager: ^0.2.0
   country_picker: ^2.0.22
+  firebase_dynamic_links: ^5.4.3
 
 dev_dependencies:
   flutter_test:
