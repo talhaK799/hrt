@@ -12,6 +12,8 @@ import 'package:hart/core/models/app_user.dart';
 import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/ui/custom_widgets/custom_button.dart';
 import 'package:hart/ui/custom_widgets/custom_loader.dart';
+import 'package:hart/ui/custom_widgets/custom_loaders/red_hart_10sec.dart';
+import 'package:hart/ui/custom_widgets/custom_loaders/white_10sec2.dart';
 import 'package:hart/ui/screens/home/home_provider.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
@@ -34,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Consumer<HomeProvider>(builder: (context, model, child) {
         return ModalProgressHUD(
           inAsyncCall: model.state == ViewState.busy,
-          progressIndicator: CustomLoader(),
+          progressIndicator: RedHart10SecLoader(),
           child: Scaffold(
               backgroundColor: model.isFiltering == true
                   ? model.filteredUsers.isEmpty

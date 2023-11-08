@@ -59,9 +59,11 @@ class NickNameScreen extends StatelessWidget {
                         SizedBox(
                           height: 20.h,
                         ),
-                        CustomProgressIndicator(
-                          value: 2,
-                        ),
+                        isUpdate
+                            ? Container()
+                            : CustomProgressIndicator(
+                                value: 2,
+                              ),
                         SizedBox(
                           height: 40.h,
                         ),

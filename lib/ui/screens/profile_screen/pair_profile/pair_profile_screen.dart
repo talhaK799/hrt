@@ -48,7 +48,11 @@ class PairProfileScreen extends StatelessWidget {
                     ),
                   ),
                   sizeBox30,
-                  CustomButton(title: 'SHARE MAGIC LINK', onTap: () {}),
+                  CustomButton(
+                      title: 'SHARE MAGIC LINK',
+                      onTap: () {
+                        model.shareLink();
+                      }),
                   sizeBox20,
                 ],
               ),

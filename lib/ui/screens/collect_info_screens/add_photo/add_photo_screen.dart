@@ -16,7 +16,8 @@ import '../../../custom_widgets/custom_progress_indicator.dart';
 import 'add_photo_provider.dart';
 
 class AddPhotoScreen extends StatelessWidget {
-  const AddPhotoScreen({super.key});
+  bool isUpdate;
+   AddPhotoScreen({this.isUpdate=false});
 
   @override
   Widget build(BuildContext context) {

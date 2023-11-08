@@ -72,7 +72,7 @@ class SelectGenderScreen extends StatelessWidget {
                         height: 20.h,
                       ),
 
-                      isFileter
+                      isFileter || isUpdate
                           ? Container()
                           : CustomProgressIndicator(
                               value: 4,

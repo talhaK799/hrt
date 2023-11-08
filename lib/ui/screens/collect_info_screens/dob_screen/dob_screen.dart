@@ -52,9 +52,11 @@ class DOBScreen extends StatelessWidget {
                       SizedBox(
                         height: 20.h,
                       ),
-                      CustomProgressIndicator(
-                        value: 1,
-                      ),
+                      isUpdate
+                          ? Container()
+                          : CustomProgressIndicator(
+                              value: 1,
+                            ),
                       SizedBox(
                         height: 40.h,
                       ),
