@@ -101,7 +101,7 @@ class OtpVerificationScreen extends StatelessWidget {
                         color: blackColor, fontWeight: FontWeight.w500),
                     children: [
                       TextSpan(
-                        text: model.otpTime.toString(),
+                        text: model.isEnable ? "0" : model.otpTime.toString(),
                         style: descriptionTextStyle.copyWith(
                           color: primaryColor,
                         ),
