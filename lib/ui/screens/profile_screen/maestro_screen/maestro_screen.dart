@@ -1,12 +1,17 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/constants/strings.dart';
 import 'package:hart/core/constants/style.dart';
+import 'package:hart/core/enums/view_state.dart';
+import 'package:hart/core/models/subscripton.dart';
 import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/ui/custom_widgets/custom_button.dart';
+import 'package:hart/ui/custom_widgets/custom_loaders/red_hart_10sec.dart';
 import 'package:hart/ui/screens/profile_screen/maestro_screen/maestro_provider.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 class MaestroScreen extends StatelessWidget {
@@ -17,35 +22,36 @@ class MaestroScreen extends StatelessWidget {
     return ChangeNotifierProvider(
         create: (context) => MaestroProvider(),
         child: Consumer<MaestroProvider>(builder: (context, model, child) {
-          return Scaffold(
-            backgroundColor: primaryColor,
-            body: Stack(
-              children: [
-                ///
-                /// Background Image
-                ///
-                SingleChildScrollView(
-                  physics: NeverScrollableScrollPhysics(),
-                  child: Column(
-                    children: [
-                      // SizedBox(
-                      //   height: 0.35.sh,
-                      // ),
-                      Container(
-                        width: double.infinity,
-                        height: MediaQuery.of(context).size.height * 1,
-                        child: SvgPicture.asset(
-                          '$staticAsset/circle.svg',
-                          fit: BoxFit.cover,
+          return ModalProgressHUD(
+            inAsyncCall: model.state == ViewState.busy,
+            progressIndicator: RedHart10SecLoader(),
+            child: Scaffold(
+              backgroundColor: primaryColor,
+              body: Stack(
+                children: [
+                  ///
+                  /// Background Image
+                  ///
+                  SingleChildScrollView(
+                    physics: NeverScrollableScrollPhysics(),
+                    child: Column(
+                      children: [
+                        // SizedBox(
+                        //   height: 0.35.sh,
+                        // ),
+                        Container(
+                          width: double.infinity,
+                          height: MediaQuery.of(context).size.height * 1,
+                          child: SvgPicture.asset(
+                            '$staticAsset/circle.svg',
+                            fit: BoxFit.cover,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
 
-                SingleChildScrollView(
-                  physics: BouncingScrollPhysics(),
-                  child: Padding(
+                  Padding(
                     padding: EdgeInsets.fromLTRB(
                       18,
                       50,
@@ -79,185 +85,117 @@ class MaestroScreen extends StatelessWidget {
                           ),
                         ),
                         sizeBox20,
-                        Center(
-                          child: Text(
-                            'Unlimited Likes',
-                            style: subHeadingText1.copyWith(
-                              color: blackColor,
-                            ),
+                        Expanded(
+                          child: ListView(
+                            children: [
+                              Center(
+                                child: Text(
+                                  'Unlimited Likes',
+                                  style: subHeadingText1.copyWith(
+                                    color: blackColor,
+                                  ),
+                                ),
+                              ),
+                              sizeBox10,
+                              Padding(
+                                padding: const EdgeInsets.only(right: 20),
+                                child: Text(
+                                  'You’re close to meeting your people. Speed things up with Majestic Maestro',
+                                  textAlign: TextAlign.center,
+                                  style: buttonTextStyle.copyWith(
+                                    color: greyColor2,
+                                    fontSize: 16.sp,
+                                  ),
+                                ),
+                              ),
+                              sizeBox20,
+                              for (int i = 0;
+                                  i < model.subscriptions.length;
+                                  i++)
+                                GestureDetector(
+                                  onTap: () {
+                                    model.selectPlan(i);
+                                  },
+                                  child: priceTable(model.subscriptions[i], i),
+                                ),
+                              sizeBox30,
+                              CustomButton(
+                                title: 'BECOME A MAESTRO',
+                                onTap: () {
+                                  model.buyPlan();
+                                },
+                              ),
+                              sizeBox20,
+                              CustomButton(
+                                title: 'Skip',
+                                color: pinkColor,
+                                textColor: primaryColor,
+                                onTap: () {
+                                  Get.back();
+                                },
+                              ),
+                              sizeBox20,
+                            ],
                           ),
                         ),
-                        sizeBox10,
-                        Padding(
-                          padding: const EdgeInsets.only(right: 20),
-                          child: Text(
-                            'You’re close to meeting your people. Speed things up with Majestic Maestro',
-                            textAlign: TextAlign.center,
-                            style: buttonTextStyle.copyWith(
-                              color: greyColor2,
-                              fontSize: 16.sp,
-                            ),
-                          ),
-                        ),
-                        sizeBox20,
-// BoxDecoration(
-//                             borderRadius: BorderRadius.only(
-//                               topLeft: Radius.circular(16.r),
-//                               topRight: Radius.circular(16.r),
-//                             ),
-//                             border: Border.all(color: pinkColor2, width: 1.5),
-//                           ),
-                        priceTable(),
-
-                        sizeBox30,
-                        CustomButton(
-                          title: 'BECOME A MAESTRO',
-                          onTap: () {},
-                        ),
-                        sizeBox20,
-                        CustomButton(
-                          title: 'Skip',
-                          color: pinkColor,
-                          textColor: primaryColor,
-                          onTap: () {},
-                        ),
-                        sizeBox20,
                       ],
                     ),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
           );
         }));
   }
 
-  priceTable() {
-    return Column(
-      children: [
-        Container(
-          // color: pinkColor,
-          padding: EdgeInsets.only(
-            left: 24,
-            top: 16,
-            right: 16,
-            bottom: 16,
-          ),
-          decoration: BoxDecoration(
-            color: pinkColor,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(16.r),
-              topRight: Radius.circular(16.r),
+  priceTable(Subscription subscription, index) {
+    return Container(
+      // color: pinkColor,
+      padding: EdgeInsets.only(
+        left: 24,
+        top: 16,
+        right: 16,
+        bottom: 16,
+      ),
+      decoration: BoxDecoration(
+        color: subscription.isSelected == true ? pinkColor : whiteColor,
+        borderRadius: index == 0
+            ? BorderRadius.only(
+                topLeft: Radius.circular(16.r),
+                topRight: Radius.circular(16.r),
+              )
+            : null,
+        border: Border.all(color: pinkColor2, width: 1.5),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            subscription.price!,
+            style: bodyTextStyle.copyWith(
+              color: primaryColor,
             ),
-            border: Border.all(color: pinkColor2, width: 1.5),
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Column(
             children: [
               Text(
-                '\$25',
+                index == 2
+                    ? "${subscription.no_days} year"
+                    : "${subscription.no_days} days",
                 style: bodyTextStyle.copyWith(
                   color: primaryColor,
                 ),
               ),
-              Column(
-                children: [
-                  Text(
-                    '30 days',
-                    style: bodyTextStyle.copyWith(
-                      color: primaryColor,
-                    ),
-                  ),
-                  Text(
-                    '(6.20 per week)',
-                    style: buttonTextStyleGrey.copyWith(
-                      color: lightRed,
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ),
-        Container(
-          // color: pinkColor,
-          padding: EdgeInsets.only(
-            left: 24,
-            top: 16,
-            right: 16,
-            bottom: 16,
-          ),
-          decoration: BoxDecoration(
-            border: Border.all(color: pinkColor2, width: 1.5),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
               Text(
-                '\$59',
-                style: bodyTextStyle.copyWith(
-                  color: primaryColor,
+                subscription.weeklyPrice!,
+                style: buttonTextStyleGrey.copyWith(
+                  color: lightRed,
                 ),
               ),
-              Column(
-                children: [
-                  Text(
-                    '90 days',
-                    style: bodyTextStyle.copyWith(
-                      color: primaryColor,
-                    ),
-                  ),
-                  Text(
-                    '(4.20 per week)',
-                    style: buttonTextStyleGrey.copyWith(
-                      color: lightRed,
-                    ),
-                  ),
-                ],
-              )
             ],
-          ),
-        ),
-        Container(
-          // color: pinkColor,
-          padding: EdgeInsets.only(
-            left: 24,
-            top: 16,
-            right: 16,
-            bottom: 16,
-          ),
-          decoration: BoxDecoration(
-            border: Border.all(color: pinkColor2, width: 1.5),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                '\$160',
-                style: bodyTextStyle.copyWith(
-                  color: primaryColor,
-                ),
-              ),
-              Column(
-                children: [
-                  Text(
-                    '1 year',
-                    style: bodyTextStyle.copyWith(
-                      color: primaryColor,
-                    ),
-                  ),
-                  Text(
-                    '(3.20 per week)',
-                    style: buttonTextStyleGrey.copyWith(
-                      color: lightRed,
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ),
-      ],
+          )
+        ],
+      ),
     );
   }
 }

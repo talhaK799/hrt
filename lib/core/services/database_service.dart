@@ -5,6 +5,8 @@ import 'package:hart/core/models/chat_message.dart';
 import 'package:hart/core/models/conversation.dart';
 import 'package:hart/core/models/info_item.dart';
 import 'package:hart/core/models/matches.dart';
+import 'package:hart/core/models/spank.dart';
+import 'package:hart/core/models/subscripton.dart';
 import 'package:hart/core/models/user_match.dart';
 
 class DatabaseService {
@@ -596,6 +598,57 @@ class DatabaseService {
     } catch (e) {
       print('Exception@DatabaseServices/addNewMessage ==> $e');
       return false;
+    }
+  }
+
+  /// ========================================================== ///
+  /// ==================== Payment Section ======================== ///
+  /// ========================================================== ///
+
+  buySpanks(Spanks spanks) async {
+    try {
+      await _db.collection('Spanks').add(spanks.toJson()).then(
+            (value) => debugPrint('Spanks Bought'),
+          );
+      return true;
+    } catch (e) {
+      print('Exception@DatabaseServices/buySpanks ==> $e');
+      return false;
+    }
+  }
+
+  checkPremiumExpire(AppUser appUser) async {
+    try {
+      final snapshot = await _db
+          .collection('Payments')
+          .doc(appUser.id)
+          .collection('My Payments')
+          .doc(appUser.paymentId)
+          .get();
+      return Subscription.fromJson(snapshot.data(), snapshot.id);
+    } catch (e, s) {
+      debugPrint('Exception @DatabaseService/checkPremiumExpire');
+      debugPrint(s.toString());
+      return Subscription();
+    }
+  }
+
+  buySubscriptionPlan(Subscription subscription) async {
+    try {
+      String id = '';
+      await _db
+          .collection('Payments')
+          .doc(subscription.userId)
+          .collection('My Payments')
+          .add(subscription.toJson())
+          .then((value) {
+        debugPrint(' Plan bought successfully>> id : ${value.id} ');
+        id = value.id;
+      });
+      return id;
+    } catch (e) {
+      print('Exception@DatabaseServices/buySubscriptionPlan ==> $e');
+      return null;
     }
   }
 }

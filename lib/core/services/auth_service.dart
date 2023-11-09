@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hart/core/models/app_user.dart';
 import 'package:hart/core/models/custom_auth_result.dart';
+import 'package:hart/core/models/subscripton.dart';
 import 'auth_exception_service.dart';
 import 'database_service.dart';
 
@@ -13,6 +14,7 @@ class AuthService extends ChangeNotifier {
   bool isLogin = false;
   AppUser appUser = AppUser();
   AppUser signUpUser = AppUser();
+  Subscription subscription = Subscription();
 
   String? verificationId;
   int? resendToken;
@@ -31,6 +33,47 @@ class AuthService extends ChangeNotifier {
       }
     } else {
       isLogin = false;
+    }
+  }
+
+  checkUserPremium() async {
+    if (appUser.paymentId == null) {
+      print("");
+    } else {
+      subscription = await _dbService.checkPremiumExpire(this.appUser);
+      if (subscription.type == "month") {
+        final now = DateTime.now();
+        final difference = now.difference(subscription.expiredAt!).inDays;
+        print("Difference ===> $difference");
+
+        if (difference >= 0) {
+          this.appUser.isPremiumUser = false;
+          this.appUser.paymentId = null;
+          await _dbService.updateUserProfile(this.appUser);
+        }
+      }
+      if (subscription.type == "3 months") {
+        final now = DateTime.now();
+        final difference = now.difference(subscription.expiredAt!).inDays;
+        print("Difference ===> $difference");
+        if (difference >= 0) {
+          this.appUser.isPremiumUser = false;
+          this.appUser.paymentId = null;
+          await _dbService.updateUserProfile(this.appUser);
+          print("Profile updated ===> ${this.appUser.isPremiumUser}");
+        }
+      }
+      if (subscription.type == "year") {
+        final now = DateTime.now();
+        final difference = now.difference(subscription.expiredAt!).inDays;
+        print("Difference ===> $difference");
+        if (difference >= 0) {
+          this.appUser.isPremiumUser = false;
+          this.appUser.paymentId = null;
+          await _dbService.updateUserProfile(this.appUser);
+          print("Profile updated ===> ${this.appUser.isPremiumUser}");
+        }
+      }
     }
   }
 

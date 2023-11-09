@@ -8,18 +8,14 @@ class Offers extends StatelessWidget {
   String? title;
   String? price;
   String? offer;
-  bool? isOffered;
-  int? selectionIndex;
-  int? currentIndex;
+  bool? isSelected;
   final onTap;
 
   Offers({
     this.offer,
     this.price,
     this.title,
-    this.isOffered = true,
-    this.selectionIndex,
-    this.currentIndex,
+    this.isSelected,
     required this.onTap,
   });
 
@@ -39,8 +35,7 @@ class Offers extends StatelessWidget {
                 vertical: 25,
               ),
               decoration: BoxDecoration(
-                  color:
-                      selectionIndex == currentIndex ? pinkColor : whiteColor,
+                  color: isSelected == true ? pinkColor : whiteColor,
                   borderRadius: BorderRadius.circular(20.r),
                   border: Border.all(
                     color: pinkColor2,
@@ -52,7 +47,7 @@ class Offers extends StatelessWidget {
                   Text(
                     title!,
                     style:
-                        subtitleText.copyWith(color: lightRed, fontSize: 10.sp),
+                        subtitleText.copyWith(color: lightRed, fontSize: 12.sp),
                   ),
                   Text(
                     price!,
@@ -62,7 +57,7 @@ class Offers extends StatelessWidget {
               ),
             ),
           ),
-          isOffered == true
+          offer != null
               ? Padding(
                   padding: const EdgeInsets.only(
                     left: 15,
