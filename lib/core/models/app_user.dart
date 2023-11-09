@@ -1,14 +1,16 @@
 class AppUser {
   String? id;
+  String? paymentId;
   String? email;
   String? password;
   String? phoneNumber;
   bool? isEmailVerified;
   bool? isPhoneNoVerified;
+  bool? isPremiumUser;
   bool? isLiked;
   bool? isDesLiked;
   int? likesCount;
-  // bool? isMuteNotification;
+  int? spanks;
   int? age;
   String? name;
   String? dob;
@@ -34,9 +36,11 @@ class AppUser {
     this.isDesLiked,
     this.muteIds,
     this.likesCount,
+    this.spanks,
     this.name,
     this.dob,
     this.nickName,
+    this.isPremiumUser,
     this.identity,
     this.lookingFor,
     this.desire,
@@ -51,6 +55,7 @@ class AppUser {
   toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
     data['id'] = id;
+    data['paymentId'] = paymentId;
     data['email'] = email;
     data['name'] = name ?? 'User';
     data['phoneNumber'] = phoneNumber;
@@ -58,9 +63,11 @@ class AppUser {
     data['isPhoneNoVerified'] = isPhoneNoVerified ?? false;
     data['isLiked'] = isLiked ?? false;
     data['isDesLiked'] = isDesLiked ?? false;
+    data['isPremiumUser'] = isPremiumUser ?? false;
     data['dob'] = dob;
     data['age'] = age;
-    data['likesCount??0'] = likesCount??0;
+    data['likesCount'] = likesCount??0;
+    data['spanks'] = spanks??0;
     data['nickName'] = nickName ?? "User";
     data['identity'] = identity ?? "";
     data['lookingFor'] = lookingFor ?? "";
@@ -75,17 +82,20 @@ class AppUser {
   AppUser.fromJson(json, id) {
     this.id = id;
     email = json['email'] ?? "";
+    paymentId = json['paymentId'] ?? "";
     name = json['name'] ?? "User";
     phoneNumber = json['phoneNumber'];
     isEmailVerified = json['isEmailVerified'] ?? false;
     isPhoneNoVerified = json['isPhoneNoVerified'] ?? false;
     isLiked = json['isLiked'] ?? false;
     isDesLiked = json['isDesLiked'] ?? false;
+    isPremiumUser = json['isPremiumUser'] ?? false;
     // isMuteNotification = json['isMuteNotification'] ?? false;
     nickName = json['nickName'] ?? "User";
     dob = json['dob'];
     age = json['age'] ?? 0;
     likesCount = json['likesCount'] ?? 10;
+    spanks = json['spanks'] ?? 0;
     // lookingFor = json['lookingFor'];
     if (json["lookingFor"] != null) {
       lookingFor = [];

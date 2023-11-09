@@ -6,6 +6,7 @@ import 'package:hart/core/services/auth_service.dart';
 import 'package:hart/core/view_models/base_view_model.dart';
 import 'package:hart/locator.dart';
 import 'package:hart/ui/screens/connection_screen/connect_popup/connect_popup_screen.dart';
+import 'package:hart/ui/screens/profile_screen/maestro_screen/maestro_screen.dart';
 
 import '../../../core/services/database_service.dart';
 
@@ -37,48 +38,59 @@ class ConnectionsProvider extends BaseViewModel {
   like(AppUser user, Matches match) async {
     print('user  id ${currentUser.appUser.id} liked ${user.id}');
     if (await !currentUser.appUser.likedUsers!.contains(user.id)) {
-      currentUser.appUser.likedUsers!.add(user.id!);
+      if (currentUser.appUser.likedUsers!.length <=
+          currentUser.appUser.likesCount!) {
+        currentUser.appUser.likedUsers!.add(user.id!);
+        match.isAccepted = true;
+        match.isRejected = false;
+        match.isProgressed = true;
+        bool isUpdatedMatch = await db.updateRequest(match);
+        bool isUpdated = await db.updateUserProfile(currentUser.appUser);
+
+        print(
+            'profile update ==> ${isUpdated} requestUpdate==>${isUpdatedMatch}');
+        if (isUpdated && isUpdatedMatch) {
+          likingUsers.remove(user);
+          Get.to(
+            ConnectPopupScreen(),
+          );
+        }
+        notifyListeners();
+      } else {
+        Get.to(
+          MaestroScreen(),
+        );
+      }
     }
 
     // if (await user.likedUsers!.contains(currentUser.appUser.id)) {
 
     // }
-
-    match.isAccepted = true;
-    match.isRejected = false;
-    match.isProgressed = true;
-    bool isUpdatedMatch = await db.updateRequest(match);
-    bool isUpdated = await db.updateUserProfile(currentUser.appUser);
-
-    print('profile update ==> ${isUpdated} requestUpdate==>${isUpdatedMatch}');
-    if (isUpdated && isUpdatedMatch) {
-      likingUsers.remove(user);
-      Get.to(
-        ConnectPopupScreen(),
-      );
-    }
-    notifyListeners();
   }
 
   dilike(AppUser user, Matches match) async {
     print('user  id ${currentUser.appUser.id} disliked ${user.id}');
     if (await !currentUser.appUser.disLikedUsers!.contains(user.id)) {
-      currentUser.appUser.disLikedUsers!.add(user.id!);
-      if (await currentUser.appUser.likedUsers!.contains(user.id)) {
-        currentUser.appUser.likedUsers!.remove(user.id!);
+      if (currentUser.appUser.likedUsers!.length <=
+          currentUser.appUser.likesCount!) {
+        currentUser.appUser.disLikedUsers!.add(user.id!);
+        match.isRejected = true;
+        match.isAccepted = false;
+        match.isProgressed = true;
+        bool isUpdatedMatch = await db.updateRequest(match);
+        bool isUpdated = await db.updateUserProfile(currentUser.appUser);
+
+        print(
+            'profile update ==> ${isUpdated} requestUpdate==>${isUpdatedMatch}');
+        if (isUpdated && isUpdatedMatch) {
+          likingUsers.remove(user);
+        }
+        notifyListeners();
+      } else {
+        Get.to(
+          MaestroScreen(),
+        );
       }
     }
-
-    match.isRejected = true;
-    match.isAccepted = false;
-    match.isProgressed = true;
-    bool isUpdatedMatch = await db.updateRequest(match);
-    bool isUpdated = await db.updateUserProfile(currentUser.appUser);
-
-    print('profile update ==> ${isUpdated} requestUpdate==>${isUpdatedMatch}');
-    if (isUpdated && isUpdatedMatch) {
-      likingUsers.remove(user);
-    }
-    notifyListeners();
   }
 }
