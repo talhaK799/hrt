@@ -32,7 +32,7 @@ class PhoneLoginProvider extends BaseViewModel {
   bool isResend = false;
   bool isEnable = false;
 
-  int otpTime = 5;
+  int otpTime = 30;
 
   // DatabaseService _databaseService = DatabaseService();
 
@@ -97,6 +97,7 @@ class PhoneLoginProvider extends BaseViewModel {
           Get.to(() => OtpVerificationScreen());
         }
         isEnable = false;
+        notifyListeners();
       } else {
         Get.snackbar("Error!", "Please try again");
       }
@@ -137,7 +138,6 @@ class PhoneLoginProvider extends BaseViewModel {
   }
 
   void startTimer() async {
-    await Future.delayed(Duration(seconds: 2));
     const oneSecond = Duration(seconds: 1);
     _timer = Timer.periodic(
       oneSecond,
@@ -154,8 +154,7 @@ class PhoneLoginProvider extends BaseViewModel {
           notifyListeners();
         } else {
           otpTime--;
-
-          // print("Second <=> $otpTime ==> $isTimeExpired");
+          print("otpTime: $otpTime");
           notifyListeners();
         }
       },
