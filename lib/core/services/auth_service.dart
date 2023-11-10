@@ -31,6 +31,8 @@ class AuthService extends ChangeNotifier {
       if (appUser.id == null) {
         isLogin = false;
       }
+
+      await checkUserPremium();
     } else {
       isLogin = false;
     }

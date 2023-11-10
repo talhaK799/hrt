@@ -23,9 +23,31 @@ class AddPhotoProvider extends BaseViewModel {
   final fbStorage = locator<FirebaseStorageService>();
   final currentUser = locator<AuthService>().appUser;
   final ImagePicker imagePicker = ImagePicker();
+  bool isUpdation = false;
   // List<XFile>? imageFileList = [];
   List<File> selectedImages = [];
   List<String> imagesUrls = [];
+  List<String> currentImages = [];
+  List<File> networkImages = [];
+  int count = 0;
+
+  // PickImage pickImage = PickImage();
+
+  AddPhotoProvider(profUpdate) {
+    isUpdation = profUpdate;
+    print('updation==> $isUpdation');
+    init();
+  }
+
+  init() {
+    setState(ViewState.busy);
+    currentImages = currentUser.images ?? [];
+    for (var i = 0; i < currentImages.length; i++) {
+      images[i].imgUrl = currentImages[i];
+    }
+    count = currentUser.images!.length;
+    setState(ViewState.idle);
+  }
 
   // bool isMultipleSelection = false;
 
@@ -43,10 +65,28 @@ class AddPhotoProvider extends BaseViewModel {
 // [1 , null ,3, 4, 5]
   removeImage(index) async {
     images[index] = PickImage();
-    selectedImages.removeAt(index);
-    List<File> imgs = selectedImages;
+    List<File> imgs = [];
+    if (selectedImages.length == 0) {
+      // networkImages.removeAt(index);
+      // imgs = networkImages;
+      if (index < count) {
+        currentImages.removeAt(index);
+        count = count - 1;
+      } else {
+        networkImages.removeAt(index - count);
+        imgs = networkImages;
+        // count = count - 1;
+      }
+    } else {
+      selectedImages.removeAt(index);
+      imgs = selectedImages;
+    }
     for (var i = 0; i < images.length; i++) {
       images[i] = PickImage();
+    }
+    for (var i = 0; i < count; i++) {
+      images[i].imgUrl = currentImages[i];
+      print('imgUrls ===> ${images[i].imgUrl}');
     }
     for (var i = 0; i < imgs.length; i++) {
       images[i].image = imgs[i];
@@ -55,7 +95,7 @@ class AddPhotoProvider extends BaseViewModel {
       // await Future.delayed(Duration(seconds: 1));
     }
 
-    print('selected images===> ${imgs.length}');
+    // print('selected images===> ${imgs.length}');
 
     notifyListeners();
   }
@@ -67,10 +107,20 @@ class AddPhotoProvider extends BaseViewModel {
     if (imagesList!.isNotEmpty) {
       // selectedImages!.add(File(imagesList[2].path));
       for (int i = 0; i < imagesList.length; i++) {
-        images[selectedImages.length].image = File(imagesList[i].path);
-        selectedImages.add(
-          File(imagesList[i].path),
-        );
+        if (selectedImages.length == 0) {
+          images[count].image = File(imagesList[i].path);
+          networkImages.add(
+            File(imagesList[i].path),
+          );
+          if (count != images.length) {
+            count = count + 1;
+          }
+        } else {
+          images[selectedImages.length].image = File(imagesList[i].path);
+          selectedImages.add(
+            File(imagesList[i].path),
+          );
+        }
       }
       notifyListeners();
     }
@@ -82,17 +132,28 @@ class AddPhotoProvider extends BaseViewModel {
 
   pickImge() async {
     // isMultipleSelection = false;
-    images[selectedImages.length].image = await _filePickerService.pickImage();
-    if (images[selectedImages.length].image != null) {
-      selectedImages.add(images[selectedImages.length].image!);
+    if (selectedImages.length == 0) {
+      images[count].image = await _filePickerService.pickImage();
+
+      networkImages.add(images[count].image!);
+      if (count != images.length) {
+        count = count + 1;
+      }
     } else {
-      Get.snackbar('Error', 'unable to pick image');
+      images[selectedImages.length].image =
+          await _filePickerService.pickImage();
+      if (images[selectedImages.length].image != null) {
+        selectedImages.add(images[selectedImages.length].image!);
+      } else {
+        Get.snackbar('Error', 'unable to pick image');
+      }
     }
+
     notifyListeners();
   }
 
   addUserImages() async {
-    if (selectedImages.length < 1) {
+    if (selectedImages.length < 1 && networkImages.length < 1) {
       Get.snackbar(
         'Error!',
         '',
@@ -107,17 +168,31 @@ class AddPhotoProvider extends BaseViewModel {
       );
     } else {
       setState(ViewState.busy);
-      imagesUrls =
-          await fbStorage.uploadImagesList(selectedImages, 'User Images');
+      if (selectedImages.length == 0) {
+        imagesUrls =
+            await fbStorage.uploadImagesList(networkImages, 'User Images');
+        for (var i = 0; i < imagesUrls.length; i++) {
+          currentImages.add(imagesUrls[i]);
+        }
+        currentUser.images = currentImages;
+      } else {
+        imagesUrls =
+            await fbStorage.uploadImagesList(selectedImages, 'User Images');
 
-      currentUser.images = imagesUrls;
+        currentUser.images = imagesUrls;
+      }
 
       bool isUpdated = await _db.updateUserProfile(currentUser);
       setState(ViewState.idle);
       if (isUpdated) {
-        Get.offAll(
-          RootScreen(),
-        );
+        if (isUpdation == true) {
+          //profile update
+          Get.back();
+        } else {
+          Get.offAll(
+            RootScreen(),
+          );
+        }
       }
     }
   }

@@ -55,7 +55,7 @@ class ProfileScreen extends StatelessWidget {
                           height: 120,
                           decoration: BoxDecoration(
                             color: greyColor,
-                            image: model.currentUser.images!.isEmpty
+                            image: model.currentUser.images==null
                                 ? DecorationImage(
                                     image: AssetImage(
                                       '$staticAsset/person.png',
@@ -73,7 +73,9 @@ class ProfileScreen extends StatelessWidget {
                           width: 100,
                           height: 100,
                           decoration: BoxDecoration(
-                            image: model.currentUser.images!.isEmpty
+                            
+                            color: greyColor,
+                            image: model.currentUser.images==null
                                 ? DecorationImage(
                                     image: AssetImage(
                                       '$dynamicAsset/image.png',

@@ -62,8 +62,9 @@ class EditProfileScreen extends StatelessWidget {
                               width: 1.sw,
                               height: 0.45.sh,
                               decoration: BoxDecoration(
+                                color: greyColor,
                                 borderRadius: BorderRadius.circular(16.r),
-                                image: model.currentUser.appUser.images!.isEmpty
+                                image: model.currentUser.appUser.images == null
                                     ? DecorationImage(
                                         image: AssetImage(
                                             '$dynamicAsset/image.png'),
@@ -105,7 +106,9 @@ class EditProfileScreen extends StatelessWidget {
             behavior: HitTestBehavior.translucent,
             onTap: () {
               Get.to(
-                AddPhotoScreen(isUpdate: true,),
+                AddPhotoScreen(
+                  isUpdate: true,
+                ),
               );
             },
             child: Container(

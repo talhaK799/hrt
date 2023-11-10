@@ -379,7 +379,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             width: 10.h,
                           ),
                           Text(
-                            '2',
+                            model.currentUser.appUser.spanks.toString(),
                             style: buttonTextStyle,
                           )
                         ],
