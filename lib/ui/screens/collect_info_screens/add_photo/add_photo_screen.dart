@@ -17,12 +17,12 @@ import 'add_photo_provider.dart';
 
 class AddPhotoScreen extends StatelessWidget {
   bool isUpdate;
-   AddPhotoScreen({this.isUpdate=false});
+  AddPhotoScreen({this.isUpdate = false});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => AddPhotoProvider(),
+      create: (context) => AddPhotoProvider(isUpdate),
       child: Consumer<AddPhotoProvider>(builder: (context, model, child) {
         return ModalProgressHUD(
           inAsyncCall: model.state == ViewState.busy,
@@ -77,43 +77,7 @@ class AddPhotoScreen extends StatelessWidget {
                           crossAxisCount: 3,
                         ),
                         itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () => model.pickImge(),
-                            child: Container(
-                              width: 90.w,
-                              height: 90.h,
-                              decoration: BoxDecoration(
-                                color: greyColor,
-                                image: model.images[index].image != null
-                                    ? DecorationImage(
-                                        image: FileImage(
-                                            model.images[index].image!),
-                                        fit: BoxFit.cover)
-                                    : null,
-                                borderRadius: BorderRadius.circular(
-                                  12.r,
-                                ),
-                              ),
-                              child: model.images[index].image == null
-                                  ? Center(
-                                      child: Image.asset(
-                                      '$staticAsset/Add.png',
-                                      scale: 3,
-                                    ))
-                                  : GestureDetector(
-                                      onTap: () {
-                                        model.removeImage(index);
-                                      },
-                                      child: Align(
-                                        alignment: Alignment.topRight,
-                                        child: Image.asset(
-                                          '$staticAsset/remove.png',
-                                          scale: 4,
-                                        ),
-                                      ),
-                                    ),
-                            ),
-                          );
+                          return _userImage(model, index);
                         }),
                     SizedBox(
                       height: 30.h,
@@ -143,6 +107,55 @@ class AddPhotoScreen extends StatelessWidget {
           ),
         );
       }),
+    );
+  }
+
+  _userImage(AddPhotoProvider model, int index) {
+    return GestureDetector(
+      onTap: () => model.pickImge(),
+      child: Container(
+        width: 90.w,
+        height: 90.h,
+        decoration: BoxDecoration(
+          color: greyColor,
+          image: model.images[index].image != null
+              ? DecorationImage(
+                  image: FileImage(
+                    model.images[index].image!,
+                  ),
+                  fit: BoxFit.cover,
+                )
+              : model.images[index].imgUrl != null
+                  ? DecorationImage(
+                      image:
+                          NetworkImage(model.images[index].imgUrl!.toString()),
+                      fit: BoxFit.cover,
+                    )
+                  : null,
+          borderRadius: BorderRadius.circular(
+            12.r,
+          ),
+        ),
+        child: model.images[index].image == null &&
+                model.images[index].imgUrl == null
+            ? Center(
+                child: Image.asset(
+                '$staticAsset/Add.png',
+                scale: 3,
+              ))
+            : GestureDetector(
+                onTap: () {
+                  model.removeImage(index);
+                },
+                child: Align(
+                  alignment: Alignment.topRight,
+                  child: Image.asset(
+                    '$staticAsset/remove.png',
+                    scale: 4,
+                  ),
+                ),
+              ),
+      ),
     );
   }
 }
