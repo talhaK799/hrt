@@ -32,12 +32,19 @@
 				<string>com.googleusercontent.apps.674419690889-ish2v3sj2bhd8d1mk375m0i25dei2lcr</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>app-1-674419690889-ios-330bcb039884ef13326558</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>5</string>
 	<key>CLIENT_ID</key>
 	<string>674419690889-ish2v3sj2bhd8d1mk375m0i25dei2lcr.apps.googleusercontent.com</string>
-
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
