@@ -85,7 +85,7 @@ class AddPhotoScreen extends StatelessWidget {
                     CustomButton(
                       title: 'Add Photos',
                       onTap: () {
-                        model.selectImages();
+                        model.selectMultipleImages();
                       },
                       color: pinkColor,
                       textColor: primaryColor,

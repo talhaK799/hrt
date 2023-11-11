@@ -7,7 +7,6 @@ import 'package:hart/core/models/info_item.dart';
 import 'package:hart/core/models/matches.dart';
 import 'package:hart/core/models/spank.dart';
 import 'package:hart/core/models/subscripton.dart';
-import 'package:hart/core/models/user_match.dart';
 
 class DatabaseService {
   final _db = FirebaseFirestore.instance;

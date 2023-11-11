@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:hart/core/others/dynamic_link_handler.dart';
 import 'package:hart/core/services/auth_service.dart';
 import 'package:hart/core/services/database_service.dart';
 import 'package:hart/core/services/firebase_storage_service.dart';
@@ -19,4 +20,5 @@ setupLocator() {
   locator.registerSingleton(FirebaseStorageService());
   locator.registerSingleton(LocationService());
   locator.registerSingleton(PermissionsService());
+  locator.registerSingleton(DynamicLinkHandler());
 }

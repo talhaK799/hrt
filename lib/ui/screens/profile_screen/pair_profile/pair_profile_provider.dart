@@ -7,11 +7,10 @@ import 'package:share_plus/share_plus.dart';
 class PairProfilePorvider extends BaseViewModel {
   int currentIndex = 0;
   final auth = locator<AuthService>();
-  DynamicLinkHandler linkHandler = DynamicLinkHandler();
+  final linkHandler = locator<DynamicLinkHandler>();
 
-  select(index) {
-    currentIndex = index;
-    notifyListeners();
+  PairProfilePorvider() {
+    linkHandler.initUniLinks();
   }
 
   shareLink() async {
