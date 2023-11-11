@@ -25,11 +25,11 @@ class AddPhotoProvider extends BaseViewModel {
   final ImagePicker imagePicker = ImagePicker();
   bool isUpdation = false;
   // List<XFile>? imageFileList = [];
-  List<File> selectedImages = [];
+  // List<File> unUploadedImages = [];
   List<String> imagesUrls = [];
   List<String> currentImages = [];
-  List<File> networkImages = [];
-  int count = 0;
+  List<File> newImages = [];
+  int userImagesCount = 0;
 
   // PickImage pickImage = PickImage();
 
@@ -45,7 +45,7 @@ class AddPhotoProvider extends BaseViewModel {
     for (var i = 0; i < currentImages.length; i++) {
       images[i].imgUrl = currentImages[i];
     }
-    count = currentUser.images!.length;
+    userImagesCount = currentImages.length;
     setState(ViewState.idle);
   }
 
@@ -62,98 +62,99 @@ class AddPhotoProvider extends BaseViewModel {
     PickImage(),
     PickImage(),
   ];
-// [1 , null ,3, 4, 5]
   removeImage(index) async {
     images[index] = PickImage();
     List<File> imgs = [];
-    if (selectedImages.length == 0) {
-      // networkImages.removeAt(index);
-      // imgs = networkImages;
-      if (index < count) {
-        currentImages.removeAt(index);
-        count = count - 1;
-      } else {
-        networkImages.removeAt(index - count);
-        imgs = networkImages;
-        // count = count - 1;
-      }
+    // if (currentImages.length != 0) {
+    if (index < userImagesCount) {
+      currentImages.removeAt(index);
+      print('current images ===> ${currentImages.length}');
+      userImagesCount = userImagesCount - 1;
     } else {
-      selectedImages.removeAt(index);
-      imgs = selectedImages;
+      newImages.removeAt(index - userImagesCount);
+      imgs = newImages;
     }
     for (var i = 0; i < images.length; i++) {
       images[i] = PickImage();
     }
-    for (var i = 0; i < count; i++) {
-      images[i].imgUrl = currentImages[i];
-      print('imgUrls ===> ${images[i].imgUrl}');
+    for (var i = 0; i < userImagesCount + imgs.length; i++) {
+      if (i < userImagesCount) {
+        images[i].imgUrl = currentImages[i];
+      } else {
+        print('local image path ${imgs[i - userImagesCount].path}');
+        images[i].image = imgs[i - userImagesCount];
+      }
     }
-    for (var i = 0; i < imgs.length; i++) {
-      images[i].image = imgs[i];
-
-      print('selected $i path :=> ${imgs[i].path}');
-      // await Future.delayed(Duration(seconds: 1));
-    }
-
-    // print('selected images===> ${imgs.length}');
-
     notifyListeners();
+    // } else {
+    //   unUploadedImages.removeAt(index);
+    //   imgs = unUploadedImages;
+
+    //   for (var i = 0; i < images.length; i++) {
+    //     images[i] = PickImage();
+    //   }
+    //   for (var i = 0; i < imgs.length; i++) {
+    //     images[i].image = imgs[i];
+
+    //     print('selected $i path :=> ${imgs[i].path}');
+    //   }
+    //   notifyListeners();
+    // }
   }
 
-  void selectImages() async {
+  void selectMultipleImages() async {
     // imageFileList = [];
     // isMultipleSelection = true;
     final List<XFile>? imagesList = await imagePicker.pickMultiImage();
     if (imagesList!.isNotEmpty) {
-      // selectedImages!.add(File(imagesList[2].path));
       for (int i = 0; i < imagesList.length; i++) {
-        if (selectedImages.length == 0) {
-          images[count].image = File(imagesList[i].path);
-          networkImages.add(
-            File(imagesList[i].path),
-          );
-          if (count != images.length) {
-            count = count + 1;
-          }
-        } else {
-          images[selectedImages.length].image = File(imagesList[i].path);
-          selectedImages.add(
-            File(imagesList[i].path),
-          );
-        }
+        // if (currentImages.length != 0) {
+        images[userImagesCount + newImages.length].image =
+            File(imagesList[i].path);
+        newImages.add(
+          File(imagesList[i].path),
+        );
+        // if (userImagesCount != images.length) {
+        //   userImagesCount = userImagesCount + 1;
+        // }
+        // } else {
+        //   images[unUploadedImages.length].image = File(imagesList[i].path);
+        //   unUploadedImages.add(
+        //     File(imagesList[i].path),
+        //   );
+        // }
       }
-      notifyListeners();
+      // notifyListeners();
     }
-    print(
-      "Image List Length:" + selectedImages.length.toString(),
-    );
+    // print(
+    //   "Image List Length:" + unUploadedImages.length.toString(),
+    // );
     notifyListeners();
   }
 
   pickImge() async {
     // isMultipleSelection = false;
-    if (selectedImages.length == 0) {
-      images[count].image = await _filePickerService.pickImage();
 
-      networkImages.add(images[count].image!);
-      if (count != images.length) {
-        count = count + 1;
-      }
-    } else {
-      images[selectedImages.length].image =
-          await _filePickerService.pickImage();
-      if (images[selectedImages.length].image != null) {
-        selectedImages.add(images[selectedImages.length].image!);
-      } else {
-        Get.snackbar('Error', 'unable to pick image');
-      }
-    }
+    // if (currentImages.length != 0) {
+    images[userImagesCount + newImages.length].image =
+        await _filePickerService.pickImage();
+
+    newImages.add(images[userImagesCount + newImages.length].image!);
+    // } else {
+    //   images[unUploadedImages.length].image =
+    //       await _filePickerService.pickImage();
+    //   if (images[unUploadedImages.length].image != null) {
+    //     unUploadedImages.add(images[unUploadedImages.length].image!);
+    //   } else {
+    //     Get.snackbar('Error', 'unable to pick image');
+    //   }
+    // }
 
     notifyListeners();
   }
 
   addUserImages() async {
-    if (selectedImages.length < 1 && networkImages.length < 1) {
+    if (newImages.length < 1) {
       Get.snackbar(
         'Error!',
         '',
@@ -168,19 +169,18 @@ class AddPhotoProvider extends BaseViewModel {
       );
     } else {
       setState(ViewState.busy);
-      if (selectedImages.length == 0) {
-        imagesUrls =
-            await fbStorage.uploadImagesList(networkImages, 'User Images');
-        for (var i = 0; i < imagesUrls.length; i++) {
-          currentImages.add(imagesUrls[i]);
-        }
-        currentUser.images = currentImages;
-      } else {
-        imagesUrls =
-            await fbStorage.uploadImagesList(selectedImages, 'User Images');
-
-        currentUser.images = imagesUrls;
+      // if (currentImages.length != 0) {
+      imagesUrls = await fbStorage.uploadImagesList(newImages, 'User Images');
+      for (var i = 0; i < imagesUrls.length; i++) {
+        currentImages.add(imagesUrls[i]);
       }
+      currentUser.images = currentImages;
+      // } else {
+      //   imagesUrls =
+      //       await fbStorage.uploadImagesList(unUploadedImages, 'User Images');
+
+      //   currentUser.images = imagesUrls;
+      // }
 
       bool isUpdated = await _db.updateUserProfile(currentUser);
       setState(ViewState.idle);

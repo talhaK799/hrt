@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hart/core/constants/colors.dart';
-import 'package:hart/core/constants/theme_colors.dart';
-import 'package:hart/core/others/dynamic_link_handler.dart';
 import 'package:hart/core/services/localization_services.dart';
 import 'package:hart/core/services/locato_storage_service.dart';
 import 'package:hart/core/view_models/theme_provider.dart';
@@ -17,12 +15,13 @@ import 'package:hart/ui/screens/collect_info_screens/verifications/phone_no_scre
 import 'package:hart/ui/screens/home/home_provider.dart';
 import 'package:hart/ui/screens/splash_screen.dart';
 import 'package:provider/provider.dart';
-// import 'package:window_manager/window_manager.dart';
 
+// import 'package:window_manager/window_manager.dart';
+String userId = '';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  DynamicLinkHandler().initUniLinks();
+  
 
   // WindowOptions windowOptions = WindowOptions(
   //   size: Size(800, 600),

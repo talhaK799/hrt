@@ -3,18 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:hart/core/models/app_user.dart';
 import 'package:hart/core/models/custom_auth_result.dart';
 import 'package:hart/core/models/subscripton.dart';
+import 'package:hart/core/others/dynamic_link_handler.dart';
 import 'auth_exception_service.dart';
 import 'database_service.dart';
 
 class AuthService extends ChangeNotifier {
   final _dbService = DatabaseService();
   final _auth = FirebaseAuth.instance;
+
+  final link = DynamicLinkHandler();
   CustomAuthResult customAuthResult = CustomAuthResult();
   User? user;
   bool isLogin = false;
   AppUser appUser = AppUser();
+  AppUser sharingUser = AppUser();
   AppUser signUpUser = AppUser();
   Subscription subscription = Subscription();
+  String? id;
 
   String? verificationId;
   int? resendToken;
@@ -30,6 +35,17 @@ class AuthService extends ChangeNotifier {
       appUser = (await _dbService.getAppUser(user!.uid));
       if (appUser.id == null) {
         isLogin = false;
+      } else {
+        id = await link.initUniLinks();
+        if (id != null) {
+          sharingUser = await _dbService.getAppUser(id);
+          if (sharingUser.id != null) {
+            appUser.likedUsers!.add(id!);
+            sharingUser.likedUsers!.add(appUser.id!);
+            await _dbService.updateUserProfile(appUser);
+            await _dbService.updateUserProfile(sharingUser);
+          }
+        }
       }
 
       await checkUserPremium();

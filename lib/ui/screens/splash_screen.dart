@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/constants/strings.dart';
 import 'package:hart/core/constants/style.dart';
+import 'package:hart/core/others/dynamic_link_handler.dart';
 import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/core/services/auth_service.dart';
 import 'package:hart/core/services/location_service.dart';
@@ -24,11 +25,16 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   final _auth = locator<AuthService>();
+  String _id = '';
+  final link = locator<DynamicLinkHandler>();
   final _location = locator<LocationService>();
   init() async {
     await Future.delayed(
       Duration(seconds: 2),
     );
+
+    _id = await link.initUniLinks() ?? 'no user';
+    print('sharing id $_id');
     // Position position = await _location.determinePosition();
     // print(
     //     'this is the current location ${_location.currentLocation!.latitude} === ${_location.currentLocation!.longitude}');
