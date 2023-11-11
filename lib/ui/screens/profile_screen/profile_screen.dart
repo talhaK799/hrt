@@ -55,17 +55,27 @@ class ProfileScreen extends StatelessWidget {
                           height: 120,
                           decoration: BoxDecoration(
                             color: greyColor,
-                            image: model.currentUser.images==null
+// <<<<<<< imageUpdation
+//                             image: model.currentUser.images==null
+// =======
+                            image: model.currentUser.images == null
+// >>>>>>> dev
                                 ? DecorationImage(
                                     image: AssetImage(
-                                      '$staticAsset/person.png',
+                                      '$dynamicAsset/image.png',
                                     ),
                                     fit: BoxFit.cover)
-                                : DecorationImage(
-                                    image: NetworkImage(
-                                      model.currentUser.images!.first,
-                                    ),
-                                    fit: BoxFit.cover),
+                                : model.currentUser.images!.isNotEmpty
+                                    ? DecorationImage(
+                                        image: NetworkImage(
+                                          model.currentUser.images!.first,
+                                        ),
+                                        fit: BoxFit.cover)
+                                    : DecorationImage(
+                                        image: AssetImage(
+                                          '$dynamicAsset/image.png',
+                                        ),
+                                        fit: BoxFit.cover),
                             // borderRadius: BorderRadius.circular(12.r),
                           ),
                         ),
@@ -73,6 +83,7 @@ class ProfileScreen extends StatelessWidget {
                           width: 100,
                           height: 100,
                           decoration: BoxDecoration(
+
                             
                             color: greyColor,
                             image: model.currentUser.images==null
@@ -81,11 +92,19 @@ class ProfileScreen extends StatelessWidget {
                                       '$dynamicAsset/image.png',
                                     ),
                                     fit: BoxFit.cover)
-                                : DecorationImage(
-                                    image: NetworkImage(
-                                      model.currentUser.images!.first,
-                                    ),
-                                    fit: BoxFit.cover),
+                                : model.currentUser.images!.isNotEmpty
+                                    ? DecorationImage(
+                                        image: NetworkImage(
+                                          model.currentUser.images!.length > 0
+                                              ? model.currentUser.images![1]
+                                              : model.currentUser.images![0],
+                                        ),
+                                        fit: BoxFit.cover)
+                                    : DecorationImage(
+                                        image: AssetImage(
+                                          '$dynamicAsset/image.png',
+                                        ),
+                                        fit: BoxFit.cover),
                             // borderRadius: BorderRadius.circular(12.r),
                           ),
                         ),
@@ -96,7 +115,7 @@ class ProfileScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          model.currentUser.name ?? 'No Name',
+                          model.currentUser.name ?? 'Ali Khan',
                           style: descriptionTextStyle,
                         ),
                         GestureDetector(
@@ -119,7 +138,7 @@ class ProfileScreen extends StatelessWidget {
                         bottom: 5,
                       ),
                       child: Text(
-                        '${model.currentUser.age} man ${model.currentUser.identity}',
+                        '${model.currentUser.age ?? ""} man ${model.currentUser.identity ?? ""}',
                         style: buttonTextStyleGrey,
                       ),
                     ),

@@ -74,7 +74,7 @@ class MyApp extends StatelessWidget {
             translations: LocalizationService(),
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
-              useMaterial3: true,
+              // useMaterial3: true,
               scaffoldBackgroundColor: Colors.white.withOpacity(0.96),
               colorScheme: ColorScheme.fromSwatch().copyWith(
                 primary: primaryColor,

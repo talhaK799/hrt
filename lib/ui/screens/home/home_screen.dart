@@ -891,100 +891,108 @@ class _HomeScreenState extends State<HomeScreen> {
 _imageSlider(HomeProvider model, AppUser user) {
   return Stack(
     children: [
-      CarouselSlider.builder(
-        itemCount: user.images!.length,
-        itemBuilder: (context, index, realIndex) {
-          return Container(
-            height: 0.35.sh,
-            // decoration: BoxDecoration(
-            //   image: DecorationImage(
-            //     image: NetworkImage(user.images![index].toString()),
-            //     fit: BoxFit.cover,
-            //   ),
-            // ),
-            child: Image.network(
-              user.images![index].toString(),
-              height: 0.35.sh,
-              fit: BoxFit.cover,
-              loadingBuilder: (BuildContext context, Widget child,
-                  ImageChunkEvent? loadingProgress) {
-                if (loadingProgress == null) {
-                  return child; // Return the image widget if it's fully loaded.
-                }
+      user.images == null
+          ? Image.asset("$dynamicAsset/image.png")
+          : CarouselSlider.builder(
+              itemCount: user.images!.length,
+              itemBuilder: (context, index, realIndex) {
                 return Container(
                   height: 0.35.sh,
-                  color: Colors.grey.withOpacity(0.1),
-                  child: Center(
-                    // Display a linear progress indicator until the image is fully loaded.
-                    child: CircularProgressIndicator(
-                      color: primaryColor,
-                      value: loadingProgress.expectedTotalBytes != null
-                          ? loadingProgress.cumulativeBytesLoaded /
-                              loadingProgress.expectedTotalBytes!
-                          : null,
-                    ),
+                  // decoration: BoxDecoration(
+                  //   image: DecorationImage(
+                  //     image: NetworkImage(user.images![index].toString()),
+                  //     fit: BoxFit.cover,
+                  //   ),
+                  // ),
+                  child: Image.network(
+                    user.images![index].toString(),
+                    height: 0.35.sh,
+                    fit: BoxFit.cover,
+                    loadingBuilder: (BuildContext context, Widget child,
+                        ImageChunkEvent? loadingProgress) {
+                      if (loadingProgress == null) {
+                        return child; // Return the image widget if it's fully loaded.
+                      }
+                      return Container(
+                        height: 0.35.sh,
+                        color: Colors.grey.withOpacity(0.1),
+                        child: Center(
+                          // Display a linear progress indicator until the image is fully loaded.
+                          child: CircularProgressIndicator(
+                            color: primaryColor,
+                            value: loadingProgress.expectedTotalBytes != null
+                                ? loadingProgress.cumulativeBytesLoaded /
+                                    loadingProgress.expectedTotalBytes!
+                                : null,
+                          ),
+                        ),
+                      );
+                    },
                   ),
+
+                  // FadeInImage.assetNetwork(
+                  //
+                  //   placeholder: '$logoPath/logo4.png',
+                  //   image: user.images![index].toString(),
+                  //   fit: BoxFit.fill,
+                  // ),
                 );
               },
-            ),
+              options: CarouselOptions(
+                onPageChanged: (index, reason) {
+                  model.updateIndex(index);
+                },
+                height: 0.35.sh,
 
-            // FadeInImage.assetNetwork(
-            //
-            //   placeholder: '$logoPath/logo4.png',
-            //   image: user.images![index].toString(),
-            //   fit: BoxFit.fill,
-            // ),
-          );
-        },
-        options: CarouselOptions(
-          onPageChanged: (index, reason) {
-            model.updateIndex(index);
-          },
-          height: 0.35.sh,
+                // aspectRatio: 1,
+                viewportFraction: 1,
+                initialPage: 0,
 
-          // aspectRatio: 1,
-          viewportFraction: 1,
-          initialPage: 0,
-
-          enableInfiniteScroll: false,
-          scrollDirection: Axis.vertical,
-          enlargeFactor: 0.6,
-        ),
-      ),
-      Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 15,
-          vertical: 25,
-        ),
-        child: Align(
-          alignment: Alignment.topRight,
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
-            decoration: BoxDecoration(
-              color: pinkColor,
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: DotsIndicator(
-              axis: Axis.vertical,
-              dotsCount: user.images!.length > 0 ? user.images!.length : 1,
-              position: model.dotIndex,
-              decorator: const DotsDecorator(
-                activeColor: primaryColor,
-                size: Size(7.0, 7.0),
-                color: whiteColor,
+                enableInfiniteScroll: false,
+                scrollDirection: Axis.vertical,
+                enlargeFactor: 0.6,
               ),
             ),
-          ),
-        ),
-      ),
-      Positioned(
-        bottom: 16,
-        left: 16,
-        child: Image.asset(
-          '$staticAsset/Recycle.png',
-          scale: 3,
-        ),
-      ),
+      user.images == null
+          ? Container()
+          : Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 15,
+                vertical: 25,
+              ),
+              child: Align(
+                alignment: Alignment.topRight,
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: pinkColor,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: DotsIndicator(
+                    axis: Axis.vertical,
+                    dotsCount:
+                        user.images!.length > 0 ? user.images!.length : 1,
+                    position: model.dotIndex,
+                    decorator: const DotsDecorator(
+                      activeColor: primaryColor,
+                      size: Size(7.0, 7.0),
+                      color: whiteColor,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+      user.images == null
+          ? Container()
+          : Positioned(
+              bottom: 16,
+              left: 16,
+              child: Image.asset(
+                '$staticAsset/Recycle.png',
+                scale: 3,
+              ),
+            ),
       // Positioned(
       //     right: 16,
       //     bottom: 16,
