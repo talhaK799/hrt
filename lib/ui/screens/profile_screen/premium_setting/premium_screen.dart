@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hart/core/constants/colors.dart';
 import 'package:hart/ui/custom_widgets/custom_app_bar.dart';
+import 'package:hart/ui/screens/profile_screen/maestro_screen/maestro_screen.dart';
 
 import '../../../../core/constants/strings.dart';
 import '../../../../core/constants/style.dart';
@@ -23,23 +25,29 @@ class PremiumScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomAppBar(title: 'Premium membership'),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Incognito',
-                    style: buttonTextStyle.copyWith(
-                      color: primaryColor,
+              GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                onTap: () {
+                  Get.to(MaestroScreen());
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Incognito',
+                      style: buttonTextStyle.copyWith(
+                        color: primaryColor,
+                      ),
                     ),
-                  ),
-                  Switch(
-                    activeColor: primaryColor,
-                    value: true,
-                    onChanged: (val) {
-                      // model.recent(val);
-                    },
-                  ),
-                ],
+                    Switch(
+                      activeColor: primaryColor,
+                      value: true,
+                      onChanged: (val) {
+                        // model.recent(val);
+                      },
+                    ),
+                  ],
+                ),
               ),
               Text(
                 'Your Facebook friends won’t see you on Hart. You will be hidden from non-Facebook users until you like them.',
@@ -132,33 +140,39 @@ class PremiumScreen extends StatelessWidget {
   // }
 
   _heading({heading, body}) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              heading,
-              style: bodyTextStyle.copyWith(
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () {
+        Get.to(MaestroScreen());
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                heading,
+                style: bodyTextStyle.copyWith(
+                  color: primaryColor,
+                ),
+              ),
+              Image.asset(
+                '$staticAsset/arrow.png',
+                scale: 3,
                 color: primaryColor,
               ),
-            ),
-            Image.asset(
-              '$staticAsset/arrow.png',
-              scale: 3,
-              color: primaryColor,
-            ),
-          ],
-        ),
-        sizeBox10,
-        Text(
-          body,
-          style: subtitleText.copyWith(
-            color: lightRed,
+            ],
           ),
-        ),
-      ],
+          sizeBox10,
+          Text(
+            body,
+            style: subtitleText.copyWith(
+              color: lightRed,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

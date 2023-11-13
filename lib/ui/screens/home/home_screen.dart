@@ -11,9 +11,7 @@ import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/models/app_user.dart';
 import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/ui/custom_widgets/custom_button.dart';
-import 'package:hart/ui/custom_widgets/custom_loader.dart';
 import 'package:hart/ui/custom_widgets/custom_loaders/red_hart_10sec.dart';
-import 'package:hart/ui/custom_widgets/custom_loaders/white_10sec2.dart';
 import 'package:hart/ui/screens/home/home_provider.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
@@ -163,7 +161,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       model.isLiked = false;
                       model.isDisLiked = true;
                     });
-                    await Future.delayed(Duration(milliseconds: 500));
+                    await Future.delayed(Duration(milliseconds: 100));
 
                     setState(() {
                       model.isDisLiked = false;
@@ -183,20 +181,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       scale: 3.5,
                     ),
                   ),
-// =======
-//                 setState(() {
-//                   model.isDisLiked = false;
-//                 });
-//                 model.disLike(model.appUsers[model.index]);
-//               },
-//               child: Container(
-//                 padding: const EdgeInsets.all(20),
-//                 decoration: BoxDecoration(
-//                   // color: model.isDislike ? greyColor2 : whiteColor,
-//                   color: model.isDisLiked == true ? greyColor2 : whiteColor,
-//                   shape: BoxShape.circle,
-//                   boxShadow: boxShadow,
-// >>>>>>> dev
                 ),
                 SizedBox(
                   width: 15.w,
@@ -211,10 +195,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       model.isLiked = true;
                       model.isDisLiked = false;
                     });
-                    await Future.delayed(Duration(seconds: 1));
+                    await Future.delayed(Duration(milliseconds: 100));
 
                     setState(() {
                       model.isLiked = false;
+                      model.isDisLiked = false;
                     });
                     model.like(model.appUsers[model.index]);
                   },

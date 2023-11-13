@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hart/core/constants/colors.dart';
 import 'package:hart/ui/custom_widgets/custom_app_bar.dart';
+import 'package:hart/ui/screens/profile_screen/Notifications/notification_screen.dart';
+import 'package:hart/ui/screens/profile_screen/app_setting/app_setting_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../core/constants/strings.dart';
 import '../../../../core/constants/style.dart';
@@ -10,128 +14,141 @@ class AppSettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(
-            24,
-            60,
-            24,
-            40,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CustomAppBar(title: 'App Setting'),
-              sizeBox30,
-              Text(
-                'Show distance in miles',
-                style: bodyTextStyle,
+    return ChangeNotifierProvider(
+      create: (context) => AppSettingProvider(),
+      child: Consumer<AppSettingProvider>(builder: (context, model, child) {
+        return Scaffold(
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(
+                24,
+                60,
+                24,
+                40,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Notifications',
-                    style: bodyTextStyle,
-                  ),
-                  Switch(
-                    activeColor: blackColor,
-                    value: true,
-                    onChanged: (val) {
-                      // model.recent(val);
-                    },
-                  ),
-                ],
-              ),
-              sizeBox20,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Text(
-                      'Great for low light conditions and lover of the night.',
-                      style: subtitleText.copyWith(
-                        color: greyColor2,
+                  CustomAppBar(title: 'App Setting'),
+                  sizeBox30,
+                  // Text(
+                  //   'Show distance in miles',
+                  //   style: bodyTextStyle,
+                  // ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Notifications',
+                        style: bodyTextStyle,
                       ),
-                    ),
+                      Switch(
+                        activeColor: blackColor,
+                        value: model.isNotificationsOn,
+                        onChanged: (val) {
+                          model.changeNotificaionSettin(val);
+                        },
+                      ),
+                    ],
                   ),
-                  Switch(
-                    activeColor: greyColor2,
-                    thumbColor: MaterialStatePropertyAll(blackColor),
-                    value: true,
-                    onChanged: (val) {
-                      // model.recent(val);
-                    },
-                  ),
-                ],
-              ),
-              sizeBox20,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
+                  // sizeBox20,
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //   children: [
+                  //     Expanded(
+                  //       child: Text(
+                  //         'Great for low light conditions and lover of the night.',
+                  //         style: subtitleText.copyWith(
+                  //           color: greyColor2,
+                  //         ),
+                  //       ),
+                  //     ),
+                  //     Switch(
+                  //       activeColor: greyColor2,
+                  //       thumbColor: MaterialStatePropertyAll(blackColor),
+                  //       value: true,
+                  //       onChanged: (val) {
+                  //         // model.recent(val);
+                  //       },
+                  //     ),
+                  //   ],
+                  // ),
+                  // sizeBox20,
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //   children: [
+                  //     Text(
+                  //       'App icon',
+                  //       style: bodyTextStyle,
+                  //     ),
+                  //     Text(
+                  //       'Hart Dark red',
+                  //       style: subtitleText.copyWith(
+                  //         color: greyColor2,
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
+                  sizeBox30,
                   Text(
-                    'App icon',
-                    style: bodyTextStyle,
-                  ),
-                  Text(
-                    'Hart Dark red',
+                    'Your login methods',
                     style: subtitleText.copyWith(
                       color: greyColor2,
                     ),
                   ),
+                  sizeBox20,
+                  _heading(heading: 'Email', body: 'Add email'),
+                  sizeBox20,
+                  _heading(heading: 'Facebook', body: 'Linked'),
+                  sizeBox30,
+                  Text(
+                    'Your account',
+                    style: subtitleText.copyWith(
+                      color: greyColor2,
+                    ),
+                  ),
+                  sizeBox20,
+                  GestureDetector(
+                    onTap: () {
+                      Get.to(
+                        NotificationScreen(),
+                      );
+                    },
+                    child: Text(
+                      'Notifications',
+                      style: bodyTextStyle.copyWith(
+                        color: primaryColor,
+                      ),
+                    ),
+                  ),
+                  // sizeBox20,
+                  // GestureDetector(
+                  //   child: Text(
+                  //     'Deactivate',
+                  //     style: bodyTextStyle.copyWith(
+                  //       color: primaryColor,
+                  //     ),
+                  //   ),
+                  // ),
+                  sizeBox20,
+                  GestureDetector(
+                    onTap: () {
+                      model.terminateUser();
+                    },
+                    child: Text(
+                      'Terminate',
+                      style: bodyTextStyle.copyWith(
+                        color: primaryColor,
+                      ),
+                    ),
+                  ),
+                  sizeBox20,
                 ],
               ),
-              sizeBox30,
-              Text(
-                'Your login methods',
-                style: subtitleText.copyWith(
-                  color: greyColor2,
-                ),
-              ),
-              sizeBox20,
-              _heading(heading: 'Email', body: 'Add email'),
-              sizeBox20,
-              _heading(heading: 'Facebook', body: 'Linked'),
-              sizeBox30,
-              Text(
-                'Your account',
-                style: subtitleText.copyWith(
-                  color: greyColor2,
-                ),
-              ),
-              sizeBox20,
-              GestureDetector(
-                child: Text(
-                  'Notifications',
-                  style: bodyTextStyle.copyWith(
-                    color: primaryColor,
-                  ),
-                ),
-              ),
-              sizeBox20,
-              GestureDetector(
-                child: Text(
-                  'Deactivate',
-                  style: bodyTextStyle.copyWith(
-                    color: primaryColor,
-                  ),
-                ),
-              ),
-              sizeBox20,
-              GestureDetector(
-                child: Text(
-                  'Terminate',
-                  style: bodyTextStyle.copyWith(
-                    color: primaryColor,
-                  ),
-                ),
-              ),
-              sizeBox20,
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 

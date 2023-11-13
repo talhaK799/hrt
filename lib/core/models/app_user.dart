@@ -9,6 +9,8 @@ class AppUser {
   bool? isPremiumUser;
   bool? isLiked;
   bool? isDesLiked;
+  bool? isNotificationsOn;
+  bool? isPrivatePhoto;
   int? likesCount;
   int? spanks;
   int? age;
@@ -32,11 +34,13 @@ class AppUser {
     this.phoneNumber,
     this.isEmailVerified,
     this.isPhoneNoVerified,
+    this.isPrivatePhoto,
     this.isLiked,
     this.isDesLiked,
     this.muteIds,
     this.likesCount,
     this.spanks,
+    this.isNotificationsOn,
     this.name,
     this.dob,
     this.nickName,
@@ -61,12 +65,13 @@ class AppUser {
     data['phoneNumber'] = phoneNumber;
     data['isEmailVerified'] = isEmailVerified ?? false;
     data['isPhoneNoVerified'] = isPhoneNoVerified ?? false;
+    data['isNotificationsOn'] = isNotificationsOn ?? false;
     data['isLiked'] = isLiked ?? false;
     data['isDesLiked'] = isDesLiked ?? false;
     data['isPremiumUser'] = isPremiumUser ?? false;
+    data['isPrivatePhoto'] = isPrivatePhoto ?? false;
     data['dob'] = dob;
     data['age'] = age;
-
     data['likesCount'] = likesCount??0;
     data['spanks'] = spanks??0;
     data['nickName'] = nickName ?? "User";
@@ -81,7 +86,6 @@ class AppUser {
   }
 
   AppUser.fromJson(json, id) {
-// <<<<<<< premium_features
     this.id = id;
     email = json['email'] ?? "";
     paymentId = json['paymentId'] ?? "";
@@ -92,6 +96,8 @@ class AppUser {
     isLiked = json['isLiked'] ?? false;
     isDesLiked = json['isDesLiked'] ?? false;
     isPremiumUser = json['isPremiumUser'] ?? false;
+    isNotificationsOn = json['isNotificationsOn'] ?? false;
+    isPrivatePhoto = json['isPrivatePhoto'] ?? false;
     // isMuteNotification = json['isMuteNotification'] ?? false;
     nickName = json['nickName'] ?? "User";
     dob = json['dob'];

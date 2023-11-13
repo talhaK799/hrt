@@ -33,7 +33,7 @@ class _SplashScreenState extends State<SplashScreen> {
       Duration(seconds: 2),
     );
 
-    _id = await link.initUniLinks() ?? 'no user';
+    _id = await link.initDeepLinks() ?? 'no user';
     print('sharing id $_id');
     // Position position = await _location.determinePosition();
     // print(

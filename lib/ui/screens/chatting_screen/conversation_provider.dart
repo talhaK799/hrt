@@ -78,7 +78,6 @@ class ConversationProvider extends BaseViewModel {
             Conversation.fromJson(element.data()),
           );
           notifyListeners();
-          // print("groupId == > ${conversations[1].conversationId}");
           print("Conversation == > ${conversations.first.toJson()}");
         });
         getUsers();
@@ -104,6 +103,8 @@ class ConversationProvider extends BaseViewModel {
           conversations[i].appUser =
               await db.getAppUser(conversations[i].toUserId);
           print("User data ===> ${conversations[i].appUser!.toJson()}");
+
+          await Future.delayed(Duration(seconds: 5));
         }
       }
     }
@@ -111,33 +112,6 @@ class ConversationProvider extends BaseViewModel {
   }
 
   List<Conversation> conversations = [];
-  // List<Chat> chats = [
-  //   // Chat(
-  //   //   name: 'Group',
-  //   //   desscription: 'Lorem ipsum dolor sit amet consectet.',
-  //   //   isGroup: true,
-  //   // ),
-  //   // Chat(
-  //   //   name: 'Joseph',
-  //   //   desscription: 'Lorem ipsum dolor sit amet consectet.',
-  //   // ),
-  //   // Chat(
-  //   //   name: 'Joseph',
-  //   //   desscription: 'Lorem ipsum dolor sit amet consectet.',
-  //   // ),
-  //   // Chat(
-  //   //   name: 'Joseph',
-  //   //   desscription: 'Lorem ipsum dolor sit amet consectet.',
-  //   // ),
-  //   // Chat(
-  //   //   name: 'Joseph',
-  //   //   desscription: 'Lorem ipsum dolor sit amet consectet.',
-  //   // ),
-  //   // Chat(
-  //   //   name: 'Joseph',
-  //   //   desscription: 'Lorem ipsum dolor sit amet consectet.',
-  //   // ),
-  // ];
 
   List<RadioButton> buttons = [
     RadioButton(

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hart/core/constants/style.dart';
 import 'package:hart/ui/custom_widgets/custom_app_bar.dart';
+import 'package:hart/ui/screens/profile_screen/About/privacy_screen.dart';
+import 'package:hart/ui/screens/profile_screen/About/trems_conditions_screen.dart';
 
 import '../../../custom_widgets/custom_list_item.dart';
 
@@ -20,12 +23,28 @@ class AboutScreen extends StatelessWidget {
             ListView(
               shrinkWrap: true,
               children: [
-                CustomListItem(
-                  text: 'Privacy policy',
+                GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {
+                    Get.to(
+                      PrivacyPolicyScreen(),
+                    );
+                  },
+                  child: CustomListItem(
+                    text: 'Privacy policy',
+                  ),
                 ),
                 sizeBox20,
-                CustomListItem(
-                  text: 'Term of service',
+                GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {
+                    Get.to(
+                      TermsAndConditions(),
+                    );
+                  },
+                  child: CustomListItem(
+                    text: 'Term of service',
+                  ),
                 ),
                 sizeBox20,
               ],
@@ -40,5 +59,3 @@ class AboutScreen extends StatelessWidget {
   //   return CustomTextFieldWhite();
   // }
 }
-
-

@@ -166,7 +166,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                 ),
                 sizeBox20,
                 Text(
-                  'This is where you will see your Connections.',
+                  'This is where you will see your connections.',
                   style: subHeadingText1.copyWith(
                     color: blackColor,
                   ),
