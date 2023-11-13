@@ -18,7 +18,7 @@ class DynamicLinkHandler {
     return refLink.toString();
   }
 
-  initUniLinks() async {
+  initDeepLinks() async {
     try {
       PendingDynamicLinkData? initialLink = await dynamicLinks.getInitialLink();
       Uri? deepLink = initialLink?.link;

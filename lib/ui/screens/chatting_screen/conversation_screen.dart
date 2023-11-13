@@ -211,7 +211,7 @@ class ConversationScreen extends StatelessWidget {
                       height: double.infinity,
                       child: Center(
                         child: Text(
-                          'No Matches found',
+                          '',
                           style: subHeadingText1,
                         ),
                       ),
@@ -364,7 +364,7 @@ class ConversationScreen extends StatelessWidget {
                   backgroundImage:
                       NetworkImage(model.conversations[index].imageUrl!),
                 )
-          : model.conversations[index].appUser!.images==null
+          : model.conversations[index].appUser!.images == null
               ? CircleAvatar(
                   radius: 35.r,
                   backgroundImage: AssetImage(
@@ -377,7 +377,7 @@ class ConversationScreen extends StatelessWidget {
                       model.conversations[index].appUser!.images!.first),
                 ),
       title: Text(
-        "${model.conversations[index].isGroupChat == true ? model.conversations[index].name : model.conversations[index].appUser!.name}",
+        "${model.conversations[index].isGroupChat == true ? model.conversations[index].name : model.conversations[index].appUser!.name ?? 'user'}",
         style: subHeadingTextStyle2,
       ),
       subtitle: Text(

@@ -10,7 +10,7 @@ class PairProfilePorvider extends BaseViewModel {
   final linkHandler = locator<DynamicLinkHandler>();
 
   PairProfilePorvider() {
-    linkHandler.initUniLinks();
+    linkHandler.initDeepLinks();
   }
 
   shareLink() async {

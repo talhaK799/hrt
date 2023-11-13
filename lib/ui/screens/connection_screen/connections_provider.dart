@@ -26,6 +26,7 @@ class ConnectionsProvider extends BaseViewModel {
 
   getLikingUsers() async {
     setState(ViewState.busy);
+    await Future.delayed(Duration(seconds: 5));
     currentUser.appUser = await db.getAppUser(currentUser.appUser.id);
     matches = await db.getAllRequest(currentUser.appUser.id!);
     for (var m in matches) {

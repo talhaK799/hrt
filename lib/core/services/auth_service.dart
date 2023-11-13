@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hart/core/models/app_user.dart';
 import 'package:hart/core/models/custom_auth_result.dart';
+import 'package:hart/core/models/matches.dart';
 import 'package:hart/core/models/subscripton.dart';
 import 'package:hart/core/others/dynamic_link_handler.dart';
 import 'auth_exception_service.dart';
@@ -19,6 +20,8 @@ class AuthService extends ChangeNotifier {
   AppUser sharingUser = AppUser();
   AppUser signUpUser = AppUser();
   Subscription subscription = Subscription();
+
+  Matches match = Matches();
   String? id;
 
   String? verificationId;
@@ -36,21 +39,39 @@ class AuthService extends ChangeNotifier {
       if (appUser.id == null) {
         isLogin = false;
       } else {
-        id = await link.initUniLinks();
-        if (id != null) {
-          sharingUser = await _dbService.getAppUser(id);
-          if (sharingUser.id != null) {
-            appUser.likedUsers!.add(id!);
-            sharingUser.likedUsers!.add(appUser.id!);
-            await _dbService.updateUserProfile(appUser);
-            await _dbService.updateUserProfile(sharingUser);
-          }
-        }
+        await checkLinkUser();
       }
 
       await checkUserPremium();
     } else {
       isLogin = false;
+    }
+  }
+
+  ///
+  /// check if user is entered the through link
+  ///
+  checkLinkUser() async {
+    id = await link.initDeepLinks();
+    if (id != null) {
+      sharingUser = await _dbService.getAppUser(id);
+      if (sharingUser.id != null) {
+        if (!appUser.likedUsers!.contains(id)) {
+          appUser.likedUsers!.add(id!);
+          if (!sharingUser.likedUsers!.contains(appUser.id)) {
+            sharingUser.likedUsers!.add(appUser.id!);
+            match.createdAt = DateTime.now();
+            match.isAccepted = true;
+            match.isProgressed = true;
+            match.isRejected = false;
+            match.likedByUserId = this.appUser.id;
+            match.likedUserId = sharingUser.id;
+            await _dbService.updateUserProfile(appUser);
+            await _dbService.updateUserProfile(sharingUser);
+            await _dbService.addRequest(match);
+          }
+        }
+      }
     }
   }
 
@@ -275,6 +296,13 @@ class AuthService extends ChangeNotifier {
 
   logout() async {
     await _auth.signOut();
+    isLogin = false;
+    user = null;
+  }
+
+  deleteUserAccount() async {
+    await user!.delete();
+    print('user id  ==> ${user!.uid}');
     isLogin = false;
     user = null;
   }

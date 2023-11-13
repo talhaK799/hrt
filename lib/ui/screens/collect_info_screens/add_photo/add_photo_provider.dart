@@ -64,7 +64,7 @@ class AddPhotoProvider extends BaseViewModel {
   ];
   removeImage(index) async {
     images[index] = PickImage();
-    List<File> imgs = [];
+    // List<File> imgs = [];
     // if (currentImages.length != 0) {
     if (index < userImagesCount) {
       currentImages.removeAt(index);
@@ -72,17 +72,17 @@ class AddPhotoProvider extends BaseViewModel {
       userImagesCount = userImagesCount - 1;
     } else {
       newImages.removeAt(index - userImagesCount);
-      imgs = newImages;
+      // imgs = newImages;
     }
     for (var i = 0; i < images.length; i++) {
       images[i] = PickImage();
     }
-    for (var i = 0; i < userImagesCount + imgs.length; i++) {
+    for (var i = 0; i < userImagesCount + newImages.length; i++) {
       if (i < userImagesCount) {
         images[i].imgUrl = currentImages[i];
       } else {
-        print('local image path ${imgs[i - userImagesCount].path}');
-        images[i].image = imgs[i - userImagesCount];
+        print('local image path ${newImages[i - userImagesCount].path}');
+        images[i].image = newImages[i - userImagesCount];
       }
     }
     notifyListeners();

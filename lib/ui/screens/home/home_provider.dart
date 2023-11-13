@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/models/app_user.dart';
@@ -14,7 +13,6 @@ import 'package:hart/locator.dart';
 import 'package:hart/ui/screens/collect_info_screens/fantasies_screen/fantasies_screen.dart';
 import 'package:hart/ui/screens/connection_screen/connect_popup/connect_popup_screen.dart';
 import 'package:hart/ui/screens/profile_screen/maestro_screen/maestro_screen.dart';
-import 'package:hart/ui/screens/profile_screen/premium_setting/premium_screen.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 import '../collect_info_screens/select_gender_screen/select_gender_screen.dart';
@@ -43,6 +41,7 @@ class HomeProvider extends BaseViewModel {
   String country = '';
   Matches match = Matches();
   Filtering filter = Filtering();
+  bool isDataLoaded = false;
 
   HomeProvider() {
     // currentLocation.determinePosition();
@@ -74,12 +73,27 @@ class HomeProvider extends BaseViewModel {
     print("country =>" + placemarks.first.country!);
   }
 
+  // delay() async {
+  //   setState(ViewState.busy);
+  //   users = await db.getAllUsers(currentUser.appUser);
+  //   setState(ViewState.busy);
+  //   // isDataLoaded = true;
+  //   notifyListeners();
+  // }
+
   getAllAppUsers() async {
     users = [];
     appUsers = [];
     currentUser.appUser = await db.getAppUser(currentUser.appUser.id);
     setState(ViewState.busy);
     users = await db.getAllUsers(currentUser.appUser);
+
+    await Future.delayed(Duration(seconds: 5));
+    setState(ViewState.idle);
+
+    if (users.length == 0) {
+      // setState(ViewState.busy);
+    }
     for (var user in users) {
       // appUsers.add(user);
       if (currentUser.appUser.likedUsers == null ||
@@ -93,7 +107,8 @@ class HomeProvider extends BaseViewModel {
         }
       }
     }
-    setState(ViewState.idle);
+    notifyListeners();
+    // setState(ViewState.idle);
   }
 
   updateIndex(index) {
@@ -122,7 +137,7 @@ class HomeProvider extends BaseViewModel {
     ///if currentUser likes other users
     ///
     if (await !currentUser.appUser.likedUsers!.contains(user.id)) {
-      if (currentUser.appUser.likedUsers!.length <=
+      if (currentUser.appUser.likedUsers!.length <
           currentUser.appUser.likesCount!) {
         currentUser.appUser.likedUsers!.add(user.id!);
 
@@ -162,7 +177,7 @@ class HomeProvider extends BaseViewModel {
           if (appUsers.length > 0) {
             dotIndex = 0;
             await pageController!.nextPage(
-              duration: Duration(milliseconds: 500),
+              duration: Duration(milliseconds: 300),
               curve: Curves.easeIn,
             );
           }
@@ -187,14 +202,16 @@ class HomeProvider extends BaseViewModel {
   ///
   disLike(AppUser user) async {
     if (await !currentUser.appUser.disLikedUsers!.contains(user.id)) {
-      if (currentUser.appUser.likedUsers!.length <=
+      if (currentUser.appUser.disLikedUsers!.length <
           currentUser.appUser.likesCount!) {
         currentUser.appUser.disLikedUsers!.add(user.id!);
+        print(
+            'likes count== ${currentUser.appUser.likesCount} and length==> ${currentUser.appUser.disLikedUsers!.length}');
         bool isUpdated = await db.updateUserProfile(currentUser.appUser);
         if (isUpdated) {
           appUsers.removeWhere((element) => element.id == user.id);
           pageController!.nextPage(
-            duration: Duration(milliseconds: 500),
+            duration: Duration(milliseconds: 300),
             curve: Curves.easeIn,
           );
         }

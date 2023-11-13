@@ -31,312 +31,304 @@ class ProfileScreen extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => ProfileProvider(),
       child: Consumer<ProfileProvider>(builder: (context, model, child) {
-        return ModalProgressHUD(
-          inAsyncCall: model.state == ViewState.busy,
-          progressIndicator: CustomLoader(),
-          child: Scaffold(
-            body: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(
-                  24,
-                  60,
-                  24,
-                  40,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Container(
-                          width: 120,
-                          height: 120,
-                          decoration: BoxDecoration(
-                            color: greyColor,
-// <<<<<<< imageUpdation
-//                             image: model.currentUser.images==null
-// =======
-                            image: model.currentUser.images == null
-// >>>>>>> dev
-                                ? DecorationImage(
-                                    image: AssetImage(
-                                      '$dynamicAsset/image.png',
-                                    ),
-                                    fit: BoxFit.cover)
-                                : model.currentUser.images!.isNotEmpty
-                                    ? DecorationImage(
-                                        image: NetworkImage(
-                                          model.currentUser.images!.first,
-                                        ),
-                                        fit: BoxFit.cover)
-                                    : DecorationImage(
-                                        image: AssetImage(
-                                          '$dynamicAsset/image.png',
-                                        ),
-                                        fit: BoxFit.cover),
-                            // borderRadius: BorderRadius.circular(12.r),
-                          ),
+        return Scaffold(
+          body: SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(
+                24,
+                60,
+                24,
+                40,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Container(
+                        width: 120,
+                        height: 120,
+                        decoration: BoxDecoration(
+                          color: greyColor,
+                          image: model.currentUser.images == null
+                              ? DecorationImage(
+                                  image: AssetImage(
+                                    '$dynamicAsset/image.png',
+                                  ),
+                                  fit: BoxFit.cover)
+                              : model.currentUser.images!.isNotEmpty
+                                  ? DecorationImage(
+                                      image: NetworkImage(
+                                        model.currentUser.images!.first,
+                                      ),
+                                      fit: BoxFit.cover)
+                                  : DecorationImage(
+                                      image: AssetImage(
+                                        '$dynamicAsset/image.png',
+                                      ),
+                                      fit: BoxFit.cover),
+                          // borderRadius: BorderRadius.circular(12.r),
                         ),
-                        Container(
-                          width: 100,
-                          height: 100,
-                          decoration: BoxDecoration(
-
-                            
-                            color: greyColor,
-                            image: model.currentUser.images==null
-                                ? DecorationImage(
-                                    image: AssetImage(
-                                      '$dynamicAsset/image.png',
-                                    ),
-                                    fit: BoxFit.cover)
-                                : model.currentUser.images!.isNotEmpty
-                                    ? DecorationImage(
-                                        image: NetworkImage(
-                                          model.currentUser.images!.length > 0
-                                              ? model.currentUser.images![1]
-                                              : model.currentUser.images![0],
-                                        ),
-                                        fit: BoxFit.cover)
-                                    : DecorationImage(
-                                        image: AssetImage(
-                                          '$dynamicAsset/image.png',
-                                        ),
-                                        fit: BoxFit.cover),
-                            // borderRadius: BorderRadius.circular(12.r),
-                          ),
+                      ),
+                      Container(
+                        width: 100,
+                        height: 100,
+                        decoration: BoxDecoration(
+                          color: greyColor,
+                          image: model.currentUser.images == null
+                              ? DecorationImage(
+                                  image: AssetImage(
+                                    '$dynamicAsset/image.png',
+                                  ),
+                                  fit: BoxFit.cover)
+                              : model.currentUser.images!.isNotEmpty
+                                  ? DecorationImage(
+                                      image: NetworkImage(
+                                        model.currentUser.images!.length > 0
+                                            ? model.currentUser.images![1]
+                                            : model.currentUser.images![0],
+                                      ),
+                                      fit: BoxFit.cover)
+                                  : DecorationImage(
+                                      image: AssetImage(
+                                        '$dynamicAsset/image.png',
+                                      ),
+                                      fit: BoxFit.cover),
+                          // borderRadius: BorderRadius.circular(12.r),
                         ),
-                      ],
-                    ),
-                    sizeBox20,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          model.currentUser.name ?? 'Ali Khan',
-                          style: descriptionTextStyle,
+                      ),
+                    ],
+                  ),
+                  sizeBox20,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        model.currentUser.name ?? 'Ali Khan',
+                        style: descriptionTextStyle,
+                      ),
+                      GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onTap: () {
+                          Get.to(
+                            EditProfileScreen(),
+                          );
+                        },
+                        child: Image.asset(
+                          '$staticAsset/edit2.png',
+                          scale: 3,
                         ),
-                        GestureDetector(
-                          behavior: HitTestBehavior.opaque,
-                          onTap: () {
-                            Get.to(
-                              EditProfileScreen(),
-                            );
-                          },
-                          child: Image.asset(
-                            '$staticAsset/edit2.png',
-                            scale: 3,
-                          ),
-                        ),
-                      ],
+                      ),
+                    ],
+                  ),
+                  sizeBox10,
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      bottom: 5,
                     ),
-                    sizeBox10,
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        bottom: 5,
-                      ),
-                      child: Text(
-                        '${model.currentUser.age ?? ""} man ${model.currentUser.identity ?? ""}',
-                        style: buttonTextStyleGrey,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        bottom: 5,
-                      ),
-                      child: Text(
-                        'Currently in ${model.country}',
-                        style: buttonTextStyleGrey,
-                      ),
-                    ),
-                    Text(
-                      'Basic member',
+                    child: Text(
+                      '${model.currentUser.age ?? ""} man ${model.currentUser.identity ?? ""}',
                       style: buttonTextStyleGrey,
                     ),
-                    sizeBox30,
-                    CustomProfileTile(
-                      title: 'Premium Settings',
-                      textColor: whiteColor,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      bottom: 5,
+                    ),
+                    child: Text(
+                      'Currently in ${model.country}',
+                      style: buttonTextStyleGrey,
+                    ),
+                  ),
+                  Text(
+                    'Basic member',
+                    style: buttonTextStyleGrey,
+                  ),
+                  sizeBox30,
+                  CustomProfileTile(
+                    title: 'Premium Settings',
+                    textColor: whiteColor,
+                    color: primaryColor,
+                    iconColor: whiteColor,
+                    icon: 'premium.png',
+                    isWhite: false,
+                    onTap: () {
+                      Get.to(
+                        PremiumScreen(),
+                      );
+                    },
+                  ),
+                  sizeBox10,
+                  CustomProfileTile(
+                    onTap: () {
+                      Get.to(
+                        KingHartScreen(),
+                      );
+                    },
+                    title: 'Spanks',
+                    color: pinkColor,
+                    textColor: primaryColor,
+                    iconColor: primaryColor,
+                    icon: 'kings.png',
+                    isWhite: false,
+                  ),
+                  sizeBox10,
+                  CustomProfileTile(
+                    onTap: () {
+                      Get.to(
+                        UpliftScreen(),
+                      );
+                    },
+                    title: 'Uplift',
+                    color: pinkColor,
+                    textColor: primaryColor,
+                    iconColor: primaryColor,
+                    icon: 'uplift.png',
+                    isWhite: false,
+                  ),
+                  sizeBox10,
+                  CustomProfileTile(
+                    onTap: () {
+                      Get.to(
+                        MaestroScreen(),
+                      );
+                    },
+                    title: 'BECOME A MAESTRO',
+                    color: pinkColor,
+                    textColor: primaryColor,
+                    iconColor: primaryColor,
+                    icon: 'uplift.png',
+                    isWhite: false,
+                  ),
+                  sizeBox20,
+                  Divider(
+                    color: greyColor2,
+                  ),
+                  CustomProfileTile(
+                    onTap: () {
+                      Get.to(
+                        PairProfileScreen(),
+                      );
+                    },
+                    title: 'Pair Profile with my partner',
+                    icon: 'pair.png',
+                  ),
+                  Divider(
+                    color: greyColor2,
+                  ),
+                  CustomProfileTile(
+                    onTap: () {
+                      Get.to(
+                        EditProfileScreen(),
+                      );
+                    },
+                    title: 'Edit Profile',
+                    icon: 'edit.png',
+                  ),
+                  Divider(
+                    color: greyColor2,
+                  ),
+                  CustomProfileTile(
+                    onTap: () {},
+                    title: 'Search Setting',
+                    icon: 'searchpro.png',
+                  ),
+                  Divider(
+                    color: greyColor2,
+                  ),
+                  CustomProfileTile(
+                    onTap: () {
+                      Get.to(
+                        AppSettingsScreen(),
+                      );
+                    },
+                    title: 'App Setting',
+                    icon: 'setting.png',
+                  ),
+                  Divider(
+                    color: greyColor2,
+                  ),
+                  CustomProfileTile(
+                    onTap: () {
+                      model.shareLink();
+                    },
+                    title: 'Share My Profile',
+                    icon: 'share.png',
+                  ),
+                  Divider(
+                    color: greyColor2,
+                  ),
+                  CustomProfileTile(
+                    onTap: () {
+                      Get.to(
+                        NotificationScreen(),
+                      );
+                    },
+                    title: 'Notifications',
+                    icon: 'notifications.png',
+                  ),
+                  Divider(
+                    color: greyColor2,
+                  ),
+                  sizeBox20,
+                  Text(
+                    'HART',
+                    style: subHeadingTextStyle.copyWith(
                       color: primaryColor,
-                      iconColor: whiteColor,
-                      icon: 'premium.png',
-                      isWhite: false,
-                      onTap: () {
-                        Get.to(
-                          PremiumScreen(),
-                        );
-                      },
                     ),
-                    sizeBox10,
-                    CustomProfileTile(
-                      onTap: () {
-                        Get.to(
-                          KingHartScreen(),
-                        );
-                      },
-                      title: 'Spanks',
-                      color: pinkColor,
-                      textColor: primaryColor,
-                      iconColor: primaryColor,
-                      icon: 'kings.png',
-                      isWhite: false,
-                    ),
-                    sizeBox10,
-                    CustomProfileTile(
-                      onTap: () {
-                        Get.to(
-                          UpliftScreen(),
-                        );
-                      },
-                      title: 'Uplift',
-                      color: pinkColor,
-                      textColor: primaryColor,
-                      iconColor: primaryColor,
-                      icon: 'uplift.png',
-                      isWhite: false,
-                    ),
-                    sizeBox10,
-                    CustomProfileTile(
-                      onTap: () {
-                        Get.to(
-                          MaestroScreen(),
-                        );
-                      },
-                      title: 'BECOME A MAESTRO',
-                      color: pinkColor,
-                      textColor: primaryColor,
-                      iconColor: primaryColor,
-                      icon: 'uplift.png',
-                      isWhite: false,
-                    ),
-                    sizeBox20,
-                    Divider(
-                      color: greyColor2,
-                    ),
-                    CustomProfileTile(
-                      onTap: () {
-                        Get.to(
-                          PairProfileScreen(),
-                        );
-                      },
-                      title: 'Pair Profile with my partner',
-                      icon: 'pair.png',
-                    ),
-                    Divider(
-                      color: greyColor2,
-                    ),
-                    CustomProfileTile(
-                      onTap: () {
-                        Get.to(
-                          EditProfileScreen(),
-                        );
-                      },
-                      title: 'Edit Profile',
-                      icon: 'edit.png',
-                    ),
-                    Divider(
-                      color: greyColor2,
-                    ),
-                    CustomProfileTile(
-                      onTap: () {},
-                      title: 'Search Setting',
-                      icon: 'searchpro.png',
-                    ),
-                    Divider(
-                      color: greyColor2,
-                    ),
-                    CustomProfileTile(
-                      onTap: () {
-                        Get.to(
-                          AppSettingsScreen(),
-                        );
-                      },
-                      title: 'App Setting',
-                      icon: 'setting.png',
-                    ),
-                    Divider(
-                      color: greyColor2,
-                    ),
-                    CustomProfileTile(
-                      onTap: () {},
-                      title: 'Share My Profile',
-                      icon: 'share.png',
-                    ),
-                    Divider(
-                      color: greyColor2,
-                    ),
-                    CustomProfileTile(
-                      onTap: () {
-                        Get.to(
-                          NotificationScreen(),
-                        );
-                      },
-                      title: 'Notifications',
-                      icon: 'notifications.png',
-                    ),
-                    Divider(
-                      color: greyColor2,
-                    ),
-                    sizeBox20,
-                    Text(
-                      'HART',
-                      style: subHeadingTextStyle.copyWith(
-                        color: primaryColor,
-                      ),
-                    ),
-                    sizeBox20,
-                    Divider(
-                      color: greyColor2,
-                    ),
-                    sizeBox10,
-                    CustomProfileTile(
-                      onTap: () {
-                        Get.to(
-                          CommunityScreen(),
-                        );
-                      },
-                      title: 'Our Community',
-                    ),
-                    Divider(
-                      color: greyColor2,
-                    ),
-                    CustomProfileTile(
-                      onTap: () {
-                        Get.to(
-                          AboutScreen(),
-                        );
-                      },
-                      title: 'About',
-                    ),
-                    Divider(
-                      color: greyColor2,
-                    ),
-                    CustomProfileTile(
-                      onTap: () {
-                        Get.to(
-                          HelpScreen(),
-                        );
-                      },
-                      title: 'Help',
-                    ),
-                    Divider(
-                      color: greyColor2,
-                    ),
-                    CustomProfileTile(
-                      onTap: () {
-                        model.logout();
-                      },
-                      title: 'Logout',
-                      textColor: redColor,
-                      iconColor: redColor,
-                    ),
-                    Divider(
-                      color: greyColor2,
-                    ),
-                  ],
-                ),
+                  ),
+                  sizeBox20,
+                  Divider(
+                    color: greyColor2,
+                  ),
+                  sizeBox10,
+                  // CustomProfileTile(
+                  //   onTap: () {
+                  //     Get.to(
+                  //       CommunityScreen(),
+                  //     );
+                  //   },
+                  //   title: 'Our Community',
+                  // ),
+                  // Divider(
+                  //   color: greyColor2,
+                  // ),
+                  CustomProfileTile(
+                    onTap: () {
+                      Get.to(
+                        AboutScreen(),
+                      );
+                    },
+                    title: 'About',
+                  ),
+                  Divider(
+                    color: greyColor2,
+                  ),
+                  // CustomProfileTile(
+                  //   onTap: () {
+                  //     Get.to(
+                  //       HelpScreen(),
+                  //     );
+                  //   },
+                  //   title: 'Help',
+                  // ),
+                  // Divider(
+                  //   color: greyColor2,
+                  // ),
+                  CustomProfileTile(
+                    onTap: () {
+                      model.logout();
+                    },
+                    title: 'Logout',
+                    textColor: redColor,
+                    iconColor: redColor,
+                  ),
+                  Divider(
+                    color: greyColor2,
+                  ),
+                ],
               ),
             ),
           ),
