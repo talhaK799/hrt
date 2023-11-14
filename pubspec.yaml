@@ -53,6 +53,8 @@ dependencies:
   flutter_windowmanager: ^0.2.0
   country_picker: ^2.0.22
   firebase_dynamic_links: ^5.4.3
+  flutter_facebook_auth: ^5.0.11
+  flutter_facebook_keyhash: ^0.0.4
 
 dev_dependencies:
   flutter_test:

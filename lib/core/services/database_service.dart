@@ -240,12 +240,16 @@ class DatabaseService {
 
   getAllUsers(AppUser appUser) async {
     List<AppUser> list = [];
+    print('getting all AppUsers ${appUser.id}');
     try {
       final snapshot = await _db
           .collection('app_user')
           .where("id", isNotEqualTo: appUser.id)
           .get();
+
+      print('getting all AppUsers 2');
       for (var user in snapshot.docs) {
+        print('id===>  ${user.id}');
         list.add(
           AppUser.fromJson(user.data(), user.id),
         );
@@ -626,7 +630,7 @@ class DatabaseService {
           .get();
       return Subscription.fromJson(snapshot.data(), snapshot.id);
     } catch (e, s) {
-      debugPrint('Exception @DatabaseService/checkPremiumExpire');
+      debugPrint('Exception @DatabaseService/checkPremiumExpire $e');
       debugPrint(s.toString());
       return Subscription();
     }

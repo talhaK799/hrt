@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hart/core/models/app_user.dart';
 import 'package:hart/core/models/custom_auth_result.dart';
 import 'package:hart/core/models/matches.dart';
@@ -21,6 +22,8 @@ class AuthService extends ChangeNotifier {
   AppUser signUpUser = AppUser();
   Subscription subscription = Subscription();
 
+  GoogleSignIn googleSignIn = GoogleSignIn();
+
   Matches match = Matches();
   String? id;
 
@@ -41,8 +44,9 @@ class AuthService extends ChangeNotifier {
       } else {
         await checkLinkUser();
       }
-
-      await checkUserPremium();
+      if (this.appUser.isPremiumUser == true) {
+        await checkUserPremium();
+      }
     } else {
       isLogin = false;
     }
@@ -77,7 +81,7 @@ class AuthService extends ChangeNotifier {
 
   checkUserPremium() async {
     if (appUser.paymentId == null) {
-      print("");
+      print("not a Premium User");
     } else {
       subscription = await _dbService.checkPremiumExpire(this.appUser);
       if (subscription.type == "month") {
@@ -239,7 +243,7 @@ class AuthService extends ChangeNotifier {
         } else {
           appUser.id = userCredential.user!.uid;
 
-          this.appUser = appUser;
+          this.appUser = AppUser();
           await _dbService.registerAppUser(appUser);
         }
         // }
@@ -288,6 +292,59 @@ class AuthService extends ChangeNotifier {
       // customAuthResult.status = true;
     } catch (e) {
       print('Exception@siginInWithPhone ===> $e');
+      customAuthResult.errorMessage =
+          AuthExceptionsService.generateExceptionMessage(e);
+    }
+    return customAuthResult;
+  }
+
+  ///
+  /// Google SignIn
+  ///
+  Future<CustomAuthResult> signUpUserWithGoogle() async {
+    print("Signing with google");
+    try {
+      final googleSignInAccount = await googleSignIn.signIn();
+      if (googleSignInAccount != null) {
+        final GoogleSignInAuthentication googleSignInAuthentication =
+            await googleSignInAccount.authentication;
+
+        final AuthCredential authCredential = GoogleAuthProvider.credential(
+            idToken: googleSignInAuthentication.idToken,
+            accessToken: googleSignInAuthentication.accessToken);
+        print(
+            "google access token==> ${googleSignInAuthentication.accessToken}");
+        print("id token==> ${googleSignInAuthentication.idToken}");
+
+        UserCredential result =
+            await _auth.signInWithCredential(authCredential);
+        user = result.user!;
+        print('User email ${result.user!.email}');
+        print('user id ${result.user!.uid}');
+        print('User Name ${result.user!.displayName}');
+        print('User imageUrl ${result.user!.photoURL}');
+        this.appUser.id = result.user!.uid;
+
+        signUpUser = await _dbService.getAppUser(result.user!.uid);
+        if (signUpUser.id != null) {
+          this.appUser = signUpUser;
+          // this.appUser.fcmToken = await FirebaseMessaging.instance.getToken();
+          // await _dbService.updateClientFcm(
+          //     this.appUser.fcmToken, this.appUser.id);
+        } else if (signUpUser.id == null) {
+          this.appUser = AppUser();
+          this.appUser.id = user!.uid;
+          this.appUser.email = user!.email;
+          this.appUser.name = user!.displayName;
+          // this.appUser.images!.add(user!.photoURL!);
+
+          await _dbService.registerAppUser(appUser);
+        }
+        customAuthResult.user = result.user!;
+        customAuthResult.status = true;
+      }
+    } catch (e) {
+      print("Exception@siginUpWithGoogle===>$e");
       customAuthResult.errorMessage =
           AuthExceptionsService.generateExceptionMessage(e);
     }
@@ -348,44 +405,4 @@ class AuthService extends ChangeNotifier {
 //   return customAuthResult;
 // }
 
-///
-/// Google SignIn
-///
-// Future<CustomAuthResult> loginWithGoogle() async {
-//   //Todo: Do settings in the Google cloud for 0Auth Credentials
-//   try {
-//     final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-//     final GoogleSignInAuthentication googleAuth =
-//         await googleUser!.authentication;
-//     final AuthCredential credential = GoogleAuthProvider.credential(
-//       accessToken: googleAuth.accessToken,
-//       idToken: googleAuth.idToken,
-//     );
-//     final authResult = await _auth.signInWithCredential(credential);
-//     print('register user => ${authResult.user!.uid}');
 
-//     if (authResult.user!.uid != null) {
-//       customAuthResult.status = true;
-//       clientUser = ClientUser();
-//       customAuthResult.user = authResult.user;
-//       clientUser!.id = authResult.user!.uid;
-//       clientUser!.email = authResult.user!.email;
-//       clientUser!.name = authResult.user!.displayName ?? '';
-
-//       print('Google sign in Client username => ${clientUser!.name}');
-
-//       await _dbService.registerClient(clientUser!);
-
-//       //Todo: Create Account in Database
-//     } else {
-//       customAuthResult.status = false;
-//       customAuthResult.errorMessage = 'An undefined error happened.';
-//     }
-//   } catch (e) {
-//     print('Exception @sighupWithGoogle: $e');
-//     customAuthResult.status = false;
-//     // customAuthResult.errorMessage =
-//     //     AuthExceptionsService.generateExceptionMessage(e);
-//   }
-//   return customAuthResult;
-// }

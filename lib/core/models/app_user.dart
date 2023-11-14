@@ -70,8 +70,8 @@ class AppUser {
     data['isDesLiked'] = isDesLiked ?? false;
     data['isPremiumUser'] = isPremiumUser ?? false;
     data['isPrivatePhoto'] = isPrivatePhoto ?? false;
-    data['dob'] = dob;
-    data['age'] = age;
+    data['dob'] = dob??'';
+    data['age'] = age??0;
     data['likesCount'] = likesCount??0;
     data['spanks'] = spanks??0;
     data['nickName'] = nickName ?? "User";
