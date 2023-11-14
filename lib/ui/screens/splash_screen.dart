@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_keyhash/flutter_facebook_keyhash.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -29,6 +30,8 @@ class _SplashScreenState extends State<SplashScreen> {
   final link = locator<DynamicLinkHandler>();
   final _location = locator<LocationService>();
   init() async {
+    printKeyHash();
+
     await Future.delayed(
       Duration(seconds: 2),
     );
@@ -57,6 +60,12 @@ class _SplashScreenState extends State<SplashScreen> {
     } else {
       Get.offAll(AuthScreen());
     }
+  }
+
+  void printKeyHash() async {
+    String? key = await FlutterFacebookKeyhash.getFaceBookKeyHash ??
+        'Unknown platform version';
+    print('key hash ===> $key');
   }
 
   @override

@@ -82,11 +82,14 @@ class HomeProvider extends BaseViewModel {
   // }
 
   getAllAppUsers() async {
+    print('getting all AppUsers');
     users = [];
     appUsers = [];
     currentUser.appUser = await db.getAppUser(currentUser.appUser.id);
     setState(ViewState.busy);
     users = await db.getAllUsers(currentUser.appUser);
+
+    print('number of all Appusers ${users.length}');
 
     await Future.delayed(Duration(seconds: 5));
     setState(ViewState.idle);
@@ -107,6 +110,7 @@ class HomeProvider extends BaseViewModel {
         }
       }
     }
+    print('number of filtered users ${appUsers.length}');
     notifyListeners();
     // setState(ViewState.idle);
   }
