@@ -69,7 +69,7 @@ class KingHartScreen extends StatelessWidget {
                             Expanded(
                               child: Offers(
                                 title: '${model.spanks[i].no_spanks} Spanks',
-                                price: model.spanks[i].price,
+                                price: '\$ ${model.spanks[i].price!.toInt()}',
                                 isSelected: model.spanks[i].isSelected,
                                 offer: model.spanks[i].offer,
                                 onTap: () {
@@ -114,7 +114,7 @@ class KingHartScreen extends StatelessWidget {
                     CustomButton(
                       title: 'CONTINUE',
                       onTap: () {
-                        model.buyspanks();
+                        model.makePayment(context);
                       },
                     ),
                   ],

@@ -70,13 +70,13 @@ class AppUser {
     data['isDesLiked'] = isDesLiked ?? false;
     data['isPremiumUser'] = isPremiumUser ?? false;
     data['isPrivatePhoto'] = isPrivatePhoto ?? false;
-    data['dob'] = dob??'';
-    data['age'] = age??0;
-    data['likesCount'] = likesCount??0;
-    data['spanks'] = spanks??0;
+    data['dob'] = dob ?? '';
+    data['age'] = age ?? 0;
+    data['likesCount'] = likesCount ?? 0;
+    data['spanks'] = spanks ?? 0;
     data['nickName'] = nickName ?? "User";
     data['identity'] = identity ?? "";
-    data['lookingFor'] = lookingFor ?? "";
+    data['lookingFor'] = lookingFor ?? [];
     data['desire'] = desire ?? [];
     data['muteIds'] = muteIds ?? [];
     data['images'] = images ?? [];
@@ -88,7 +88,7 @@ class AppUser {
   AppUser.fromJson(json, id) {
     this.id = id;
     email = json['email'] ?? "";
-    paymentId = json['paymentId'] ?? "";
+    paymentId = json['paymentId'];
     name = json['name'] ?? "User";
     phoneNumber = json['phoneNumber'];
     isEmailVerified = json['isEmailVerified'] ?? false;

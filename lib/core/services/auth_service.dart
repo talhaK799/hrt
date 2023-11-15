@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hart/core/models/app_user.dart';
 import 'package:hart/core/models/custom_auth_result.dart';
@@ -23,6 +24,8 @@ class AuthService extends ChangeNotifier {
   Subscription subscription = Subscription();
 
   GoogleSignIn googleSignIn = GoogleSignIn();
+
+  final _facebookSignIn = FacebookAuth.instance;
 
   Matches match = Matches();
   String? id;
@@ -318,26 +321,22 @@ class AuthService extends ChangeNotifier {
 
         UserCredential result =
             await _auth.signInWithCredential(authCredential);
+        this.appUser = AppUser();
         user = result.user!;
         print('User email ${result.user!.email}');
         print('user id ${result.user!.uid}');
         print('User Name ${result.user!.displayName}');
         print('User imageUrl ${result.user!.photoURL}');
         this.appUser.id = result.user!.uid;
-
-        signUpUser = await _dbService.getAppUser(result.user!.uid);
-        if (signUpUser.id != null) {
-          this.appUser = signUpUser;
-          // this.appUser.fcmToken = await FirebaseMessaging.instance.getToken();
-          // await _dbService.updateClientFcm(
-          //     this.appUser.fcmToken, this.appUser.id);
-        } else if (signUpUser.id == null) {
-          this.appUser = AppUser();
-          this.appUser.id = user!.uid;
-          this.appUser.email = user!.email;
-          this.appUser.name = user!.displayName;
-          // this.appUser.images!.add(user!.photoURL!);
-
+        this.appUser.email = user!.email;
+        this.appUser.name = user!.displayName;
+        isLogin = true;
+        bool isUserExist = await _dbService.checkUser(appUser);
+        if (isUserExist) {
+          this.appUser = await _dbService.getAppUser(result.user!.uid);
+        }else {
+          this.appUser = appUser;
+          this.appUser.isPremiumUser = false;
           await _dbService.registerAppUser(appUser);
         }
         customAuthResult.user = result.user!;
@@ -347,6 +346,60 @@ class AuthService extends ChangeNotifier {
       print("Exception@siginUpWithGoogle===>$e");
       customAuthResult.errorMessage =
           AuthExceptionsService.generateExceptionMessage(e);
+    }
+    return customAuthResult;
+  }
+
+  signupWithFacebook() async {
+    //Todo: Do settings in the Google cloud for 0Auth Credentials
+    try {
+      final LoginResult result = await _facebookSignIn.login();
+      print('Facebook login message => ${result.message}');
+      if (result.status == LoginStatus.success) {
+        print('Facebook login result success');
+        final AccessToken accessToken = result.accessToken!;
+        print("AccessToken::FaceAuth => ${accessToken.token}");
+        final firebaseAuthCred =
+            FacebookAuthProvider.credential(accessToken.token);
+        final loginResult =
+            await FirebaseAuth.instance.signInWithCredential(firebaseAuthCred);
+        final userData = await FacebookAuth.instance.getUserData();
+        this.appUser = AppUser();
+
+        /// Get user data
+        appUser.id = loginResult.user!.uid;
+        appUser.name = userData['name'];
+        appUser.email = userData['email'];
+        // appUser.imageUrl = userData['picture']['data']['url'];
+        print('facebookUserImageUrl => ${userData['picture']['data']['url']}');
+        print('facebook login => ${appUser.name}');
+        customAuthResult.appuser = appUser;
+        customAuthResult.status = true;
+
+        isLogin = true;
+        bool isUserExist = await _dbService.checkUser(appUser);
+        if (isUserExist) {
+          this.appUser = await _dbService.getAppUser(appUser.id);
+          // this.appUser.fcmToken = await FirebaseMessaging.instance.getToken();
+          // await _dbService.updateClientFcm(
+          //     this.appUser.fcmToken, this.appUser.id);
+        } else {
+          this.appUser = appUser;
+
+          this.appUser.isPremiumUser = false;
+          await _dbService.registerAppUser(appUser);
+        }
+
+        // Todo: Create Account in Database
+      } else {
+        customAuthResult.status = false;
+        customAuthResult.errorMessage = 'An undefined error happened.';
+      }
+    } catch (e) {
+      print('Exception @sighupWithFacebook: $e');
+      customAuthResult.status = false;
+      // customAuthResult.errorMessage =
+      //     AuthExceptionsService.generateExceptionMessage(e);
     }
     return customAuthResult;
   }
@@ -364,45 +417,3 @@ class AuthService extends ChangeNotifier {
     user = null;
   }
 }
-
-// signupWithFacebook() async {
-//   //Todo: Do settings in the Google cloud for 0Auth Credentials
-//   try {
-//     final LoginResult result = await _facebookSignIn.login();
-//     print('Facebook login => ${result.message}');
-//     if (result.status == LoginStatus.success) {
-//       print('Facebook login result success');
-//       final AccessToken accessToken = result.accessToken!;
-//       print("AccessToken::FaceAuth => ${accessToken.token}");
-//       final firebaseAuthCred =
-//           FacebookAuthProvider.credential(accessToken.token);
-//       final loginResult =
-//           await FirebaseAuth.instance.signInWithCredential(firebaseAuthCred);
-//       final userData = await FacebookAuth.instance.getUserData();
-//       this.clientUser = ClientUser();
-
-//       /// Get user data
-//       clientUser!.id = loginResult.user!.uid;
-//       clientUser!.name = userData['name'];
-//       clientUser!.email = userData['email'];
-//       print(userData['picture']['data']['url']);
-//       print('facebook login => ${clientUser!.name}');
-//       customAuthResult.status = true;
-//       customAuthResult.user = clientUser;
-//       await _dbService.registerClient(clientUser!);
-
-//       // Todo: Create Account in Database
-//     } else {
-//       customAuthResult.status = false;
-//       customAuthResult.errorMessage = 'An undefined error happened.';
-//     }
-//   } catch (e) {
-//     print('Exception @sighupWithFacebook: $e');
-//     customAuthResult.status = false;
-//     // customAuthResult.errorMessage =
-//     //     AuthExceptionsService.generateExceptionMessage(e);
-//   }
-//   return customAuthResult;
-// }
-
-

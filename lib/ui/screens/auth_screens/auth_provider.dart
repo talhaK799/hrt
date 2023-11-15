@@ -27,4 +27,20 @@ class AuthProvider extends BaseViewModel {
       );
     }
   }
+
+  signInWithFacebook(context) async {
+    setState(ViewState.busy);
+    authResult = await _auth.signupWithFacebook();
+    setState(ViewState.idle);
+    if (authResult.appuser!.id != null) {
+      Get.to(
+        DOBScreen(),
+      );
+    } else {
+      showMyDialog(
+        context,
+        authResult.errorMessage,
+      );
+    }
+  }
 }

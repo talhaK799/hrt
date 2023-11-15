@@ -47,11 +47,11 @@ class Offers extends StatelessWidget {
                   Text(
                     title!,
                     style:
-                        subtitleText.copyWith(color: lightRed, fontSize: 12.sp),
+                        subtitleText.copyWith(color: lightRed, fontSize: 10.sp),
                   ),
                   Text(
                     price!,
-                    style: subHeadingText1,
+                    style: subHeadingText1.copyWith(fontSize: 19.sp),
                   ),
                 ],
               ),

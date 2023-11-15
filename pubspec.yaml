@@ -55,6 +55,8 @@ dependencies:
   firebase_dynamic_links: ^5.4.3
   flutter_facebook_auth: ^5.0.11
   flutter_facebook_keyhash: ^0.0.4
+  flutter_stripe: ^9.5.0+1
+  http: ^0.13.6
 
 dev_dependencies:
   flutter_test:

@@ -22,11 +22,11 @@ class Keys {
   static const auth_token = "cb47c526f6cbc019301d747beba724e2";
 
   ///
-  /// Hashim Keys
-  ///
   /// Stripe keys
-  static const publish_key =
-      "pk_test_51NL2XyCqorO1xwswPwiOyLRDKNHk8skMCF0FyzM3ef5BZesGvUrGsc58zAeT1zEtGBMSJ7pzjhD63D4oAemduf4Y00ELEJNmke";
-  static const secert_key =
-      "sk_test_51NL2XyCqorO1xwswTUzN4KIqhdrMh3K6UmQx2AccXlOwoPRO7579YuCm8NcJcwyd32A9gXUY1DwKsEUIQad21g1h00szkFvz1Z";
+  /// 
+  static const PUBLISHABLE_KEY =
+      "pk_test_51Kxl3LHHqLWDkBrHmP7NQFf4Wtvj1I20Qnt0jPNeRSUIhb8r5MCSYH8BmfMIvmofAxrxBydF2xZV9OB57Hfru2Aj00vauqC1dg";
+
+  static const SECRET_KEY =
+      "sk_test_51Kxl3LHHqLWDkBrH2KX0QJmMBDHuPnBRKEO3ug2gUtMr8KdiDHt7DUAifZimVUTP63FUITXNuSOJhdmNYYt9dk5300LDmypwXT";
 }

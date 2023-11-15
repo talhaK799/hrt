@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hart/core/constants/colors.dart';
+import 'package:hart/core/constants/keys.dart';
 import 'package:hart/core/services/localization_services.dart';
 import 'package:hart/core/services/locato_storage_service.dart';
 import 'package:hart/core/view_models/theme_provider.dart';
@@ -10,6 +11,7 @@ import 'package:hart/locator.dart';
 import 'package:hart/ui/screens/auth_screens/firebase_phone_login/phone_login_provider.dart';
 
 import 'package:hart/ui/screens/chatting_screen/create_group/create_group_provider.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 
 import 'package:hart/ui/screens/collect_info_screens/verifications/phone_no_screen/phone_no_provider.dart';
 import 'package:hart/ui/screens/home/home_provider.dart';
@@ -21,8 +23,8 @@ String userId = '';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  
 
+  Stripe.publishableKey = Keys.PUBLISHABLE_KEY;
   // WindowOptions windowOptions = WindowOptions(
   //   size: Size(800, 600),
   //   center: true,
