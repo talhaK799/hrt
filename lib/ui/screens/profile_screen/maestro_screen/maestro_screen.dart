@@ -122,7 +122,14 @@ class MaestroScreen extends StatelessWidget {
                               CustomButton(
                                 title: 'BECOME A MAESTRO',
                                 onTap: () {
-                                  model.buyPlan();
+                                  print(
+                                      'payment id => ${model.auth.appUser.paymentId}=======user ID ==> ${model.auth.appUser.id}');
+                                  if (model.auth.appUser.paymentId == null) {
+                                    model.makePayment(context);
+                                  } else {
+                                    Get.snackbar("Alert!!",
+                                        "You have already subscription");
+                                  }
                                 },
                               ),
                               sizeBox20,
@@ -171,7 +178,7 @@ class MaestroScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            subscription.price!,
+            '\$ ${subscription.price}',
             style: bodyTextStyle.copyWith(
               color: primaryColor,
             ),

@@ -175,6 +175,23 @@ class DatabaseService {
     }
   }
 
+  checkUser(AppUser user) async {
+    //Todo: Rename getUsers -> getUser
+    debugPrint('@getAppUser: id: ${user.id}');
+    try {
+      final snapshot = await _db.collection('app_user').doc(user.id).get();
+      if (snapshot.exists) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e, s) {
+      debugPrint('Exception @DatabaseService/getAppUser');
+      debugPrint(s.toString());
+      return false;
+    }
+  }
+
   updateUserProfile(AppUser appUser) async {
     // print("appuaser premiume check: ${appUser.isPremiumUser}");
     try {

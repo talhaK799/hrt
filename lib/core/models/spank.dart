@@ -2,7 +2,7 @@ class Spanks {
   String? id;
   int no_spanks = 0;
   DateTime? boughtAt;
-  String? price;
+  double? price;
   String? offer;
   String? userId;
   bool? isSelected;

@@ -3,7 +3,7 @@ class Subscription {
   int no_days = 0;
   DateTime? boughtAt;
   DateTime? expiredAt;
-  String? price;
+  double? price;
   String? userId;
   String? weeklyPrice;
   String? type;
@@ -26,7 +26,7 @@ this.type,
   Subscription.fromJson(json, id) {
     this.id = id;
     no_days = json['no_days'] ?? 0;
-    price = json['price'] ?? '';
+    price = json['price'] ?? 0.0;
     boughtAt = json['boughtAt'].toDate();
     expiredAt = json['expiredAt'].toDate();
     userId = json['userId'] ?? '';
