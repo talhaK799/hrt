@@ -21,7 +21,7 @@ class ConversationProvider extends BaseViewModel {
   TextEditingController messageController = TextEditingController();
   AppUser user = AppUser();
   Message message = Message();
-  List<Matches> matches = [];
+  List<AppUser> likedUsers = [];
   List<Matches> acceptedMatches = [];
   List<AppUser> matchedUsers = [];
 
@@ -32,37 +32,47 @@ class ConversationProvider extends BaseViewModel {
 
   getMatches() async {
     matchedUsers = [];
-    matches = [];
+    likedUsers = [];
     acceptedMatches = [];
     setState(ViewState.busy);
     currentUser.appUser = await db.getAppUser(currentUser.appUser.id);
-    matches = await db.getProgressedRequest(currentUser.appUser.id!);
-    for (var i = 0; i < matches.length; i++) {
-      if (matches[i].likedUserId == currentUser.appUser.id) {
-        print("Match found");
-        acceptedMatches.add(matches[i]);
-
-        notifyListeners();
-      } else if (matches[i].likedByUserId == currentUser.appUser.id) {
-        acceptedMatches.add(matches[i]);
-      } else {
-        print("Match not found");
+    likedUsers = await db.getMatchedUsers(currentUser.appUser);
+    for (var i = 0; i < likedUsers.length; i++) {
+      likedUsers[i].isSelected = false;
+      if (likedUsers[i].likedUsers!.contains(currentUser.appUser.id)) {
+        print('current user${i + 1} likes===>${likedUsers[i].id}');
+        print('other user likes current user===>${likedUsers[i].id}');
+        if (!matchedUsers.contains(likedUsers[i])) {
+          matchedUsers.add(likedUsers[i]);
+        }
       }
     }
+    // for (var i = 0; i < likedUsers.length; i++) {
+    //   if (likedUsers[i].likedUserId == currentUser.appUser.id) {
+    //     print("Match found");
+    //     acceptedMatches.add(matches[i]);
 
-    for (var i = 0; i < acceptedMatches.length; i++) {
-      if (acceptedMatches[i].likedUserId == currentUser.appUser.id) {
-        acceptedMatches[i].otherUserId = acceptedMatches[i].likedByUserId;
-      } else if (acceptedMatches[i].likedByUserId == currentUser.appUser.id) {
-        acceptedMatches[i].otherUserId = acceptedMatches[i].likedUserId;
-      }
-    }
-    for (var m in acceptedMatches) {
-      user = await db.getAppUser(m.otherUserId);
-      matchedUsers.add(user);
-      user = AppUser();
-      notifyListeners();
-    }
+    //     notifyListeners();
+    //   } else if (matches[i].likedByUserId == currentUser.appUser.id) {
+    //     acceptedMatches.add(matches[i]);
+    //   } else {
+    //     print("Match not found");
+    //   }
+    // }
+
+    // for (var i = 0; i < acceptedMatches.length; i++) {
+    //   if (acceptedMatches[i].likedUserId == currentUser.appUser.id) {
+    //     acceptedMatches[i].otherUserId = acceptedMatches[i].likedByUserId;
+    //   } else if (acceptedMatches[i].likedByUserId == currentUser.appUser.id) {
+    //     acceptedMatches[i].otherUserId = acceptedMatches[i].likedUserId;
+    //   }
+    // }
+    // for (var m in acceptedMatches) {
+    //   user = await db.getAppUser(m.otherUserId);
+    //   matchedUsers.add(user);
+    //   user = AppUser();
+    //   notifyListeners();
+    // }
     setState(ViewState.idle);
   }
 

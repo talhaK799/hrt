@@ -15,6 +15,7 @@ class CreateGroupProvider extends BaseViewModel {
   final db = DatabaseService();
   Conversation conversation = Conversation();
   final currentUser = locator<AuthService>();
+  List<AppUser> likedUsers = [];
   List<AppUser> matchedUsers = [];
   List<AppUser> selectedUsers = [];
   bool isEnable = false;
@@ -23,7 +24,7 @@ class CreateGroupProvider extends BaseViewModel {
   bool isCreated = false;
 
   CreateGroupProvider() {
-    getLikedUsers();
+    init();
   }
 
   init() async {
@@ -32,6 +33,7 @@ class CreateGroupProvider extends BaseViewModel {
     conversation = Conversation();
     isEnable = false;
     isCreated = false;
+    likedUsers = [];
     matchedUsers = [];
     selectedUsers = [];
     await getLikedUsers();
@@ -40,37 +42,53 @@ class CreateGroupProvider extends BaseViewModel {
 
   check(ind) {
     matchedUsers[ind].isSelected = !matchedUsers[ind].isSelected!;
-    for (var i = 0; i < matchedUsers.length; i++) {
-      if (matchedUsers[ind].isSelected == true) {
-        isEnable = true;
-        break;
-      } else {
-        isEnable = false;
-      }
+    if (matchedUsers.any((element) => element.isSelected == true)) {
+      isEnable = true;
+    } else {
+      isEnable = false;
     }
+
+    // for (var i = 0; i < matchedUsers.length; i++) {
+    //   if (matchedUsers[ind].isSelected == true) {
+    //     isEnable = true;
+    //     break;
+    //   } else {
+    //     isEnable = false;
+    //   }
+    // }
     notifyListeners();
   }
 
   getLikedUsers() async {
+    likedUsers = [];
     matchedUsers = [];
     setState(ViewState.busy);
-    matchedUsers = await db.getMatchedUsers(currentUser.appUser);
+    likedUsers = await db.getMatchedUsers(currentUser.appUser);
     setState(ViewState.idle);
-    for (var i = 0; i < matchedUsers.length; i++) {
-      matchedUsers[i].isSelected = false;
-      
+    for (var i = 0; i < likedUsers.length; i++) {
+      likedUsers[i].isSelected = false;
+      if (likedUsers[i].likedUsers!.contains(currentUser.appUser.id)) {
+        print('current user${i + 1} likes===>${likedUsers[i].id}');
+        print('other user likes current user===>${likedUsers[i].id}');
+        if (!matchedUsers.contains(likedUsers[i])) {
+          matchedUsers.add(likedUsers[i]);
+        }
+      }
     }
-    filterSelectedUsers();
+    // filterSelectedUsers();
   }
 
   filterSelectedUsers() {
     selectedUsers = [];
     for (var i = 0; i < matchedUsers.length; i++) {
-      selectedUsers.add(matchedUsers[i]);
+      if (matchedUsers[i].isSelected == true) {
+        selectedUsers.add(matchedUsers[i]);
+      }
     }
   }
 
   createGroup() async {
+    filterSelectedUsers();
     if (selectedUsers.isNotEmpty) {
       setState(ViewState.busy);
       conversation.lastMessage = "created";

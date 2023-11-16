@@ -6,10 +6,15 @@ import 'package:hart/locator.dart';
 class PremiumProvider extends BaseViewModel {
   final _auth = locator<AuthService>();
   final _db = DatabaseService();
+  bool x = false;
   changePhotoesPrivacy(val) async {
     notifyListeners();
     _auth.appUser.isPrivatePhoto = val;
     await _db.updateUserProfile(_auth.appUser);
   }
 
+  changeValue(val) async {
+    x = val;
+    notifyListeners();
+  }
 }

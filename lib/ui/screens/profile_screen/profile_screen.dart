@@ -155,9 +155,15 @@ class ProfileScreen extends StatelessWidget {
                     icon: 'premium.png',
                     isWhite: false,
                     onTap: () {
-                      Get.to(
-                        PremiumScreen(),
-                      );
+                      if (model.currentUser.isPremiumUser == true) {
+                        Get.to(
+                          PremiumScreen(),
+                        );
+                      } else {
+                        Get.to(
+                          MaestroScreen(),
+                        );
+                      }
                     },
                   ),
                   sizeBox10,

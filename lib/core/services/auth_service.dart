@@ -331,10 +331,11 @@ class AuthService extends ChangeNotifier {
         this.appUser.email = user!.email;
         this.appUser.name = user!.displayName;
         isLogin = true;
+        this.appUser.isGoogle = true;
         bool isUserExist = await _dbService.checkUser(appUser);
         if (isUserExist) {
           this.appUser = await _dbService.getAppUser(result.user!.uid);
-        }else {
+        } else {
           this.appUser = appUser;
           this.appUser.isPremiumUser = false;
           await _dbService.registerAppUser(appUser);
@@ -377,6 +378,7 @@ class AuthService extends ChangeNotifier {
         customAuthResult.status = true;
 
         isLogin = true;
+        this.appUser.isFacebook = true;
         bool isUserExist = await _dbService.checkUser(appUser);
         if (isUserExist) {
           this.appUser = await _dbService.getAppUser(appUser.id);
@@ -405,6 +407,8 @@ class AuthService extends ChangeNotifier {
   }
 
   logout() async {
+    await googleSignIn.signOut();
+    await _facebookSignIn.logOut();
     await _auth.signOut();
     isLogin = false;
     user = null;

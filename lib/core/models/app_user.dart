@@ -1,3 +1,5 @@
+import 'package:hart/core/constants/format_date.dart';
+
 class AppUser {
   String? id;
   String? paymentId;
@@ -11,9 +13,12 @@ class AppUser {
   bool? isDesLiked;
   bool? isNotificationsOn;
   bool? isPrivatePhoto;
+  bool? isGoogle;
+  bool? isFacebook;
   int? likesCount;
   int? spanks;
   int? age;
+  DateTime? createdAt = DateTime.now();
   String? name;
   String? dob;
   String? nickName;
@@ -31,6 +36,8 @@ class AppUser {
     this.id,
     this.email,
     this.password,
+    this.isGoogle,
+
     this.phoneNumber,
     this.isEmailVerified,
     this.isPhoneNoVerified,
@@ -46,6 +53,7 @@ class AppUser {
     this.nickName,
     this.isPremiumUser,
     this.identity,
+    this.isFacebook,
     this.lookingFor,
     this.desire,
     this.images,
@@ -61,6 +69,9 @@ class AppUser {
     data['id'] = id;
     data['paymentId'] = paymentId;
     data['email'] = email;
+    data['isGoogle'] = isGoogle??false;
+    data['isFacebook'] = isFacebook??false;
+    data['createdAt'] = createdAt ?? DateTime.now();
     data['name'] = name ?? 'User';
     data['phoneNumber'] = phoneNumber;
     data['isEmailVerified'] = isEmailVerified ?? false;
@@ -90,6 +101,7 @@ class AppUser {
     email = json['email'] ?? "";
     paymentId = json['paymentId'];
     name = json['name'] ?? "User";
+    // createdAt = json['createdAt'].toDate() ?? DateTime(2000);
     phoneNumber = json['phoneNumber'];
     isEmailVerified = json['isEmailVerified'] ?? false;
     isPhoneNoVerified = json['isPhoneNoVerified'] ?? false;
@@ -98,6 +110,8 @@ class AppUser {
     isPremiumUser = json['isPremiumUser'] ?? false;
     isNotificationsOn = json['isNotificationsOn'] ?? false;
     isPrivatePhoto = json['isPrivatePhoto'] ?? false;
+    isGoogle = json['isGoogle'] ?? false;
+    isFacebook = json['isFacebook'] ?? false;
     // isMuteNotification = json['isMuteNotification'] ?? false;
     nickName = json['nickName'] ?? "User";
     dob = json['dob'];

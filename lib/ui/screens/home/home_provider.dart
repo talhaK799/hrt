@@ -12,6 +12,7 @@ import 'package:hart/core/view_models/base_view_model.dart';
 import 'package:hart/locator.dart';
 import 'package:hart/ui/screens/collect_info_screens/fantasies_screen/fantasies_screen.dart';
 import 'package:hart/ui/screens/connection_screen/connect_popup/connect_popup_screen.dart';
+import 'package:hart/ui/screens/profile_screen/kings_hart/king_hart_screen.dart';
 import 'package:hart/ui/screens/profile_screen/maestro_screen/maestro_screen.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
@@ -73,14 +74,6 @@ class HomeProvider extends BaseViewModel {
     print("country =>" + placemarks.first.country!);
   }
 
-  // delay() async {
-  //   setState(ViewState.busy);
-  //   users = await db.getAllUsers(currentUser.appUser);
-  //   setState(ViewState.busy);
-  //   // isDataLoaded = true;
-  //   notifyListeners();
-  // }
-
   getAllAppUsers() async {
     print('getting all AppUsers');
     users = [];
@@ -94,9 +87,6 @@ class HomeProvider extends BaseViewModel {
     await Future.delayed(Duration(seconds: 5));
     setState(ViewState.idle);
 
-    if (users.length == 0) {
-      // setState(ViewState.busy);
-    }
     for (var user in users) {
       // appUsers.add(user);
       if (currentUser.appUser.likedUsers == null ||
@@ -113,6 +103,37 @@ class HomeProvider extends BaseViewModel {
     print('number of filtered users ${appUsers.length}');
     notifyListeners();
     // setState(ViewState.idle);
+  }
+
+  spank(AppUser user) async {
+    if (currentUser.appUser.spanks != 0) {
+      currentUser.appUser.spanks = currentUser.appUser.spanks! - 1;
+      notifyListeners();
+      if (!currentUser.appUser.likedUsers!.contains(user.id)) {
+        currentUser.appUser.likedUsers!.add(user.id!);
+        await db.updateUserProfile(currentUser.appUser);
+      }
+      if (!user.likedUsers!.contains(currentUser.appUser.id!)) {
+        user.likedUsers!.add(currentUser.appUser.id!);
+        await db.updateUserProfile(user);
+      }
+
+      appUsers.removeWhere((element) => element.id == user.id);
+
+      // notifyListeners();
+      if (appUsers.length > 0) {
+        dotIndex = 0;
+        await pageController!.nextPage(
+          duration: Duration(milliseconds: 300),
+          curve: Curves.easeIn,
+        );
+      }
+      notifyListeners();
+    } else {
+      Get.to(
+        KingHartScreen(),
+      );
+    }
   }
 
   updateIndex(index) {
