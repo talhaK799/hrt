@@ -343,31 +343,36 @@ class _HomeScreenState extends State<HomeScreen> {
                     SizedBox(
                       height: 15.h,
                     ),
-                    Container(
-                      width: 70,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 4,
-                      ),
-                      decoration: BoxDecoration(
-                        color: primaryColor,
-                        borderRadius: BorderRadius.circular(16.r),
-                      ),
-                      child: Row(
-                        children: [
-                          Image.asset(
-                            '$staticAsset/loader.png',
-                            scale: 2,
-                            color: pinkColor2,
-                          ),
-                          SizedBox(
-                            width: 10.h,
-                          ),
-                          Text(
-                            model.currentUser.appUser.spanks.toString(),
-                            style: buttonTextStyle,
-                          )
-                        ],
+                    GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () {
+                        model.spank(user);
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: primaryColor,
+                          borderRadius: BorderRadius.circular(16.r),
+                        ),
+                        child: Row(
+                          children: [
+                            Image.asset(
+                              '$staticAsset/loader.png',
+                              scale: 2,
+                              color: pinkColor2,
+                            ),
+                            SizedBox(
+                              width: 10.h,
+                            ),
+                            Text(
+                              '${model.currentUser.appUser.spanks ?? 0}',
+                              style: buttonTextStyle,
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ],

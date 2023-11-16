@@ -1,9 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
-import 'package:hart/core/constants/keys.dart';
 import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/models/subscripton.dart';
 import 'package:hart/core/services/auth_service.dart';
@@ -12,7 +9,6 @@ import 'package:hart/core/services/payment_service.dart';
 import 'package:hart/core/view_models/base_view_model.dart';
 import 'package:hart/locator.dart';
 import 'package:hart/ui/screens/profile_screen/maestro_screen/maestro_screen.dart';
-import 'package:http/http.dart' as http;
 
 import '../../../custom_widgets/dialogs/succes_dialog.dart';
 
@@ -102,6 +98,8 @@ class MaestroProvider extends BaseViewModel {
       );
     }
 
+    subscription.userId = auth.appUser.id;
+
     String id = await _db.buySubscriptionPlan(subscription);
     setState(ViewState.idle);
 
@@ -117,7 +115,7 @@ class MaestroProvider extends BaseViewModel {
     try {
       String amount = subscription.price!.round().toString();
 
-      paymentIntentData = await paymentService. createPayment("$amount", 'USD');
+      paymentIntentData = await paymentService.createPayment("$amount", 'USD');
 
       await Stripe.instance.initPaymentSheet(
           paymentSheetParameters: SetupPaymentSheetParameters(

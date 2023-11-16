@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hart/core/constants/colors.dart';
 import 'package:hart/ui/custom_widgets/custom_app_bar.dart';
+import 'package:hart/ui/screens/auth_screens/auth_screens.dart';
 import 'package:hart/ui/screens/profile_screen/Notifications/notification_screen.dart';
 import 'package:hart/ui/screens/profile_screen/app_setting/app_setting_provider.dart';
 import 'package:provider/provider.dart';
@@ -97,9 +98,23 @@ class AppSettingsScreen extends StatelessWidget {
                     ),
                   ),
                   sizeBox20,
-                  _heading(heading: 'Email', body: 'Add email'),
+                  _heading(
+                      heading: 'Phone Number',
+                      body: model.auth.appUser.isPhoneNoVerified == true
+                          ? 'Linked'
+                          : 'Add Phone number'),
                   sizeBox20,
-                  _heading(heading: 'Facebook', body: 'Linked'),
+                  _heading(
+                      heading: 'Facebook',
+                      body: model.auth.appUser.isFacebook == true
+                          ? 'Linked'
+                          : 'Link Facebook'),
+                  sizeBox20,
+                  _heading(
+                      heading: 'Google',
+                      body: model.auth.appUser.isGoogle == true
+                          ? 'Linked'
+                          : 'Link Google'),
                   sizeBox30,
                   Text(
                     'Your account',
@@ -162,36 +177,38 @@ class AppSettingsScreen extends StatelessWidget {
   // }
 
   _heading({heading, body}) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              heading,
-              style: bodyTextStyle.copyWith(
-                color: blackColor,
+    return GestureDetector(
+      onTap: () {
+        Get.to(
+          AuthScreen(),
+        );
+      },
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            heading,
+            style: bodyTextStyle.copyWith(
+              color: blackColor,
+            ),
+          ),
+          Row(
+            children: [
+              Text(
+                body,
+                style: subtitleText.copyWith(
+                  color: greyColor2,
+                ),
               ),
-            ),
-            Row(
-              children: [
-                Text(
-                  body,
-                  style: subtitleText.copyWith(
-                    color: greyColor2,
-                  ),
-                ),
-                sizeBoxw10,
-                Image.asset(
-                  '$staticAsset/arrow.png',
-                  scale: 3,
-                ),
-              ],
-            ),
-          ],
-        ),
-      ],
+              sizeBoxw10,
+              Image.asset(
+                '$staticAsset/arrow.png',
+                scale: 3,
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

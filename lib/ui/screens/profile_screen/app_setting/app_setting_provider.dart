@@ -8,18 +8,18 @@ import 'package:hart/ui/screens/splash_screen.dart';
 
 class AppSettingProvider extends BaseViewModel {
   bool isNotificationsOn = false;
-  final _auth = locator<AuthService>();
+  final auth = locator<AuthService>();
   final _db = DatabaseService();
   changeNotificaionSettin(val) async {
     isNotificationsOn = val;
     notifyListeners();
-    _auth.appUser.isNotificationsOn = val;
-    await _db.updateUserProfile(_auth.appUser);
+    auth.appUser.isNotificationsOn = val;
+    await _db.updateUserProfile(auth.appUser);
   }
 
   terminateUser() async {
     setState(ViewState.busy);
-    await _auth.deleteUserAccount();
+    await auth.deleteUserAccount();
     Get.offAll(
       SplashScreen(),
     );

@@ -68,12 +68,12 @@ class DatabaseService {
     return list;
   }
 
-  getProgressedRequest(String currentUserId) async {
+  getProgressedRequest() async {
     List<Matches> list = [];
     try {
       final snapshot = await _db
           .collection("Matches")
-          .where("isProgressed", isEqualTo: true)
+          .where("isAccepted", isEqualTo: true)
           .get();
       if (snapshot.docs.length > 0) {
         snapshot.docs.forEach((element) {

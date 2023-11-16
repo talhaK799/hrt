@@ -86,10 +86,11 @@ class KingHartProvider extends BaseViewModel {
           text: "Enjoy premium mode",
           confirm: () {
             Get.back();
-            Get.off(ProfileScreen());
           },
         );
       });
+
+      // Get.back();
     } catch (e) {
       print("Exception:$e");
     }
