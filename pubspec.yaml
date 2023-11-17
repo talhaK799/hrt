@@ -58,6 +58,7 @@ dependencies:
   flutter_stripe: ^9.5.0+1
   http: ^0.13.6
   flutter_html: ^3.0.0-beta.2
+  no_screenshot: ^0.0.1+6
 
 dev_dependencies:
   flutter_test:

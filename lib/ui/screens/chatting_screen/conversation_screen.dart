@@ -88,12 +88,13 @@ class ConversationScreen extends StatelessWidget {
                                     itemBuilder: (context, index) {
                                       return GestureDetector(
                                         onTap: () {
+                                          print(
+                                              'chat user Id ${model.matchedUsers[index].id!}');
                                           Get.to(
                                             ChattingScreen(
                                               toUserId:
                                                   model.matchedUsers[index].id!,
-                                              conversation:
-                                                  model.conversations[index],
+                                              conversation: Conversation(),
                                             ),
                                           );
                                         },
