@@ -75,7 +75,11 @@ class UpliftScreen extends StatelessWidget {
                     ),
                   ),
                   sizeBox20,
-                  CustomButton(title: 'CONTINUE', onTap: () {}),
+                  CustomButton(
+                      title: 'CONTINUE',
+                      onTap: () {
+                        model.upliftProfile();
+                      }),
                   sizeBox20,
                   Text(
                     'Your profile will be uplifted immediately after your purchase is confirmed.',

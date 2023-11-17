@@ -19,6 +19,7 @@ class AppUser {
   int? spanks;
   int? age;
   DateTime? createdAt = DateTime.now();
+  DateTime? uplift = DateTime.now();
   String? name;
   String? dob;
   String? nickName;
@@ -37,7 +38,6 @@ class AppUser {
     this.email,
     this.password,
     this.isGoogle,
-
     this.phoneNumber,
     this.isEmailVerified,
     this.isPhoneNoVerified,
@@ -50,6 +50,7 @@ class AppUser {
     this.isNotificationsOn,
     this.name,
     this.dob,
+    this.uplift,
     this.nickName,
     this.isPremiumUser,
     this.identity,
@@ -69,9 +70,10 @@ class AppUser {
     data['id'] = id;
     data['paymentId'] = paymentId;
     data['email'] = email;
-    data['isGoogle'] = isGoogle??false;
-    data['isFacebook'] = isFacebook??false;
+    data['isGoogle'] = isGoogle ?? false;
+    data['isFacebook'] = isFacebook ?? false;
     data['createdAt'] = createdAt ?? DateTime.now();
+    data['uplift'] = uplift ?? DateTime.now();
     data['name'] = name ?? 'User';
     data['phoneNumber'] = phoneNumber;
     data['isEmailVerified'] = isEmailVerified ?? false;
@@ -101,7 +103,8 @@ class AppUser {
     email = json['email'] ?? "";
     paymentId = json['paymentId'];
     name = json['name'] ?? "User";
-    // createdAt = json['createdAt'].toDate() ?? DateTime(2000);
+    createdAt = json['createdAt'].toDate() ?? DateTime(2000);
+    uplift = json['uplift'].toDate() ?? DateTime(2000);
     phoneNumber = json['phoneNumber'];
     isEmailVerified = json['isEmailVerified'] ?? false;
     isPhoneNoVerified = json['isPhoneNoVerified'] ?? false;

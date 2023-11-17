@@ -52,29 +52,29 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                               '${model.likingUsers.length} Members liked you',
                               style: subHeadingTextStyle2,
                             ),
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                vertical: 10,
-                                horizontal: 20,
-                              ),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(24.r),
-                                color: pinkColor,
-                              ),
-                              child: Row(
-                                children: [
-                                  Image.asset(
-                                    '$staticAsset/uplift2.png',
-                                    scale: 3,
-                                  ),
-                                  sizeBoxw10,
-                                  Text(
-                                    'Uplift',
-                                    style: buttonTextStyleRed,
-                                  ),
-                                ],
-                              ),
-                            ),
+                            // Container(
+                            //   padding: EdgeInsets.symmetric(
+                            //     vertical: 10,
+                            //     horizontal: 20,
+                            //   ),
+                            //   decoration: BoxDecoration(
+                            //     borderRadius: BorderRadius.circular(24.r),
+                            //     color: pinkColor,
+                            //   ),
+                            //   child: Row(
+                            //     children: [
+                            //       Image.asset(
+                            //         '$staticAsset/uplift2.png',
+                            //         scale: 3,
+                            //       ),
+                            //       sizeBoxw10,
+                            //       Text(
+                            //         'Uplift',
+                            //         style: buttonTextStyleRed,
+                            //       ),
+                            //     ],
+                            //   ),
+                            // ),
                           ],
                         ),
                         sizeBox20,

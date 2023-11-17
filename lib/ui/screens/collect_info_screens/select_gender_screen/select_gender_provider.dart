@@ -68,13 +68,14 @@ class SelectGenderProvider extends BaseViewModel {
     // bool isUpdated = await _db.updateUserProfile(currentUser);
     // setState(ViewState.idle);
     // if (isUpdated) {
-      if (updattion) {
-        Get.back(result: selections);
-      } else {
-        Get.to(
-          FantasiesScreen(),
-        );
-      }
+    if (updattion) {
+      await _db.updateUserProfile(currentUser);
+      Get.back(result: selections);
+    } else {
+      Get.to(
+        FantasiesScreen(),
+      );
+    }
     // }
 
     notifyListeners();

@@ -88,13 +88,15 @@ class HomeProvider extends BaseViewModel {
     setState(ViewState.idle);
 
     for (var user in users) {
+      print('user ${user.id} creation  ===> ${user.createdAt.toString()}');
       // appUsers.add(user);
       if (currentUser.appUser.likedUsers == null ||
           currentUser.appUser.disLikedUsers == null) {
         appUsers.add(user);
       } else {
         if (!currentUser.appUser.likedUsers!.contains(user.id) &&
-            !currentUser.appUser.disLikedUsers!.contains(user.id)) {
+            !currentUser.appUser.disLikedUsers!.contains(user.id) &&
+            user.id != currentUser.appUser.id) {
           appUsers.add(user);
           notifyListeners();
         }

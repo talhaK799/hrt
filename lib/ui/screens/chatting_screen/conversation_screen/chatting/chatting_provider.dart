@@ -11,6 +11,7 @@ import 'package:hart/core/services/file_picker_service.dart';
 import 'package:hart/core/services/firebase_storage_service.dart';
 import 'package:hart/core/view_models/base_view_model.dart';
 import 'package:hart/locator.dart';
+import 'package:no_screenshot/no_screenshot.dart';
 import 'package:uuid/uuid.dart';
 import '../../../../../core/services/auth_service.dart';
 
@@ -19,6 +20,8 @@ class ChattingProvider extends BaseViewModel {
   final currentUser = locator<AuthService>();
   final storage = FirebaseStorageService();
   final filePicker = FilePickerService();
+
+  final _noScreenshot = NoScreenshot.instance;
 
   TextEditingController messageController = TextEditingController();
   AppUser toUser = AppUser();
@@ -41,7 +44,13 @@ class ChattingProvider extends BaseViewModel {
     toUser = AppUser();
     this.conversation.isGroupChat == false ? getUser(userId) : null;
     this.conversation.isGroupChat == true ? getAllMessages() : getAllMessages();
+    disableScreenShot();
     // notifyListeners();
+  }
+
+  disableScreenShot() async {
+    await _noScreenshot.screenshotOff();
+    print('screen shots are disabled');
   }
 
   getUser(userId) async {
@@ -129,6 +138,7 @@ class ChattingProvider extends BaseViewModel {
   // }
 
   getAllMessages() async {
+    // conversation.conversationId = toUser.id;
     print('gettin all messages  ${conversation.conversationId}');
     setState(ViewState.busy);
     messageStream = db.getRealTimeMessages(conversation.conversationId);
