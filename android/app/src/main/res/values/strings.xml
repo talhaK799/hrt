@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-        <string name="app_name">hart</string>
+        <string name="Hart">hart</string>
         <string name="facebook_app_id">168599309612968</string>
         <string name="fb_login_protocol_scheme">fb168599309612968</string>
         <string name="facebook_client_token">96d645927607515b388644295f326de4</string>

@@ -27,57 +27,54 @@ class ConversationScreen extends StatelessWidget {
           progressIndicator: RedHartLoader(),
           child: Scaffold(
               backgroundColor: primaryColor,
-              body: model.matchedUsers.isNotEmpty
-                  ? Stack(
+              body: Stack(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(20, 50, 20, 16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(32, 50, 32, 16),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Chat',
-                                style: subHeadingTextWhite,
-                              ),
-                              GestureDetector(
-                                behavior: HitTestBehavior.opaque,
-                                onTap: () {
-                                  Get.to(CreateGroupScreen());
-                                  // Get.to(
-                                  // ChatInfoScreen(),
-                                  // );
-                                },
-                                child: Image.asset(
-                                  '$staticAsset/more.png',
-                                  scale: 3.5,
-                                ),
-                              ),
-                            ],
+                        Text('Chat', style: subHeadingTextWhite),
+                        GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onTap: () {
+                            Get.to(CreateGroupScreen());
+                            // Get.to(
+                            // ChatInfoScreen(),
+                            // );
+                          },
+                          child: Image.asset(
+                            '$staticAsset/more.png',
+                            scale: 3.5,
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 100),
-                          child: Container(
-                            padding: EdgeInsets.all(24),
-                            decoration: const BoxDecoration(
-                              color: whiteColor,
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(32),
-                                topRight: Radius.circular(32),
-                              ),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Your Matches',
-                                  style: subHeadingTextStyle2,
-                                ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 100),
+                    child: Container(
+                      padding: EdgeInsets.all(24),
+                      decoration: const BoxDecoration(
+                        color: whiteColor,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(32),
+                          topRight: Radius.circular(32),
+                        ),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Your Matches',
+                            style: subHeadingTextStyle2,
+                          ),
 
-                                ///
-                                /// Matched Users List
-                                ///
-                                Container(
+                          ///
+                          /// Matched Users List
+                          ///
+                          model.matchedUsers.isNotEmpty
+                              ? Container(
                                   height: 0.15.sh,
                                   child: ListView.separated(
                                     physics: BouncingScrollPhysics(),
@@ -118,70 +115,35 @@ class ConversationScreen extends StatelessWidget {
                                       width: 15.w,
                                     ),
                                   ),
-                                ),
-                                Text(
-                                  'All',
-                                  style: subHeadingTextStyle2,
-                                ),
-                                sizeBox20,
-                                Expanded(
+                                )
+                              : model.state == ViewState.busy
+                                  ? Container()
+                                  : Container(
+                                      color: whiteColor,
+                                      width: double.infinity,
+                                      height: 0.15.sh,
+                                      child: Center(
+                                        child: Text(
+                                          'No Matches Found',
+                                          style: subHeadingText1.copyWith(
+                                              fontSize: 16.sp),
+                                        ),
+                                      ),
+                                    ),
+                          Text(
+                            'All',
+                            style: subHeadingTextStyle2,
+                          ),
+                          sizeBox20,
+                          model.conversations.isNotEmpty
+                              ? Expanded(
                                   child: ListView.separated(
                                     padding: EdgeInsets.zero,
                                     physics: BouncingScrollPhysics(),
                                     shrinkWrap: true,
                                     itemCount: model.conversations.length,
                                     itemBuilder: (context, index) {
-                                      return
-                                          //  model.chats[index].isGroup == true
-
-                                          //     ///
-                                          //     ///Groups
-                                          //     ///
-                                          //     ? Slidable(
-                                          //         endActionPane: ActionPane(
-                                          //           extentRatio: 0.3,
-                                          //           motion: BehindMotion(),
-                                          //           children: [
-                                          //             SlidableAction(
-                                          //               backgroundColor: pinkColor,
-                                          //               foregroundColor: primaryColor,
-                                          //               autoClose: true,
-                                          //               icon: Icons.person_outline,
-                                          //               onPressed: (context) {
-                                          //                 _disconnectionSheet(context);
-                                          //               },
-                                          //             ),
-                                          //             SlidableAction(
-                                          //               foregroundColor: primaryColor,
-                                          //               padding: EdgeInsets.only(
-                                          //                 // left: 10,
-                                          //                 right: 20,
-                                          //               ),
-                                          //               backgroundColor: pinkColor,
-                                          //               autoClose: true,
-                                          //               icon: Icons.close_sharp,
-                                          //               onPressed: (context) {
-                                          //                 _leaveGroupBottomsheet(context);
-                                          //               },
-                                          //             ),
-                                          //           ],
-                                          //         ),
-                                          //         dragStartBehavior:
-                                          //             DragStartBehavior.start,
-                                          //         child: _normalChat(
-                                          //           model,
-                                          //           index,
-                                          //           () => Get.to(
-                                          //             GroupChattingScreen(),
-                                          //           ),
-                                          //         ),
-                                          //       )
-
-                                          ///
-                                          /// Normal Chats
-                                          ///
-                                          // :
-                                          _normalChat(
+                                      return _normalChat(
                                         model,
                                         index,
                                         () => Get.to(
@@ -199,24 +161,28 @@ class ConversationScreen extends StatelessWidget {
                                       height: 15.h,
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        )
-                      ],
-                    )
-                  : Container(
-                      color: whiteColor,
-                      width: double.infinity,
-                      height: double.infinity,
-                      child: Center(
-                        child: Text(
-                          '',
-                          style: subHeadingText1,
-                        ),
+                                )
+                              : model.state == ViewState.busy
+                                  ? Container()
+                                  : Expanded(
+                                      child: Container(
+                                        color: whiteColor,
+                                        width: double.infinity,
+                                        child: Center(
+                                          child: Text(
+                                            'No Conversations Found',
+                                            style: subHeadingText1.copyWith(
+                                                fontSize: 16.sp),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                        ],
                       ),
-                    )),
+                    ),
+                  )
+                ],
+              )),
         );
       }),
     );
@@ -356,15 +322,12 @@ class ConversationScreen extends StatelessWidget {
           ? model.conversations[index].imageUrl == null
               ? CircleAvatar(
                   radius: 35.r,
-                  backgroundImage: AssetImage(
-                    '$staticAsset/person.png',
-                  ),
+                  backgroundImage: AssetImage('$staticAsset/person.png'),
                 )
               : CircleAvatar(
                   radius: 35.r,
                   backgroundImage:
-                      NetworkImage(model.conversations[index].imageUrl!),
-                )
+                      NetworkImage(model.conversations[index].imageUrl!))
           : model.conversations[index].appUser!.images == null
               ? CircleAvatar(
                   radius: 35.r,

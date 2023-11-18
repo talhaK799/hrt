@@ -8,9 +8,9 @@ class RedHartLoader extends StatelessWidget {
       child: Lottie.asset(
         'assets/animations/hart_red.json',
         repeat: true,
-        frameRate: FrameRate(
-          100,
-        ),
+        // frameRate: FrameRate(
+        //   100,
+        // ),
       ),
     );
   }
