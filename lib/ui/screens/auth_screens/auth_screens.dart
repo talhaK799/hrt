@@ -65,7 +65,7 @@ class AuthScreen extends StatelessWidget {
                         icon: 'Facebook.png',
                         title: 'Sign Up With Facebook',
                         onTap: () {
-                          model.signInWithFacebook(context);
+                          // model.signInWithFacebook(context);
                         },
                       ),
                       SizedBox(

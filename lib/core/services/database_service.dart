@@ -283,11 +283,17 @@ class DatabaseService {
 
   getMatchedUsers(AppUser appUser) async {
     List<AppUser> list = [];
+    print("likedUsers: ${appUser.likedUsers!.length}");
     try {
-      final snapshot = await _db
-          .collection('app_user')
-          .where("id", whereIn: appUser.likedUsers)
-          .get();
+      final snapshot = appUser.likedUsers!.isEmpty
+          ? await _db
+              .collection('app_user')
+              // .where("id", whereIn: appUser.likedUsers)
+              .get()
+          : await _db
+              .collection('app_user')
+              .where("id", whereIn: appUser.likedUsers)
+              .get();
       for (var user in snapshot.docs) {
         list.add(
           AppUser.fromJson(user.data(), user.id),
