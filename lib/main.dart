@@ -84,7 +84,6 @@ class MyApp extends StatelessWidget {
               ),
             ),
             darkTheme: model.isDarkTheme ? ThemeData.dark() : ThemeData.light(),
-            // theme: AppColors.themeData(model.isDarkTheme, context),
             home: SplashScreen(),
           );
         }),

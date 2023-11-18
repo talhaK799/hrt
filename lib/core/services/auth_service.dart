@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -142,7 +143,7 @@ class AuthService extends ChangeNotifier {
         customAuthResult.status = true;
         customAuthResult.user = credentials.user;
         appUser.id = credentials.user!.uid;
-
+        this.appUser.fcmToken = await FirebaseMessaging.instance.getToken();
         this.appUser = appUser;
 
         await _dbService.registerAppUser(appUser);
