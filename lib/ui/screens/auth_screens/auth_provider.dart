@@ -15,6 +15,7 @@ class AuthProvider extends BaseViewModel {
   // final _db = DatabaseService();
 
   signInWithGoogle(context) async {
+    print("Signin");
     setState(ViewState.busy);
     authResult = await _auth.signUpUserWithGoogle();
     setState(ViewState.idle);
