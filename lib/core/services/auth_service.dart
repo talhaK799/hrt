@@ -174,6 +174,12 @@ class AuthService extends ChangeNotifier {
       ///
       if (credentials.user != null) {
         appUser = await _dbService.getAppUser(credentials.user!.uid);
+        checkUserPremium();
+        this.appUser.fcmToken = await FirebaseMessaging.instance.getToken();
+        await _dbService.updateClientFcm(
+          this.appUser.fcmToken,
+          this.appUser.id,
+        );
         customAuthResult.status = true;
         customAuthResult.user = credentials.user;
       }
@@ -248,6 +254,7 @@ class AuthService extends ChangeNotifier {
           appUser.id = userCredential.user!.uid;
 
           this.appUser = AppUser();
+          this.appUser.fcmToken = await FirebaseMessaging.instance.getToken();
           await _dbService.registerAppUser(appUser);
         }
         // }
@@ -336,9 +343,14 @@ class AuthService extends ChangeNotifier {
         bool isUserExist = await _dbService.checkUser(appUser);
         if (isUserExist) {
           this.appUser = await _dbService.getAppUser(result.user!.uid);
+          this.appUser.fcmToken = await FirebaseMessaging.instance.getToken();
+          await _dbService.updateClientFcm(
+              this.appUser.fcmToken, this.appUser.id);
         } else {
           this.appUser = appUser;
           this.appUser.isPremiumUser = false;
+          this.appUser.fcmToken = await _dbService.updateClientFcm(
+              this.appUser.fcmToken, this.appUser.id);
           await _dbService.registerAppUser(appUser);
         }
         customAuthResult.user = result.user!;
@@ -383,13 +395,15 @@ class AuthService extends ChangeNotifier {
         bool isUserExist = await _dbService.checkUser(appUser);
         if (isUserExist) {
           this.appUser = await _dbService.getAppUser(appUser.id);
-          // this.appUser.fcmToken = await FirebaseMessaging.instance.getToken();
-          // await _dbService.updateClientFcm(
-          //     this.appUser.fcmToken, this.appUser.id);
+          this.appUser.fcmToken = await FirebaseMessaging.instance.getToken();
+          await _dbService.updateClientFcm(
+              this.appUser.fcmToken, this.appUser.id);
         } else {
           this.appUser = appUser;
 
           this.appUser.isPremiumUser = false;
+          this.appUser.fcmToken = await _dbService.updateClientFcm(
+              this.appUser.fcmToken, this.appUser.id);
           await _dbService.registerAppUser(appUser);
         }
 
@@ -407,12 +421,15 @@ class AuthService extends ChangeNotifier {
     return customAuthResult;
   }
 
-  logout() async {
+  logout(id) async {
     await googleSignIn.signOut();
     await _facebookSignIn.logOut();
     await _auth.signOut();
+    this.customAuthResult = CustomAuthResult();
+    this.appUser = AppUser();
     isLogin = false;
     user = null;
+    await _dbService.updateClientFcm(null, id);
   }
 
   deleteUserAccount() async {

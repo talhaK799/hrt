@@ -203,6 +203,11 @@ class DatabaseService {
       return false;
     }
   }
+  updateClientFcm(token, id) async {
+    await _db.collection("app_user").doc(id).update(
+      {'fcmToken': token},
+    ).then((value) => debugPrint('fcm updated successfully'));
+  }
 
   getIdentity() async {
     List<InfoItem> list = [];

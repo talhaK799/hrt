@@ -26,7 +26,8 @@ class ConversationScreen extends StatelessWidget {
           inAsyncCall: model.state == ViewState.busy,
           progressIndicator: RedHartLoader(),
           child: Scaffold(
-              backgroundColor: primaryColor,
+              backgroundColor:
+                  model.state == ViewState.busy ? whiteColor : primaryColor,
               body: Stack(
                 children: [
                   Padding(
@@ -148,8 +149,9 @@ class ConversationScreen extends StatelessWidget {
                                         index,
                                         () => Get.to(
                                           ChattingScreen(
-                                            toUserId: model
-                                                .conversations[index].toUserId!,
+                                            toUserId: model.conversations[index]
+                                                    .toUserId ??
+                                                '',
                                             conversation:
                                                 model.conversations[index],
                                           ),
@@ -328,20 +330,25 @@ class ConversationScreen extends StatelessWidget {
                   radius: 35.r,
                   backgroundImage:
                       NetworkImage(model.conversations[index].imageUrl!))
-          : model.conversations[index].appUser!.images == null
-              ? CircleAvatar(
-                  radius: 35.r,
-                  backgroundImage: AssetImage(
-                    '$staticAsset/person.png',
-                  ),
+          : model.conversations[index].appUser == null
+              ? Container(
+                  color: whiteColor,
                 )
-              : CircleAvatar(
-                  radius: 35.r,
-                  backgroundImage: NetworkImage(
-                      model.conversations[index].appUser!.images!.first),
-                ),
+              : model.conversations[index].appUser!.images == null
+                  ? CircleAvatar(
+                      radius: 35.r,
+                      backgroundImage: AssetImage(
+                        '$staticAsset/person.png',
+                      ),
+                    )
+                  : CircleAvatar(
+                      radius: 35.r,
+                      backgroundImage: NetworkImage(
+                        model.conversations[index].appUser!.images!.first,
+                      ),
+                    ),
       title: Text(
-        "${model.conversations[index].isGroupChat == true ? model.conversations[index].name : model.conversations[index].appUser!.name ?? 'user'}",
+        "${model.conversations[index].isGroupChat == true ? model.conversations[index].name : model.conversations[index].appUser == null ? " " : model.conversations[index].appUser!.name ?? 'user'}",
         style: subHeadingTextStyle2,
       ),
       subtitle: Text(

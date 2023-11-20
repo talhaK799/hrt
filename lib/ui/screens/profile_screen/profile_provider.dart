@@ -64,7 +64,7 @@ class ProfileProvider extends BaseViewModel {
 
   logout() async {
     setState(ViewState.busy);
-    await _auth.logout();
+    await _auth.logout(_auth.appUser.id);
     Get.offAll(
       SplashScreen(),
     );

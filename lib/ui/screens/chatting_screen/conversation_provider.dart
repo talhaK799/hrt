@@ -46,37 +46,16 @@ class ConversationProvider extends BaseViewModel {
       this.likedUsers[i].isSelected = false;
       if (this.likedUsers[i].likedUsers!.contains(currentUser.appUser.id)) {
         print('current user ${i + 1} likes <===> ${this.likedUsers[i].id}');
-        if (!matchedUsers.contains(this.likedUsers[i])) {
-          matchedUsers.add(this.likedUsers[i]);
+        for (var element in conversations) {
+          if (!matchedUsers.contains(this.likedUsers[i]) &&
+              element.appUser!.id != this.likedUsers[i].id) {
+            matchedUsers.add(likedUsers[i]);
+          } else {
+            matchedUsers.remove(likedUsers[i]);
+          }
         }
       }
     }
-    // for (var i = 0; i < likedUsers.length; i++) {
-    //   if (likedUsers[i].likedUserId == currentUser.appUser.id) {
-    //     print("Match found");
-    //     acceptedMatches.add(matches[i]);
-
-    //     notifyListeners();
-    //   } else if (matches[i].likedByUserId == currentUser.appUser.id) {
-    //     acceptedMatches.add(matches[i]);
-    //   } else {
-    //     print("Match not found");
-    //   }
-    // }
-
-    // for (var i = 0; i < acceptedMatches.length; i++) {
-    //   if (acceptedMatches[i].likedUserId == currentUser.appUser.id) {
-    //     acceptedMatches[i].otherUserId = acceptedMatches[i].likedByUserId;
-    //   } else if (acceptedMatches[i].likedByUserId == currentUser.appUser.id) {
-    //     acceptedMatches[i].otherUserId = acceptedMatches[i].likedUserId;
-    //   }
-    // }
-    // for (var m in acceptedMatches) {
-    //   user = await db.getAppUser(m.otherUserId);
-    //   matchedUsers.add(user);
-    //   user = AppUser();
-    //   notifyListeners();
-    // }
     setState(ViewState.idle);
   }
 
