@@ -17,6 +17,8 @@ class AppUser {
   bool? isFacebook;
   int? likesCount;
   int? spanks;
+
+  String? fcmToken;
   int? age;
   DateTime? createdAt = DateTime.now();
   DateTime? uplift = DateTime.now();
@@ -49,6 +51,7 @@ class AppUser {
     this.spanks,
     this.isNotificationsOn,
     this.name,
+    this.fcmToken,
     this.dob,
     this.uplift,
     this.nickName,
@@ -76,6 +79,8 @@ class AppUser {
     data['uplift'] = uplift ?? DateTime.now();
     data['name'] = name ?? 'User';
     data['phoneNumber'] = phoneNumber;
+
+    data['fcmToken'] = fcmToken;
     data['isEmailVerified'] = isEmailVerified ?? false;
     data['isPhoneNoVerified'] = isPhoneNoVerified ?? false;
     data['isNotificationsOn'] = isNotificationsOn ?? false;
@@ -115,6 +120,8 @@ class AppUser {
     isPrivatePhoto = json['isPrivatePhoto'] ?? false;
     isGoogle = json['isGoogle'] ?? false;
     isFacebook = json['isFacebook'] ?? false;
+
+    this.fcmToken = json['fcmToken'] ?? '';
     // isMuteNotification = json['isMuteNotification'] ?? false;
     nickName = json['nickName'] ?? "User";
     dob = json['dob'];
