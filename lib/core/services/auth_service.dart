@@ -22,6 +22,10 @@ class AuthService extends ChangeNotifier {
   AppUser appUser = AppUser();
   AppUser sharingUser = AppUser();
   AppUser signUpUser = AppUser();
+
+  List<AppUser> appUsers = [];
+  List<AppUser> likedUsers = [];
+  List<Matches> matches = [];
   Subscription subscription = Subscription();
 
   GoogleSignIn googleSignIn = GoogleSignIn();

@@ -40,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ? model.filteredUsers.isEmpty
                       ? primaryColor
                       : whiteColor
-                  : model.appUsers.isEmpty
+                  : model.currentUser.appUsers.isEmpty
                       ? primaryColor
                       : whiteColor,
               body: Stack(
@@ -53,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         )
                       : Column(
                           children: [
-                            model.appUsers.isEmpty
+                            model.currentUser.appUsers.isEmpty
                                 ? Container()
                                 : Padding(
                                     padding: const EdgeInsets.fromLTRB(
@@ -102,10 +102,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                           ? _staticScreen(context)
                                           : _homeScreenData(
                                               model, model.filteredUsers[index])
-                                      : model.appUsers.length == 0
+                                      : model.currentUser.appUsers.length == 0
                                           ? _staticScreen(context)
                                           : _homeScreenData(
-                                              model, model.appUsers[index]);
+                                              model,
+                                              model
+                                                  .currentUser.appUsers[index]);
                                 },
                                 onPageChanged: (val) => model.changePage(val),
                               ),
@@ -116,7 +118,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ? model.filteredUsers.isEmpty
                           ? Container()
                           : _likeButtons(model)
-                      : model.appUsers.isEmpty
+                      : model.currentUser.appUsers.isEmpty
                           ? Container()
                           : _likeButtons(model),
 

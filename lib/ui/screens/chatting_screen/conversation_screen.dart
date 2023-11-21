@@ -26,8 +26,9 @@ class ConversationScreen extends StatelessWidget {
           inAsyncCall: model.state == ViewState.busy,
           progressIndicator: RedHartLoader(),
           child: Scaffold(
-              backgroundColor:
-                  model.state == ViewState.busy ? whiteColor : primaryColor,
+              backgroundColor: model.currentUser.likedUsers.isEmpty
+                  ? whiteColor
+                  : primaryColor,
               body: Stack(
                 children: [
                   Padding(
