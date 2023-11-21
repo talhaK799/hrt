@@ -86,7 +86,9 @@ class _ChattingScreenState extends State<ChattingScreen> {
                               : model.toUser.images != null
                                   ? GestureDetector(
                                       onTap: () {
-                                        Get.to(UserDetailScreen(user: model.toUser,));
+                                        Get.to(UserDetailScreen(
+                                          user: model.toUser,
+                                        ));
                                       },
                                       child: CircleAvatar(
                                         radius: 35.r,
@@ -169,7 +171,9 @@ class _ChattingScreenState extends State<ChattingScreen> {
                                             user: model.currentUser.appUser,
                                           )
                                         : model.messages[index].type ==
-                                                "GroupCreated"
+                                                    "added" ||
+                                                model.messages[index].type ==
+                                                    "created"
                                             ? JoinORLeaveGroup(
                                                 message: model.messages[index],
                                                 currentUser:

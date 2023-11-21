@@ -12,6 +12,9 @@ class LocalStorageService {
   ///
   static const String onboardingCountKey = 'onBoardingCount';
   static const String notificationsCountKey = 'notificationsCount';
+  static const String users = 'users';
+  static const String matches = 'matches';
+  static const String chats = 'chats';
 
   ///
   /// Setters and getters
@@ -24,7 +27,27 @@ class LocalStorageService {
   set setNotificationsCount(int count) =>
       _saveToDisk(notificationsCountKey, count);
 
-////
+  ///
+  /// number of Users
+  ///
+  int get getdataLength => _getFromDisk(users) ?? 0;
+  set setdataLength(int count) => _saveToDisk(users, count);
+
+  ///
+  /// number of Requests
+  ///
+
+  int get getmatches => _getFromDisk(users) ?? 0;
+  set setmatches(int count) => _saveToDisk(users, count);
+
+  ///
+  /// number of chattingUsers
+  ///
+
+  int get getChats => _getFromDisk(chats) ?? 0;
+  set setChats(int count) => _saveToDisk(chats, count);
+
+  ///
   ///initializing instance
   ///
   init() async {

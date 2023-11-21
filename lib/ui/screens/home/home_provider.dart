@@ -8,12 +8,14 @@ import 'package:hart/core/models/matches.dart';
 import 'package:hart/core/services/auth_service.dart';
 import 'package:hart/core/services/database_service.dart';
 import 'package:hart/core/services/location_service.dart';
+import 'package:hart/core/services/locato_storage_service.dart';
 import 'package:hart/core/view_models/base_view_model.dart';
 import 'package:hart/locator.dart';
 import 'package:hart/ui/screens/collect_info_screens/fantasies_screen/fantasies_screen.dart';
 import 'package:hart/ui/screens/connection_screen/connect_popup/connect_popup_screen.dart';
 import 'package:hart/ui/screens/profile_screen/kings_hart/king_hart_screen.dart';
 import 'package:hart/ui/screens/profile_screen/maestro_screen/maestro_screen.dart';
+import 'package:pinput/pinput.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 import '../collect_info_screens/select_gender_screen/select_gender_screen.dart';
@@ -28,12 +30,13 @@ class HomeProvider extends BaseViewModel {
   bool isLast = false;
   final currentUser = locator<AuthService>();
   final currentLocaion = locator<LocationService>().currentLocation;
+  final _localStorage = locator<LocalStorageService>();
   // Position? currentLocaion;
   final db = DatabaseService();
   // final _db = DatabaseService();
   PageController? pageController;
   int index = 0;
-  List<AppUser> users = [];
+  // List<AppUser> users = [];
   List<AppUser> appUsers = [];
   List<AppUser> filteredUsers = [];
   List<Placemark> placemarks = [];
@@ -46,28 +49,29 @@ class HomeProvider extends BaseViewModel {
 
   HomeProvider() {
     // currentLocation.determinePosition();
+    // appUsers = currentUser.appUsers;
 
     init();
-    // gender = lookingFor.first;
-    // desire = desires.first;
     pageController = PageController(initialPage: 0);
   }
   init() async {
-    setState(ViewState.busy);
+    // setState(ViewState.busy);
+
     await getAllAppUsers();
+    // appUsers = currentUser.appUsers;
 
     convertLatAndLongIntoAddress();
 
-    setState(ViewState.idle);
+    // setState(ViewState.idle);
     notifyListeners();
   }
 
   convertLatAndLongIntoAddress() async {
     placemarks = [];
-    setState(ViewState.busy);
+    // setState(ViewState.busy);
     placemarks = await placemarkFromCoordinates(
         currentLocaion!.latitude, currentLocaion!.longitude);
-    setState(ViewState.idle);
+    // setState(ViewState.idle);
 
     country = placemarks.first.country!;
     notifyListeners();
@@ -75,19 +79,26 @@ class HomeProvider extends BaseViewModel {
   }
 
   getAllAppUsers() async {
+    if (currentUser.appUsers.isEmpty) {
+      setState(ViewState.busy);
+      await Future.delayed(Duration(seconds: 5));
+    }
     print('getting all AppUsers');
-    users = [];
-    appUsers = [];
+    int dataLength = _localStorage.getdataLength;
+    print('data length===> $dataLength');
+    // appUsers = [];
     currentUser.appUser = await db.getAppUser(currentUser.appUser.id);
-    setState(ViewState.busy);
-    users = await db.getAllUsers(currentUser.appUser);
-
-    print('number of all Appusers ${users.length}');
-
-    await Future.delayed(Duration(seconds: 5));
+    currentUser.appUsers = await db.getAllUsers(currentUser.appUser);
     setState(ViewState.idle);
+    // if (users.length > dataLength) {
+    //   await Future.delayed(Duration(seconds: 5));
 
-    for (var user in users) {
+    //   _localStorage.setdataLength = users.length;
+    //   setState(ViewState.idle);
+    // }
+    print('number of all Appusers ${currentUser.appUsers.length}');
+
+    for (var user in currentUser.appUsers) {
       print('user ${user.id} creation  ===> ${user.createdAt.toString()}');
       // appUsers.add(user);
       if (currentUser.appUser.likedUsers == null ||
@@ -340,7 +351,7 @@ class HomeProvider extends BaseViewModel {
   }
 
   resetFilter() async {
-    await getAllAppUsers();
+    // await getAllAppUsers();
     start = 18.0;
     end = 60.0;
 

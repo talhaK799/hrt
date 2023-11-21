@@ -1,5 +1,6 @@
 import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/models/app_user.dart';
+import 'package:hart/core/models/chat_message.dart';
 import 'package:hart/core/models/conversation.dart';
 import 'package:hart/core/services/auth_service.dart';
 import 'package:hart/core/services/database_service.dart';
@@ -43,7 +44,7 @@ class GroupDetailProvider extends BaseViewModel {
     setState(ViewState.busy);
     for (var user in groupMembers) {
       group.fromUserId = user.id;
-      await _db.updateGroup(group);
+      await _db.updateGroup(group, Message());
     }
 
     setState(ViewState.idle);
@@ -63,7 +64,7 @@ class GroupDetailProvider extends BaseViewModel {
     setState(ViewState.busy);
     for (var user in groupMembers) {
       group.fromUserId = user.id;
-      await _db.updateGroup(group);
+      await _db.updateGroup(group, Message());
     }
 
     setState(ViewState.idle);

@@ -203,6 +203,7 @@ class DatabaseService {
       return false;
     }
   }
+
   updateClientFcm(token, id) async {
     await _db.collection("app_user").doc(id).update(
       {'fcmToken': token},
@@ -583,7 +584,7 @@ class DatabaseService {
     }
   }
 
-  updateGroup(Conversation conversation) async {
+  updateGroup(Conversation conversation, Message message) async {
     // print("appuaser premiume check: ${appUser.isPremiumUser}");
     print('user id==> ${conversation.fromUserId}');
     print('group id==> ${conversation.groupId}');
@@ -594,6 +595,16 @@ class DatabaseService {
           .collection("MyConversation")
           .doc("${conversation.groupId}")
           .update(conversation.toJson());
+
+      ///
+      /// Messages
+      ///
+
+      await _db
+          .collection("messages")
+          .doc("${conversation.conversationId}")
+          .collection("realtime-messages")
+          .add(message.toJson());
       return true;
     } catch (e, s) {
       debugPrint('Exception @DatabaseService/GroupUpdate ==>$e');

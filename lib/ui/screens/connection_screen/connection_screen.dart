@@ -28,7 +28,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
           progressIndicator: CustomLoader(),
           child: Scaffold(
             backgroundColor: Colors.white,
-            body: model.likingUsers.isNotEmpty
+            body: model.currentUser.appUsers.isNotEmpty
                 ? Padding(
                     padding: EdgeInsets.fromLTRB(22, 50, 22, 10),
                     child: Column(
@@ -99,7 +99,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                               return _userDetails(
                                   model,
                                   model.likingUsers[index],
-                                  model.matches[index]);
+                                  model.currentUser.matches[index]);
                             },
                             separatorBuilder: (context, index) => SizedBox(
                               height: 40.h,

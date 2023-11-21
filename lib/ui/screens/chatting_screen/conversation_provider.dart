@@ -8,19 +8,20 @@ import 'package:hart/core/models/matches.dart';
 import 'package:hart/core/models/radio_button.dart';
 import 'package:hart/core/services/auth_service.dart';
 import 'package:hart/core/services/database_service.dart';
+import 'package:hart/core/services/locato_storage_service.dart';
 import 'package:hart/core/view_models/base_view_model.dart';
 import 'package:hart/locator.dart';
 
 class ConversationProvider extends BaseViewModel {
   final db = DatabaseService();
   final currentUser = locator<AuthService>();
+  final localStorage = locator<LocalStorageService>();
 
   Stream<QuerySnapshot>? stream;
 
   TextEditingController messageController = TextEditingController();
   AppUser user = AppUser();
   Message message = Message();
-  List<AppUser> likedUsers = [];
   List<Matches> acceptedMatches = [];
   List<AppUser> matchedUsers = [];
 
@@ -35,28 +36,37 @@ class ConversationProvider extends BaseViewModel {
   }
 
   getMatches() async {
-    matchedUsers = [];
-    this.likedUsers = [];
-    acceptedMatches = [];
-    setState(ViewState.busy);
+    if (currentUser.likedUsers.isEmpty) {
+      setState(ViewState.busy);
+      await Future.delayed(Duration(seconds: 5));
+    }
+    // currentUser.likedUsers = [];
+    // acceptedMatches = [];
+
     currentUser.appUser = await db.getAppUser(currentUser.appUser.id);
-    this.likedUsers = await db.getMatchedUsers(currentUser.appUser);
-    await Future.delayed(Duration(seconds: 5));
-    for (var i = 0; i < this.likedUsers.length; i++) {
-      this.likedUsers[i].isSelected = false;
-      if (this.likedUsers[i].likedUsers!.contains(currentUser.appUser.id)) {
-        print('current user ${i + 1} likes <===> ${this.likedUsers[i].id}');
+    currentUser.likedUsers = await db.getMatchedUsers(currentUser.appUser);
+
+    setState(ViewState.idle);
+
+    for (var i = 0; i < currentUser.likedUsers.length; i++) {
+      currentUser.likedUsers[i].isSelected = false;
+      if (currentUser.likedUsers[i].likedUsers!
+          .contains(currentUser.appUser.id)) {
+        print(
+            'current user ${i + 1} likes <===> ${currentUser.likedUsers[i].id}');
         for (var element in conversations) {
-          if (!matchedUsers.contains(this.likedUsers[i]) &&
-              element.appUser!.id != this.likedUsers[i].id) {
-            matchedUsers.add(likedUsers[i]);
+          if (!matchedUsers.contains(currentUser.likedUsers[i]) &&
+              element.appUser!.id != currentUser.likedUsers[i].id) {
+            matchedUsers.add(currentUser.likedUsers[i]);
           } else {
-            matchedUsers.remove(likedUsers[i]);
+            matchedUsers.remove(currentUser.likedUsers[i]);
+
+            notifyListeners();
           }
         }
       }
     }
-    setState(ViewState.idle);
+    notifyListeners();
   }
 
   getConversations() async {

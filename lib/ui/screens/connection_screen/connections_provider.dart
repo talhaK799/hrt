@@ -3,6 +3,7 @@ import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/models/app_user.dart';
 import 'package:hart/core/models/matches.dart';
 import 'package:hart/core/services/auth_service.dart';
+import 'package:hart/core/services/locato_storage_service.dart';
 import 'package:hart/core/view_models/base_view_model.dart';
 import 'package:hart/locator.dart';
 import 'package:hart/ui/screens/connection_screen/connect_popup/connect_popup_screen.dart';
@@ -17,7 +18,6 @@ class ConnectionsProvider extends BaseViewModel {
   final db = DatabaseService();
   final currentUser = locator<AuthService>();
   AppUser user = AppUser();
-  List<Matches> matches = [];
   // Matches match = Matches();
   List<AppUser> likingUsers = [];
   ConnectionsProvider() {
@@ -25,15 +25,19 @@ class ConnectionsProvider extends BaseViewModel {
   }
 
   getLikingUsers() async {
-    setState(ViewState.busy);
-    await Future.delayed(Duration(seconds: 5));
+    if (currentUser.matches.isEmpty) {
+      setState(ViewState.busy);
+      await Future.delayed(Duration(seconds: 5));
+    }
     currentUser.appUser = await db.getAppUser(currentUser.appUser.id);
-    matches = await db.getAllRequest(currentUser.appUser.id!);
+    currentUser.matches = await db.getAllRequest(currentUser.appUser.id!);
     setState(ViewState.idle);
-    for (var m in matches) {
+
+    for (var m in currentUser.matches) {
       user = await db.getAppUser(m.likedByUserId);
       likingUsers.add(user);
     }
+    notifyListeners();
   }
 
   like(AppUser user, Matches match) async {
