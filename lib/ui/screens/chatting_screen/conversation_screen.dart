@@ -26,9 +26,8 @@ class ConversationScreen extends StatelessWidget {
           inAsyncCall: model.state == ViewState.busy,
           progressIndicator: RedHartLoader(),
           child: Scaffold(
-              backgroundColor: model.currentUser.likedUsers.isEmpty
-                  ? whiteColor
-                  : primaryColor,
+              backgroundColor:
+                  model.likedUsers.isEmpty ? whiteColor : primaryColor,
               body: Stack(
                 children: [
                   Padding(
@@ -75,34 +74,41 @@ class ConversationScreen extends StatelessWidget {
                           ///
                           /// Matched Users List
                           ///
-                          model.matchedUsers.isNotEmpty
+                          model.currentUser.matchedUsers.isNotEmpty
                               ? Container(
                                   height: 0.15.sh,
                                   child: ListView.separated(
                                     physics: BouncingScrollPhysics(),
                                     // shrinkWrap: true,
                                     scrollDirection: Axis.horizontal,
-                                    itemCount: model.matchedUsers.length,
+                                    itemCount:
+                                        model.currentUser.matchedUsers.length,
                                     // model.matchedUsers.length,
                                     itemBuilder: (context, index) {
                                       return GestureDetector(
                                         onTap: () {
                                           print(
-                                              'chat user Id ${model.matchedUsers[index].id!}');
+                                              'chat user Id ${model.currentUser.matchedUsers[index].id!}');
                                           Get.to(
                                             ChattingScreen(
-                                              toUserId:
-                                                  model.matchedUsers[index].id!,
+                                              toUserId: model.currentUser
+                                                  .matchedUsers[index].id!,
                                               conversation: Conversation(),
                                             ),
                                           );
                                         },
-                                        child: model.matchedUsers[index].images!
+                                        child: model
+                                                .currentUser
+                                                .matchedUsers[index]
+                                                .images!
                                                 .isNotEmpty
                                             ? CircleAvatar(
                                                 backgroundImage: NetworkImage(
-                                                    model.matchedUsers[index]
-                                                        .images!.first),
+                                                    model
+                                                        .currentUser
+                                                        .matchedUsers[index]
+                                                        .images!
+                                                        .first),
                                                 maxRadius: 35.r,
                                               )
                                             : CircleAvatar(
@@ -137,24 +143,27 @@ class ConversationScreen extends StatelessWidget {
                             style: subHeadingTextStyle2,
                           ),
                           sizeBox20,
-                          model.conversations.isNotEmpty
+                          model.currentUser.conversations.isNotEmpty
                               ? Expanded(
                                   child: ListView.separated(
                                     padding: EdgeInsets.zero,
                                     physics: BouncingScrollPhysics(),
                                     shrinkWrap: true,
-                                    itemCount: model.conversations.length,
+                                    itemCount:
+                                        model.currentUser.conversations.length,
                                     itemBuilder: (context, index) {
                                       return _normalChat(
                                         model,
                                         index,
                                         () => Get.to(
                                           ChattingScreen(
-                                            toUserId: model.conversations[index]
+                                            toUserId: model
+                                                    .currentUser
+                                                    .conversations[index]
                                                     .toUserId ??
                                                 '',
-                                            conversation:
-                                                model.conversations[index],
+                                            conversation: model.currentUser
+                                                .conversations[index],
                                           ),
                                         ),
                                       );
@@ -321,21 +330,21 @@ class ConversationScreen extends StatelessWidget {
     return ListTile(
       contentPadding: EdgeInsets.zero,
       onTap: onTap,
-      leading: model.conversations[index].isGroupChat == true
-          ? model.conversations[index].imageUrl == null
+      leading: model.currentUser.conversations[index].isGroupChat == true
+          ? model.currentUser.conversations[index].imageUrl == null
               ? CircleAvatar(
                   radius: 35.r,
                   backgroundImage: AssetImage('$staticAsset/person.png'),
                 )
               : CircleAvatar(
                   radius: 35.r,
-                  backgroundImage:
-                      NetworkImage(model.conversations[index].imageUrl!))
-          : model.conversations[index].appUser == null
+                  backgroundImage: NetworkImage(
+                      model.currentUser.conversations[index].imageUrl!))
+          : model.currentUser.conversations[index].appUser == null
               ? Container(
                   color: whiteColor,
                 )
-              : model.conversations[index].appUser!.images == null
+              : model.currentUser.conversations[index].appUser!.images == null
                   ? CircleAvatar(
                       radius: 35.r,
                       backgroundImage: AssetImage(
@@ -345,26 +354,28 @@ class ConversationScreen extends StatelessWidget {
                   : CircleAvatar(
                       radius: 35.r,
                       backgroundImage: NetworkImage(
-                        model.conversations[index].appUser!.images!.first,
+                        model.currentUser.conversations[index].appUser!.images!
+                            .first,
                       ),
                     ),
       title: Text(
-        "${model.conversations[index].isGroupChat == true ? model.conversations[index].name : model.conversations[index].appUser == null ? " " : model.conversations[index].appUser!.name ?? 'user'}",
+        "${model.currentUser.conversations[index].isGroupChat == true ? model.currentUser.conversations[index].name : model.currentUser.conversations[index].appUser == null ? " " : model.currentUser.conversations[index].appUser!.name ?? 'user'}",
         style: subHeadingTextStyle2,
       ),
       subtitle: Text(
-        model.conversations[index].isGroupChat == true
+        model.currentUser.conversations[index].isGroupChat == true
             ? ""
-            : model.conversations[index].lastMessage ?? '',
+            : model.currentUser.conversations[index].lastMessage ?? '',
         style: subtitleText.copyWith(color: greyColor2),
       ),
       trailing: Column(
         children: [
           Text(
-            model.conversations[index].isGroupChat == true
+            model.currentUser.conversations[index].isGroupChat == true
                 ? ""
                 : onlyTime.format(
-                    model.conversations[index].lastMessageat ?? DateTime.now()),
+                    model.currentUser.conversations[index].lastMessageat ??
+                        DateTime.now()),
             style: miniText,
           ),
         ],

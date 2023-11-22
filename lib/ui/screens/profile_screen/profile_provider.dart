@@ -42,7 +42,7 @@ class ProfileProvider extends BaseViewModel {
     setState(ViewState.idle);
     country = placemark.first.country;
     notifyListeners();
-    print("country =>" + placemark.first.country!);
+    print("country =>" + country!);
   }
 
   final auth = locator<AuthService>();

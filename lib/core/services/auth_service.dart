@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hart/core/models/app_user.dart';
+import 'package:hart/core/models/conversation.dart';
 import 'package:hart/core/models/custom_auth_result.dart';
 import 'package:hart/core/models/matches.dart';
 import 'package:hart/core/models/subscripton.dart';
@@ -24,8 +25,9 @@ class AuthService extends ChangeNotifier {
   AppUser signUpUser = AppUser();
 
   List<AppUser> appUsers = [];
-  List<AppUser> likedUsers = [];
+  List<AppUser> matchedUsers = [];
   List<Matches> matches = [];
+  List<Conversation> conversations = [];
   Subscription subscription = Subscription();
 
   GoogleSignIn googleSignIn = GoogleSignIn();
@@ -246,18 +248,20 @@ class AuthService extends ChangeNotifier {
       UserCredential userCredential =
           await _auth.signInWithCredential(credential);
       this.user = userCredential.user;
+      this.appUser.id = userCredential.user!.uid;
       if (userCredential.user != null) {
         print("User logedin successfully with phone");
-
-        notifyListeners();
-        signUpUser = await _dbService.getAppUser(user!.uid);
-        // checkAccount(id) async {
-        if (signUpUser.id != null) {
-          this.appUser = signUpUser;
+        isLogin = true;
+        bool isUserExist = await _dbService.checkUser(appUser);
+        if (isUserExist) {
+          this.appUser.fcmToken = await FirebaseMessaging.instance.getToken();
+          await _dbService.updateClientFcm(
+              this.appUser.fcmToken, this.appUser.id);
+          this.appUser = await _dbService.getAppUser(appUser.id);
         } else {
-          appUser.id = userCredential.user!.uid;
-
           this.appUser = AppUser();
+          this.appUser.id = userCredential.user!.uid;
+
           this.appUser.fcmToken = await FirebaseMessaging.instance.getToken();
           await _dbService.registerAppUser(appUser);
         }
