@@ -23,7 +23,7 @@ class ConversationProvider extends BaseViewModel {
   AppUser user = AppUser();
   Message message = Message();
   List<Matches> acceptedMatches = [];
-  List<AppUser> matchedUsers = [];
+  List<AppUser> likedUsers = [];
 
   ConversationProvider() {
     init();
@@ -31,63 +31,76 @@ class ConversationProvider extends BaseViewModel {
 
   init() async {
     // Future.delayed(Duration(seconds: 5));
+    // currentUser.appUser = await db.getAppUser(currentUser.appUser.id);
     await getConversations();
     await getMatches();
   }
 
   getMatches() async {
-    if (currentUser.likedUsers.isEmpty) {
+    if (currentUser.matchedUsers.isEmpty) {
       setState(ViewState.busy);
       await Future.delayed(Duration(seconds: 5));
     }
     // currentUser.likedUsers = [];
     // acceptedMatches = [];
+    currentUser.matchedUsers = [];
+    likedUsers = [];
 
-    currentUser.appUser = await db.getAppUser(currentUser.appUser.id);
-    currentUser.likedUsers = await db.getMatchedUsers(currentUser.appUser);
+    likedUsers = await db.getMatchedUsers(currentUser.appUser);
 
     setState(ViewState.idle);
+    try {
+      // currentUser.matches = [];
+      for (var i = 0; i < likedUsers.length; i++) {
+        likedUsers[i].isSelected = false;
+        if (likedUsers[i].likedUsers!.contains(currentUser.appUser.id)) {
+          print('current user ${i + 1} likes <===> ${likedUsers[i].id}');
+          for (var element in currentUser.conversations) {
+            if (!currentUser.matchedUsers.contains(likedUsers[i]) &&
+                element.toUserId != likedUsers[i].id) {
+              currentUser.matchedUsers.add(likedUsers[i]);
+            } else {
+              currentUser.matchedUsers.remove(likedUsers[i]);
 
-    for (var i = 0; i < currentUser.likedUsers.length; i++) {
-      currentUser.likedUsers[i].isSelected = false;
-      if (currentUser.likedUsers[i].likedUsers!
-          .contains(currentUser.appUser.id)) {
-        print(
-            'current user ${i + 1} likes <===> ${currentUser.likedUsers[i].id}');
-        for (var element in conversations) {
-          if (!matchedUsers.contains(currentUser.likedUsers[i]) &&
-              element.appUser!.id != currentUser.likedUsers[i].id) {
-            matchedUsers.add(currentUser.likedUsers[i]);
-          } else {
-            matchedUsers.remove(currentUser.likedUsers[i]);
-
-            notifyListeners();
+              notifyListeners();
+            }
           }
         }
       }
+    } catch (e) {
+      print("Error @ getMatches $e");
     }
-    notifyListeners();
   }
 
   getConversations() async {
     print('current id ${currentUser.appUser.id}');
-    stream = await db.getAllConverationList(currentUser.appUser.id!);
-    stream!.listen((event) {
-      conversations = [];
-      if (event.docs.length > 0) {
-        event.docs.forEach((element) {
-          conversations.add(
-            Conversation.fromJson(element.data()),
-          );
+    try {
+      stream = await db.getAllConverationList(currentUser.appUser.id!);
+      stream!.listen((event) {
+        currentUser.conversations = [];
+        if (event.docs.length > 0) {
+          event.docs.forEach((element) {
+            // if (!currentUser.conversations
+            //     .contains(Conversation.fromJson(element.data()))) {
+            currentUser.conversations.add(
+              Conversation.fromJson(element.data()),
+            );
+            notifyListeners();
+            // }
+
+            print(
+                "Conversation == > ${currentUser.conversations.first.toJson()}");
+          });
+          getUsers();
+        } else {
+          currentUser.conversations = [];
           notifyListeners();
-          print("Conversation == > ${conversations.first.toJson()}");
-        });
-        getUsers();
-      } else {
-        conversations = [];
-        notifyListeners();
-      }
-    });
+        }
+      });
+      notifyListeners();
+    } catch (e) {
+      print("Error @ getConversations $e");
+    }
   }
 
   dispose() {
@@ -98,22 +111,20 @@ class ConversationProvider extends BaseViewModel {
 
   getUsers() async {
     // setState(ViewState.busy);
-    if (conversations.isNotEmpty) {
-      for (var i = 0; i < conversations.length; i++) {
-        conversations[i].appUser = AppUser();
-        if (conversations[i].isGroupChat == false) {
-          conversations[i].appUser =
-              await db.getAppUser(conversations[i].toUserId);
-          print("User data ===> ${conversations[i].appUser!.toJson()}");
-
-          // await Future.delayed(Duration(seconds: 5));
+    if (currentUser.conversations.isNotEmpty) {
+      for (var i = 0; i < currentUser.conversations.length; i++) {
+        currentUser.conversations[i].appUser = AppUser();
+        if (currentUser.conversations[i].isGroupChat == false) {
+          currentUser.conversations[i].appUser =
+              await db.getAppUser(currentUser.conversations[i].toUserId);
         }
       }
     }
+    notifyListeners();
     // setState(ViewState.idle);
   }
 
-  List<Conversation> conversations = [];
+  // List<Conversation> conversations = [];
 
   List<RadioButton> buttons = [
     RadioButton(

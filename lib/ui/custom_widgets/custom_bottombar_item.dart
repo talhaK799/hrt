@@ -24,13 +24,14 @@ class CustomBottomBarItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: onTap,
       child: currentIndex == activeIndex
           ? ImageIcon(
               AssetImage(
                 '$staticAsset/$icon2',
               ),
-              size: size ?? 23,
+              size: size ?? 30,
               color: primaryColor,
             )
           : ImageIcon(
@@ -38,7 +39,7 @@ class CustomBottomBarItem extends StatelessWidget {
                 '$staticAsset/$icon',
               ),
               color: greyColor2,
-              size: size ?? 23,
+              size: size ?? 30,
             ),
     );
   }

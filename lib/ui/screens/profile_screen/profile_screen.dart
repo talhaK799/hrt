@@ -86,9 +86,10 @@ class ProfileScreen extends StatelessWidget {
                               : model.currentUser.images!.isNotEmpty
                                   ? DecorationImage(
                                       image: NetworkImage(
-                                        model.currentUser.images!.length > 0
-                                            ? model.currentUser.images![1]
-                                            : model.currentUser.images![0],
+                                        // model.currentUser.images!.length > 0
+                                        //     ? model.currentUser.images![0]
+                                        //     :
+                                        model.currentUser.images![0],
                                       ),
                                       fit: BoxFit.cover)
                                   : DecorationImage(
