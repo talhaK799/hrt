@@ -14,6 +14,8 @@ class AppUser {
   bool? isNotificationsOn;
   bool? isPrivatePhoto;
   bool? isGoogle;
+  bool? isApple;
+
   bool? isFacebook;
   int? likesCount;
   int? spanks;
@@ -66,6 +68,7 @@ class AppUser {
     this.age,
     this.users,
     this.isSelected = false,
+    this.isApple,
   });
 
   toJson() {
@@ -100,6 +103,7 @@ class AppUser {
     data['images'] = images ?? [];
     data['likedUsers'] = likedUsers ?? [];
     data['disLikedUsers'] = disLikedUsers ?? [];
+    data["isApple"] = isApple ?? false;
     return data;
   }
 
@@ -120,7 +124,7 @@ class AppUser {
     isPrivatePhoto = json['isPrivatePhoto'] ?? false;
     isGoogle = json['isGoogle'] ?? false;
     isFacebook = json['isFacebook'] ?? false;
-
+    isApple = json["isApple"] ?? false;
     this.fcmToken = json['fcmToken'] ?? '';
     // isMuteNotification = json['isMuteNotification'] ?? false;
     nickName = json['nickName'] ?? "User";

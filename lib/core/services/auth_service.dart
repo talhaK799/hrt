@@ -372,6 +372,49 @@ class AuthService extends ChangeNotifier {
     return customAuthResult;
   }
 
+  ///
+  /// Google SignIn
+  ///
+  Future<CustomAuthResult> signUpUserWithApple() async {
+    print("Signing with apple");
+    try {
+      final appleAuthProvider = AppleAuthProvider();
+      UserCredential result = await _auth.signInWithProvider(appleAuthProvider);
+      if (result != null) {
+        print(result.user!.uid);
+        this.appUser = AppUser();
+        user = result.user;
+        this.appUser.id = result.user!.uid;
+        this.appUser.email = "";
+        this.appUser.name = "";
+        isLogin = true;
+        this.appUser.isApple = true;
+        bool isUserExist = await _dbService.checkUser(appUser);
+        if (isUserExist) {
+          this.appUser = await _dbService.getAppUser(result.user!.uid);
+
+          await _dbService.updateClientFcm(
+              this.appUser.fcmToken, this.appUser.id);
+        } else {
+          this.appUser = appUser;
+          this.appUser.isPremiumUser = false;
+          await _dbService.registerAppUser(appUser);
+          this.appUser.fcmToken = await FirebaseMessaging.instance.getToken();
+          await _dbService.updateClientFcm(
+              this.appUser.fcmToken, this.appUser.id);
+        }
+        customAuthResult.user = result.user!;
+        customAuthResult.status = true;
+      }
+      return customAuthResult;
+    } catch (e) {
+      print("Exception@singInWithApple===>$e");
+      customAuthResult.errorMessage =
+          AuthExceptionsService.generateExceptionMessage(e);
+      return customAuthResult;
+    }
+  }
+
   signupWithFacebook() async {
     //Todo: Do settings in the Google cloud for 0Auth Credentials
     try {
