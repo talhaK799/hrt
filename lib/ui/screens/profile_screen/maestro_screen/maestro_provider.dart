@@ -13,7 +13,7 @@ import 'package:hart/ui/screens/profile_screen/maestro_screen/maestro_screen.dar
 import '../../../custom_widgets/dialogs/succes_dialog.dart';
 
 class MaestroProvider extends BaseViewModel {
-  int currentIndex = 0;
+  int dotIndicator = 0;
   final auth = locator<AuthService>();
   final _db = DatabaseService();
   Subscription subscription = Subscription();
@@ -148,6 +148,10 @@ class MaestroProvider extends BaseViewModel {
     }
   }
 
+  changeDot(index) {
+    dotIndicator = index;
+    notifyListeners();
+  }
   // createPayment(String amount, String currency) async {
   //   try {
   //     Map<String, dynamic> body = {

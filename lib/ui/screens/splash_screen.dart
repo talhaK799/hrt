@@ -29,7 +29,7 @@ class _SplashScreenState extends State<SplashScreen> {
   final link = locator<DynamicLinkHandler>();
   final _location = locator<LocationService>();
   init() async {
-    // printKeyHash();
+    printKeyHash();
 
     await Future.delayed(
       Duration(seconds: 2),

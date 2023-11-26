@@ -175,59 +175,61 @@ class HomeProvider extends BaseViewModel {
     ///if currentUser likes other users
     ///
     if (await !currentUser.appUser.likedUsers!.contains(user.id)) {
-      if (currentUser.appUser.likedUsers!.length <
-          currentUser.appUser.likesCount!) {
-        currentUser.appUser.likedUsers!.add(user.id!);
+      // if (currentUser.appUser.likedUsers!.length <
+      //     currentUser.appUser.likesCount!) {
+      //////
+      currentUser.appUser.likedUsers!.add(user.id!);
 
-        ///
-        /// if other user liked currentUser
-        ///
-        if (await user.likedUsers!.contains(currentUser.appUser.id)) {
-          print('liked user id in user list ${user.likedUsers!.first}');
-          match = await db.getRequest(
-            user.id!,
-            currentUser.appUser.id!,
-          );
-          print(
-              'match likedById ${match.likedByUserId}=== likedId ${match.likedUserId}');
-
-          match.isAccepted = true;
-          match.isProgressed = true;
-          bool isReqUpdated = await db.updateRequest(match);
-          if (isReqUpdated) {
-            Get.to(
-              ConnectPopupScreen(),
-            );
-          } else {
-            print('request faild ==> $isReqUpdated');
-          }
-        } else {
-          await db.addRequest(match);
-        }
-
-        bool isUpdated = await db.updateUserProfile(currentUser.appUser);
-
-        print('profile update ==> ${currentUser.appUser.likedUsers!.length}');
-        if (isUpdated) {
-          appUsers.removeWhere((element) => element.id == user.id);
-
-          notifyListeners();
-          if (appUsers.length > 0) {
-            dotIndex = 0;
-            await pageController!.nextPage(
-              duration: Duration(milliseconds: 300),
-              curve: Curves.easeIn,
-            );
-          }
-        }
-        notifyListeners();
-
-        print("Users ====> ${appUsers.first.name}");
-      } else {
-        Get.to(
-          MaestroScreen(),
+      ///
+      /// if other user liked currentUser
+      ///
+      if (await user.likedUsers!.contains(currentUser.appUser.id)) {
+        print('liked user id in user list ${user.likedUsers!.first}');
+        match = await db.getRequest(
+          user.id!,
+          currentUser.appUser.id!,
         );
+        print(
+            'match likedById ${match.likedByUserId}=== likedId ${match.likedUserId}');
+
+        match.isAccepted = true;
+        match.isProgressed = true;
+        bool isReqUpdated = await db.updateRequest(match);
+        if (isReqUpdated) {
+          Get.to(
+            ConnectPopupScreen(),
+          );
+        } else {
+          print('request faild ==> $isReqUpdated');
+        }
+      } else {
+        await db.addRequest(match);
       }
+
+      bool isUpdated = await db.updateUserProfile(currentUser.appUser);
+
+      print('profile update ==> ${currentUser.appUser.likedUsers!.length}');
+      if (isUpdated) {
+        appUsers.removeWhere((element) => element.id == user.id);
+
+        notifyListeners();
+        if (appUsers.length > 0) {
+          dotIndex = 0;
+          await pageController!.nextPage(
+            duration: Duration(milliseconds: 300),
+            curve: Curves.easeIn,
+          );
+        }
+      }
+      notifyListeners();
+
+      print("Users ====> ${appUsers.first.name}");
+      //////
+      // } else {
+      //   Get.to(
+      //     MaestroScreen(),
+      //   );
+      // }
       isLiked = false;
       isDislike = false;
     }
@@ -240,24 +242,27 @@ class HomeProvider extends BaseViewModel {
   ///
   disLike(AppUser user) async {
     if (await !currentUser.appUser.disLikedUsers!.contains(user.id)) {
-      if (currentUser.appUser.disLikedUsers!.length <
-          currentUser.appUser.likesCount!) {
-        currentUser.appUser.disLikedUsers!.add(user.id!);
-        print(
-            'likes count== ${currentUser.appUser.likesCount} and length==> ${currentUser.appUser.disLikedUsers!.length}');
-        bool isUpdated = await db.updateUserProfile(currentUser.appUser);
-        if (isUpdated) {
-          appUsers.removeWhere((element) => element.id == user.id);
-          pageController!.nextPage(
-            duration: Duration(milliseconds: 300),
-            curve: Curves.easeIn,
-          );
-        }
-
-        notifyListeners();
-      } else {
-        Get.to(MaestroScreen());
+      // if (currentUser.appUser.disLikedUsers!.length <
+      //     currentUser.appUser.likesCount!) {
+      ////
+      currentUser.appUser.disLikedUsers!.add(user.id!);
+      print(
+          'likes count== ${currentUser.appUser.likesCount} and length==> ${currentUser.appUser.disLikedUsers!.length}');
+      bool isUpdated = await db.updateUserProfile(currentUser.appUser);
+      if (isUpdated) {
+        appUsers.removeWhere((element) => element.id == user.id);
+        pageController!.nextPage(
+          duration: Duration(milliseconds: 300),
+          curve: Curves.easeIn,
+        );
       }
+
+      notifyListeners();
+
+      //////
+      // } else {
+      //   Get.to(MaestroScreen());
+      // }
     }
   }
 

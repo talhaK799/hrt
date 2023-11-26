@@ -782,26 +782,29 @@ class _HomeScreenState extends State<HomeScreen> {
                           ],
                         ),
                         SizedBox(height: 20.h),
-
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Recently online',
-                              style: buttonTextStyle.copyWith(
-                                color: primaryColor,
-                              ),
-                            ),
-                            Switch(
-                              activeColor: primaryColor,
-                              value: model.isRecent,
-                              trackOutlineWidth: MaterialStateProperty.all(10),
-                              onChanged: (val) {
-                                model.recent(val);
-                              },
-                            ),
-                          ],
-                        ),
+                        model.currentUser.appUser.isPremiumUser == true
+                            ? Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Recently online',
+                                    style: buttonTextStyle.copyWith(
+                                      color: primaryColor,
+                                    ),
+                                  ),
+                                  Switch(
+                                    activeColor: primaryColor,
+                                    value: model.isRecent,
+                                    trackOutlineWidth:
+                                        MaterialStateProperty.all(10),
+                                    onChanged: (val) {
+                                      model.recent(val);
+                                    },
+                                  ),
+                                ],
+                              )
+                            : Container(),
                         const SizedBox(
                           height: 5,
                         ),

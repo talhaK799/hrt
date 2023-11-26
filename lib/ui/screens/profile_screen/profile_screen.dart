@@ -202,7 +202,7 @@ class ProfileScreen extends StatelessWidget {
                         MaestroScreen(),
                       );
                     },
-                    title: 'BECOME A MAESTRO',
+                    title: 'become a MAESTRO',
                     color: pinkColor,
                     textColor: primaryColor,
                     iconColor: primaryColor,
@@ -234,14 +234,14 @@ class ProfileScreen extends StatelessWidget {
                     title: 'Edit Profile',
                     icon: 'edit.png',
                   ),
-                  Divider(
-                    color: greyColor2,
-                  ),
-                  CustomProfileTile(
-                    onTap: () {},
-                    title: 'Search Setting',
-                    icon: 'searchpro.png',
-                  ),
+                  // Divider(
+                  //   color: greyColor2,
+                  // ),
+                  // CustomProfileTile(
+                  //   onTap: () {},
+                  //   title: 'Search Setting',
+                  //   icon: 'searchpro.png',
+                  // ),
                   Divider(
                     color: greyColor2,
                   ),
@@ -326,7 +326,7 @@ class ProfileScreen extends StatelessWidget {
                   // ),
                   CustomProfileTile(
                     onTap: () {
-                      model.logout();
+                      model.logout(context);
                     },
                     title: 'Logout',
                     textColor: redColor,
