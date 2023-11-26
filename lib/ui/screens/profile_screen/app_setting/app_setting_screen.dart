@@ -148,7 +148,7 @@ class AppSettingsScreen extends StatelessWidget {
                   sizeBox20,
                   GestureDetector(
                     onTap: () {
-                      model.terminateUser();
+                      model.terminateUser(context);
                     },
                     child: Text(
                       'Terminate',

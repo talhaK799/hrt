@@ -1,5 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
+import 'package:hart/core/constants/colors.dart';
+import 'package:hart/core/constants/style.dart';
 import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/models/app_user.dart';
 import 'package:hart/core/others/dynamic_link_handler.dart';
@@ -62,12 +65,53 @@ class ProfileProvider extends BaseViewModel {
     notifyListeners();
   }
 
-  logout() async {
-    setState(ViewState.busy);
-    await _auth.logout(_auth.appUser.id);
-    Get.offAll(
-      SplashScreen(),
-    );
-    setState(ViewState.idle);
+  logout(context) async {
+    //   setState(ViewState.busy);
+    //   await _auth.logout(_auth.appUser.id);
+    //   Get.offAll(
+    //     SplashScreen(),
+    //   );
+    //   setState(ViewState.idle);
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              'Are you sure?',
+              style: bodyTextStyle.copyWith(color: primaryColor),
+            ),
+            content: Text('Do you realy want to Logout'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  _auth.logout(_auth.appUser.id);
+                  Get.offAll(
+                    SplashScreen(),
+                  );
+                  Get.offAll(
+                    SplashScreen(),
+                  );
+                },
+                child: Text(
+                  'YES',
+                  style: buttonTextStyle2.copyWith(
+                    color: lightRed,
+                  ),
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  Get.back();
+                },
+                child: Text(
+                  'NO',
+                  style: buttonTextStyle2.copyWith(
+                    color: lightRed,
+                  ),
+                ),
+              )
+            ],
+          );
+        });
   }
 }

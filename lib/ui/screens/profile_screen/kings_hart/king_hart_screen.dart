@@ -69,7 +69,7 @@ class KingHartScreen extends StatelessWidget {
                             Expanded(
                               child: Offers(
                                 title: '${model.spanks[i].no_spanks} Spanks',
-                                price: '\$ ${model.spanks[i].price!.toInt()}',
+                                price: '\€ ${model.spanks[i].price!.toInt()}',
                                 isSelected: model.spanks[i].isSelected,
                                 offer: model.spanks[i].offer,
                                 onTap: () {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_holo_date_picker/date_picker.dart';
 import 'package:get/get.dart';
+import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/constants/format_date.dart';
 import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/services/auth_service.dart';
@@ -65,7 +66,12 @@ class EditProfileProvider extends BaseViewModel {
   }
 
   incognito(val) {
-    isIncoginito = val;
+    if (currentUser.appUser.isPremiumUser == true) {
+      isIncoginito = val;
+    } else {
+      Get.snackbar('message', 'Become a Maestro', colorText: whiteColor);
+    }
+
     notifyListeners();
   }
 

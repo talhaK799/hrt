@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -13,6 +14,8 @@ import 'package:hart/ui/custom_widgets/custom_loaders/red_hart_10sec.dart';
 import 'package:hart/ui/screens/profile_screen/maestro_screen/maestro_provider.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
+
+import '../../../custom_widgets/custom_painter/custom_painter.dart';
 
 class MaestroScreen extends StatelessWidget {
   const MaestroScreen({super.key});
@@ -66,17 +69,38 @@ class MaestroScreen extends StatelessWidget {
                           style: subHeadingTextWhite,
                         ),
                         sizeBox20,
-                        Center(
-                          child: Image.asset(
-                            '$dynamicAsset/maestro.png',
-                            scale: 4,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
+                        Container(
+                            child: CarouselSlider.builder(
+                                itemCount: 4,
+                                itemBuilder: (context, index, realIndex) =>
+                                    Image.asset(
+                                      '$dynamicAsset/maestro.png',
+                                      fit: BoxFit.cover,
+                                    ),
+                                options: CarouselOptions(
+                                  height: 300,
+                                  aspectRatio: 16 / 9,
+                                  viewportFraction: 1,
+                                  initialPage: 0,
+                                  enableInfiniteScroll: true,
+                                  reverse: false,
+                                  autoPlay: true,
+                                  autoPlayInterval: Duration(seconds: 3),
+                                  autoPlayAnimationDuration:
+                                      Duration(milliseconds: 800),
+                                  autoPlayCurve: Curves.fastOutSlowIn,
+                                  enlargeCenterPage: true,
+                                  enlargeFactor: 0.5,
+                                  scrollDirection: Axis.horizontal,
+                                  onPageChanged: (index, reason) {
+                                    model.changeDot(index);
+                                  },
+                                ))),
                         sizeBox10,
                         Center(
                           child: DotsIndicator(
-                            dotsCount: 6,
+                            dotsCount: 4,
+                            position: model.dotIndicator,
                             decorator: DotsDecorator(
                                 color: pinkColor2,
                                 activeColor: primaryColor,
@@ -100,7 +124,7 @@ class MaestroScreen extends StatelessWidget {
                               Padding(
                                 padding: const EdgeInsets.only(right: 20),
                                 child: Text(
-                                  'You’re close to meeting your people. Speed things up with Majestic Maestro',
+                                  'You’re close to meeting your people. Speed things up with Maestro',
                                   textAlign: TextAlign.center,
                                   style: buttonTextStyle.copyWith(
                                     color: greyColor2,
