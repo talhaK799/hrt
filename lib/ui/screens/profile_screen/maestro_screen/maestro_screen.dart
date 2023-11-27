@@ -64,9 +64,14 @@ class MaestroScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          'Become Majesic',
-                          style: subHeadingTextWhite,
+                        Row(
+                          children: [
+                            BackButton(color: whiteColor),
+                            Text(
+                              'Become Majesic',
+                              style: subHeadingTextWhite,
+                            ),
+                          ],
                         ),
                         sizeBox20,
                         Container(

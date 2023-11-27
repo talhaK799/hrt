@@ -19,7 +19,7 @@ class ConnectionsProvider extends BaseViewModel {
   final currentUser = locator<AuthService>();
   AppUser user = AppUser();
   // Matches match = Matches();
-  List<AppUser> likingUsers = [];
+  // List<AppUser> likingUsers = [];
   ConnectionsProvider() {
     getLikingUsers();
   }
@@ -27,15 +27,18 @@ class ConnectionsProvider extends BaseViewModel {
   getLikingUsers() async {
     if (currentUser.matches.isEmpty) {
       setState(ViewState.busy);
-      await Future.delayed(Duration(seconds: 5));
+      // await Future.delayed(Duration(seconds: 5));
     }
     currentUser.appUser = await db.getAppUser(currentUser.appUser.id);
     currentUser.matches = await db.getAllRequest(currentUser.appUser.id!);
     setState(ViewState.idle);
 
-    for (var m in currentUser.matches) {
-      user = await db.getAppUser(m.likedByUserId);
-      likingUsers.add(user);
+    if (currentUser.likingUsers.length < currentUser.matches.length) {
+      currentUser.likingUsers = [];
+      for (var m in currentUser.matches) {
+        user = await db.getAppUser(m.likedByUserId);
+        currentUser.likingUsers.add(user);
+      }
     }
     notifyListeners();
   }
@@ -55,7 +58,7 @@ class ConnectionsProvider extends BaseViewModel {
         print(
             'profile update ==> ${isUpdated} requestUpdate==>${isUpdatedMatch}');
         if (isUpdated && isUpdatedMatch) {
-          likingUsers.remove(user);
+          currentUser.likingUsers.remove(user);
           Get.to(
             ConnectPopupScreen(),
           );
@@ -88,7 +91,7 @@ class ConnectionsProvider extends BaseViewModel {
         print(
             'profile update ==> ${isUpdated} requestUpdate==>${isUpdatedMatch}');
         if (isUpdated && isUpdatedMatch) {
-          likingUsers.remove(user);
+          currentUser.likingUsers.remove(user);
         }
         notifyListeners();
       } else {

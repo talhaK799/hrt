@@ -21,6 +21,7 @@ class AuthService extends ChangeNotifier {
   User? user;
   bool isLogin = false;
   AppUser appUser = AppUser();
+  List<AppUser> likingUsers = [];
   AppUser sharingUser = AppUser();
   AppUser signUpUser = AppUser();
 
