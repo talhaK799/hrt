@@ -29,11 +29,9 @@ class _SplashScreenState extends State<SplashScreen> {
   final link = locator<DynamicLinkHandler>();
   final _location = locator<LocationService>();
   init() async {
-    printKeyHash();
+    // printKeyHash();
 
-    await Future.delayed(
-      Duration(seconds: 2),
-    );
+    await Future.delayed(Duration(seconds: 2));
 
     _id = await link.initDeepLinks() ?? 'no user';
     print('sharing id $_id');
@@ -61,11 +59,11 @@ class _SplashScreenState extends State<SplashScreen> {
     }
   }
 
-  void printKeyHash() async {
-    String? key = await FlutterFacebookKeyhash.getFaceBookKeyHash ??
-        'Unknown platform version';
-    print('key hash ===> $key');
-  }
+  // void printKeyHash() async {
+  //   String? key = await FlutterFacebookKeyhash.getFaceBookKeyHash ??
+  //       'Unknown platform version';
+  //   print('key hash ===> $key');
+  // }
 
   @override
   void initState() {

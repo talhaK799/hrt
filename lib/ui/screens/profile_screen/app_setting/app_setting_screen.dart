@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hart/core/constants/colors.dart';
 import 'package:hart/ui/custom_widgets/custom_app_bar.dart';
@@ -151,10 +152,9 @@ class AppSettingsScreen extends StatelessWidget {
                       model.terminateUser(context);
                     },
                     child: Text(
-                      'Terminate',
+                      'Delete Account',
                       style: bodyTextStyle.copyWith(
-                        color: primaryColor,
-                      ),
+                          color: primaryColor, fontSize: 14.sp),
                     ),
                   ),
                   sizeBox20,
