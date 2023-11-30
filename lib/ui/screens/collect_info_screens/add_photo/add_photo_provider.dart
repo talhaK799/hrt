@@ -11,6 +11,7 @@ import 'package:hart/core/services/file_picker_service.dart';
 import 'package:hart/core/services/firebase_storage_service.dart';
 import 'package:hart/core/view_models/base_view_model.dart';
 import 'package:hart/locator.dart';
+import 'package:hart/ui/custom_widgets/dialogs/custom_snackbar.dart';
 import 'package:hart/ui/screens/root_screen/root_screen.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -40,13 +41,13 @@ class AddPhotoProvider extends BaseViewModel {
   }
 
   init() {
-    setState(ViewState.busy);
+    // setState(ViewState.busy);
     currentImages = currentUser.images ?? [];
     for (var i = 0; i < currentImages.length; i++) {
       images[i].imgUrl = currentImages[i];
     }
     userImagesCount = currentImages.length;
-    setState(ViewState.idle);
+    // setState(ViewState.idle);
   }
 
   // bool isMultipleSelection = false;
@@ -155,20 +156,9 @@ class AddPhotoProvider extends BaseViewModel {
 
   addUserImages() async {
     if (newImages.length < 1) {
-      Get.snackbar(
-        'Error!',
-        '',
-        colorText: primaryColor,
-        messageText: Text(
-          'Images must be selected',
-          style: miniText.copyWith(
-            color: lightRed,
-            fontSize: 15.sp,
-          ),
-        ),
-      );
+      customSnackBar('alert!', 'Image must be selected');
     } else {
-      setState(ViewState.busy);
+      // setState(ViewState.busy);
       // if (currentImages.length != 0) {
       imagesUrls = await fbStorage.uploadImagesList(newImages, 'User Images');
       for (var i = 0; i < imagesUrls.length; i++) {
@@ -183,7 +173,7 @@ class AddPhotoProvider extends BaseViewModel {
       // }
 
       bool isUpdated = await _db.updateUserProfile(currentUser);
-      setState(ViewState.idle);
+      // setState(ViewState.idle);
       if (isUpdated) {
         if (isUpdation == true) {
           //profile update

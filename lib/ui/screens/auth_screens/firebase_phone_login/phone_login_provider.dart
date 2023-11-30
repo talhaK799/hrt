@@ -48,12 +48,12 @@ class PhoneLoginProvider extends BaseViewModel {
 
   convertLatAndLongIntoAddress() async {
     placemarks = [];
-    setState(ViewState.busy);
+    // setState(ViewState.busy);
 
     // if(currentPostion!.latitude!=null){}
     placemarks = await placemarkFromCoordinates(
         currentLocation!.latitude, currentLocation!.longitude);
-    setState(ViewState.idle);
+    // setState(ViewState.idle);
 
     print("country =>" + placemarks.first.country!);
   }
@@ -75,7 +75,7 @@ class PhoneLoginProvider extends BaseViewModel {
       appUser.phoneNumber = countryCode + appUser.phoneNumber!;
       print("Phone number ==> ${appUser.phoneNumber}");
 
-      setState(ViewState.busy);
+      // setState(ViewState.busy);
       bool isSent = await authService.verifyPhoneNumber(
         appUser.phoneNumber!,
         codeSent: (String verificationId, int? resendToken) {
@@ -90,7 +90,7 @@ class PhoneLoginProvider extends BaseViewModel {
           authService.resendToken = resendToken;
         },
       );
-      setState(ViewState.idle);
+      // setState(ViewState.idle);
       if (isSent) {
         startTimer();
         if (!isResend) {
@@ -114,9 +114,9 @@ class PhoneLoginProvider extends BaseViewModel {
     if (otpController.text == '') {
       Get.snackbar('Error!!', "Otp must be Entered");
     } else {
-      // _timer.cancel();
-      // notifyListeners();
-      setState(ViewState.busy);
+      _timer.cancel();
+      notifyListeners();
+      // setState(ViewState.busy);
       customAuthResult = await authService.loginWithPhoneNumber(
         appUser,
         appUser.phoneNumber!,
@@ -127,13 +127,11 @@ class PhoneLoginProvider extends BaseViewModel {
         notifyListeners();
         authService.appUser.isPhoneNoVerified = true;
         Get.to(DOBScreen());
-        // Get.to(
-        //   EmailVerificationScreen(
-        //     isPhoneLogin: true,
-        //   ),
-        // );
+        Get.to(
+          DOBScreen(),
+        );
       }
-      setState(ViewState.idle);
+      // setState(ViewState.idle);
     }
   }
 

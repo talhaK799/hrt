@@ -9,9 +9,14 @@ import 'package:hart/core/others/dynamic_link_handler.dart';
 import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/core/services/auth_service.dart';
 import 'package:hart/core/services/location_service.dart';
+import 'package:hart/core/services/network_status_service.dart';
 import 'package:hart/locator.dart';
 import 'package:hart/ui/screens/auth_screens/auth_screens.dart';
 import 'package:hart/ui/screens/auth_screens/firebase_phone_login/phone_login_screen.dart';
+import 'package:hart/ui/screens/collect_info_screens/fantasies_screen/fantasies_screen.dart';
+import 'package:hart/ui/screens/collect_info_screens/idetity_screen/identity_screen.dart';
+import 'package:hart/ui/screens/collect_info_screens/select_gender_screen/select_gender_screen.dart';
+import 'package:hart/ui/screens/ofline_screen.dart';
 import 'dart:async';
 
 import 'package:hart/ui/screens/root_screen/root_screen.dart';
@@ -27,12 +32,16 @@ class _SplashScreenState extends State<SplashScreen> {
   final _auth = locator<AuthService>();
   String _id = '';
   final link = locator<DynamicLinkHandler>();
+  final networkSetvice = locator<NetworkStatusService>();
   final _location = locator<LocationService>();
   init() async {
     // printKeyHash();
 
-    await Future.delayed(Duration(seconds: 2));
-
+    await Future.delayed(
+      Duration(seconds: 2),
+    );
+    bool connection = networkSetvice.hasConnection;
+    print('network connectivity==> ${connection}');
     _id = await link.initDeepLinks() ?? 'no user';
     print('sharing id $_id');
     // Position position = await _location.determinePosition();
@@ -40,22 +49,27 @@ class _SplashScreenState extends State<SplashScreen> {
     //     'this is the current location ${_location.currentLocation!.latitude} === ${_location.currentLocation!.longitude}');
 
     // Get.to(
-    //   AuthScreen(),
+    //   SelectGenderScreen(),
     // );
-
-    if (_auth.isLogin) {
-      // if (_auth.appUser.isEmailVerified == false) {
-      //   Get.offAll(EmailVerificationScreen());
-      // } else
-      if (_auth.appUser.isPhoneNoVerified == false) {
-        Get.offAll(
-          PhoneLoginScreen(),
-        );
+    if (networkSetvice.hasConnection == true) {
+      if (_auth.isLogin) {
+        // if (_auth.appUser.isEmailVerified == false) {
+        //   Get.offAll(EmailVerificationScreen());
+        // } else
+        if (_auth.appUser.isPhoneNoVerified == false) {
+          Get.offAll(
+            PhoneLoginScreen(),
+          );
+        } else {
+          Get.offAll(RootScreen());
+        }
       } else {
-        Get.offAll(RootScreen());
+        Get.offAll(AuthScreen());
       }
     } else {
-      Get.offAll(AuthScreen());
+      Get.to(
+        OfflineScreen(),
+      );
     }
   }
 

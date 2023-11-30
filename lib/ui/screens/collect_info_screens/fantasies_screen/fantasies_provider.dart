@@ -3,6 +3,7 @@ import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/models/info_item.dart';
 import 'package:hart/core/services/auth_service.dart';
 import 'package:hart/core/view_models/base_view_model.dart';
+import 'package:hart/ui/custom_widgets/dialogs/custom_snackbar.dart';
 import 'package:hart/ui/screens/collect_info_screens/exploring_together/explor_screen.dart';
 
 import '../../../../core/services/database_service.dart';
@@ -29,40 +30,45 @@ class FantasiesProvider extends BaseViewModel {
   List<String> selectedItems = [];
 
   getItems() async {
-    setState(ViewState.busy);
+    // setState(ViewState.busy);
     items = await _db.getDesires();
-    setState(ViewState.idle);
+    notifyListeners();
+    // setState(ViewState.idle);
   }
 
   select(index) {
-    if (filtering) {
-      for (var item in items) {
-        // / filter ===> single item selection to be implemented
-        if (item == items[index]) {
-          item.isSelected = true;
-          desire = item.title!;
-        } else {
-          item.isSelected = false;
-        }
+    // if (filtering) {
+    //   for (var item in items) {
+    //     // / filter ===> single item selection to be implemented
+    //     if (item == items[index]) {
+    //       item.isSelected = true;
+    //       desire = item.title!;
+    //     } else {
+    //       item.isSelected = false;
+    //     }
+    //   }
+    //   notifyListeners();
+    // } else {
+    items[index].isSelected = !items[index].isSelected!;
+    if (items[index].isSelected == true) {
+      if (!selectedItems.contains(items[index].title)) {
+        selectedItems.add(items[index].title!);
       }
-      notifyListeners();
+
+      selections++;
     } else {
-      items[index].isSelected = !items[index].isSelected!;
-      if (items[index].isSelected == true) {
-        selections++;
-      } else {
-        selections--;
-      }
-      notifyListeners();
+      selections--;
     }
+    notifyListeners();
+    // }
   }
 
   addSelectedItems() async {
-    for (var element in items) {
-      if (element.isSelected == true) {
-        selectedItems.add(element.title!);
-      }
-    }
+    // for (var element in items) {
+    //   if (element.isSelected == true) {
+    //     selectedItems.add(element.title!);
+    //   }
+    // }
     currentUser.desire = [];
     currentUser.desire = selectedItems;
     // setState(ViewState.busy);
@@ -72,9 +78,13 @@ class FantasiesProvider extends BaseViewModel {
     if (updation == true) {
       Get.back(result: selectedItems);
     } else {
-      Get.to(
-        ExploreScreen(),
-      );
+      if (selectedItems.isNotEmpty) {
+        Get.to(
+          ExploreScreen(),
+        );
+      } else {
+        customSnackBar('alert!', 'Selection Required');
+      }
     }
     // }
     notifyListeners();

@@ -25,9 +25,11 @@ class ConnectionsProvider extends BaseViewModel {
   }
 
   getLikingUsers() async {
-    if (currentUser.matches.isEmpty) {
+    if (currentUser.matches.isEmpty &&
+        currentUser.isConnectionloaded == false) {
       setState(ViewState.busy);
-      // await Future.delayed(Duration(seconds: 5));
+      await Future.delayed(Duration(seconds: 5));
+      currentUser.isConnectionloaded = true;
     }
     currentUser.appUser = await db.getAppUser(currentUser.appUser.id);
     currentUser.matches = await db.getAllRequest(currentUser.appUser.id!);

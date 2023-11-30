@@ -31,11 +31,10 @@ class EditProfileProvider extends BaseViewModel {
   }
 
   init() async {
-    setState(ViewState.busy);
     currentUser.appUser = await db.getAppUser(currentUser.appUser.id);
     print('looking for ${currentUser.appUser.lookingFor!.first}');
     // dob = date.parse(currentUser.appUser.dob!);
-    setState(ViewState.idle);
+    // setState(ViewState.idle);
   }
 
   pickDate(context) async {
