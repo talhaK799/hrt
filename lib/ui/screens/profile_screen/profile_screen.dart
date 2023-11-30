@@ -247,8 +247,14 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   CustomProfileTile(
                     onTap: () {
-                      Get.to(
-                        AppSettingsScreen(),
+                      // Get.to(
+                      //   AppSettingsScreen(),
+                      // );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AppSettingsScreen(),
+                        ),
                       );
                     },
                     title: 'App Setting',
