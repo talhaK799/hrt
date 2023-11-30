@@ -49,7 +49,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              '${model.likingUsers.length} Members liked you',
+                              '${model.currentUser.likingUsers.length} Members liked you',
                               style: subHeadingTextStyle2,
                             ),
                             // Container(
@@ -93,12 +93,12 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                         Expanded(
                           child: ListView.separated(
                             physics: BouncingScrollPhysics(),
-                            itemCount: model.likingUsers.length,
+                            itemCount: model.currentUser.likingUsers.length,
                             shrinkWrap: true,
                             itemBuilder: (context, index) {
                               return _userDetails(
                                   model,
-                                  model.likingUsers[index],
+                                  model.currentUser.likingUsers[index],
                                   model.currentUser.matches[index]);
                             },
                             separatorBuilder: (context, index) => SizedBox(

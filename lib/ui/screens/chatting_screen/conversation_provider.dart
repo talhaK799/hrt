@@ -32,8 +32,12 @@ class ConversationProvider extends BaseViewModel {
   init() async {
     // Future.delayed(Duration(seconds: 5));
     // currentUser.appUser = await db.getAppUser(currentUser.appUser.id);
-    await getConversations();
-    await getMatches();
+    if (currentUser.matchedUsers.isEmpty && currentUser.conversations.isEmpty) {
+      setState(ViewState.busy);
+      await getConversations();
+      await getMatches();
+      setState(ViewState.idle);
+    }
   }
 
   getMatches() async {
@@ -49,7 +53,6 @@ class ConversationProvider extends BaseViewModel {
 
     likedUsers = await db.getMatchedUsers(currentUser.appUser);
 
-    setState(ViewState.idle);
     try {
       // currentUser.matches = [];
       for (var i = 0; i < likedUsers.length; i++) {
@@ -122,7 +125,6 @@ class ConversationProvider extends BaseViewModel {
       }
     }
     notifyListeners();
-    // setState(ViewState.idle);
   }
 
   // List<Conversation> conversations = [];

@@ -68,7 +68,8 @@ class EditProfileProvider extends BaseViewModel {
     if (currentUser.appUser.isPremiumUser == true) {
       isIncoginito = val;
     } else {
-      Get.snackbar('message', 'Become a Maestro', colorText: whiteColor);
+      Get.snackbar('Alert!', 'This feature required premium subscription',
+          colorText: redColor, backgroundColor: whiteColor);
     }
 
     notifyListeners();

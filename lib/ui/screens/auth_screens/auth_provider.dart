@@ -33,6 +33,31 @@ class AuthProvider extends BaseViewModel {
     }
   }
 
+  loginWithApple(context) async {
+    print("login with Apple");
+
+    setState(ViewState.busy);
+    try {
+      authResult = await _auth.signUpUserWithApple();
+      setState(ViewState.idle);
+      if (authResult.user != null) {
+        _auth.appUser.isGoogle = true;
+        profileUpdate();
+        Get.to(
+          DOBScreen(),
+        );
+      } else {
+        showMyDialog(
+          context,
+          authResult.errorMessage!,
+        );
+      }
+      setState(ViewState.idle);
+    } catch (e) {
+      print("Erro: $e");
+    }
+  }
+
   signInWithFacebook(context) async {
     setState(ViewState.busy);
     authResult = await _auth.signupWithFacebook();

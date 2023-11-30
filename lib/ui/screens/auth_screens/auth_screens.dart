@@ -74,7 +74,9 @@ class AuthScreen extends StatelessWidget {
                       CustomButton(
                         icon: 'Apple Icon.png',
                         title: 'Sign Up With Apple',
-                        onTap: () {},
+                        onTap: () {
+                          model.loginWithApple(context);
+                        },
                       ),
                       SizedBox(
                         height: 30.h,

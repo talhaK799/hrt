@@ -180,6 +180,7 @@ class DatabaseService {
     debugPrint('@getAppUser: id: ${user.id}');
     try {
       final snapshot = await _db.collection('app_user').doc(user.id).get();
+      print("exists: ${snapshot.exists}");
       if (snapshot.exists) {
         return true;
       } else {

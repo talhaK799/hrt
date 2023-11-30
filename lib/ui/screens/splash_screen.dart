@@ -35,7 +35,7 @@ class _SplashScreenState extends State<SplashScreen> {
   final networkSetvice = locator<NetworkStatusService>();
   final _location = locator<LocationService>();
   init() async {
-    printKeyHash();
+    // printKeyHash();
 
     await Future.delayed(
       Duration(seconds: 2),
@@ -73,11 +73,11 @@ class _SplashScreenState extends State<SplashScreen> {
     }
   }
 
-  void printKeyHash() async {
-    String? key = await FlutterFacebookKeyhash.getFaceBookKeyHash ??
-        'Unknown platform version';
-    print('key hash ===> $key');
-  }
+  // void printKeyHash() async {
+  //   String? key = await FlutterFacebookKeyhash.getFaceBookKeyHash ??
+  //       'Unknown platform version';
+  //   print('key hash ===> $key');
+  // }
 
   @override
   void initState() {
