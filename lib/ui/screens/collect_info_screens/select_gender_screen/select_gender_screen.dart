@@ -8,6 +8,7 @@ import 'package:hart/ui/custom_widgets/custom_back_button.dart';
 import 'package:hart/ui/custom_widgets/custom_button.dart';
 import 'package:hart/ui/custom_widgets/custom_loader.dart';
 import 'package:hart/ui/custom_widgets/custom_progress_indicator.dart';
+import 'package:hart/ui/custom_widgets/dialogs/custom_snackbar.dart';
 import 'package:hart/ui/screens/collect_info_screens/select_gender_screen/select_gender_provider.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
@@ -42,9 +43,11 @@ class SelectGenderScreen extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomBackButton(
-                        isWhite: true,
-                      ),
+                      isFileter || isUpdate
+                          ? CustomBackButton(
+                              isWhite: true,
+                            )
+                          : Container(),
 
                       ///
                       /// Back Button

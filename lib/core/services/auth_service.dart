@@ -24,6 +24,10 @@ class AuthService extends ChangeNotifier {
   AppUser sharingUser = AppUser();
   AppUser signUpUser = AppUser();
 
+  bool isHomeloaded = false;
+  bool isConnectionloaded = false;
+  bool isChatloaded = false;
+
   List<AppUser> appUsers = [];
   List<AppUser> matchedUsers = [];
   List<Matches> matches = [];
@@ -149,7 +153,8 @@ class AuthService extends ChangeNotifier {
         customAuthResult.status = true;
         customAuthResult.user = credentials.user;
         appUser.id = credentials.user!.uid;
-        this.appUser.fcmToken = await FirebaseMessaging.instance.getToken();
+        this.appUser.fcmToken = '';
+        // await FirebaseMessaging.instance.getToken();
         this.appUser = appUser;
 
         await _dbService.registerAppUser(appUser);
@@ -181,7 +186,8 @@ class AuthService extends ChangeNotifier {
       if (credentials.user != null) {
         appUser = await _dbService.getAppUser(credentials.user!.uid);
         checkUserPremium();
-        this.appUser.fcmToken = await FirebaseMessaging.instance.getToken();
+        this.appUser.fcmToken = '';
+        // await FirebaseMessaging.instance.getToken();
         await _dbService.updateClientFcm(
           this.appUser.fcmToken,
           this.appUser.id,
@@ -254,7 +260,8 @@ class AuthService extends ChangeNotifier {
         isLogin = true;
         bool isUserExist = await _dbService.checkUser(appUser);
         if (isUserExist) {
-          this.appUser.fcmToken = await FirebaseMessaging.instance.getToken();
+          this.appUser.fcmToken = '';
+          //  await FirebaseMessaging.instance.getToken();
           await _dbService.updateClientFcm(
               this.appUser.fcmToken, this.appUser.id);
           this.appUser = await _dbService.getAppUser(appUser.id);
@@ -262,7 +269,8 @@ class AuthService extends ChangeNotifier {
           this.appUser = AppUser();
           this.appUser.id = userCredential.user!.uid;
 
-          this.appUser.fcmToken = await FirebaseMessaging.instance.getToken();
+          this.appUser.fcmToken = '';
+          // await FirebaseMessaging.instance.getToken();
           await _dbService.registerAppUser(appUser);
         }
         // }
@@ -351,7 +359,8 @@ class AuthService extends ChangeNotifier {
         bool isUserExist = await _dbService.checkUser(appUser);
         if (isUserExist) {
           this.appUser = await _dbService.getAppUser(result.user!.uid);
-          this.appUser.fcmToken = await FirebaseMessaging.instance.getToken();
+          this.appUser.fcmToken = '';
+          // await FirebaseMessaging.instance.getToken();
           await _dbService.updateClientFcm(
               this.appUser.fcmToken, this.appUser.id);
         } else {
@@ -403,15 +412,16 @@ class AuthService extends ChangeNotifier {
         bool isUserExist = await _dbService.checkUser(appUser);
         if (isUserExist) {
           this.appUser = await _dbService.getAppUser(appUser.id);
-          this.appUser.fcmToken = await FirebaseMessaging.instance.getToken();
+          this.appUser.fcmToken = '';
+          // await FirebaseMessaging.instance.getToken();
           await _dbService.updateClientFcm(
               this.appUser.fcmToken, this.appUser.id);
         } else {
           this.appUser = appUser;
 
           this.appUser.isPremiumUser = false;
-          this.appUser.fcmToken = await _dbService.updateClientFcm(
-              this.appUser.fcmToken, this.appUser.id);
+          // this.appUser.fcmToken = await _dbService.updateClientFcm(
+          //     this.appUser.fcmToken, this.appUser.id);
           await _dbService.registerAppUser(appUser);
         }
 

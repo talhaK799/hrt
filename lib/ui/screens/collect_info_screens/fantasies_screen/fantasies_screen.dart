@@ -7,6 +7,7 @@ import 'package:hart/ui/custom_widgets/custom_back_button.dart';
 import 'package:hart/ui/custom_widgets/custom_button.dart';
 import 'package:hart/ui/custom_widgets/custom_loader.dart';
 import 'package:hart/ui/custom_widgets/custom_progress_indicator.dart';
+import 'package:hart/ui/custom_widgets/dialogs/custom_snackbar.dart';
 import 'package:hart/ui/screens/collect_info_screens/fantasies_screen/fantasies_provider.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
@@ -41,9 +42,11 @@ class FantasiesScreen extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomBackButton(
-                        isWhite: true,
-                      ),
+                      isFilter || isUpdate
+                          ? CustomBackButton(
+                              isWhite: true,
+                            )
+                          : Container(),
                       SizedBox(
                         height: 20.h,
                       ),
@@ -127,7 +130,7 @@ class FantasiesScreen extends StatelessWidget {
                         onTap: () {
                           FocusManager.instance.primaryFocus?.unfocus();
                           if (isFilter) {
-                            Get.back(result: model.desire);
+                            Get.back(result: model.selectedItems.first);
                           } else {
                             model.addSelectedItems();
                           }

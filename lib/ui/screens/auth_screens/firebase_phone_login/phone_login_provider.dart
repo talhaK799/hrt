@@ -114,8 +114,8 @@ class PhoneLoginProvider extends BaseViewModel {
     if (otpController.text == '') {
       Get.snackbar('Error!!', "Otp must be Entered");
     } else {
-      // _timer.cancel();
-      // notifyListeners();
+      _timer.cancel();
+      notifyListeners();
       setState(ViewState.busy);
       customAuthResult = await authService.loginWithPhoneNumber(
         appUser,
@@ -127,11 +127,9 @@ class PhoneLoginProvider extends BaseViewModel {
         notifyListeners();
         authService.appUser.isPhoneNoVerified = true;
         Get.to(DOBScreen());
-        // Get.to(
-        //   EmailVerificationScreen(
-        //     isPhoneLogin: true,
-        //   ),
-        // );
+        Get.to(
+          DOBScreen(),
+        );
       }
       setState(ViewState.idle);
     }

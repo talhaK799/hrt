@@ -11,6 +11,7 @@ import 'package:hart/core/services/location_service.dart';
 import 'package:hart/core/services/locato_storage_service.dart';
 import 'package:hart/core/view_models/base_view_model.dart';
 import 'package:hart/locator.dart';
+import 'package:hart/ui/custom_widgets/dialogs/custom_snackbar.dart';
 import 'package:hart/ui/screens/collect_info_screens/fantasies_screen/fantasies_screen.dart';
 import 'package:hart/ui/screens/connection_screen/connect_popup/connect_popup_screen.dart';
 import 'package:hart/ui/screens/profile_screen/kings_hart/king_hart_screen.dart';
@@ -79,9 +80,10 @@ class HomeProvider extends BaseViewModel {
   }
 
   getAllAppUsers() async {
-    if (currentUser.appUsers.isEmpty) {
+    if (currentUser.appUsers.isEmpty && currentUser.isHomeloaded == false) {
       setState(ViewState.busy);
       await Future.delayed(Duration(seconds: 5));
+      currentUser.isHomeloaded = true;
     }
     print('getting all AppUsers');
     int dataLength = _localStorage.getdataLength;
@@ -296,7 +298,11 @@ class HomeProvider extends BaseViewModel {
   }
 
   recent(val) {
-    isRecent = val;
+    if (currentUser.appUser.isPremiumUser == true) {
+      isRecent = val;
+    } else {
+      customSnackBar('Alert!!', 'Allowed for Premium Users only');
+    }
     notifyListeners();
   }
 

@@ -5,6 +5,7 @@ import 'package:hart/core/services/database_service.dart';
 import 'package:hart/core/services/firebase_storage_service.dart';
 import 'package:hart/core/services/locato_storage_service.dart';
 import 'package:hart/core/services/location_service.dart';
+import 'package:hart/core/services/network_status_service.dart';
 import 'package:hart/core/services/permission_service.dart';
 import 'package:hart/core/services/theme_shared_prefs.dart';
 import 'package:hart/core/services/verification_service.dart';
@@ -21,4 +22,5 @@ setupLocator() {
   locator.registerSingleton(LocationService());
   locator.registerSingleton(PermissionsService());
   locator.registerSingleton(DynamicLinkHandler());
+  locator.registerSingleton(NetworkStatusService());
 }

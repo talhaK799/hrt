@@ -37,9 +37,10 @@ class ConversationProvider extends BaseViewModel {
   }
 
   getMatches() async {
-    if (currentUser.matchedUsers.isEmpty) {
+    if (currentUser.matchedUsers.isEmpty && currentUser.isChatloaded == false) {
       setState(ViewState.busy);
       await Future.delayed(Duration(seconds: 5));
+      currentUser.isChatloaded = true;
     }
     // currentUser.likedUsers = [];
     // acceptedMatches = [];

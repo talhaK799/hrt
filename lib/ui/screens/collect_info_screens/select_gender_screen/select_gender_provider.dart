@@ -4,6 +4,7 @@ import 'package:hart/core/models/info_item.dart';
 import 'package:hart/core/services/database_service.dart';
 import 'package:hart/core/view_models/base_view_model.dart';
 import 'package:hart/locator.dart';
+import 'package:hart/ui/custom_widgets/dialogs/custom_snackbar.dart';
 import 'package:hart/ui/screens/collect_info_screens/fantasies_screen/fantasies_screen.dart';
 
 import '../../../../core/services/auth_service.dart';
@@ -28,10 +29,11 @@ class SelectGenderProvider extends BaseViewModel {
   String? selectedItem;
 
   getItems() async {
-    setState(ViewState.busy);
+    // setState(ViewState.busy);
     items = [];
     items = await _db.getPersonalities();
-    setState(ViewState.idle);
+    notifyListeners();
+    // setState(ViewState.idle);
   }
 
   /// single selection
@@ -72,9 +74,13 @@ class SelectGenderProvider extends BaseViewModel {
       await _db.updateUserProfile(currentUser);
       Get.back(result: selections);
     } else {
+      if (selections.isNotEmpty) {
       Get.to(
         FantasiesScreen(),
       );
+      } else {
+        customSnackBar('alert!', 'Selection Required');
+      }
     }
     // }
 

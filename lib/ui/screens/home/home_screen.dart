@@ -782,38 +782,44 @@ class _HomeScreenState extends State<HomeScreen> {
                           ],
                         ),
                         SizedBox(height: 20.h),
-                        model.currentUser.appUser.isPremiumUser == true
-                            ? Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'Recently online',
-                                    style: buttonTextStyle.copyWith(
-                                      color: primaryColor,
-                                    ),
+                        // model.currentUser.appUser.isPremiumUser == true
+                        //     ?
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Recently online',
+                                  style: buttonTextStyle.copyWith(
+                                    color: primaryColor,
                                   ),
-                                  Switch(
-                                    activeColor: primaryColor,
-                                    value: model.isRecent,
-                                    trackOutlineWidth:
-                                        MaterialStateProperty.all(10),
-                                    onChanged: (val) {
-                                      model.recent(val);
-                                    },
-                                  ),
-                                ],
-                              )
-                            : Container(),
-                        const SizedBox(
-                          height: 5,
+                                ),
+                                Switch(
+                                  activeColor: primaryColor,
+                                  value: model.isRecent,
+                                  trackOutlineWidth:
+                                      MaterialStateProperty.all(10),
+                                  onChanged: (val) {
+                                    model.recent(val);
+                                  },
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              'Only show people active in the last 7 days',
+                              style: buttonTextStyle2.copyWith(
+                                color: const Color(0xFFc48184),
+                              ),
+                            ),
+                          ],
                         ),
-                        Text(
-                          'Only show people active in the last 7 days',
-                          style: buttonTextStyle2.copyWith(
-                            color: const Color(0xFFc48184),
-                          ),
-                        ),
+                        // : Container(),
+
                         SizedBox(
                           height: 0.2.sh,
                         ),
