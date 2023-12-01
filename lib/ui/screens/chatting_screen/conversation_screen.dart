@@ -63,134 +63,142 @@ class ConversationScreen extends StatelessWidget {
                           topRight: Radius.circular(32),
                         ),
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Your Matches',
-                            style: subHeadingTextStyle2,
-                          ),
+                      child: model.state == ViewState.busy
+                          ? Container()
+                          : Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Your Matches',
+                                  style: subHeadingTextStyle2,
+                                ),
 
-                          ///
-                          /// Matched Users List
-                          ///
-                          model.currentUser.matchedUsers.isNotEmpty
-                              ? Container(
-                                  height: 0.15.sh,
-                                  child: ListView.separated(
-                                    physics: BouncingScrollPhysics(),
-                                    // shrinkWrap: true,
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount:
-                                        model.currentUser.matchedUsers.length,
-                                    // model.matchedUsers.length,
-                                    itemBuilder: (context, index) {
-                                      return GestureDetector(
-                                        onTap: () {
-                                          print(
-                                              'chat user Id ${model.currentUser.matchedUsers[index].id!}');
-                                          Get.to(
-                                            ChattingScreen(
-                                              toUserId: model.currentUser
-                                                  .matchedUsers[index].id!,
-                                              conversation: Conversation(),
-                                            ),
-                                          );
-                                        },
-                                        child: model
-                                                .currentUser
-                                                .matchedUsers[index]
-                                                .images!
-                                                .isNotEmpty
-                                            ? CircleAvatar(
-                                                backgroundImage: NetworkImage(
-                                                    model
+                                ///
+                                /// Matched Users List
+                                ///
+                                model.currentUser.matchedUsers.isNotEmpty
+                                    ? Container(
+                                        height: 0.15.sh,
+                                        child: ListView.separated(
+                                          physics: BouncingScrollPhysics(),
+                                          // shrinkWrap: true,
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: model
+                                              .currentUser.matchedUsers.length,
+                                          // model.matchedUsers.length,
+                                          itemBuilder: (context, index) {
+                                            return GestureDetector(
+                                              onTap: () {
+                                                print(
+                                                    'chat user Id ${model.currentUser.matchedUsers[index].id!}');
+                                                Get.to(
+                                                  ChattingScreen(
+                                                    toUserId: model
                                                         .currentUser
                                                         .matchedUsers[index]
-                                                        .images!
-                                                        .first),
-                                                maxRadius: 35.r,
-                                              )
-                                            : CircleAvatar(
-                                                backgroundImage: AssetImage(
-                                                    '$staticAsset/person.png'),
-                                                maxRadius: 35.r,
+                                                        .id!,
+                                                    conversation:
+                                                        Conversation(),
+                                                  ),
+                                                );
+                                              },
+                                              child: model
+                                                      .currentUser
+                                                      .matchedUsers[index]
+                                                      .images!
+                                                      .isNotEmpty
+                                                  ? CircleAvatar(
+                                                      backgroundImage:
+                                                          NetworkImage(model
+                                                              .currentUser
+                                                              .matchedUsers[
+                                                                  index]
+                                                              .images!
+                                                              .first),
+                                                      maxRadius: 35.r,
+                                                    )
+                                                  : CircleAvatar(
+                                                      backgroundImage: AssetImage(
+                                                          '$staticAsset/person.png'),
+                                                      maxRadius: 35.r,
+                                                    ),
+                                            );
+                                          },
+                                          separatorBuilder: (context, index) =>
+                                              SizedBox(
+                                            width: 15.w,
+                                          ),
+                                        ),
+                                      )
+                                    : model.state == ViewState.busy
+                                        ? Container()
+                                        : Container(
+                                            color: whiteColor,
+                                            width: double.infinity,
+                                            height: 0.15.sh,
+                                            child: Center(
+                                              child: Text(
+                                                'No Matches Found',
+                                                style: subHeadingText1.copyWith(
+                                                    fontSize: 16.sp),
                                               ),
-                                      );
-                                    },
-                                    separatorBuilder: (context, index) =>
-                                        SizedBox(
-                                      width: 15.w,
-                                    ),
-                                  ),
-                                )
-                              : model.state == ViewState.busy
-                                  ? Container()
-                                  : Container(
-                                      color: whiteColor,
-                                      width: double.infinity,
-                                      height: 0.15.sh,
-                                      child: Center(
-                                        child: Text(
-                                          'No Matches Found',
-                                          style: subHeadingText1.copyWith(
-                                              fontSize: 16.sp),
-                                        ),
-                                      ),
-                                    ),
-                          Text(
-                            'All',
-                            style: subHeadingTextStyle2,
-                          ),
-                          sizeBox20,
-                          model.currentUser.conversations.isNotEmpty
-                              ? Expanded(
-                                  child: ListView.separated(
-                                    padding: EdgeInsets.zero,
-                                    physics: BouncingScrollPhysics(),
-                                    shrinkWrap: true,
-                                    itemCount:
-                                        model.currentUser.conversations.length,
-                                    itemBuilder: (context, index) {
-                                      return _normalChat(
-                                        model,
-                                        index,
-                                        () => Get.to(
-                                          ChattingScreen(
-                                            toUserId: model
-                                                    .currentUser
-                                                    .conversations[index]
-                                                    .toUserId ??
-                                                '',
-                                            conversation: model.currentUser
-                                                .conversations[index],
+                                            ),
+                                          ),
+                                Text(
+                                  'All',
+                                  style: subHeadingTextStyle2,
+                                ),
+                                sizeBox20,
+                                model.currentUser.conversations.isNotEmpty
+                                    ? Expanded(
+                                        child: ListView.separated(
+                                          padding: EdgeInsets.zero,
+                                          physics: BouncingScrollPhysics(),
+                                          shrinkWrap: true,
+                                          itemCount: model
+                                              .currentUser.conversations.length,
+                                          itemBuilder: (context, index) {
+                                            return _normalChat(
+                                              model,
+                                              index,
+                                              () => Get.to(
+                                                ChattingScreen(
+                                                  toUserId: model
+                                                          .currentUser
+                                                          .conversations[index]
+                                                          .toUserId ??
+                                                      '',
+                                                  conversation: model
+                                                      .currentUser
+                                                      .conversations[index],
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          separatorBuilder: (context, index) =>
+                                              SizedBox(
+                                            height: 15.h,
                                           ),
                                         ),
-                                      );
-                                    },
-                                    separatorBuilder: (context, index) =>
-                                        SizedBox(
-                                      height: 15.h,
-                                    ),
-                                  ),
-                                )
-                              : model.state == ViewState.busy
-                                  ? Container()
-                                  : Expanded(
-                                      child: Container(
-                                        color: whiteColor,
-                                        width: double.infinity,
-                                        child: Center(
-                                          child: Text(
-                                            'No Conversations Found',
-                                            style: subHeadingText1.copyWith(
-                                                fontSize: 16.sp),
+                                      )
+                                    : model.state == ViewState.busy
+                                        ? Container()
+                                        : Expanded(
+                                            child: Container(
+                                              color: whiteColor,
+                                              width: double.infinity,
+                                              child: Center(
+                                                child: Text(
+                                                  'No Conversations Found',
+                                                  style:
+                                                      subHeadingText1.copyWith(
+                                                          fontSize: 16.sp),
+                                                ),
+                                              ),
+                                            ),
                                           ),
-                                        ),
-                                      ),
-                                    ),
-                        ],
-                      ),
+                              ],
+                            ),
                     ),
                   )
                 ],

@@ -19,6 +19,7 @@ import 'package:hart/ui/screens/profile_screen/maestro_screen/maestro_screen.dar
 import 'package:pinput/pinput.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
+import '../../custom_widgets/dialogs/auth_dialog.dart';
 import '../collect_info_screens/select_gender_screen/select_gender_screen.dart';
 
 class HomeProvider extends BaseViewModel {
@@ -42,10 +43,10 @@ class HomeProvider extends BaseViewModel {
   List<AppUser> filteredUsers = [];
   List<Placemark> placemarks = [];
   String lookingFor = 'Woman';
-  String desire = 'Singles';
+  List<String> desire = ['Singles'];
   String country = '';
   Matches match = Matches();
-  Filtering filter = Filtering();
+  Filtering filter = Filtering(desire: []);
   bool isDataLoaded = false;
 
   HomeProvider() {
@@ -82,7 +83,7 @@ class HomeProvider extends BaseViewModel {
   getAllAppUsers() async {
     if (currentUser.appUsers.isEmpty && currentUser.isHomeloaded == false) {
       setState(ViewState.busy);
-      await Future.delayed(Duration(seconds: 5));
+      await Future.delayed(Duration(seconds: 2));
       currentUser.isHomeloaded = true;
     }
     print('getting all AppUsers');
@@ -289,6 +290,8 @@ class HomeProvider extends BaseViewModel {
           ),
         ) ??
         desire;
+    filter.desire = desire;
+    print(desire.length);
     notifyListeners();
   }
 
@@ -297,11 +300,12 @@ class HomeProvider extends BaseViewModel {
     notifyListeners();
   }
 
-  recent(val) {
+  recent(context, val) {
     if (currentUser.appUser.isPremiumUser == true) {
       isRecent = val;
     } else {
-      customSnackBar('Alert!!', 'Allowed for Premium Users only');
+      becomeMaestroDialog(context, "This feature is only for Premium users");
+      // customSnackBar('Alert!!', 'Allowed for Premium Users only');
     }
     notifyListeners();
   }

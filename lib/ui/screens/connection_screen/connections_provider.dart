@@ -3,12 +3,10 @@ import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/models/app_user.dart';
 import 'package:hart/core/models/matches.dart';
 import 'package:hart/core/services/auth_service.dart';
-import 'package:hart/core/services/locato_storage_service.dart';
 import 'package:hart/core/view_models/base_view_model.dart';
 import 'package:hart/locator.dart';
 import 'package:hart/ui/screens/connection_screen/connect_popup/connect_popup_screen.dart';
 import 'package:hart/ui/screens/profile_screen/maestro_screen/maestro_screen.dart';
-
 import '../../../core/services/database_service.dart';
 
 class ConnectionsProvider extends BaseViewModel {
@@ -28,7 +26,7 @@ class ConnectionsProvider extends BaseViewModel {
     if (currentUser.matches.isEmpty &&
         currentUser.isConnectionloaded == false) {
       setState(ViewState.busy);
-      await Future.delayed(Duration(seconds: 5));
+      await Future.delayed(Duration(seconds: 2));
       currentUser.isConnectionloaded = true;
     }
     currentUser.appUser = await db.getAppUser(currentUser.appUser.id);

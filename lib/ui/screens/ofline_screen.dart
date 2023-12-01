@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/constants/style.dart';
 import 'package:hart/core/others/screen_utils.dart';
+import 'package:lottie/lottie.dart';
 
 class OfflineScreen extends StatefulWidget {
   const OfflineScreen({super.key});
@@ -19,11 +20,21 @@ class _OfflineScreenState extends State<OfflineScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Icon(
-            Icons.wifi_off_sharp,
-            color: primaryColor,
-            size: 60,
+          Center(
+            child: Container(
+              color: Colors.transparent,
+              child: Lottie.asset(
+                'assets/animations/new-animation.json',
+                repeat: true,
+                frameRate: FrameRate.max,
+              ),
+            ),
           ),
+          // Icon(
+          //   Icons.wifi_off_sharp,
+          //   color: primaryColor,
+          //   size: 60,
+          // ),
           sizeBox30,
           Text(
             'Something Went Wrong',
@@ -50,7 +61,7 @@ class _OfflineScreenState extends State<OfflineScreen> {
                   ),
                 ),
                 child: Text(
-                  'Try Again',
+                  'Connect to stable internet',
                   style: subHeadingText1.copyWith(
                     color: blackColor,
                     fontSize: 16.sp,

@@ -129,7 +129,7 @@ class EditProfileScreen extends StatelessWidget {
             ),
           ),
           sizeBox20,
-          heading('NickName'),
+          heading('Nickname'),
           CustomProfileTile(
             title: model.currentUser.appUser.nickName ?? "No Name",
             textColor: greyColor2,
@@ -239,12 +239,18 @@ class EditProfileScreen extends StatelessWidget {
                   color: lightRed,
                 ),
               ),
-              Switch(
-                activeColor: lightRed,
-                value: model.isIncoginito,
-                onChanged: (val) {
-                  model.incognito(val);
-                },
+              Theme(
+                data: ThemeData(
+                    unselectedWidgetColor: greyColor.withOpacity(0.1),
+                    disabledColor: redColor),
+                child: Switch(
+                  activeColor: primaryColor,
+                  value: model.isIncoginito,
+                  trackOutlineWidth: MaterialStateProperty.all(10),
+                  onChanged: (val) {
+                    model.incognito(context, val);
+                  },
+                ),
               ),
             ],
           ),

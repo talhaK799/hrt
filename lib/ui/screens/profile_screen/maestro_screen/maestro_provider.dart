@@ -30,20 +30,20 @@ class MaestroProvider extends BaseViewModel {
   List<Subscription> subscriptions = [
     Subscription(
       no_days: 30,
-      price: 25,
-      weeklyPrice: '(6.20 per week)',
+      price: 10,
+      weeklyPrice: '(2.5 per week)',
       type: 'month',
     ),
     Subscription(
       no_days: 90,
-      price: 59,
-      weeklyPrice: '(4.20 per week)',
+      price: 20,
+      weeklyPrice: '(1.53 per week)',
       type: '3 months',
     ),
     Subscription(
-      no_days: 1,
-      price: 160,
-      weeklyPrice: '(3.20 per week)',
+      no_days: 360,
+      price: 60,
+      weeklyPrice: '(1.15 per week)',
       type: 'year',
     ),
   ];
