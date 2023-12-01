@@ -16,10 +16,13 @@ import 'package:hart/ui/screens/auth_screens/firebase_phone_login/phone_login_sc
 import 'package:hart/ui/screens/collect_info_screens/fantasies_screen/fantasies_screen.dart';
 import 'package:hart/ui/screens/collect_info_screens/idetity_screen/identity_screen.dart';
 import 'package:hart/ui/screens/collect_info_screens/select_gender_screen/select_gender_screen.dart';
+import 'package:hart/ui/screens/initail-age/initial-age-screen.dart';
 import 'package:hart/ui/screens/ofline_screen.dart';
 import 'dart:async';
 
 import 'package:hart/ui/screens/root_screen/root_screen.dart';
+
+import 'collect_info_screens/dob_screen/dob_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -61,15 +64,19 @@ class _SplashScreenState extends State<SplashScreen> {
             PhoneLoginScreen(),
           );
         } else {
-          Get.offAll(RootScreen());
+          if (_auth.appUser.images == null) {
+            Get.to(DOBScreen());
+          } else if (_auth.appUser.images!.isEmpty) {
+            Get.to(DOBScreen());
+          } else {
+            Get.offAll(RootScreen());
+          }
         }
       } else {
-        Get.offAll(AuthScreen());
+        Get.offAll(InitialAgeScreen());
       }
     } else {
-      Get.to(
-        OfflineScreen(),
-      );
+      Get.to(OfflineScreen());
     }
   }
 

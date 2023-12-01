@@ -158,7 +158,7 @@ class AddPhotoProvider extends BaseViewModel {
     if (newImages.length < 1) {
       customSnackBar('alert!', 'Image must be selected');
     } else {
-      // setState(ViewState.busy);
+      setState(ViewState.busy);
       // if (currentImages.length != 0) {
       imagesUrls = await fbStorage.uploadImagesList(newImages, 'User Images');
       for (var i = 0; i < imagesUrls.length; i++) {
@@ -173,7 +173,7 @@ class AddPhotoProvider extends BaseViewModel {
       // }
 
       bool isUpdated = await _db.updateUserProfile(currentUser);
-      // setState(ViewState.idle);
+      setState(ViewState.idle);
       if (isUpdated) {
         if (isUpdation == true) {
           //profile update

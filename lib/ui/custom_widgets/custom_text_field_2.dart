@@ -9,6 +9,7 @@ class CustomTextField2 extends StatelessWidget {
   String? initialValue;
   final validator;
   final onChange;
+  final formatter;
   // bool? obscure;
   // Widget? suffex;
   TextEditingController? controller;
@@ -19,6 +20,7 @@ class CustomTextField2 extends StatelessWidget {
     required this.validator,
     this.controller,
     this.initialValue,
+    this.formatter,
     // this.obscure,
     // this.suffex,
   });
@@ -39,6 +41,7 @@ class CustomTextField2 extends StatelessWidget {
         Padding(
           padding: EdgeInsets.only(left: 0, top: 10),
           child: TextFormField(
+            inputFormatters: formatter,
             initialValue: initialValue,
             validator: validator,
             onChanged: onChange,

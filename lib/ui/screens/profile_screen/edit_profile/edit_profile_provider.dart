@@ -13,6 +13,7 @@ import 'package:hart/ui/screens/collect_info_screens/fantasies_screen/fantasies_
 import 'package:hart/ui/screens/collect_info_screens/idetity_screen/identity_screen.dart';
 import 'package:hart/ui/screens/collect_info_screens/select_gender_screen/select_gender_screen.dart';
 
+import '../../../custom_widgets/dialogs/auth_dialog.dart';
 import '../../collect_info_screens/nick_name/nick_name_screen.dart';
 
 class EditProfileProvider extends BaseViewModel {
@@ -64,12 +65,13 @@ class EditProfileProvider extends BaseViewModel {
     }
   }
 
-  incognito(val) {
+  incognito(context, val) {
     if (currentUser.appUser.isPremiumUser == true) {
       isIncoginito = val;
     } else {
-      Get.snackbar('Alert!', 'This feature required premium subscription',
-          colorText: redColor, backgroundColor: whiteColor);
+      becomeMaestroDialog(context, "This feature is only for Premium users");
+      // Get.snackbar('Alert!', 'This feature required premium subscription',
+      //     colorText: redColor, backgroundColor: whiteColor);
     }
 
     notifyListeners();

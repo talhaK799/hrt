@@ -28,94 +28,97 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
           progressIndicator: CustomLoader(),
           child: Scaffold(
             backgroundColor: Colors.white,
-            body: model.currentUser.appUsers.isNotEmpty
-                ? Padding(
-                    padding: EdgeInsets.fromLTRB(22, 50, 22, 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Connections',
-                          style: subHeadingTextWhite.copyWith(
-                            color: primaryColor,
-                          ),
-                        ),
-                        sizeBox30,
-
-                        ///
-                        /// Uplift Button
-                        ///
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            body: model.state == ViewState.busy
+                ? Container()
+                : model.currentUser.appUsers.isNotEmpty
+                    ? Padding(
+                        padding: EdgeInsets.fromLTRB(22, 50, 22, 10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
+                            12.verticalSpace,
                             Text(
-                              '${model.currentUser.likingUsers.length} Members liked you',
-                              style: subHeadingTextStyle2,
+                              'Connections',
+                              style: subHeadingTextWhite.copyWith(
+                                color: primaryColor,
+                              ),
                             ),
-                            // Container(
-                            //   padding: EdgeInsets.symmetric(
-                            //     vertical: 10,
-                            //     horizontal: 20,
-                            //   ),
-                            //   decoration: BoxDecoration(
-                            //     borderRadius: BorderRadius.circular(24.r),
-                            //     color: pinkColor,
-                            //   ),
-                            //   child: Row(
-                            //     children: [
-                            //       Image.asset(
-                            //         '$staticAsset/uplift2.png',
-                            //         scale: 3,
-                            //       ),
-                            //       sizeBoxw10,
-                            //       Text(
-                            //         'Uplift',
-                            //         style: buttonTextStyleRed,
-                            //       ),
-                            //     ],
-                            //   ),
-                            // ),
+                            sizeBox30,
+
+                            ///
+                            /// Uplift Button
+                            ///
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  '${model.currentUser.likingUsers.length} Members liked you',
+                                  style: subHeadingTextStyle2,
+                                ),
+                                // Container(
+                                //   padding: EdgeInsets.symmetric(
+                                //     vertical: 10,
+                                //     horizontal: 20,
+                                //   ),
+                                //   decoration: BoxDecoration(
+                                //     borderRadius: BorderRadius.circular(24.r),
+                                //     color: pinkColor,
+                                //   ),
+                                //   child: Row(
+                                //     children: [
+                                //       Image.asset(
+                                //         '$staticAsset/uplift2.png',
+                                //         scale: 3,
+                                //       ),
+                                //       sizeBoxw10,
+                                //       Text(
+                                //         'Uplift',
+                                //         style: buttonTextStyleRed,
+                                //       ),
+                                //     ],
+                                //   ),
+                                // ),
+                              ],
+                            ),
+                            sizeBox20,
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                'Showing most recent first',
+                                style: buttonTextStyleGrey.copyWith(
+                                  color: blackColor,
+                                ),
+                              ),
+                            ),
+
+                            sizeBox10,
+                            // _userDetails(),
+                            Expanded(
+                              child: ListView.separated(
+                                physics: BouncingScrollPhysics(),
+                                itemCount: model.currentUser.likingUsers.length,
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  return _userDetails(
+                                      model,
+                                      model.currentUser.likingUsers[index],
+                                      model.currentUser.matches[index]);
+                                },
+                                separatorBuilder: (context, index) => SizedBox(
+                                  height: 40.h,
+                                ),
+                              ),
+                            ),
                           ],
                         ),
-                        sizeBox20,
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                            'Showing most recent first',
-                            style: buttonTextStyleGrey.copyWith(
-                              color: blackColor,
-                            ),
-                          ),
-                        ),
-
-                        sizeBox10,
-                        // _userDetails(),
-                        Expanded(
-                          child: ListView.separated(
-                            physics: BouncingScrollPhysics(),
-                            itemCount: model.currentUser.likingUsers.length,
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) {
-                              return _userDetails(
-                                  model,
-                                  model.currentUser.likingUsers[index],
-                                  model.currentUser.matches[index]);
-                            },
-                            separatorBuilder: (context, index) => SizedBox(
-                              height: 40.h,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                : model.state == ViewState.busy
-                    ? Container(
-                        color: whiteColor,
-                        width: 1.sw,
-                        height: 1.sh,
                       )
-                    : _staticScreen(context),
+                    : model.state == ViewState.busy
+                        ? Container(
+                            color: whiteColor,
+                            width: 1.sw,
+                            height: 1.sh,
+                          )
+                        : _staticScreen(context),
           ),
         );
       }),

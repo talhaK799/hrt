@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:hart/core/constants/colors.dart';
@@ -735,34 +736,58 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         sizeBox20,
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Text(
                               'What you desire',
                               style: subHeadingTextStyle2.copyWith(
-                                color: primaryColor,
-                              ),
+                                  color: primaryColor),
                             ),
-                            GestureDetector(
-                              behavior: HitTestBehavior.translucent,
-                              onTap: () async {
-                                await model.selectDesire();
-                              },
-                              child: Row(
-                                children: [
-                                  Text(
-                                    model.desire,
-                                    style: buttonTextStyle.copyWith(
-                                      color: primaryColor,
-                                    ),
+                            Expanded(
+                              child: GestureDetector(
+                                behavior: HitTestBehavior.translucent,
+                                onTap: () async {
+                                  await model.selectDesire();
+                                },
+                                child: Container(
+                                  height: 50.h,
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Spacer(),
+                                      Expanded(
+                                        child: ListView.builder(
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount:
+                                              model.filter.desire!.length,
+                                          itemBuilder: (context, index) {
+                                            return Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              children: [
+                                                Text(
+                                                  "${model.filter.desire![index]}, ",
+                                                  style:
+                                                      buttonTextStyle.copyWith(
+                                                    color: primaryColor,
+                                                  ),
+                                                ),
+                                                1.horizontalSpace,
+                                              ],
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                      Icon(
+                                        Icons.arrow_forward_ios,
+                                        color: primaryColor,
+                                        size: 15,
+                                      ),
+                                    ],
                                   ),
-                                  sizeBoxw10,
-                                  Icon(
-                                    Icons.arrow_forward_ios,
-                                    color: primaryColor,
-                                    size: 15,
-                                  ),
-                                ],
+                                ),
                               ),
                             ),
                             // CustomDropDownButton(
@@ -796,14 +821,20 @@ class _HomeScreenState extends State<HomeScreen> {
                                     color: primaryColor,
                                   ),
                                 ),
-                                Switch(
-                                  activeColor: primaryColor,
-                                  value: model.isRecent,
-                                  trackOutlineWidth:
-                                      MaterialStateProperty.all(10),
-                                  onChanged: (val) {
-                                    model.recent(val);
-                                  },
+                                Theme(
+                                  data: ThemeData(
+                                      unselectedWidgetColor:
+                                          greyColor.withOpacity(0.1),
+                                      disabledColor: redColor),
+                                  child: Switch(
+                                    activeColor: primaryColor,
+                                    value: model.isRecent,
+                                    trackOutlineWidth:
+                                        MaterialStateProperty.all(10),
+                                    onChanged: (val) {
+                                      model.recent(context, val);
+                                    },
+                                  ),
                                 ),
                               ],
                             ),
@@ -821,7 +852,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         // : Container(),
 
                         SizedBox(
-                          height: 0.2.sh,
+                          height: 0.1.sh,
                         ),
                         CustomButton(
                           title: 'CONTINUE',

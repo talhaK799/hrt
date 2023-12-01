@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/enums/view_state.dart';
@@ -78,6 +79,10 @@ class NickNameScreen extends StatelessWidget {
                             }
                           },
                           hintText: 'Example: James',
+                          formatter: [
+                            FilteringTextInputFormatter.deny(
+                                RegExp(r'\s')), // Deny spaces
+                          ],
                         ),
                       ],
                     ),

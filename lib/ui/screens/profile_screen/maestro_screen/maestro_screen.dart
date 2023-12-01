@@ -57,7 +57,7 @@ class MaestroScreen extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.fromLTRB(
                       18,
-                      50,
+                      45,
                       18,
                       0,
                     ),
@@ -116,6 +116,7 @@ class MaestroScreen extends StatelessWidget {
                         sizeBox20,
                         Expanded(
                           child: ListView(
+                            padding: EdgeInsets.zero,
                             children: [
                               Center(
                                 child: Text(
