@@ -164,6 +164,37 @@ class HomeProvider extends BaseViewModel {
   }
 
   ///
+  /// restore previous User
+  ///
+  restorePrevousProfile() async {
+    if (currentUser.previousUsers.isEmpty) {
+      customSnackBar('Alert!!', 'No previous profile');
+    } else {
+      appUsers.insert(0, currentUser.previousUsers.first);
+      notifyListeners();
+      print('appuser===> befor${currentUser.previousUsers.first.id}');
+
+      /// romve the user form likes
+      if (currentUser.appUser.likedUsers!
+          .contains(currentUser.previousUsers.first.id)) {
+        currentUser.appUser.likedUsers!
+            .remove(currentUser.previousUsers.first.id);
+      }
+
+      /// romve the user form dislikes
+      if (currentUser.appUser.disLikedUsers!
+          .contains(currentUser.previousUsers.first.id)) {
+        currentUser.appUser.disLikedUsers!
+            .remove(currentUser.previousUsers.first.id);
+      }
+      currentUser.previousUsers.removeAt(0);
+      await db.updateUserProfile(currentUser.appUser);
+
+      // print('appuser===>after ${currentUser.previousUsers.first.id}');
+    }
+  }
+
+  ///
   /// Like
   ///
   like(AppUser user) async {
@@ -181,7 +212,15 @@ class HomeProvider extends BaseViewModel {
       // if (currentUser.appUser.likedUsers!.length <
       //     currentUser.appUser.likesCount!) {
       //////
+
+      if (await !currentUser.previousUsers.contains(user)) {
+        currentUser.previousUsers.add(user);
+      }
       currentUser.appUser.likedUsers!.add(user.id!);
+      // await pageController!.nextPage(
+      //   duration: Duration(milliseconds: 300),
+      //   curve: Curves.easeIn,
+      // );
 
       ///
       /// if other user liked currentUser
@@ -192,6 +231,9 @@ class HomeProvider extends BaseViewModel {
           user.id!,
           currentUser.appUser.id!,
         );
+
+        appUsers.removeWhere((element) => element.id == user.id);
+        notifyListeners();
         print(
             'match likedById ${match.likedByUserId}=== likedId ${match.likedUserId}');
 
@@ -206,24 +248,27 @@ class HomeProvider extends BaseViewModel {
           print('request faild ==> $isReqUpdated');
         }
       } else {
+        appUsers.removeWhere((element) => element.id == user.id);
+        notifyListeners();
         await db.addRequest(match);
       }
 
-      bool isUpdated = await db.updateUserProfile(currentUser.appUser);
+      // appUsers.removeWhere((element) => element.id == user.id);
+      // notifyListeners();
+      await db.updateUserProfile(currentUser.appUser);
 
       print('profile update ==> ${currentUser.appUser.likedUsers!.length}');
-      if (isUpdated) {
-        appUsers.removeWhere((element) => element.id == user.id);
+      // if (isUpdated) {
 
-        notifyListeners();
-        if (appUsers.length > 0) {
-          dotIndex = 0;
-          await pageController!.nextPage(
-            duration: Duration(milliseconds: 300),
-            curve: Curves.easeIn,
-          );
-        }
+      // notifyListeners();
+      if (appUsers.length > 0) {
+        dotIndex = 0;
+        // await pageController!.nextPage(
+        //   duration: Duration(milliseconds: 300),
+        //   curve: Curves.easeIn,
+        // );
       }
+      // }
       notifyListeners();
 
       print("Users ====> ${appUsers.first.name}");
@@ -248,24 +293,38 @@ class HomeProvider extends BaseViewModel {
       // if (currentUser.appUser.disLikedUsers!.length <
       //     currentUser.appUser.likesCount!) {
       ////
-      currentUser.appUser.disLikedUsers!.add(user.id!);
-      print(
-          'likes count== ${currentUser.appUser.likesCount} and length==> ${currentUser.appUser.disLikedUsers!.length}');
-      bool isUpdated = await db.updateUserProfile(currentUser.appUser);
-      if (isUpdated) {
-        appUsers.removeWhere((element) => element.id == user.id);
-        pageController!.nextPage(
-          duration: Duration(milliseconds: 300),
-          curve: Curves.easeIn,
-        );
+      if (await !currentUser.previousUsers.contains(user)) {
+        print(
+            'previous USERS list==> BEFORE ${currentUser.previousUsers.length}');
+        currentUser.previousUsers.add(user);
+        print(
+            'previous USERS list==> AFTER ${currentUser.previousUsers.length}');
       }
+      currentUser.appUser.disLikedUsers!.add(user.id!);
 
+      appUsers.removeWhere((element) => element.id == user.id);
       notifyListeners();
+      // notifyListeners();
+      // pageController!.nextPage(
+      //   duration: Duration(milliseconds: 300),
+      //   curve: Curves.easeIn,
+      // );
+      // appUsers.remove(user);
+      await db.updateUserProfile(currentUser.appUser);
+      // if (isUpdated) {
+
+      // pageController!.nextPage(
+      //   duration: Duration(milliseconds: 300),
+      //   curve: Curves.easeIn,
+      // );
+      // }
 
       //////
       // } else {
       //   Get.to(MaestroScreen());
       // }
+
+      // notifyListeners();
     }
   }
 

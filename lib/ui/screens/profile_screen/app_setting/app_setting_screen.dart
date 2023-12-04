@@ -31,7 +31,7 @@ class AppSettingsScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CustomAppBar(title: 'App Setting'),
+                  CustomAppBar(title: 'General Settings'),
                   sizeBox30,
                   // Text(
                   //   'Show distance in miles',
@@ -45,7 +45,8 @@ class AppSettingsScreen extends StatelessWidget {
                         style: bodyTextStyle,
                       ),
                       Switch(
-                        activeColor: blackColor,
+                        activeColor: primaryColor,
+                        inactiveThumbColor: lightRed,
                         value: model.isNotificationsOn,
                         onChanged: (val) {
                           model.changeNotificaionSettin(val);

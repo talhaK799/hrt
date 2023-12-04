@@ -30,6 +30,7 @@ class AuthService extends ChangeNotifier {
   bool isChatloaded = false;
 
   List<AppUser> appUsers = [];
+  List<AppUser> previousUsers = [];
   List<AppUser> matchedUsers = [];
   List<Matches> matches = [];
   List<Conversation> conversations = [];

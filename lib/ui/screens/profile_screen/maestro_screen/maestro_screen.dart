@@ -68,7 +68,7 @@ class MaestroScreen extends StatelessWidget {
                           children: [
                             BackButton(color: whiteColor),
                             Text(
-                              'Become Majesic',
+                              'Become Maestro',
                               style: subHeadingTextWhite,
                             ),
                           ],
@@ -83,7 +83,7 @@ class MaestroScreen extends StatelessWidget {
                                       fit: BoxFit.cover,
                                     ),
                                 options: CarouselOptions(
-                                  height: 300,
+                                  height: 350,
                                   aspectRatio: 16 / 9,
                                   viewportFraction: 1,
                                   initialPage: 0,
@@ -217,7 +217,7 @@ class MaestroScreen extends StatelessWidget {
             children: [
               Text(
                 index == 2
-                    ? "${subscription.no_days} year"
+                    ? "${subscription.no_days} months"
                     : "${subscription.no_days} days",
                 style: bodyTextStyle.copyWith(
                   color: primaryColor,
