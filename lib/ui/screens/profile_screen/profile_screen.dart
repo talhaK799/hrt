@@ -202,7 +202,7 @@ class ProfileScreen extends StatelessWidget {
                         MaestroScreen(),
                       );
                     },
-                    title: 'become a MAESTRO',
+                    title: 'Become a MAESTRO',
                     color: pinkColor,
                     textColor: primaryColor,
                     iconColor: primaryColor,
@@ -257,7 +257,7 @@ class ProfileScreen extends StatelessWidget {
                         ),
                       );
                     },
-                    title: 'App Setting',
+                    title: 'General Settings',
                     icon: 'setting.png',
                   ),
                   Divider(

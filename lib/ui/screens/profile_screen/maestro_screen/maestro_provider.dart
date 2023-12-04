@@ -41,7 +41,7 @@ class MaestroProvider extends BaseViewModel {
       type: '3 months',
     ),
     Subscription(
-      no_days: 360,
+      no_days: 12,
       price: 60,
       weeklyPrice: '(1.15 per week)',
       type: 'year',

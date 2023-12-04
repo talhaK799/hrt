@@ -269,7 +269,12 @@ class DatabaseService {
       final snapshot = await _db
           .collection('app_user')
           .orderBy("uplift", descending: true)
-          // .where("id", isNotEqualTo: appUser.id)
+          // .where(
+          //   "id",
+          //   isNotEqualTo: appUser.id,
+          //   // whereNotIn: appUser.likedUsers,
+          // )
+          // .where("id", whereNotIn: appUser.disLikedUsers)
           .get();
 
       print('getting all AppUsers 2');

@@ -103,12 +103,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                           ? _staticScreen(context)
                                           : _homeScreenData(
                                               model, model.filteredUsers[index])
-                                      : model.currentUser.appUsers.length == 0
+                                      : model.appUsers.length == 0
                                           ? _staticScreen(context)
                                           : _homeScreenData(
-                                              model,
-                                              model
-                                                  .currentUser.appUsers[index]);
+                                              model, model.appUsers[index]);
                                 },
                                 onPageChanged: (val) => model.changePage(val),
                               ),
@@ -1020,9 +1018,14 @@ _imageSlider(HomeProvider model, AppUser user) {
           : Positioned(
               bottom: 16,
               left: 16,
-              child: Image.asset(
-                '$staticAsset/Recycle.png',
-                scale: 3,
+              child: GestureDetector(
+                onTap: () {
+                  model.restorePrevousProfile();
+                },
+                child: Image.asset(
+                  '$staticAsset/Recycle.png',
+                  scale: 3,
+                ),
               ),
             ),
       // Positioned(
