@@ -178,7 +178,7 @@ class ProfileScreen extends StatelessWidget {
                     color: pinkColor,
                     textColor: primaryColor,
                     iconColor: primaryColor,
-                    icon: 'kings.png',
+                    icon: 'spank.png',
                     isWhite: false,
                   ),
                   sizeBox10,
