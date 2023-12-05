@@ -81,6 +81,8 @@ class HomeProvider extends BaseViewModel {
   }
 
   getAllAppUsers() async {
+    appUsers = currentUser.appUsers;
+    notifyListeners();
     if (currentUser.appUsers.isEmpty && currentUser.isHomeloaded == false) {
       setState(ViewState.busy);
       await Future.delayed(Duration(seconds: 2));
