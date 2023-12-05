@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
+import 'package:hart/core/constants/strings.dart';
 import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/models/subscripton.dart';
 import 'package:hart/core/services/auth_service.dart';
@@ -26,6 +27,12 @@ class MaestroProvider extends BaseViewModel {
     subscription = subscriptions.first;
     notifyListeners();
   }
+
+  List<String> images = [
+    '$staticAsset/home_d.png',
+    '$staticAsset/connection_d.png',
+    '$staticAsset/profile_d.png',
+  ];
 
   List<Subscription> subscriptions = [
     Subscription(

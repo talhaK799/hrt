@@ -9,6 +9,7 @@ import 'package:hart/core/constants/style.dart';
 import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/models/subscripton.dart';
 import 'package:hart/core/others/screen_utils.dart';
+import 'package:hart/ui/custom_widgets/custom_back_button.dart';
 import 'package:hart/ui/custom_widgets/custom_button.dart';
 import 'package:hart/ui/custom_widgets/custom_loaders/red_hart_10sec.dart';
 import 'package:hart/ui/screens/profile_screen/maestro_screen/maestro_provider.dart';
@@ -66,7 +67,8 @@ class MaestroScreen extends StatelessWidget {
                       children: [
                         Row(
                           children: [
-                            BackButton(color: whiteColor),
+                            CustomBackButton(isWhite: false),
+                            sizeBoxw10,
                             Text(
                               'Become Maestro',
                               style: subHeadingTextWhite,
@@ -76,11 +78,17 @@ class MaestroScreen extends StatelessWidget {
                         sizeBox20,
                         Container(
                             child: CarouselSlider.builder(
-                                itemCount: 4,
+                                itemCount: model.images.length,
                                 itemBuilder: (context, index, realIndex) =>
-                                    Image.asset(
-                                      '$dynamicAsset/maestro.png',
-                                      fit: BoxFit.cover,
+                                    Container(
+                                      width: 320.w,
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            image: AssetImage(
+                                              model.images[index],
+                                            ),
+                                            fit: BoxFit.fill),
+                                      ),
                                     ),
                                 options: CarouselOptions(
                                   height: 350,
@@ -104,7 +112,7 @@ class MaestroScreen extends StatelessWidget {
                         sizeBox10,
                         Center(
                           child: DotsIndicator(
-                            dotsCount: 4,
+                            dotsCount: model.images.length,
                             position: model.dotIndicator,
                             decorator: DotsDecorator(
                                 color: pinkColor2,
