@@ -80,7 +80,7 @@ class AppUser {
     data['isFacebook'] = isFacebook ?? false;
     data['createdAt'] = createdAt ?? DateTime.now();
     data['uplift'] = uplift ?? DateTime.now();
-    data['name'] = name ?? 'User';
+    data['name'] = name ;
     data['phoneNumber'] = phoneNumber;
 
     data['fcmToken'] = fcmToken;
