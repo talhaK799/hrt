@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -51,6 +52,7 @@ class AuthService extends ChangeNotifier {
   }
   init() async {
     user = _auth.currentUser;
+    updateUserOnlineStatus();
     if (user != null) {
       isLogin = true;
       print('current User==> ${_auth.currentUser!.uid}');
@@ -215,7 +217,7 @@ class AuthService extends ChangeNotifier {
           .verifyPhoneNumber(
             forceResendingToken: this.resendToken,
             phoneNumber: phoneNumber.trim(),
-            timeout: const Duration(seconds: 60),
+            timeout:  Duration(seconds: 60),
             verificationCompleted:
                 (PhoneAuthCredential phoneAuthCredential) async {
               // print("Verification Completed");
@@ -500,5 +502,29 @@ class AuthService extends ChangeNotifier {
     print('user id  ==> ${user!.uid}');
     isLogin = false;
     user = null;
+  }
+
+
+  updateUserOnlineStatus(){
+     
+    DatabaseReference userRef = FirebaseDatabase.instance.ref().child('users/abc');
+    DatabaseReference connectedRef = FirebaseDatabase.instance.ref().child('.info/connected');
+
+    connectedRef.onValue.listen((event) {
+      if (event.snapshot != null && event.snapshot.value == true) {
+        // User is connected, update the status
+        userRef.update({
+          'online': true,
+          'last_seen': ServerValue.timestamp ,
+        });
+
+        // Set an onDisconnect hook to update status when the user disconnects
+        userRef.onDisconnect().update({
+          'online': false,
+          'last_seen': ServerValue.timestamp,
+        });
+      }
+    });
+  
   }
 }
