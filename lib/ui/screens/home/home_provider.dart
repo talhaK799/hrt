@@ -52,7 +52,6 @@ class HomeProvider extends BaseViewModel {
   HomeProvider() {
     // currentLocation.determinePosition();
     // appUsers = currentUser.appUsers;
-
     init();
     pageController = PageController(initialPage: 0);
   }
@@ -63,6 +62,9 @@ class HomeProvider extends BaseViewModel {
     // appUsers = currentUser.appUsers;
 
     convertLatAndLongIntoAddress();
+
+    currentUser.appUser.onlineTime = DateTime.now();
+    db.updateUserProfile(currentUser.appUser);
 
     // setState(ViewState.idle);
     notifyListeners();

@@ -34,6 +34,8 @@ class ProfileProvider extends BaseViewModel {
     setState(ViewState.busy);
     currentUser = await db.getAppUser(_auth.appUser.id);
     await convertLatAndLongIntoAddress();
+    currentUser.onlineTime = DateTime.now();
+    db.updateUserProfile(currentUser);
     setState(ViewState.idle);
   }
 

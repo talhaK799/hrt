@@ -36,6 +36,8 @@ class ConversationProvider extends BaseViewModel {
       setState(ViewState.busy);
       await getConversations();
       await getMatches();
+      currentUser.appUser.onlineTime = DateTime.now();
+      db.updateUserProfile(currentUser.appUser);
       setState(ViewState.idle);
     }
   }

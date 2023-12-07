@@ -20,6 +20,8 @@ class ConnectionsProvider extends BaseViewModel {
   // List<AppUser> likingUsers = [];
   ConnectionsProvider() {
     getLikingUsers();
+    currentUser.appUser.onlineTime = DateTime.now();
+    db.updateUserProfile(currentUser.appUser);
   }
 
   getLikingUsers() async {
