@@ -2,7 +2,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:hart/core/constants/colors.dart';
@@ -99,14 +98,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                 itemBuilder: (context, index) {
                                   model.index = index;
                                   return model.isFiltering == true
-                                      ? model.filteredUsers.length == 0
-                                          ? _staticScreen(context)
-                                          : _homeScreenData(
-                                              model, model.filteredUsers[index])
-                                      : model.appUsers.length == 0
-                                          ? _staticScreen(context)
-                                          : _homeScreenData(
-                                              model, model.appUsers[index]);
+                                      ? model.state == ViewState.busy
+                                          ? Container()
+                                          : model.filteredUsers.length == 0
+                                              ? _staticScreen(context)
+                                              : _homeScreenData(model,
+                                                  model.filteredUsers[index])
+                                      : model.state == ViewState.busy
+                                          ? Container()
+                                          : model.appUsers.length == 0
+                                              ? _staticScreen(context)
+                                              : _homeScreenData(
+                                                  model, model.appUsers[index]);
                                 },
                                 onPageChanged: (val) => model.changePage(val),
                               ),
@@ -335,7 +338,7 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  user.name ?? 'Jacqline Fernandus',
+                  user.name ?? '${user.nickName}',
                   style: subHeadingText1,
                 ),
                 Row(
@@ -394,7 +397,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     // _infoContainer('Madrid, Spain'),
                     Text(
-                      'Single, 10 km away,',
+                      'Single, ${(user.distance / 1000).round()} km away,',
                       style: buttonTextStyle2,
                     ),
                     SizedBox(
@@ -402,7 +405,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     // _infoContainer('3 hours ago'),
                     Text(
-                      '3 hours ago',
+                      user.offlineTime,
                       style: buttonTextStyle2,
                     ),
                   ],
@@ -442,20 +445,26 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(
                   height: 15.h,
                 ),
-                SizedBox(
-                  height: 35.h,
-                  child: ListView.separated(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: ((context, index) {
-                      return _infoContainer(user.lookingFor![index]);
-                    }),
-                    separatorBuilder: (context, index) => SizedBox(
-                      width: 16.w,
-                    ),
-                    itemCount: user.lookingFor!.length,
-                  ),
+                Wrap(
+                  children: [
+                    for (int i = 0; i < user.lookingFor!.length; i++)
+                      _infoContainer(user.lookingFor![i])
+                  ],
                 ),
+                // SizedBox(
+                //   height: 35.h,
+                //   child: ListView.separated(
+                //     shrinkWrap: true,
+                //     scrollDirection: Axis.horizontal,
+                //     itemBuilder: ((context, index) {
+                //       return _infoContainer(user.lookingFor![index]);
+                //     }),
+                //     separatorBuilder: (context, index) => SizedBox(
+                //       width: 16.w,
+                //     ),
+                //     itemCount: user.lookingFor!.length,
+                //   ),
+                // ),
                 // Column(
                 //   children: [
                 //     Row(

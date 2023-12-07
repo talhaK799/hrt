@@ -42,4 +42,9 @@ class LocationService {
       desiredAccuracy: LocationAccuracy.high,
     );
   }
+
+  distance(otherLat, otherLong, currentLat, currentLong) async {
+    return await Geolocator.distanceBetween(
+        otherLat, otherLong, currentLat, currentLong);
+  }
 }

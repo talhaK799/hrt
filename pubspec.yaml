@@ -62,6 +62,7 @@ dependencies:
   firebase_messaging: ^14.7.4
   flutter_local_notifications: ^16.1.0
   internet_connection_checker: ^1.0.0+1
+  firebase_database: ^10.3.6
 
 dev_dependencies:
   flutter_test:

@@ -47,6 +47,9 @@ class _SplashScreenState extends State<SplashScreen> {
     print('network connectivity==> ${connection}');
     _id = await link.initDeepLinks() ?? 'no user';
     print('sharing id $_id');
+    _auth.appUser.longitude = _location.currentLocation!.longitude;
+    _auth.appUser.latitude = _location.currentLocation!.latitude;
+
     // Position position = await _location.determinePosition();
     // print(
     //     'this is the current location ${_location.currentLocation!.latitude} === ${_location.currentLocation!.longitude}');

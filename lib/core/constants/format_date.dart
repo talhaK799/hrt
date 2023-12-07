@@ -12,3 +12,23 @@ var onlyHrs = DateFormat.Hm(); // 17:08
 var day = DateFormat('dd');
 var month = DateFormat('MM');
 var year = DateFormat('yyyy');
+
+formatRelativeTime(DateTime dateTime) {
+  final now = DateTime.now();
+  final difference = now.difference(dateTime);
+
+  if (difference.inSeconds < 60) {
+    return 'Online';
+  } else if (difference.inMinutes < 60) {
+    return '${difference.inMinutes} minute${difference.inMinutes == 1 ? '' : 's'} ago';
+  } else if (difference.inHours < 24) {
+    return '${difference.inHours} hour${difference.inHours == 1 ? '' : 's'} ago';
+  } else if (difference.inDays < 7) {
+    return '${difference.inDays} day${difference.inDays == 1 ? '' : 's'} ago';
+  }
+  // else {
+  //   // You can customize this part based on your needs for longer periods
+  //   final formatter = RelativeTimeFormat('en');
+  //   return formatter.format(difference, 'short');
+  // }
+}

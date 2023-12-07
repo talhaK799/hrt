@@ -21,12 +21,14 @@ class AppUser {
   int? spanks;
   double? latitude;
   double? longitude;
+  double distance=0.0;
 
   String? fcmToken;
   int? age;
   DateTime? createdAt = DateTime.now();
   DateTime? uplift = DateTime.now();
   DateTime? onlineTime = DateTime.now();
+  String offlineTime = '';
 
   String? name;
   String? dob;
@@ -76,6 +78,8 @@ class AppUser {
     this.isSelected = false,
     this.isApple,
     this.onlineTime,
+    this.offlineTime = '',
+    this.distance = 0.0,
   });
 
   toJson() {
@@ -87,8 +91,9 @@ class AppUser {
     data['isFacebook'] = isFacebook ?? false;
     data['createdAt'] = createdAt ?? DateTime.now();
     data['uplift'] = uplift ?? DateTime.now();
+
     data['onlineTime'] = onlineTime ?? DateTime.now();
-    data['name'] = name ?? 'User';
+    data['name'] = name;
     data['phoneNumber'] = phoneNumber;
     data['longitude'] = longitude;
     data['latitude'] = latitude;

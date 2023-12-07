@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
+import 'package:hart/core/constants/format_date.dart';
 import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/models/app_user.dart';
 import 'package:hart/core/models/filter.dart';
@@ -26,12 +27,13 @@ class HomeProvider extends BaseViewModel {
   int dotIndex = 0;
   bool isLiked = false;
   bool isDislike = false;
+  // DateTime now = DateTime.now();
 
   bool isDisLiked = false;
   bool isRecent = false;
   bool isLast = false;
   final currentUser = locator<AuthService>();
-  final currentLocaion = locator<LocationService>().currentLocation;
+  final location = locator<LocationService>();
   final _localStorage = locator<LocalStorageService>();
   // Position? currentLocaion;
   final db = DatabaseService();
@@ -74,7 +76,8 @@ class HomeProvider extends BaseViewModel {
     placemarks = [];
     // setState(ViewState.busy);
     placemarks = await placemarkFromCoordinates(
-        currentLocaion!.latitude, currentLocaion!.longitude);
+        location.currentLocation!.latitude,
+        location.currentLocation!.longitude);
     // setState(ViewState.idle);
 
     country = placemarks.first.country!;
@@ -83,6 +86,8 @@ class HomeProvider extends BaseViewModel {
   }
 
   getAllAppUsers() async {
+    appUsers = currentUser.appUsers;
+    notifyListeners();
     if (currentUser.appUsers.isEmpty && currentUser.isHomeloaded == false) {
       setState(ViewState.busy);
       await Future.delayed(Duration(seconds: 2));
@@ -104,7 +109,7 @@ class HomeProvider extends BaseViewModel {
     print('number of all Appusers ${currentUser.appUsers.length}');
 
     for (var user in currentUser.appUsers) {
-      print('user ${user.id} creation  ===> ${user.createdAt.toString()}');
+      print('user ${user.id} onLineTime  ===> ${user.onlineTime.toString()}');
       // appUsers.add(user);
       if (currentUser.appUser.likedUsers == null ||
           currentUser.appUser.disLikedUsers == null) {
@@ -113,6 +118,9 @@ class HomeProvider extends BaseViewModel {
         if (!currentUser.appUser.likedUsers!.contains(user.id) &&
             !currentUser.appUser.disLikedUsers!.contains(user.id) &&
             user.id != currentUser.appUser.id) {
+          user.offlineTime = formatRelativeTime(user.onlineTime!);
+          user.distance = await location.distance(user.latitude, user.longitude,
+              currentUser.appUser.latitude, currentUser.appUser.longitude);
           appUsers.add(user);
           notifyListeners();
         }
@@ -295,6 +303,7 @@ class HomeProvider extends BaseViewModel {
       // if (currentUser.appUser.disLikedUsers!.length <
       //     currentUser.appUser.likesCount!) {
       ////
+      await Future.delayed(Duration(seconds: 1));
       if (await !currentUser.previousUsers.contains(user)) {
         print(
             'previous USERS list==> BEFORE ${currentUser.previousUsers.length}');

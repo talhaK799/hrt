@@ -1,14 +1,11 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/models/app_user.dart';
 import 'package:hart/core/models/custom_auth_result.dart';
 import 'package:hart/core/services/auth_service.dart';
-import 'package:hart/core/services/database_service.dart';
 import 'package:hart/core/services/location_service.dart';
 import 'package:hart/core/services/verification_service.dart';
 import 'package:hart/core/view_models/base_view_model.dart';
@@ -32,7 +29,7 @@ class PhoneLoginProvider extends BaseViewModel {
   bool isResend = false;
   bool isEnable = false;
 
-  int otpTime = 30;
+  int otpTime = 60;
 
   // DatabaseService _databaseService = DatabaseService();
 
@@ -112,7 +109,7 @@ class PhoneLoginProvider extends BaseViewModel {
 
   verifyPhoneOtp() async {
     if (otpController.text == '') {
-      Get.snackbar('Error!!', "Otp must be Entered");
+      Get.snackbar('Error!!', "Otp must be entered");
     } else {
       _timer.cancel();
       notifyListeners();
