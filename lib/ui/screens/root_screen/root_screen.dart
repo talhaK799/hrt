@@ -29,7 +29,7 @@ class RootScreen extends StatelessWidget {
             ///
             bottomNavigationBar: Container(
               padding: EdgeInsets.symmetric(
-                vertical: 5.h,
+                vertical: 10,
               ),
               decoration: BoxDecoration(
                 boxShadow: [
@@ -45,7 +45,7 @@ class RootScreen extends StatelessWidget {
                 ],
                 color: whiteColor,
               ),
-              height: 60.h,
+              height: 70.h,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.center,

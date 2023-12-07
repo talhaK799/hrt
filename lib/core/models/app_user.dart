@@ -19,11 +19,17 @@ class AppUser {
   bool? isFacebook;
   int? likesCount;
   int? spanks;
+  double? latitude;
+  double? longitude;
+  double distance=0.0;
 
   String? fcmToken;
   int? age;
   DateTime? createdAt = DateTime.now();
   DateTime? uplift = DateTime.now();
+  DateTime? onlineTime = DateTime.now();
+  String offlineTime = '';
+
   String? name;
   String? dob;
   String? nickName;
@@ -48,6 +54,8 @@ class AppUser {
     this.isPrivatePhoto,
     this.isLiked,
     this.isDesLiked,
+    this.latitude,
+    this.longitude,
     this.muteIds,
     this.likesCount,
     this.spanks,
@@ -69,6 +77,9 @@ class AppUser {
     this.users,
     this.isSelected = false,
     this.isApple,
+    this.onlineTime,
+    this.offlineTime = '',
+    this.distance = 0.0,
   });
 
   toJson() {
@@ -80,8 +91,12 @@ class AppUser {
     data['isFacebook'] = isFacebook ?? false;
     data['createdAt'] = createdAt ?? DateTime.now();
     data['uplift'] = uplift ?? DateTime.now();
-    data['name'] = name ;
+
+    data['onlineTime'] = onlineTime ?? DateTime.now();
+    data['name'] = name;
     data['phoneNumber'] = phoneNumber;
+    data['longitude'] = longitude;
+    data['latitude'] = latitude;
 
     data['fcmToken'] = fcmToken;
     data['isEmailVerified'] = isEmailVerified ?? false;
@@ -114,6 +129,7 @@ class AppUser {
     name = json['name'] ?? "User";
     createdAt = json['createdAt'].toDate() ?? DateTime(2000);
     uplift = json['uplift'].toDate() ?? DateTime(2000);
+    onlineTime = json['onlineTime'].toDate() ?? DateTime(2000);
     phoneNumber = json['phoneNumber'];
     isEmailVerified = json['isEmailVerified'] ?? false;
     isPhoneNoVerified = json['isPhoneNoVerified'] ?? false;
@@ -132,6 +148,8 @@ class AppUser {
     age = json['age'] ?? 0;
     likesCount = json['likesCount'] ?? 10;
     spanks = json['spanks'] ?? 0;
+    latitude = json['latitude'].toDouble() ?? 2.0;
+    longitude = json['longitude'].toDouble() ?? 3.0;
     // lookingFor = json['lookingFor'];
     if (json["lookingFor"] != null) {
       lookingFor = [];

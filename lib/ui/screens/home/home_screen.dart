@@ -397,7 +397,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     // _infoContainer('Madrid, Spain'),
                     Text(
-                      'Single, 10 km away,',
+                      'Single, ${(user.distance / 1000).round()} km away,',
                       style: buttonTextStyle2,
                     ),
                     SizedBox(
@@ -405,7 +405,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     // _infoContainer('3 hours ago'),
                     Text(
-                      '3 hours ago',
+                      user.offlineTime,
                       style: buttonTextStyle2,
                     ),
                   ],
@@ -447,8 +447,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 Wrap(
                   children: [
-                    for(int i=0; i<user.lookingFor!.length; i++)
-                    _infoContainer(user.lookingFor![i])
+                    for (int i = 0; i < user.lookingFor!.length; i++)
+                      _infoContainer(user.lookingFor![i])
                   ],
                 ),
                 // SizedBox(
