@@ -14,6 +14,7 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:hart/ui/screens/collect_info_screens/verifications/phone_no_screen/phone_no_provider.dart';
 import 'package:hart/ui/screens/home/home_provider.dart';
 import 'package:hart/ui/screens/splash_screen.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:provider/provider.dart';
 
 // import 'package:window_manager/window_manager.dart';
@@ -21,7 +22,7 @@ String userId = '';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-
+  await InternetConnectionChecker().hasConnection;
   Stripe.publishableKey = Keys.PUBLISHABLE_KEY;
   // WindowOptions windowOptions = WindowOptions(
   //   size: Size(800, 600),
