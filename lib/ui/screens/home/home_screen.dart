@@ -120,7 +120,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ? model.filteredUsers.isEmpty
                           ? Container()
                           : _likeButtons(model)
-                      : model.currentUser.appUsers.isEmpty
+                      : model.appUsers.isEmpty
                           ? Container()
                           : _likeButtons(model),
 
@@ -263,7 +263,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Padding(
             padding: EdgeInsets.fromLTRB(
               18,
-              50,
+              0,
               18,
               0,
             ),
@@ -272,7 +272,9 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 Text(
                   'Nobody around',
-                  style: subHeadingTextWhite,
+                  style: subHeadingTextWhite.copyWith(
+                    color: blackColor,
+                  ),
                 ),
                 sizeBox20,
                 Center(
