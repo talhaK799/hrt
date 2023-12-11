@@ -41,6 +41,7 @@ class AppUser {
   List<String>? likedUsers;
   List<String>? disLikedUsers;
   List<String>? users;
+  bool? isFirstTimeChat;
   bool? isSelected;
 
   AppUser({
@@ -75,7 +76,8 @@ class AppUser {
     this.likedUsers,
     this.age,
     this.users,
-    this.isSelected = false,
+    this.isFirstTimeChat = false,
+    this.isSelected=false,
     this.isApple,
     this.onlineTime,
     this.offlineTime = '',
@@ -102,6 +104,7 @@ class AppUser {
     data['isEmailVerified'] = isEmailVerified ?? false;
     data['isPhoneNoVerified'] = isPhoneNoVerified ?? false;
     data['isNotificationsOn'] = isNotificationsOn ?? false;
+    data['isFirstTimeChat'] = isFirstTimeChat ?? false;
     data['isLiked'] = isLiked ?? false;
     data['isDesLiked'] = isDesLiked ?? false;
     data['isPremiumUser'] = isPremiumUser ?? false;
@@ -138,6 +141,7 @@ class AppUser {
     isPremiumUser = json['isPremiumUser'] ?? false;
     isNotificationsOn = json['isNotificationsOn'] ?? false;
     isPrivatePhoto = json['isPrivatePhoto'] ?? false;
+    isFirstTimeChat = json['isFirstTimeChat'] ?? false;
     isGoogle = json['isGoogle'] ?? false;
     isFacebook = json['isFacebook'] ?? false;
     isApple = json["isApple"] ?? false;

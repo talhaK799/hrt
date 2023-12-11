@@ -16,6 +16,7 @@ class ConversationProvider extends BaseViewModel {
   final db = DatabaseService();
   final currentUser = locator<AuthService>();
   final localStorage = locator<LocalStorageService>();
+  bool firstTime = true;
 
   Stream<QuerySnapshot>? stream;
 
@@ -55,24 +56,36 @@ class ConversationProvider extends BaseViewModel {
 
     likedUsers = await db.getMatchedUsers(currentUser.appUser);
 
+    notifyListeners();
+
     try {
       // currentUser.matches = [];
       for (var i = 0; i < likedUsers.length; i++) {
         likedUsers[i].isSelected = false;
         if (likedUsers[i].likedUsers!.contains(currentUser.appUser.id)) {
           print('current user ${i + 1} likes <===> ${likedUsers[i].id}');
-          for (var element in currentUser.conversations) {
-            if (!currentUser.matchedUsers.contains(likedUsers[i]) &&
-                element.toUserId != likedUsers[i].id) {
+          if (!currentUser.matchedUsers.contains(likedUsers[i])) {
+            if (likedUsers[i].isFirstTimeChat == true) {
               currentUser.matchedUsers.add(likedUsers[i]);
             } else {
+              print(' user${i + 1} Name <===> ${likedUsers[i].name}');
               currentUser.matchedUsers.remove(likedUsers[i]);
-
               notifyListeners();
             }
           }
+          // for (var element in currentUser.conversations) {
+          //   if (!currentUser.matchedUsers.contains(likedUsers[i]) &&
+          //       element.toUserId != likedUsers[i].id) {
+          //     currentUser.matchedUsers.add(likedUsers[i]);
+          //   } else {
+          //     currentUser.matchedUsers.remove(likedUsers[i]);
+
+          //     notifyListeners();
+          //   }
+          // }
         }
       }
+      notifyListeners();
     } catch (e) {
       print("Error @ getMatches $e");
     }

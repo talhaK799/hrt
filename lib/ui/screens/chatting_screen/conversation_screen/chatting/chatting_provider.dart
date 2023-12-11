@@ -199,6 +199,10 @@ class ChattingProvider extends BaseViewModel {
   var uuid = Uuid();
 
   sendNewMessage() async {
+    if (messages.isEmpty) {
+      toUser.isFirstTimeChat = false;
+      db.updateUserProfile(toUser);
+    }
     // message.textMessage = '';
 
     ///

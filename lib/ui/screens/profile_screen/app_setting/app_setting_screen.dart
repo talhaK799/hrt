@@ -179,11 +179,11 @@ class AppSettingsScreen extends StatelessWidget {
 
   _heading({heading, body}) {
     return GestureDetector(
-      onTap: () {
-        Get.to(
-          AuthScreen(),
-        );
-      },
+      // onTap: () {
+      //   Get.to(
+      //     AuthScreen(),
+      //   );
+      // },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

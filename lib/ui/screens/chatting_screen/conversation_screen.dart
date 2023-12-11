@@ -27,7 +27,10 @@ class ConversationScreen extends StatelessWidget {
           progressIndicator: RedHartLoader(),
           child: Scaffold(
               backgroundColor:
-                  model.likedUsers.isEmpty ? whiteColor : primaryColor,
+                  //  model.currentUser.matchedUsers.isEmpty
+                  //     ? whiteColor
+                  //     :
+                  primaryColor,
               body: Stack(
                 children: [
                   Padding(
@@ -88,10 +91,10 @@ class ConversationScreen extends StatelessWidget {
                                           // model.matchedUsers.length,
                                           itemBuilder: (context, index) {
                                             return GestureDetector(
-                                              onTap: () {
-                                                print(
-                                                    'chat user Id ${model.currentUser.matchedUsers[index].id!}');
-                                                Get.to(
+                                              onTap: () async {
+                                                // print(
+                                                //     'chat user Id ${model.currentUser.matchedUsers[index].id!}');
+                                                model.firstTime = await Get.to(
                                                   ChattingScreen(
                                                     toUserId: model
                                                         .currentUser
@@ -101,6 +104,13 @@ class ConversationScreen extends StatelessWidget {
                                                         Conversation(),
                                                   ),
                                                 );
+
+                                                if (model.firstTime == false) {
+                                                  model.currentUser.matchedUsers
+                                                      .removeAt(index);
+                                                  model
+                                                      .setState(ViewState.idle);
+                                                }
                                               },
                                               child: model
                                                       .currentUser
