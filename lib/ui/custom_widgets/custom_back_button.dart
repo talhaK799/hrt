@@ -5,8 +5,10 @@ import '../../core/constants/strings.dart';
 
 class CustomBackButton extends StatelessWidget {
   bool? isWhite;
+  bool? data;
   CustomBackButton({
     this.isWhite = false,
+    this.data,
   });
 
   @override
@@ -14,7 +16,7 @@ class CustomBackButton extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
-        Get.back();
+        Get.back(result: data);
       },
       child: Image.asset(
         isWhite == true ? '$staticAsset/back2.png' : '$staticAsset/Back.png',

@@ -74,7 +74,7 @@ class _ChattingScreenState extends State<ChattingScreen> {
                   padding: const EdgeInsets.fromLTRB(20, 42, 14, 0),
                   child: Row(
                     children: [
-                      CustomBackButton(),
+                      CustomBackButton(data: model.toUser.isFirstTimeChat,),
                       Expanded(
                         child: ListTile(
                           leading: model.conversation.isGroupChat == true
