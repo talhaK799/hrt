@@ -23,24 +23,27 @@ class CustomBottomBarItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: onTap,
-      child: currentIndex == activeIndex
-          ? ImageIcon(
-              AssetImage(
-                '$staticAsset/$icon2',
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 6.0),
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: onTap,
+        child: currentIndex == activeIndex
+            ? ImageIcon(
+                AssetImage(
+                  '$staticAsset/$icon2',
+                ),
+                size: size ?? 28,
+                color: primaryColor,
+              )
+            : ImageIcon(
+                AssetImage(
+                  '$staticAsset/$icon',
+                ),
+                color: greyColor2,
+                size: size ?? 30,
               ),
-              size: size ?? 30,
-              color: primaryColor,
-            )
-          : ImageIcon(
-              AssetImage(
-                '$staticAsset/$icon',
-              ),
-              color: greyColor2,
-              size: size ?? 30,
-            ),
+      ),
     );
   }
 }

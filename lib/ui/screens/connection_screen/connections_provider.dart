@@ -49,7 +49,7 @@ class ConnectionsProvider extends BaseViewModel {
     print('user  id ${currentUser.appUser.id} liked ${user.id}');
     if (await !currentUser.appUser.likedUsers!.contains(user.id)) {
       if (currentUser.appUser.likedUsers!.length <=
-          currentUser.appUser.likesCount!) {
+          (currentUser.appUser.likesCount ?? 0)) {
         currentUser.appUser.likedUsers!.add(user.id!);
         match.isAccepted = true;
         match.isRejected = false;
@@ -81,26 +81,26 @@ class ConnectionsProvider extends BaseViewModel {
   dilike(AppUser user, Matches match) async {
     print('user  id ${currentUser.appUser.id} disliked ${user.id}');
     if (await !currentUser.appUser.disLikedUsers!.contains(user.id)) {
-      if (currentUser.appUser.likedUsers!.length <=
-          currentUser.appUser.likesCount!) {
-        currentUser.appUser.disLikedUsers!.add(user.id!);
-        match.isRejected = true;
-        match.isAccepted = false;
-        match.isProgressed = true;
-        bool isUpdatedMatch = await db.updateRequest(match);
-        bool isUpdated = await db.updateUserProfile(currentUser.appUser);
+      // if (currentUser.appUser.likedUsers!.length <=
+      //     currentUser.appUser.likesCount!) {
+      currentUser.appUser.disLikedUsers!.add(user.id!);
+      match.isRejected = true;
+      match.isAccepted = false;
+      match.isProgressed = true;
+      bool isUpdatedMatch = await db.updateRequest(match);
+      bool isUpdated = await db.updateUserProfile(currentUser.appUser);
 
-        print(
-            'profile update ==> ${isUpdated} requestUpdate==>${isUpdatedMatch}');
-        if (isUpdated && isUpdatedMatch) {
-          currentUser.likingUsers.remove(user);
-        }
-        notifyListeners();
-      } else {
-        Get.to(
-          MaestroScreen(),
-        );
+      print(
+          'profile update ==> ${isUpdated} requestUpdate==>${isUpdatedMatch}');
+      if (isUpdated && isUpdatedMatch) {
+        currentUser.likingUsers.remove(user);
       }
+      notifyListeners();
+      // } else {
+      //   Get.to(
+      //     MaestroScreen(),
+      //   );
+      // }
     }
   }
 }

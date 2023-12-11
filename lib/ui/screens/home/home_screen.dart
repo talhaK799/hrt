@@ -53,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         )
                       : Column(
                           children: [
-                            model.currentUser.appUsers.isEmpty
+                            model.appUsers.isEmpty
                                 ? Container()
                                 : Padding(
                                     padding: const EdgeInsets.fromLTRB(
@@ -243,9 +243,7 @@ class _HomeScreenState extends State<HomeScreen> {
           physics: NeverScrollableScrollPhysics(),
           child: Column(
             children: [
-              SizedBox(
-                height: 0.35.sh,
-              ),
+              SizedBox(height: 0),
               Container(
                 width: double.infinity,
                 height: MediaQuery.of(context).size.height * 1,
@@ -263,7 +261,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Padding(
             padding: EdgeInsets.fromLTRB(
               18,
-              0,
+              45,
               18,
               0,
             ),
@@ -273,7 +271,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Text(
                   'Nobody around',
                   style: subHeadingTextWhite.copyWith(
-                    color: blackColor,
+                    color: whiteColor,
                   ),
                 ),
                 sizeBox20,

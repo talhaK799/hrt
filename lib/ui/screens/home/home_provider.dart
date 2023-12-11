@@ -86,6 +86,7 @@ class HomeProvider extends BaseViewModel {
   }
 
   getAllAppUsers() async {
+    print("all users: ${currentUser.appUsers}");
     appUsers = currentUser.appUsers;
     notifyListeners();
     if (currentUser.appUsers.isEmpty && currentUser.isHomeloaded == false) {
@@ -118,7 +119,9 @@ class HomeProvider extends BaseViewModel {
         if (!currentUser.appUser.likedUsers!.contains(user.id) &&
             !currentUser.appUser.disLikedUsers!.contains(user.id) &&
             user.id != currentUser.appUser.id) {
-          user.offlineTime = formatRelativeTime(user.onlineTime!);
+          user.offlineTime =
+              formatRelativeTime(user.onlineTime ?? DateTime.now()) ??
+                  "1 minute ago";
           user.distance = await location.distance(user.latitude, user.longitude,
               currentUser.appUser.latitude, currentUser.appUser.longitude);
           appUsers.add(user);
@@ -126,6 +129,7 @@ class HomeProvider extends BaseViewModel {
         }
       }
     }
+    currentUser.appUsers = appUsers;
     print('number of filtered users ${appUsers.length}');
     notifyListeners();
     // setState(ViewState.idle);
