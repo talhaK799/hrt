@@ -101,12 +101,10 @@ class ConversationProvider extends BaseViewModel {
           event.docs.forEach((element) {
             // if (!currentUser.conversations
             //     .contains(Conversation.fromJson(element.data()))) {
-            currentUser.conversations.add(
-              Conversation.fromJson(element.data()),
-            );
+            currentUser.conversations
+                .add(Conversation.fromJson(element.data()));
             notifyListeners();
             // }
-
             print(
                 "Conversation == > ${currentUser.conversations.first.toJson()}");
           });
