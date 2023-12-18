@@ -254,12 +254,12 @@ class EditProfileScreen extends StatelessWidget {
               ),
             ],
           ),
-          Text(
-            'Your Facebook friends won’t see you on Hart. You will be hidden from non-Facebook users until you like them.',
-            style: buttonTextStyle2.copyWith(
-              color: lightRed,
-            ),
-          ),
+          // Text(
+          //   'Your Facebook friends won’t see you on Hart. You will be hidden from non-Facebook users until you like them.',
+          //   style: buttonTextStyle2.copyWith(
+          //     color: lightRed,
+          //   ),
+          // ),
           // sizeBox20,
           // CustomButton(
           //     title: 'Update Profile',

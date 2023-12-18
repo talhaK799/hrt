@@ -20,6 +20,7 @@ class AppSettingsScreen extends StatelessWidget {
       create: (context) => AppSettingProvider(),
       child: Consumer<AppSettingProvider>(builder: (context, model, child) {
         return Scaffold(
+          backgroundColor: whiteColor,
           body: SingleChildScrollView(
             child: Padding(
               padding: EdgeInsets.fromLTRB(

@@ -992,6 +992,18 @@ _imageSlider(HomeProvider model, AppUser user) {
                 enlargeFactor: 0.6,
               ),
             ),
+      user.isPrivatePhoto == true
+          ? Container(
+              height: 0.35.sh,
+              decoration: BoxDecoration(color: whiteColor.withOpacity(0.9)),
+              child: Center(
+                  // child: Text(
+                  //   'Pravate Image',
+                  //   style: bodyTextStyle,
+                  // ),
+                  ),
+            )
+          : Container(),
       user.images == null
           ? Container()
           : Padding(

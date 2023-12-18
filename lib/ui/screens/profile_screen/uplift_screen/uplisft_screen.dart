@@ -32,9 +32,10 @@ class UpliftScreen extends StatelessWidget {
                 children: [
                   CustomAppBar(title: 'Uplift'),
                   sizeBox30,
-                  SvgPicture.asset(
-                    '$staticAsset/phone.svg',
-                  ),
+                  Image.asset('$staticAsset/uplift_i.png'),
+                  // SvgPicture.asset(
+                  //   '$staticAsset/phone.svg',
+                  // ),
                   sizeBox20,
                   Text(
                     'Let us uplift you',

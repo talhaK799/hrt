@@ -27,17 +27,17 @@ class KingHartProvider extends BaseViewModel {
   List<Spanks> spanks = [
     Spanks(
       no_spanks: 1,
-      price: 2,
+      price: 1,
       offer: null,
     ),
     Spanks(
       no_spanks: 5,
-      price: 8,
+      price: 3,
       offer: '20 % OFF',
     ),
     Spanks(
       no_spanks: 15,
-      price: 15,
+      price: 10,
       offer: '50 % OFF',
     ),
   ];
