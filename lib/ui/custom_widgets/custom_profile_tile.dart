@@ -45,17 +45,10 @@ class CustomProfileTile extends StatelessWidget {
             icon != null
                 ? Row(
                     children: [
-                      isSpank == true
-                          ? Image.asset(
-                              '$staticAsset/$icon',
-                              width: 25,
-                              height: 25,
-                              // scale: 3,
-                            )
-                          : Image.asset(
-                              '$staticAsset/$icon',
-                              scale: 3,
-                            ),
+                      Image.asset(
+                        '$staticAsset/$icon',
+                        scale: 3,
+                      ),
                       SizedBox(
                         width: 20.w,
                       ),
