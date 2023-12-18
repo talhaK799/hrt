@@ -10,6 +10,7 @@ class CustomProfileTile extends StatelessWidget {
   String? icon;
   bool? isWhite;
   bool? isList;
+  bool? isSpank;
   Color? color;
   Color? iconColor;
   Color? textColor;
@@ -22,6 +23,7 @@ class CustomProfileTile extends StatelessWidget {
     this.iconColor,
     this.textColor,
     this.isWhite = true,
+    this.isSpank = false,
     this.isList,
     required this.onTap,
   });
@@ -43,10 +45,17 @@ class CustomProfileTile extends StatelessWidget {
             icon != null
                 ? Row(
                     children: [
-                      Image.asset(
-                        '$staticAsset/$icon',
-                        scale: 3,
-                      ),
+                      isSpank == true
+                          ? Image.asset(
+                              '$staticAsset/$icon',
+                              width: 25,
+                              height: 25,
+                              // scale: 3,
+                            )
+                          : Image.asset(
+                              '$staticAsset/$icon',
+                              scale: 3,
+                            ),
                       SizedBox(
                         width: 20.w,
                       ),
@@ -58,22 +67,30 @@ class CustomProfileTile extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   isList == true
-                      ? Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            for (var i = 0; i < title.length; i++)
-                              Padding(
-                                padding: EdgeInsets.only(right: 5),
-                                child: Text(
-                                  title.length <= 3
-                                      ? '${title[i].toString()}, '
-                                      : '. . . .',
-                                  style: buttonTextStyle.copyWith(
-                                    color: textColor ?? blackColor,
+                      ? Expanded(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              for (var i = 0; i < 1; i++)
+                                // title.length < 3
+                                // ?
+                                Expanded(
+                                  child: Text(
+                                    '${title[i].toString()} . . . . .',
+                                    style: buttonTextStyle.copyWith(
+                                      color: textColor ?? blackColor,
+                                    ),
                                   ),
-                                ),
-                              ),
-                          ],
+                                )
+                              // :
+                              // Text(
+                              //     '. . . ',
+                              //     style: buttonTextStyle.copyWith(
+                              //       color: textColor ?? blackColor,
+                              //     ),
+                              //   ),
+                            ],
+                          ),
                         )
                       : Text(
                           title,

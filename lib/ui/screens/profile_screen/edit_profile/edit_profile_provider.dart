@@ -36,6 +36,7 @@ class EditProfileProvider extends BaseViewModel {
     print('looking for ${currentUser.appUser.lookingFor!.first}');
     // dob = date.parse(currentUser.appUser.dob!);
     // setState(ViewState.idle);
+    notifyListeners();
   }
 
   pickDate(context) async {
@@ -65,9 +66,12 @@ class EditProfileProvider extends BaseViewModel {
     }
   }
 
-  incognito(context, val) {
+  incognito(context, val) async {
     if (currentUser.appUser.isPremiumUser == true) {
       isIncoginito = val;
+      notifyListeners();
+      currentUser.appUser.isPrivatePhoto = val;
+      await db.updateUserProfile(currentUser.appUser);
     } else {
       becomeMaestroDialog(context, "This feature is only for Premium users");
       // Get.snackbar('Alert!', 'This feature required premium subscription',

@@ -175,10 +175,11 @@ class ProfileScreen extends StatelessWidget {
                       );
                     },
                     title: 'Spanks',
+                    isSpank: true,
                     color: pinkColor,
                     textColor: primaryColor,
                     iconColor: primaryColor,
-                    icon: 'spank.png',
+                    icon: 'Hand.png',
                     isWhite: false,
                   ),
                   sizeBox10,

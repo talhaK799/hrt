@@ -37,7 +37,7 @@ class KingHartScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    CustomAppBar(title: 'Kings HARTS'),
+                    CustomAppBar(title: 'Spanks'),
                     sizeBox30,
                     SvgPicture.asset(
                       '$staticAsset/Character.svg',
