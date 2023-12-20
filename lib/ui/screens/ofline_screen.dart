@@ -24,7 +24,7 @@ class _OfflineScreenState extends State<OfflineScreen> {
             child: Container(
               color: Colors.transparent,
               child: Lottie.asset(
-                'assets/animations/new-animation.json',
+                'assets/animations/red_10sec.json',
                 repeat: true,
                 frameRate: FrameRate.max,
               ),

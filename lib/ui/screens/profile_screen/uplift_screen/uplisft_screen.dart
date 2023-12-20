@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/ui/custom_widgets/custom_app_bar.dart';
 import 'package:hart/ui/custom_widgets/custom_button.dart';
+import 'package:hart/ui/custom_widgets/dialogs/custom_snackbar.dart';
 import 'package:hart/ui/screens/profile_screen/uplift_screen/uplift_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -70,7 +71,7 @@ class UpliftScreen extends StatelessWidget {
                           color: pinkColor2,
                         )),
                     child: Text(
-                      'Show up earlier to other members in your area for 24 hours for an increasing chances of making connections.',
+                      'Show up earlier to other members in your area for 24 hours for an increasing chances of making connections with \€8.',
                       style: subtitleText.copyWith(
                           color: primaryColor, fontWeight: FontWeight.w600),
                     ),
@@ -79,7 +80,12 @@ class UpliftScreen extends StatelessWidget {
                   CustomButton(
                       title: 'CONTINUE',
                       onTap: () {
-                        model.upliftProfile();
+                        if (model.auth.appUser.isUplifted == true) {
+                          customSnackBar('Alert!', 'already uplifted');
+                        } else {
+                          model.makePayment(context);
+                        }
+                        // model.upliftProfile();
                       }),
                   sizeBox20,
                   Text(

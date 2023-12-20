@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
@@ -6,10 +8,10 @@ import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/models/app_user.dart';
 import 'package:hart/core/models/filter.dart';
 import 'package:hart/core/models/matches.dart';
+import 'package:hart/core/models/uplift.dart';
 import 'package:hart/core/services/auth_service.dart';
 import 'package:hart/core/services/database_service.dart';
 import 'package:hart/core/services/location_service.dart';
-import 'package:hart/core/services/locato_storage_service.dart';
 import 'package:hart/core/view_models/base_view_model.dart';
 import 'package:hart/locator.dart';
 import 'package:hart/ui/custom_widgets/dialogs/custom_snackbar.dart';
@@ -34,7 +36,7 @@ class HomeProvider extends BaseViewModel {
   bool isLast = false;
   final currentUser = locator<AuthService>();
   final location = locator<LocationService>();
-  final _localStorage = locator<LocalStorageService>();
+  // final _localStorage = locator<LocalStorageService>();
   // Position? currentLocaion;
   final db = DatabaseService();
   // final _db = DatabaseService();
@@ -49,6 +51,8 @@ class HomeProvider extends BaseViewModel {
   String country = '';
   Matches match = Matches();
   Filtering filter = Filtering(desire: []);
+  UPlift uPlift = UPlift();
+
   bool isDataLoaded = false;
 
   HomeProvider() {
@@ -57,6 +61,7 @@ class HomeProvider extends BaseViewModel {
     init();
     pageController = PageController(initialPage: 0);
   }
+
   init() async {
     // setState(ViewState.busy);
 
@@ -70,6 +75,17 @@ class HomeProvider extends BaseViewModel {
 
     // setState(ViewState.idle);
     notifyListeners();
+  }
+
+  checkUpliftedUser() async {
+    uPlift = await db.checkUpliftUser(currentUser.appUser);
+    DateTime now = DateTime.now();
+    final difference = now.difference(uPlift.endAt!).inHours;
+    print("uplift difference ===> $difference");
+    if (difference >= 0) {
+      currentUser.appUser.isUplifted = false;
+      await db.updateUserProfile(currentUser.appUser);
+    }
   }
 
   convertLatAndLongIntoAddress() async {
@@ -94,9 +110,9 @@ class HomeProvider extends BaseViewModel {
       await Future.delayed(Duration(seconds: 2));
       currentUser.isHomeloaded = true;
     }
-    print('getting all AppUsers');
-    int dataLength = _localStorage.getdataLength;
-    print('data length===> $dataLength');
+    log('getting all AppUsers');
+    // int dataLength = _localStorage.getdataLength;
+    // print('data length===> $dataLength');
     // appUsers = [];
     currentUser.appUser = await db.getAppUser(currentUser.appUser.id);
     currentUser.appUsers = await db.getAllUsers(currentUser.appUser);
@@ -107,14 +123,14 @@ class HomeProvider extends BaseViewModel {
     //   _localStorage.setdataLength = users.length;
     //   setState(ViewState.idle);
     // }
-    print('number of all Appusers ${currentUser.appUsers.length}');
-
+    log('number of all Appusers ${currentUser.appUsers.length}');
+    await checkUpliftedUser();
     for (var user in currentUser.appUsers) {
       print('user ${user.id} onLineTime  ===> ${user.onlineTime.toString()}');
       // appUsers.add(user);
       if (currentUser.appUser.likedUsers == null ||
           currentUser.appUser.disLikedUsers == null) {
-        appUsers.add(user);
+        // appUsers.add(user);
       } else {
         if (!currentUser.appUser.likedUsers!.contains(user.id) &&
             !currentUser.appUser.disLikedUsers!.contains(user.id) &&
@@ -124,11 +140,18 @@ class HomeProvider extends BaseViewModel {
                   "1 minute ago";
           user.distance = await location.distance(user.latitude, user.longitude,
               currentUser.appUser.latitude, currentUser.appUser.longitude);
-          appUsers.add(user);
+          if (user.isUplifted == true) {
+            log('id==> ${user.id} and uplifted==> ${user.isUplifted}');
+            appUsers.insert(0, user);
+          } else {
+            log('id==> ${user.id} and uplifted==> ${user.isUplifted}');
+            appUsers.add(user);
+          }
           notifyListeners();
         }
       }
     }
+
     currentUser.appUsers = appUsers;
     print('number of filtered users ${appUsers.length}');
     notifyListeners();

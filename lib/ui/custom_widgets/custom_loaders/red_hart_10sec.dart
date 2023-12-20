@@ -8,7 +8,7 @@ class RedHart10SecLoader extends StatelessWidget {
       child: Container(
         color: Colors.transparent,
         child: Lottie.asset(
-          'assets/animations/new-animation.json',
+          'assets/animations/red_10sec.json',
           repeat: true,
           frameRate: FrameRate.max,
         ),

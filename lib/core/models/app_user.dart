@@ -15,13 +15,14 @@ class AppUser {
   bool? isPrivatePhoto;
   bool? isGoogle;
   bool? isApple;
+  bool? isUplifted;
 
   bool? isFacebook;
   int? likesCount;
   int? spanks;
   double? latitude;
   double? longitude;
-  double distance=0.0;
+  double distance = 0.0;
 
   String? fcmToken;
   int? age;
@@ -55,6 +56,7 @@ class AppUser {
     this.isPrivatePhoto,
     this.isLiked,
     this.isDesLiked,
+    this.isUplifted,
     this.latitude,
     this.longitude,
     this.muteIds,
@@ -77,7 +79,7 @@ class AppUser {
     this.age,
     this.users,
     this.isFirstTimeChat = false,
-    this.isSelected=false,
+    this.isSelected = false,
     this.isApple,
     this.onlineTime,
     this.offlineTime = '',
@@ -91,14 +93,15 @@ class AppUser {
     data['email'] = email;
     data['isGoogle'] = isGoogle ?? false;
     data['isFacebook'] = isFacebook ?? false;
+    data['isUplifted'] = isUplifted ?? false;
     data['createdAt'] = createdAt ?? DateTime.now();
     data['uplift'] = uplift ?? DateTime.now();
 
     data['onlineTime'] = onlineTime ?? DateTime.now();
     data['name'] = name;
     data['phoneNumber'] = phoneNumber;
-    data['longitude'] = longitude;
-    data['latitude'] = latitude;
+    data['longitude'] = longitude ?? 10;
+    data['latitude'] = latitude ?? 8;
 
     data['fcmToken'] = fcmToken;
     data['isEmailVerified'] = isEmailVerified ?? false;
@@ -137,6 +140,7 @@ class AppUser {
     isEmailVerified = json['isEmailVerified'] ?? false;
     isPhoneNoVerified = json['isPhoneNoVerified'] ?? false;
     isLiked = json['isLiked'] ?? false;
+    isUplifted = json['isUplifted'] ?? false;
     isDesLiked = json['isDesLiked'] ?? false;
     isPremiumUser = json['isPremiumUser'] ?? false;
     isNotificationsOn = json['isNotificationsOn'] ?? false;

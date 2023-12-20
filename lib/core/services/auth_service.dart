@@ -217,7 +217,7 @@ class AuthService extends ChangeNotifier {
           .verifyPhoneNumber(
             forceResendingToken: this.resendToken,
             phoneNumber: phoneNumber.trim(),
-            timeout:  Duration(seconds: 60),
+            timeout: Duration(seconds: 60),
             verificationCompleted:
                 (PhoneAuthCredential phoneAuthCredential) async {
               // print("Verification Completed");
@@ -272,10 +272,11 @@ class AuthService extends ChangeNotifier {
         } else {
           this.appUser = AppUser();
           this.appUser.id = userCredential.user!.uid;
+          print('user id authservicephone ${this.appUser.id}');
 
           this.appUser.fcmToken = '';
           // await FirebaseMessaging.instance.getToken();
-          await _dbService.registerAppUser(appUser);
+          await _dbService.registerAppUser(this.appUser);
         }
         // }
 
@@ -504,18 +505,18 @@ class AuthService extends ChangeNotifier {
     user = null;
   }
 
-
-  updateUserOnlineStatus(){
-     
-    DatabaseReference userRef = FirebaseDatabase.instance.ref().child('users/abc');
-    DatabaseReference connectedRef = FirebaseDatabase.instance.ref().child('.info/connected');
+  updateUserOnlineStatus() {
+    DatabaseReference userRef =
+        FirebaseDatabase.instance.ref().child('users/abc');
+    DatabaseReference connectedRef =
+        FirebaseDatabase.instance.ref().child('.info/connected');
 
     connectedRef.onValue.listen((event) {
       if (event.snapshot != null && event.snapshot.value == true) {
         // User is connected, update the status
         userRef.update({
           'online': true,
-          'last_seen': ServerValue.timestamp ,
+          'last_seen': ServerValue.timestamp,
         });
 
         // Set an onDisconnect hook to update status when the user disconnects
@@ -525,6 +526,5 @@ class AuthService extends ChangeNotifier {
         });
       }
     });
-  
   }
 }
