@@ -13,6 +13,7 @@ import 'package:hart/core/services/network_status_service.dart';
 import 'package:hart/locator.dart';
 import 'package:hart/ui/screens/auth_screens/auth_screens.dart';
 import 'package:hart/ui/screens/auth_screens/firebase_phone_login/phone_login_screen.dart';
+import 'package:hart/ui/screens/collect_info_screens/add_photo/add_photo_screen.dart';
 import 'package:hart/ui/screens/collect_info_screens/fantasies_screen/fantasies_screen.dart';
 import 'package:hart/ui/screens/collect_info_screens/idetity_screen/identity_screen.dart';
 import 'package:hart/ui/screens/collect_info_screens/select_gender_screen/select_gender_screen.dart';
@@ -55,7 +56,7 @@ class _SplashScreenState extends State<SplashScreen> {
     //     'this is the current location ${_location.currentLocation!.latitude} === ${_location.currentLocation!.longitude}');
 
     // Get.to(
-    //   SelectGenderScreen(),
+    //   AddPhotoScreen(),
     // );
     if (networkSetvice.hasConnection == true) {
       if (_auth.isLogin) {

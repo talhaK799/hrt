@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/constants/format_date.dart';
 import 'package:hart/core/constants/style.dart';
-import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/core/services/auth_service.dart';
 import 'package:hart/core/services/database_service.dart';
@@ -35,6 +34,9 @@ class DobProvider extends BaseViewModel {
       lastDate: DateTime(2090),
       dateFormat: "dd/MM/yyyy",
       looping: true,
+      backgroundColor: whiteColor,
+      itemTextStyle: bodyTextStyle,
+      textColor: primaryColor,
     );
     if (pickedDate != null) {
       dob = date.format(pickedDate!);
@@ -64,14 +66,14 @@ class DobProvider extends BaseViewModel {
       currentUser.appUser.age = age;
       // bool isProfUpdated = await db.updateUserProfile(currentUser.appUser);
       // if (isProfUpdated) {
-        print('updatrion==> $updation');
-        if (updation) {
-          Get.back(result: dob);
-        } else {
-          Get.to(
-            NickNameScreen(),
-          );
-        }
+      print('updatrion==> $updation');
+      if (updation) {
+        Get.back(result: dob);
+      } else {
+        Get.to(
+          NickNameScreen(),
+        );
+      }
       // }
       // setState(ViewState.idle);
     } else {

@@ -123,7 +123,7 @@ class ConversationProvider extends BaseViewModel {
   dispose() {
     super.dispose();
     stream = null;
-    notifyListeners();
+    // notifyListeners();
   }
 
   getUsers() async {

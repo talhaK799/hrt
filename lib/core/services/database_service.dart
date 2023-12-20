@@ -7,6 +7,7 @@ import 'package:hart/core/models/info_item.dart';
 import 'package:hart/core/models/matches.dart';
 import 'package:hart/core/models/spank.dart';
 import 'package:hart/core/models/subscripton.dart';
+import 'package:hart/core/models/uplift.dart';
 
 class DatabaseService {
   final _db = FirebaseFirestore.instance;
@@ -195,6 +196,7 @@ class DatabaseService {
 
   updateUserProfile(AppUser appUser) async {
     // print("appuaser premiume check: ${appUser.isPremiumUser}");
+    print("appuaser id check: ${appUser.id}");
     try {
       await _db.collection('app_user').doc(appUser.id).update(appUser.toJson());
       return true;
@@ -666,6 +668,22 @@ class DatabaseService {
     }
   }
 
+  upliftUser(UPlift uPlift) async {
+    try {
+      await _db
+          .collection('Uplift')
+          .doc(uPlift.userId)
+          .set(uPlift.toJson())
+          .then(
+            (value) => debugPrint('User uplifted'),
+          );
+      return true;
+    } catch (e) {
+      print('Exception@DatabaseServices/upliftUser ==> $e');
+      return false;
+    }
+  }
+
   checkPremiumExpire(AppUser appUser) async {
     try {
       final snapshot = await _db
@@ -679,6 +697,17 @@ class DatabaseService {
       debugPrint('Exception @DatabaseService/checkPremiumExpire $e');
       debugPrint(s.toString());
       return Subscription();
+    }
+  }
+
+  checkUpliftUser(AppUser user) async {
+    try {
+      final snapshot = await _db.collection('Uplift').doc(user.id).get();
+      return UPlift.fromJson(snapshot.data(), snapshot.id);
+    } catch (e, s) {
+      debugPrint('Exception @DatabaseService/checkUplift $e');
+      debugPrint(s.toString());
+      return UPlift();
     }
   }
 
