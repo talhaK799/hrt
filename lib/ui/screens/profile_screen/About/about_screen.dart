@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hart/core/constants/style.dart';
 import 'package:hart/ui/custom_widgets/custom_app_bar.dart';
+import 'package:hart/ui/custom_widgets/right_navigation.dart';
 import 'package:hart/ui/screens/profile_screen/About/privacy_screen.dart';
 import 'package:hart/ui/screens/profile_screen/About/trems_conditions_screen.dart';
 
@@ -26,9 +27,8 @@ class AboutScreen extends StatelessWidget {
                 GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
-                    Get.to(
-                      PrivacyPolicyScreen(),
-                    );
+                    Navigator.push(
+                        context, PageFromRight(page: PrivacyPolicyScreen()));
                   },
                   child: CustomListItem(
                     text: 'Privacy policy',
@@ -38,9 +38,8 @@ class AboutScreen extends StatelessWidget {
                 GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: () {
-                    Get.to(
-                      TermsAndConditions(),
-                    );
+                    Navigator.push(
+                        context, PageFromRight(page: TermsAndConditions()));
                   },
                   child: CustomListItem(
                     text: 'Term of service',

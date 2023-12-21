@@ -703,7 +703,12 @@ class DatabaseService {
   checkUpliftUser(AppUser user) async {
     try {
       final snapshot = await _db.collection('Uplift').doc(user.id).get();
-      return UPlift.fromJson(snapshot.data(), snapshot.id);
+      print("exist: ${snapshot.exists}");
+      if (snapshot.exists) {
+        return UPlift.fromJson(snapshot.data(), snapshot.id);
+      } else {
+        return UPlift();
+      }
     } catch (e, s) {
       debugPrint('Exception @DatabaseService/checkUplift $e');
       debugPrint(s.toString());

@@ -41,43 +41,47 @@ class NotificationScreen extends StatelessWidget {
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 95),
-                    child: ListView.separated(
-                      primary: false,
-                      shrinkWrap: true,
-                      itemCount: 3,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          contentPadding: EdgeInsets.zero,
-                          leading: CircleAvatar(
-                            radius: 40.r,
-                            backgroundImage: AssetImage(
-                              '$dynamicAsset/profile.png',
+                    child: model.isNotification
+                        ? ListView.separated(
+                            primary: false,
+                            shrinkWrap: true,
+                            itemCount: 3,
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                contentPadding: EdgeInsets.zero,
+                                leading: CircleAvatar(
+                                  radius: 40.r,
+                                  backgroundImage: AssetImage(
+                                    '$dynamicAsset/profile.png',
+                                  ),
+                                ),
+                                title: Text(
+                                  'Laiba',
+                                  style: subHeadingTextStyle2.copyWith(
+                                    color: primaryColor,
+                                  ),
+                                ),
+                                subtitle: Text(
+                                  'Lorem ipsum dolor sit amet consectetur. Ut Lorem ipsum venenatis magna ac senectus risus.',
+                                  style: subtitleText.copyWith(
+                                    color: greyColor2,
+                                  ),
+                                ),
+                                trailing: Text(
+                                  '12 : 03',
+                                  style: miniText.copyWith(
+                                    color: greyColor2,
+                                  ),
+                                ),
+                              );
+                            },
+                            separatorBuilder: (context, index) => SizedBox(
+                              height: 15.h,
                             ),
+                          )
+                        : Center(
+                            child: Text("Notifications not found"),
                           ),
-                          title: Text(
-                            'Laiba',
-                            style: subHeadingTextStyle2.copyWith(
-                              color: primaryColor,
-                            ),
-                          ),
-                          subtitle: Text(
-                            'Lorem ipsum dolor sit amet consectetur. Ut Lorem ipsum venenatis magna ac senectus risus.',
-                            style: subtitleText.copyWith(
-                              color: greyColor2,
-                            ),
-                          ),
-                          trailing: Text(
-                            '12 : 03',
-                            style: miniText.copyWith(
-                              color: greyColor2,
-                            ),
-                          ),
-                        );
-                      },
-                      separatorBuilder: (context, index) => SizedBox(
-                        height: 15.h,
-                      ),
-                    ),
                   ),
                 ),
               ],

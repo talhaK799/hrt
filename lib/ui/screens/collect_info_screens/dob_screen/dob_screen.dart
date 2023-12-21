@@ -82,7 +82,7 @@ class DOBScreen extends StatelessWidget {
                   CustomButton(
                     title: 'CONTINUE',
                     onTap: () {
-                      model.addDob();
+                      model.addDob(context);
                     },
                   ),
                   SizedBox(
