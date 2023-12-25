@@ -105,24 +105,55 @@ class HomeProvider extends BaseViewModel {
   }
 
   getAllAppUsers() async {
-    try {
-      print("all users::: ${currentUser.appUsers.length}");
+// <<<<<<< text_changes
+    print("all users: ${currentUser.appUsers}");
+    appUsers = currentUser.appUsers;
+    notifyListeners();
+    if (currentUser.appUsers.isEmpty && currentUser.isHomeloaded == false) {
+      // setState(ViewState.busy);
+      await Future.delayed(Duration(seconds: 2));
+      currentUser.isHomeloaded = true;
+    }
+    log('getting all AppUsers');
+    // int dataLength = _localStorage.getdataLength;
+    // print('data length===> $dataLength');
+    // appUsers = [];
+    currentUser.appUser = await db.getAppUser(currentUser.appUser.id);
+    currentUser.appUsers = await db.getAllUsers(currentUser.appUser);
+    // setState(ViewState.idle);
+    // if (users.length > dataLength) {
+    //   await Future.delayed(Duration(seconds: 5));
 
-      // int dataLength = _localStorage.getdataLength;
-      // print('data length===> $dataLength');
-      // appUsers = [];
-      currentUser.appUser = await db.getAppUser(currentUser.appUser.id);
-      currentUser.appUsers = await db.getAllUsers(currentUser.appUser);
-      // if (users.length > dataLength) {
-      //   await Future.delayed(Duration(seconds: 5));
+    //   _localStorage.setdataLength = users.length;
+    //   setState(ViewState.idle);
+    // }
+    log('number of all Appusers ${currentUser.appUsers.length}');
+    await checkUpliftedUser();
+    for (var user in currentUser.appUsers) {
+      print('user ${user.id} onLineTime  ===> ${user.onlineTime.toString()}');
+      // appUsers.add(user);
+      if (currentUser.appUser.likedUsers == null ||
+          currentUser.appUser.disLikedUsers == null) {
+// =======
+//     try {
+//       print("all users::: ${currentUser.appUsers.length}");
 
-      //   _localStorage.setdataLength = users.length;
-      //   setState(ViewState.idle);
-      // }
-      print('number of all Appusers ${currentUser.appUsers.length}');
-      await checkUpliftedUser();
-      for (var user in currentUser.appUsers) {
-        print('user ${user.id} onLineTime  ===> ${user.onlineTime.toString()}');
+//       // int dataLength = _localStorage.getdataLength;
+//       // print('data length===> $dataLength');
+//       // appUsers = [];
+//       currentUser.appUser = await db.getAppUser(currentUser.appUser.id);
+//       currentUser.appUsers = await db.getAllUsers(currentUser.appUser);
+//       // if (users.length > dataLength) {
+//       //   await Future.delayed(Duration(seconds: 5));
+
+//       //   _localStorage.setdataLength = users.length;
+//       //   setState(ViewState.idle);
+//       // }
+//       print('number of all Appusers ${currentUser.appUsers.length}');
+//       await checkUpliftedUser();
+//       for (var user in currentUser.appUsers) {
+//         print('user ${user.id} onLineTime  ===> ${user.onlineTime.toString()}');
+// >>>>>>> dev
         // appUsers.add(user);
         if (currentUser.appUser.likedUsers == null ||
             currentUser.appUser.disLikedUsers == null) {

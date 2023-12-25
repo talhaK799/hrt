@@ -102,8 +102,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                           ? Container()
                                           : model.filteredUsers.length == 0
                                               ? _staticScreen(context)
-                                              : _homeScreenData(model,
-                                                  model.filteredUsers[index])
+                                              : _homeScreenData(
+                                                  model,
+                                                  model.filteredUsers[index],
+                                                )
                                       : model.state == ViewState.busy
                                           ? Container()
                                           : model.currentUser.appUsers.length ==
@@ -111,8 +113,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                               ? _staticScreen(context)
                                               : _homeScreenData(
                                                   model,
+// <<<<<<< text_changes
+//                                                   model.appUsers[index],
+//                                                 );
+// =======
                                                   model.currentUser
                                                       .appUsers[index]);
+// >>>>>>> dev
                                 },
                                 onPageChanged: (val) => model.changePage(val),
                               ),

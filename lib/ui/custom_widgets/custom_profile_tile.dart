@@ -88,15 +88,16 @@ class CustomProfileTile extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              for (var i = 0; i < 1; i++)
+                              for (var i = 0; i < title.length; i++)
                                 // title.length < 3
                                 // ?
                                 Expanded(
                                   child: Text(
-                                    '${title[i].toString()} . . . . .',
+                                    '${title[i].toString()},',
                                     style: buttonTextStyle.copyWith(
                                       color: textColor ?? blackColor,
                                     ),
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 )
                               // :

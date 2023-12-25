@@ -3,6 +3,7 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:hart/core/constants/strings.dart';
 import 'package:hart/core/enums/view_state.dart';
+import 'package:hart/core/models/slider.dart';
 import 'package:hart/core/models/subscripton.dart';
 import 'package:hart/core/services/auth_service.dart';
 import 'package:hart/core/services/database_service.dart';
@@ -28,10 +29,27 @@ class MaestroProvider extends BaseViewModel {
     notifyListeners();
   }
 
-  List<String> images = [
-    '$staticAsset/home_d.png',
-    '$staticAsset/connection_d.png',
-    '$staticAsset/profile_d.png',
+  List<SliderImg> sliderImages = [
+    SliderImg(
+      image: '$staticAsset/home_d.png',
+      title: 'Incognito',
+      description: 'Hide your profile from Discover but still send Likes'
+    ),
+    SliderImg(
+      image: '$staticAsset/connection_d.png',
+      title: 'See who Likes you',
+      description: 'Discover people who\'re already into you',
+    ),
+    SliderImg(
+      image: '$staticAsset/profile_d.png',
+      title: 'Private Photoes',
+      description: 'Have the option to add photoes only visible to Connections'
+    ),
+    SliderImg(
+      image: '$staticAsset/connection_d.png',
+      title: 'One free Ping a day',
+      description: 'Express your interest by sending a Ping'
+    ),
   ];
 
   List<Subscription> subscriptions = [
