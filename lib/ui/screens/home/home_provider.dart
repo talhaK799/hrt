@@ -63,24 +63,28 @@ class HomeProvider extends BaseViewModel {
   }
 
   init() async {
-    // setState(ViewState.busy);
+    if (currentUser.isHomeloaded == false) {
+      print("make State busy for the first time");
+      setState(ViewState.busy);
+      currentUser.isHomeloaded = true;
+    }
 
     await getAllAppUsers();
-    // appUsers = currentUser.appUsers;
+    appUsers = currentUser.appUsers;
 
-    convertLatAndLongIntoAddress();
+    await convertLatAndLongIntoAddress();
 
     currentUser.appUser.onlineTime = DateTime.now();
-    db.updateUserProfile(currentUser.appUser);
+    await db.updateUserProfile(currentUser.appUser);
 
-    // setState(ViewState.idle);
+    setState(ViewState.idle);
     notifyListeners();
   }
 
   checkUpliftedUser() async {
     uPlift = await db.checkUpliftUser(currentUser.appUser);
     DateTime now = DateTime.now();
-    final difference = now.difference(uPlift.endAt!).inHours;
+    final difference = now.difference(uPlift.endAt ?? DateTime.now()).inHours;
     print("uplift difference ===> $difference");
     if (difference >= 0) {
       currentUser.appUser.isUplifted = false;
@@ -90,7 +94,6 @@ class HomeProvider extends BaseViewModel {
 
   convertLatAndLongIntoAddress() async {
     placemarks = [];
-    // setState(ViewState.busy);
     placemarks = await placemarkFromCoordinates(
         location.currentLocation!.latitude,
         location.currentLocation!.longitude);
@@ -103,26 +106,20 @@ class HomeProvider extends BaseViewModel {
 
   getAllAppUsers() async {
     try {
-      notifyListeners();
-      if (currentUser.appUsers.isEmpty && currentUser.isHomeloaded == false) {
-        setState(ViewState.busy);
-        await Future.delayed(Duration(seconds: 2));
-        currentUser.isHomeloaded = true;
-      }
-      log('getting all AppUsers');
+      print("all users::: ${currentUser.appUsers.length}");
+
       // int dataLength = _localStorage.getdataLength;
       // print('data length===> $dataLength');
       // appUsers = [];
       currentUser.appUser = await db.getAppUser(currentUser.appUser.id);
       currentUser.appUsers = await db.getAllUsers(currentUser.appUser);
-      setState(ViewState.idle);
       // if (users.length > dataLength) {
       //   await Future.delayed(Duration(seconds: 5));
 
       //   _localStorage.setdataLength = users.length;
       //   setState(ViewState.idle);
       // }
-      log('number of all Appusers ${currentUser.appUsers.length}');
+      print('number of all Appusers ${currentUser.appUsers.length}');
       await checkUpliftedUser();
       for (var user in currentUser.appUsers) {
         print('user ${user.id} onLineTime  ===> ${user.onlineTime.toString()}');
@@ -149,18 +146,17 @@ class HomeProvider extends BaseViewModel {
               log('id==> ${user.id} and uplifted==> ${user.isUplifted}');
               appUsers.add(user);
             }
-            notifyListeners();
           }
         }
       }
 
+      print("AllUsers: ${appUsers.length}");
+
       currentUser.appUsers = appUsers;
       print('number of filtered users ${appUsers.length}');
-      notifyListeners();
     } catch (e) {
       print("@errorGetAllAppUsers: $e");
     }
-    // setState(ViewState.idle);
   }
 
   spank(AppUser user) async {
