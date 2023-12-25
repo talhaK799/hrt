@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hart/core/constants/colors.dart';
+import 'package:hart/core/constants/style.dart';
 import 'package:hart/ui/screens/profile_screen/maestro_screen/maestro_screen.dart';
 
 showMyDialog(context, String? error) async {
@@ -61,10 +62,13 @@ becomeMaestroDialog(context, String? error) async {
           ),
           Container(
             decoration: BoxDecoration(
-                color: lightRed.withOpacity(0.2),
+                color: Color(0xFF980000),
                 borderRadius: BorderRadius.circular(10)),
             child: TextButton(
-              child: Text('Become a Maestro'),
+              child: Text(
+                'Become a Maestro',
+                style: bodyTextStyle.copyWith(fontSize: 16, color: whiteColor),
+              ),
               onPressed: () {
                 Get.back();
                 Get.to(MaestroScreen());

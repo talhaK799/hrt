@@ -25,82 +25,76 @@ class NickNameScreen extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => NickNameProvider(isUpdate),
       child: Consumer<NickNameProvider>(builder: (context, model, child) {
-        return ModalProgressHUD(
-          inAsyncCall: model.state == ViewState.busy,
-          progressIndicator: CustomLoader(),
-          child: Scaffold(
-            body: Padding(
-              padding: EdgeInsets.only(
-                left: 40,
-                right: 50,
-                top: 50,
-              ),
-              child: Form(
-                key: model.formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CustomBackButton(
-                          isWhite: true,
+        return Scaffold(
+          body: Padding(
+            padding: EdgeInsets.only(
+              left: 40,
+              right: 50,
+              top: 50,
+            ),
+            child: Form(
+              key: model.formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomBackButton(isWhite: true),
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      Text(
+                        'Choose your nickname',
+                        style: headingText.copyWith(
+                          color: blackColor,
+                          fontSize: 20.sp,
                         ),
-                        SizedBox(
-                          height: 20.h,
-                        ),
-                        Text(
-                          'Choose your nickname',
-                          style: headingText.copyWith(
-                            color: blackColor,
-                            fontSize: 20.sp,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 20.h,
-                        ),
-                        isUpdate
-                            ? Container()
-                            : CustomProgressIndicator(
-                                value: 2,
-                              ),
-                        SizedBox(
-                          height: 40.h,
-                        ),
-                        CustomTextField2(
-                          onChange: (val) {},
-                          validator: (val) {
-                            if (val.isEmpty) {
-                              return "Nick Name Required";
-                            } else {
-                              model.nickName = val;
-                              return null;
-                            }
-                          },
-                          hintText: 'Example: James',
-                          formatter: [
-                            FilteringTextInputFormatter.deny(
-                                RegExp(r'\s')), // Deny spaces
-                          ],
-                        ),
-                      ],
-                    ),
-                    Spacer(),
-                    CustomButton(
-                      title: 'CONTINUE',
-                      onTap: () {
-                        FocusManager.instance.primaryFocus?.unfocus();
-                        if (model.formKey.currentState!.validate()) {
-                          model.addNickName();
-                        }
-                      },
-                    ),
-                    SizedBox(
-                      height: 30.h,
-                    ),
-                  ],
-                ),
+                      ),
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      isUpdate
+                          ? Container()
+                          : CustomProgressIndicator(
+                              value: 2,
+                            ),
+                      SizedBox(
+                        height: 40.h,
+                      ),
+                      CustomTextField2(
+                        onChange: (val) {},
+                        validator: (val) {
+                          if (val.isEmpty) {
+                            return "Nick Name Required";
+                          } else {
+                            model.nickName = val;
+                            return null;
+                          }
+                        },
+                        hintText: 'Example: James',
+                        formatter: [
+                          FilteringTextInputFormatter.deny(
+                              RegExp(r'\s')), // Deny spaces
+                        ],
+                      ),
+                    ],
+                  ),
+                  Spacer(),
+                  CustomButton(
+                    title: 'CONTINUE',
+                    onTap: () {
+                      FocusManager.instance.primaryFocus?.unfocus();
+                      if (model.formKey.currentState!.validate()) {
+                        model.addNickName();
+                      }
+                    },
+                  ),
+                  SizedBox(
+                    height: 30.h,
+                  ),
+                ],
               ),
             ),
           ),

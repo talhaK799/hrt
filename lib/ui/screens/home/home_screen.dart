@@ -53,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         )
                       : Column(
                           children: [
-                            model.appUsers.isEmpty
+                            model.currentUser.appUsers.isEmpty
                                 ? Container()
                                 : Padding(
                                     padding: const EdgeInsets.fromLTRB(
@@ -92,8 +92,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ? model.filteredUsers.length > 0
                                         ? model.filteredUsers.length
                                         : 1
-                                    : model.appUsers.length > 0
-                                        ? model.appUsers.length
+                                    : model.currentUser.appUsers.length > 0
+                                        ? model.currentUser.appUsers.length
                                         : 1,
                                 itemBuilder: (context, index) {
                                   model.index = index;
@@ -108,12 +108,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 )
                                       : model.state == ViewState.busy
                                           ? Container()
-                                          : model.appUsers.length == 0
+                                          : model.currentUser.appUsers.length ==
+                                                  0
                                               ? _staticScreen(context)
                                               : _homeScreenData(
                                                   model,
-                                                  model.appUsers[index],
-                                                );
+// <<<<<<< text_changes
+//                                                   model.appUsers[index],
+//                                                 );
+// =======
+                                                  model.currentUser
+                                                      .appUsers[index]);
+// >>>>>>> dev
                                 },
                                 onPageChanged: (val) => model.changePage(val),
                               ),
@@ -124,7 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ? model.filteredUsers.isEmpty
                           ? Container()
                           : _likeButtons(model)
-                      : model.appUsers.isEmpty
+                      : model.currentUser.appUsers.isEmpty
                           ? Container()
                           : _likeButtons(model),
 
@@ -174,7 +180,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     setState(() {
                       model.isDisLiked = false;
                     });
-                    model.disLike(model.appUsers[model.index]);
+                    model.disLike(model.currentUser.appUsers[model.index]);
                   },
                   child: Container(
                     padding: const EdgeInsets.all(20),
@@ -209,7 +215,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       model.isLiked = false;
                       model.isDisLiked = false;
                     });
-                    model.like(model.appUsers[model.index]);
+                    model.like(model.currentUser.appUsers[model.index]);
                   },
                   child: Container(
                     padding: const EdgeInsets.all(20),

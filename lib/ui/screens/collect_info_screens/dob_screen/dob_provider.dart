@@ -9,6 +9,7 @@ import 'package:hart/core/services/auth_service.dart';
 import 'package:hart/core/services/database_service.dart';
 import 'package:hart/core/view_models/base_view_model.dart';
 import 'package:hart/locator.dart';
+import 'package:hart/ui/custom_widgets/right_navigation.dart';
 import 'package:hart/ui/screens/collect_info_screens/nick_name/nick_name_screen.dart';
 
 class DobProvider extends BaseViewModel {
@@ -47,17 +48,14 @@ class DobProvider extends BaseViewModel {
         colorText: primaryColor,
         messageText: Text(
           'Age must be Selected first',
-          style: miniText.copyWith(
-            color: lightRed,
-            fontSize: 15.sp,
-          ),
+          style: miniText.copyWith(color: lightRed, fontSize: 15.sp),
         ),
       );
     }
     notifyListeners();
   }
 
-  addDob() async {
+  addDob(context) async {
     age = now!.year - pickedDate!.year;
 
     if (age >= 18) {
@@ -70,9 +68,7 @@ class DobProvider extends BaseViewModel {
       if (updation) {
         Get.back(result: dob);
       } else {
-        Get.to(
-          NickNameScreen(),
-        );
+        Navigator.push(context, PageFromRight(page: NickNameScreen()));
       }
       // }
       // setState(ViewState.idle);

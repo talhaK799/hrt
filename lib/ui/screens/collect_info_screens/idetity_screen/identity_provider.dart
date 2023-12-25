@@ -58,7 +58,7 @@ class IdentityProvider extends BaseViewModel {
     if (updation == true) {
       Get.back(result: identity);
     } else {
-      if (identity.isEmpty || identity == null) {
+      if (identity.isEmpty) {
         customSnackBar('alert!', 'Selection Required');
       } else {
         Get.to(SelectGenderScreen());

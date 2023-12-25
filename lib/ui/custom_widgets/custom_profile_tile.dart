@@ -15,18 +15,19 @@ class CustomProfileTile extends StatelessWidget {
   Color? iconColor;
   Color? textColor;
   final onTap;
+  bool? isMaestro;
 
-  CustomProfileTile({
-    required this.title,
-    this.icon,
-    this.color,
-    this.iconColor,
-    this.textColor,
-    this.isWhite = true,
-    this.isSpank = false,
-    this.isList,
-    required this.onTap,
-  });
+  CustomProfileTile(
+      {required this.title,
+      this.icon,
+      this.color,
+      this.iconColor,
+      this.textColor,
+      this.isWhite = true,
+      this.isSpank = false,
+      this.isList,
+      required this.onTap,
+      this.isMaestro = false});
 
   @override
   Widget build(BuildContext context) {
@@ -45,23 +46,39 @@ class CustomProfileTile extends StatelessWidget {
             icon != null
                 ? Row(
                     children: [
-                      isSpank == true
-                          ? Image.asset(
-                              '$staticAsset/$icon',
-                              width: 25,
-                              height: 25,
-                              // scale: 3,
-                            )
-                          : Image.asset(
-                              '$staticAsset/$icon',
-                              scale: 3,
-                            ),
+                      Image.asset(
+                        '$staticAsset/$icon',
+                        scale: 3,
+                      ),
                       SizedBox(
                         width: 20.w,
                       ),
                     ],
                   )
-                : Container(),
+                : isMaestro == true
+                    ? Row(
+                        children: [
+                          Container(
+                            height: 30.h,
+                            width: 30.w,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(4),
+                                color: Color(0xFF980000).withOpacity(0.3)),
+                            child: Center(
+                                child: UnconstrainedBox(
+                              child: Text(
+                                "M",
+                                style: bodyTextStyle.copyWith(
+                                    color: Color(0xFF980000), fontSize: 14.sp),
+                              ),
+                            )),
+                          ),
+                          SizedBox(
+                            width: 20.w,
+                          ),
+                        ],
+                      )
+                    : Container(),
             Expanded(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
