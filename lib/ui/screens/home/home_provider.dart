@@ -103,8 +103,6 @@ class HomeProvider extends BaseViewModel {
 
   getAllAppUsers() async {
     try {
-      print("all users: ${currentUser.appUsers}");
-      appUsers = currentUser.appUsers;
       notifyListeners();
       if (currentUser.appUsers.isEmpty && currentUser.isHomeloaded == false) {
         setState(ViewState.busy);
@@ -447,6 +445,7 @@ class HomeProvider extends BaseViewModel {
 
   applyFilter() async {
     // searchedCards = [];
+    Get.back();
     filter.lookingFor = lookingFor;
     filter.desire = desire;
     filteredUsers = [];
@@ -480,7 +479,7 @@ class HomeProvider extends BaseViewModel {
 
     print(
         "filter===> ${filter.minAge} ${filter.lookingFor} ${filter.desire}  ");
-    filter = Filtering();
+    filter = Filtering(desire: [filter.desire!.first]);
     notifyListeners();
     Get.back();
   }
