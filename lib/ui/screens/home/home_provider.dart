@@ -106,7 +106,7 @@ class HomeProvider extends BaseViewModel {
     appUsers = currentUser.appUsers;
     notifyListeners();
     if (currentUser.appUsers.isEmpty && currentUser.isHomeloaded == false) {
-      setState(ViewState.busy);
+      // setState(ViewState.busy);
       await Future.delayed(Duration(seconds: 2));
       currentUser.isHomeloaded = true;
     }
@@ -116,7 +116,7 @@ class HomeProvider extends BaseViewModel {
     // appUsers = [];
     currentUser.appUser = await db.getAppUser(currentUser.appUser.id);
     currentUser.appUsers = await db.getAllUsers(currentUser.appUser);
-    setState(ViewState.idle);
+    // setState(ViewState.idle);
     // if (users.length > dataLength) {
     //   await Future.delayed(Duration(seconds: 5));
 

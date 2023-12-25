@@ -78,14 +78,14 @@ class MaestroScreen extends StatelessWidget {
                         sizeBox20,
                         Container(
                             child: CarouselSlider.builder(
-                                itemCount: model.images.length,
+                                itemCount: model.sliderImages.length,
                                 itemBuilder: (context, index, realIndex) =>
                                     Container(
                                       width: 320.w,
                                       decoration: BoxDecoration(
                                         image: DecorationImage(
                                             image: AssetImage(
-                                              model.images[index],
+                                              model.sliderImages[index].image!,
                                             ),
                                             fit: BoxFit.fill),
                                       ),
@@ -112,7 +112,7 @@ class MaestroScreen extends StatelessWidget {
                         sizeBox10,
                         Center(
                           child: DotsIndicator(
-                            dotsCount: model.images.length,
+                            dotsCount: model.sliderImages.length,
                             position: model.dotIndicator,
                             decorator: DotsDecorator(
                                 color: pinkColor2,
@@ -128,7 +128,7 @@ class MaestroScreen extends StatelessWidget {
                             children: [
                               Center(
                                 child: Text(
-                                  'Unlimited Likes',
+                                  model.sliderImages[model.dotIndicator].title!,
                                   style: subHeadingText1.copyWith(
                                     color: blackColor,
                                   ),
@@ -138,7 +138,8 @@ class MaestroScreen extends StatelessWidget {
                               Padding(
                                 padding: const EdgeInsets.only(right: 20),
                                 child: Text(
-                                  'You’re close to meeting your people. Speed things up with Maestro',
+                                  model.sliderImages[model.dotIndicator]
+                                      .description!,
                                   textAlign: TextAlign.center,
                                   style: buttonTextStyle.copyWith(
                                     color: greyColor2,
