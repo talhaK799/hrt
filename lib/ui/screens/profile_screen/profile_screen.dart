@@ -194,6 +194,7 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   sizeBox10,
                   CustomProfileTile(
+                    isMaestro: true,
                     onTap: () {
                       Navigator.push(
                           context, PageFromRight(page: MaestroScreen()));
@@ -202,7 +203,6 @@ class ProfileScreen extends StatelessWidget {
                     color: pinkColor,
                     textColor: primaryColor,
                     iconColor: primaryColor,
-                    icon: 'uplift.png',
                     isWhite: false,
                   ),
                   sizeBox20,
