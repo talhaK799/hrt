@@ -473,7 +473,7 @@ class HomeProvider extends BaseViewModel {
 
     print(
         "filter===> ${filter.minAge} ${filter.lookingFor} ${filter.desire}  ");
-    filter = Filtering();
+    filter = Filtering(desire: currentUser.appUser.desire);
     notifyListeners();
     Get.back();
   }

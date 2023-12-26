@@ -779,7 +779,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   MainAxisAlignment.end,
                                               children: [
                                                 Text(
-                                                  "${model.filter.desire![index]}, ",
+                                                  "${model.filter.desire![index]} ",
                                                   style:
                                                       buttonTextStyle.copyWith(
                                                     color: primaryColor,
