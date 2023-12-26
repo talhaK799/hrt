@@ -105,35 +105,36 @@ class HomeProvider extends BaseViewModel {
   }
 
   getAllAppUsers() async {
+    try {
 // <<<<<<< text_changes
-    print("all users: ${currentUser.appUsers}");
-    appUsers = currentUser.appUsers;
-    notifyListeners();
-    if (currentUser.appUsers.isEmpty && currentUser.isHomeloaded == false) {
-      // setState(ViewState.busy);
-      await Future.delayed(Duration(seconds: 2));
-      currentUser.isHomeloaded = true;
-    }
-    log('getting all AppUsers');
-    // int dataLength = _localStorage.getdataLength;
-    // print('data length===> $dataLength');
-    // appUsers = [];
-    currentUser.appUser = await db.getAppUser(currentUser.appUser.id);
-    currentUser.appUsers = await db.getAllUsers(currentUser.appUser);
-    // setState(ViewState.idle);
-    // if (users.length > dataLength) {
-    //   await Future.delayed(Duration(seconds: 5));
+      print("all users: ${currentUser.appUsers}");
+      // appUsers = currentUser.appUsers;
+      notifyListeners();
+      if (currentUser.appUsers.isEmpty && currentUser.isHomeloaded == false) {
+        // setState(ViewState.busy);
+        await Future.delayed(Duration(seconds: 2));
+        currentUser.isHomeloaded = true;
+      }
+      log('getting all AppUsers');
+      // int dataLength = _localStorage.getdataLength;
+      // print('data length===> $dataLength');
+      // appUsers = [];
+      currentUser.appUser = await db.getAppUser(currentUser.appUser.id);
+      currentUser.appUsers = await db.getAllUsers(currentUser.appUser);
+      // setState(ViewState.idle);
+      // if (users.length > dataLength) {
+      //   await Future.delayed(Duration(seconds: 5));
 
-    //   _localStorage.setdataLength = users.length;
-    //   setState(ViewState.idle);
-    // }
-    log('number of all Appusers ${currentUser.appUsers.length}');
-    await checkUpliftedUser();
-    for (var user in currentUser.appUsers) {
-      print('user ${user.id} onLineTime  ===> ${user.onlineTime.toString()}');
-      // appUsers.add(user);
-      if (currentUser.appUser.likedUsers == null ||
-          currentUser.appUser.disLikedUsers == null) {
+      //   _localStorage.setdataLength = users.length;
+      //   setState(ViewState.idle);
+      // }
+      log('number of all Appusers ${currentUser.appUsers.length}');
+      await checkUpliftedUser();
+      for (var user in currentUser.appUsers) {
+        print('user ${user.id} onLineTime  ===> ${user.onlineTime.toString()}');
+        // appUsers.add(user);
+        if (currentUser.appUser.likedUsers == null ||
+            currentUser.appUser.disLikedUsers == null) {
 // =======
 //     try {
 //       print("all users::: ${currentUser.appUsers.length}");
@@ -154,39 +155,38 @@ class HomeProvider extends BaseViewModel {
 //       for (var user in currentUser.appUsers) {
 //         print('user ${user.id} onLineTime  ===> ${user.onlineTime.toString()}');
 // >>>>>>> dev
-        // appUsers.add(user);
-        if (currentUser.appUser.likedUsers == null ||
-            currentUser.appUser.disLikedUsers == null) {
           // appUsers.add(user);
-        } else {
-          if (!currentUser.appUser.likedUsers!.contains(user.id) &&
-              !currentUser.appUser.disLikedUsers!.contains(user.id) &&
-              user.id != currentUser.appUser.id) {
-            user.offlineTime =
-                formatRelativeTime(user.onlineTime ?? DateTime.now()) ??
-                    "1 minute ago";
-            user.distance = await location.distance(
-                user.latitude,
-                user.longitude,
-                currentUser.appUser.latitude,
-                currentUser.appUser.longitude);
-            if (user.isUplifted == true) {
-              log('id==> ${user.id} and uplifted==> ${user.isUplifted}');
-              appUsers.insert(0, user);
-            } else {
-              log('id==> ${user.id} and uplifted==> ${user.isUplifted}');
-              appUsers.add(user);
+          if (currentUser.appUser.likedUsers == null ||
+              currentUser.appUser.disLikedUsers == null) {
+            // appUsers.add(user);
+          } else {
+            if (!currentUser.appUser.likedUsers!.contains(user.id) &&
+                !currentUser.appUser.disLikedUsers!.contains(user.id) &&
+                user.id != currentUser.appUser.id) {
+              user.offlineTime =
+                  formatRelativeTime(user.onlineTime ?? DateTime.now()) ??
+                      "1 minute ago";
+              user.distance = await location.distance(
+                  user.latitude,
+                  user.longitude,
+                  currentUser.appUser.latitude,
+                  currentUser.appUser.longitude);
+              if (user.isUplifted == true) {
+                log('id==> ${user.id} and uplifted==> ${user.isUplifted}');
+                appUsers.insert(0, user);
+              } else {
+                log('id==> ${user.id} and uplifted==> ${user.isUplifted}');
+                appUsers.add(user);
+              }
             }
           }
         }
+        print("AllUsers: ${appUsers.length}");
+        currentUser.appUsers = appUsers;
+        print('number of filtered users ${appUsers.length}');
       }
-
-      print("AllUsers: ${appUsers.length}");
-
-      currentUser.appUsers = appUsers;
-      print('number of filtered users ${appUsers.length}');
     } catch (e) {
-      print("@errorGetAllAppUsers: $e");
+      print("@errorGetAllAppUsersHome: $e");
     }
   }
 
