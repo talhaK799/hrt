@@ -16,7 +16,7 @@ class UPlift {
 
   UPlift.fromJson(json, id) {
     this.id = id;
-    price = json['price'] ?? '';
+    price = json['price'] ?? 0.0;
     boughtAt = json['boughtAt'].toDate() ?? DateTime.now();
     endAt = json['endAt'].toDate() ?? DateTime.now();
     userId = json['userId'] ?? '';

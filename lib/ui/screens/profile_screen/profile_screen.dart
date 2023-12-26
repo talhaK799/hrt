@@ -6,6 +6,7 @@ import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/ui/custom_widgets/custom_loader.dart';
 import 'package:hart/ui/custom_widgets/custom_profile_tile.dart';
+import 'package:hart/ui/custom_widgets/right_navigation.dart';
 import 'package:hart/ui/screens/profile_screen/About/about_screen.dart';
 import 'package:hart/ui/screens/profile_screen/Help/help_screen.dart';
 import 'package:hart/ui/screens/profile_screen/Notifications/notification_screen.dart';
@@ -113,9 +114,8 @@ class ProfileScreen extends StatelessWidget {
                       GestureDetector(
                         behavior: HitTestBehavior.opaque,
                         onTap: () {
-                          Get.to(
-                            EditProfileScreen(),
-                          );
+                          Navigator.push(context,
+                              PageFromRight(page: EditProfileScreen()));
                         },
                         child: Image.asset(
                           '$staticAsset/edit2.png',
@@ -157,22 +157,19 @@ class ProfileScreen extends StatelessWidget {
                     isWhite: false,
                     onTap: () {
                       if (model.currentUser.isPremiumUser == true) {
-                        Get.to(
-                          PremiumScreen(),
-                        );
+                        Navigator.push(
+                            context, PageFromRight(page: PremiumScreen()));
                       } else {
-                        Get.to(
-                          MaestroScreen(),
-                        );
+                        Navigator.push(
+                            context, PageFromRight(page: MaestroScreen()));
                       }
                     },
                   ),
                   sizeBox10,
                   CustomProfileTile(
                     onTap: () {
-                      Get.to(
-                        KingHartScreen(),
-                      );
+                      Navigator.push(
+                          context, PageFromRight(page: KingHartScreen()));
                     },
                     title: 'Spanks',
                     isSpank: true,
@@ -185,9 +182,8 @@ class ProfileScreen extends StatelessWidget {
                   sizeBox10,
                   CustomProfileTile(
                     onTap: () {
-                      Get.to(
-                        UpliftScreen(),
-                      );
+                      Navigator.push(
+                          context, PageFromRight(page: UpliftScreen()));
                     },
                     title: 'Uplift',
                     color: pinkColor,
@@ -198,16 +194,15 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   sizeBox10,
                   CustomProfileTile(
+                    isMaestro: true,
                     onTap: () {
-                      Get.to(
-                        MaestroScreen(),
-                      );
+                      Navigator.push(
+                          context, PageFromRight(page: MaestroScreen()));
                     },
                     title: 'Become a MAESTRO',
                     color: pinkColor,
                     textColor: primaryColor,
                     iconColor: primaryColor,
-                    icon: 'uplift.png',
                     isWhite: false,
                   ),
                   sizeBox20,
@@ -216,9 +211,8 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   CustomProfileTile(
                     onTap: () {
-                      Get.to(
-                        PairProfileScreen(),
-                      );
+                      Navigator.push(
+                          context, PageFromRight(page: PairProfileScreen()));
                     },
                     title: 'Pair Profile with my partner',
                     icon: 'pair.png',
@@ -228,9 +222,8 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   CustomProfileTile(
                     onTap: () {
-                      Get.to(
-                        EditProfileScreen(),
-                      );
+                      Navigator.push(
+                          context, PageFromRight(page: EditProfileScreen()));
                     },
                     title: 'Edit Profile',
                     icon: 'edit.png',
@@ -252,11 +245,7 @@ class ProfileScreen extends StatelessWidget {
                       //   AppSettingsScreen(),
                       // );
                       Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => AppSettingsScreen(),
-                        ),
-                      );
+                          context, PageFromRight(page: AppSettingsScreen()));
                     },
                     title: 'General Settings',
                     icon: 'setting.png',
@@ -276,9 +265,8 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   CustomProfileTile(
                     onTap: () {
-                      Get.to(
-                        NotificationScreen(),
-                      );
+                      Navigator.push(
+                          context, PageFromRight(page: NotificationScreen()));
                     },
                     title: 'Notifications',
                     icon: 'notifications.png',
@@ -311,9 +299,8 @@ class ProfileScreen extends StatelessWidget {
                   // ),
                   CustomProfileTile(
                     onTap: () {
-                      Get.to(
-                        AboutScreen(),
-                      );
+                      Navigator.push(
+                          context, PageFromRight(page: AboutScreen()));
                     },
                     title: 'About',
                   ),

@@ -129,168 +129,96 @@ class AppUser {
   }
 
   AppUser.fromJson(json, id) {
-    this.id = id;
-    email = json['email'] ?? "";
-    paymentId = json['paymentId'];
-    name = json['name'] ?? "User";
-    createdAt = json['createdAt'].toDate() ?? DateTime(2000);
-    uplift = json['uplift'].toDate() ?? DateTime(2000);
-    onlineTime = json['onlineTime'].toDate() ?? DateTime(2000);
-    phoneNumber = json['phoneNumber'];
-    isEmailVerified = json['isEmailVerified'] ?? false;
-    isPhoneNoVerified = json['isPhoneNoVerified'] ?? false;
-    isLiked = json['isLiked'] ?? false;
-    isUplifted = json['isUplifted'] ?? false;
-    isDesLiked = json['isDesLiked'] ?? false;
-    isPremiumUser = json['isPremiumUser'] ?? false;
-    isNotificationsOn = json['isNotificationsOn'] ?? false;
-    isPrivatePhoto = json['isPrivatePhoto'] ?? false;
-    isFirstTimeChat = json['isFirstTimeChat'] ?? false;
-    isGoogle = json['isGoogle'] ?? false;
-    isFacebook = json['isFacebook'] ?? false;
-    isApple = json["isApple"] ?? false;
-    this.fcmToken = json['fcmToken'] ?? '';
-    // isMuteNotification = json['isMuteNotification'] ?? false;
-    nickName = json['nickName'] ?? "User";
-    dob = json['dob'];
-    age = json['age'] ?? 0;
-    likesCount = json['likesCount'] ?? 10;
-    spanks = json['spanks'] ?? 0;
-    latitude = json['latitude'].toDouble() ?? 2.0;
-    longitude = json['longitude'].toDouble() ?? 3.0;
-    // lookingFor = json['lookingFor'];
-    if (json["lookingFor"] != null) {
-      lookingFor = [];
-      json["lookingFor"].forEach((element) {
-        lookingFor!.add(element);
-      });
-    } else {
-      lookingFor = [];
-    }
-    if (json["muteIds"] != null) {
-      muteIds = [];
-      json["muteIds"].forEach((element) {
-        muteIds!.add(element);
-      });
-    } else {
-      muteIds = [];
-    }
-    identity = json['identity'];
-    // if (json["identity"] != null) {
-    //   identity = [];
-    //   json["identity"].forEach((element) {
-    //     identity!.add(element);
-    //   });
-    // } else {
-    //   identity = [];
-    // }
-    if (json["desire"] != null) {
-      desire = [];
-      json["desire"].forEach((element) {
-        desire!.add(element);
-      });
-    } else {
-      desire = [];
-    }
-    if (json["images"] != null) {
-      images = [];
-      json["images"].forEach((element) {
-        images!.add(element);
-      });
-    } else {
-      images = [];
-    }
-    if (json["likedUsers"] != null) {
-      likedUsers = [];
-      json["likedUsers"].forEach((element) {
-        likedUsers!.add(element);
-      });
-    } else {
-      likedUsers = [];
-    }
-    if (json["disLikedUsers"] != null) {
-      disLikedUsers = [];
-      json["disLikedUsers"].forEach((element) {
-        disLikedUsers!.add(element);
-      });
-    } else {
-      disLikedUsers = [];
-// =======
-//     try {
-//       this.id = id;
-//       email = json['email'] ?? "";
-//       name = json['name'] ?? "User";
-//       phoneNumber = json['phoneNumber'];
-//       isEmailVerified = json['isEmailVerified'] ?? false;
-//       isPhoneNoVerified = json['isPhoneNoVerified'] ?? false;
-//       isLiked = json['isLiked'] ?? false;
-//       isDesLiked = json['isDesLiked'] ?? false;
-//       // isMuteNotification = json['isMuteNotification'] ?? false;
-//       nickName = json['nickName'] ?? "User";
-//       dob = json['dob'];
-//       age = json['age'] ?? 0;
-//       likesCount = json['likesCount'] ?? 10;
-//       // lookingFor = json['lookingFor'];
-//       if (json["lookingFor"] != null) {
-//         lookingFor = [];
-//         json["lookingFor"].forEach((element) {
-//           lookingFor!.add(element);
-//         });
-//       } else {
-//         lookingFor = [];
-//       }
-//       if (json["muteIds"] != null) {
-//         muteIds = [];
-//         json["muteIds"].forEach((element) {
-//           muteIds!.add(element);
-//         });
-//       } else {
-//         muteIds = [];
-//       }
-//       identity = json['identity'];
-//       // if (json["identity"] != null) {
-//       //   identity = [];
-//       //   json["identity"].forEach((element) {
-//       //     identity!.add(element);
-//       //   });
-//       // } else {
-//       //   identity = [];
-//       // }
-//       if (json["desire"] != null) {
-//         desire = [];
-//         json["desire"].forEach((element) {
-//           desire!.add(element);
-//         });
-//       } else {
-//         desire = [];
-//       }
-//       if (json["images"] != null) {
-//         images = [];
-//         json["images"].forEach((element) {
-//           images!.add(element);
-//         });
-//       } else {
-//         images = [];
-//       }
-//       if (json["likedUsers"] != null) {
-//         likedUsers = [];
-//         json["likedUsers"].forEach((element) {
-//           likedUsers!.add(element);
-//         });
-//       } else {
-//         likedUsers = [];
-//       }
-//       if (json["disLikedUsers"] != null) {
-//         disLikedUsers = [];
-//         json["disLikedUsers"].forEach((element) {
-//           disLikedUsers!.add(element);
-//         });
-//       } else {
-//         disLikedUsers = [];
-//       }
-//     } catch (e) {
-//       print("@getUserFromJson: $e");
-// >>>>>>> dev
+    try {
+      this.id = id;
+      email = json['email'] ?? "";
+      paymentId = json['paymentId'];
+      name = json['name'] ?? "User";
+      createdAt = json['createdAt'].toDate() ?? DateTime(2000);
+      uplift = json['uplift'].toDate() ?? DateTime(2000);
+      onlineTime = json['onlineTime'].toDate() ?? DateTime(2000);
+      phoneNumber = json['phoneNumber'];
+      isEmailVerified = json['isEmailVerified'] ?? false;
+      isPhoneNoVerified = json['isPhoneNoVerified'] ?? false;
+      isLiked = json['isLiked'] ?? false;
+      isUplifted = json['isUplifted'] ?? false;
+      isDesLiked = json['isDesLiked'] ?? false;
+      isPremiumUser = json['isPremiumUser'] ?? false;
+      isNotificationsOn = json['isNotificationsOn'] ?? false;
+      isPrivatePhoto = json['isPrivatePhoto'] ?? false;
+      isFirstTimeChat = json['isFirstTimeChat'] ?? false;
+      isGoogle = json['isGoogle'] ?? false;
+      isFacebook = json['isFacebook'] ?? false;
+      isApple = json["isApple"] ?? false;
+      this.fcmToken = json['fcmToken'] ?? '';
+      // isMuteNotification = json['isMuteNotification'] ?? false;
+      nickName = json['nickName'] ?? "User";
+      dob = json['dob'];
+      age = json['age'] ?? 0;
+      likesCount = json['likesCount'] ?? 10;
+      spanks = json['spanks'] ?? 0;
+      latitude = json['latitude'].toDouble() ?? 2.0;
+      longitude = json['longitude'].toDouble() ?? 3.0;
+      // lookingFor = json['lookingFor'];
+      if (json["lookingFor"] != null) {
+        lookingFor = [];
+        json["lookingFor"].forEach((element) {
+          lookingFor!.add(element);
+        });
+      } else {
+        lookingFor = [];
+      }
+      if (json["muteIds"] != null) {
+        muteIds = [];
+        json["muteIds"].forEach((element) {
+          muteIds!.add(element);
+        });
+      } else {
+        muteIds = [];
+      }
+      identity = json['identity'];
+      // if (json["identity"] != null) {
+      //   identity = [];
+      //   json["identity"].forEach((element) {
+      //     identity!.add(element);
+      //   });
+      // } else {
+      //   identity = [];
+      // }
+      if (json["desire"] != null) {
+        desire = [];
+        json["desire"].forEach((element) {
+          desire!.add(element);
+        });
+      } else {
+        desire = [];
+      }
+      if (json["images"] != null) {
+        images = [];
+        json["images"].forEach((element) {
+          images!.add(element);
+        });
+      } else {
+        images = [];
+      }
+      if (json["likedUsers"] != null) {
+        likedUsers = [];
+        json["likedUsers"].forEach((element) {
+          likedUsers!.add(element);
+        });
+      } else {
+        likedUsers = [];
+      }
+      if (json["disLikedUsers"] != null) {
+        disLikedUsers = [];
+        json["disLikedUsers"].forEach((element) {
+          disLikedUsers!.add(element);
+        });
+      } else {
+        disLikedUsers = [];
+      }
+    } catch (e) {
+      print("getAllUsers.FromJson: ${e}");
     }
   }
 }

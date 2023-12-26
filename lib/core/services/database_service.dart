@@ -279,14 +279,10 @@ class DatabaseService {
           // .where("id", whereNotIn: appUser.disLikedUsers)
           .get();
 
-      print('getting all AppUsers 2');
       for (var user in snapshot.docs) {
-        print('id===>  ${user.id}');
-        list.add(
-          AppUser.fromJson(user.data(), user.id),
-        );
-        // print('users --> ${user.data().keys}');
+        list.add(AppUser.fromJson(user.data(), user.id));
       }
+      print("AppUsersList: ${list.length}");
       return list;
     } catch (e, s) {
       debugPrint('Exception @DatabaseService/getAppUsers==>$e');
@@ -703,7 +699,12 @@ class DatabaseService {
   checkUpliftUser(AppUser user) async {
     try {
       final snapshot = await _db.collection('Uplift').doc(user.id).get();
-      return UPlift.fromJson(snapshot.data(), snapshot.id);
+      print("exist: ${snapshot.exists}");
+      if (snapshot.exists) {
+        return UPlift.fromJson(snapshot.data(), snapshot.id);
+      } else {
+        return UPlift();
+      }
     } catch (e, s) {
       debugPrint('Exception @DatabaseService/checkUplift $e');
       debugPrint(s.toString());
