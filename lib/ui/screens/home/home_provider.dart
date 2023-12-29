@@ -103,6 +103,7 @@ class HomeProvider extends BaseViewModel {
   }
 
   getAllAppUsers() async {
+    try {
 // <<<<<<< text_changes
 try{
     print("all users: ${currentUser.appUsers}");
@@ -153,28 +154,29 @@ try{
 //       for (var user in currentUser.appUsers) {
 //         print('user ${user.id} onLineTime  ===> ${user.onlineTime.toString()}');
 // >>>>>>> dev
-        // appUsers.add(user);
-        if (currentUser.appUser.likedUsers == null ||
-            currentUser.appUser.disLikedUsers == null) {
           // appUsers.add(user);
-        } else {
-          if (!currentUser.appUser.likedUsers!.contains(user.id) &&
-              !currentUser.appUser.disLikedUsers!.contains(user.id) &&
-              user.id != currentUser.appUser.id) {
-            user.offlineTime =
-                formatRelativeTime(user.onlineTime ?? DateTime.now()) ??
-                    "1 minute ago";
-            user.distance = await location.distance(
-                user.latitude,
-                user.longitude,
-                currentUser.appUser.latitude,
-                currentUser.appUser.longitude);
-            if (user.isUplifted == true) {
-              log('id==> ${user.id} and uplifted==> ${user.isUplifted}');
-              appUsers.insert(0, user);
-            } else {
-              log('id==> ${user.id} and uplifted==> ${user.isUplifted}');
-              appUsers.add(user);
+          if (currentUser.appUser.likedUsers == null ||
+              currentUser.appUser.disLikedUsers == null) {
+            // appUsers.add(user);
+          } else {
+            if (!currentUser.appUser.likedUsers!.contains(user.id) &&
+                !currentUser.appUser.disLikedUsers!.contains(user.id) &&
+                user.id != currentUser.appUser.id) {
+              user.offlineTime =
+                  formatRelativeTime(user.onlineTime ?? DateTime.now()) ??
+                      "1 minute ago";
+              user.distance = await location.distance(
+                  user.latitude,
+                  user.longitude,
+                  currentUser.appUser.latitude,
+                  currentUser.appUser.longitude);
+              if (user.isUplifted == true) {
+                log('id==> ${user.id} and uplifted==> ${user.isUplifted}');
+                appUsers.insert(0, user);
+              } else {
+                log('id==> ${user.id} and uplifted==> ${user.isUplifted}');
+                appUsers.add(user);
+              }
             }
           }
         }
@@ -185,7 +187,7 @@ try{
       currentUser.appUsers = appUsers;
       print('number of filtered users ${appUsers.length}');
     } catch (e) {
-      print("@errorGetAllAppUsers: $e");
+      print("@errorGetAllAppUsersHome: $e");
     }
   }
 
