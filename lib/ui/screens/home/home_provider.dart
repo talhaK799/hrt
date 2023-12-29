@@ -18,8 +18,6 @@ import 'package:hart/ui/custom_widgets/dialogs/custom_snackbar.dart';
 import 'package:hart/ui/screens/collect_info_screens/fantasies_screen/fantasies_screen.dart';
 import 'package:hart/ui/screens/connection_screen/connect_popup/connect_popup_screen.dart';
 import 'package:hart/ui/screens/profile_screen/kings_hart/king_hart_screen.dart';
-import 'package:hart/ui/screens/profile_screen/maestro_screen/maestro_screen.dart';
-import 'package:pinput/pinput.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 import '../../custom_widgets/dialogs/auth_dialog.dart';
@@ -46,7 +44,7 @@ class HomeProvider extends BaseViewModel {
   List<AppUser> appUsers = [];
   List<AppUser> filteredUsers = [];
   List<Placemark> placemarks = [];
-  String lookingFor = 'Woman';
+  List<String> lookingFor = ['Woman'];
   List<String> desire = ['Singles'];
   String country = '';
   Matches match = Matches();
@@ -106,6 +104,7 @@ class HomeProvider extends BaseViewModel {
 
   getAllAppUsers() async {
 // <<<<<<< text_changes
+try{
     print("all users: ${currentUser.appUsers}");
     appUsers = currentUser.appUsers;
     notifyListeners();
@@ -179,7 +178,7 @@ class HomeProvider extends BaseViewModel {
             }
           }
         }
-      }
+      }}
 
       print("AllUsers: ${appUsers.length}");
 
@@ -507,7 +506,7 @@ class HomeProvider extends BaseViewModel {
     print(
         "filter===> ${filter.minAge} ${filter.lookingFor} ${filter.desire}  ");
 // <<<<<<< HEAD
-    filter = Filtering(desire: currentUser.appUser.desire);
+    filter = Filtering(desire: currentUser.appUser.desire,lookingFor: currentUser.appUser.lookingFor,);
 // =======
 //     filter = Filtering(desire: [filter.desire!.first]);
 // >>>>>>> 5c30253d5dc233ad1f3b440b9bab2ed0e2f163f8

@@ -91,13 +91,16 @@ class CustomProfileTile extends StatelessWidget {
                               for (var i = 0; i < title.length; i++)
                                 // title.length < 3
                                 // ?
-                                Expanded(
+                                Flexible(
                                   child: Text(
-                                    '${title[i].toString()},',
+                                    '${title[i].toString()}, ',
                                     style: buttonTextStyle.copyWith(
                                       color: textColor ?? blackColor,
                                     ),
                                     overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.left,
+                                    // softWrap: true,
+                                    // maxLines: 2,
                                   ),
                                 )
                               // :
