@@ -665,11 +665,13 @@ class _HomeScreenState extends State<HomeScreen> {
                               behavior: HitTestBehavior.translucent,
                               onTap: () async {
                                 await model.selectGender();
+                                print(
+                                    "looking for ===> ${model.lookingFor.first}");
                               },
                               child: Row(
                                 children: [
                                   Text(
-                                    model.lookingFor,
+                                    model.lookingFor.first,
                                     style: buttonTextStyle.copyWith(
                                       color: greyColor2,
                                     ),

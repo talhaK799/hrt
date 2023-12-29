@@ -2,7 +2,7 @@ class Filtering {
   int? maxAge;
   int? minAge;
   List<String>? desire;
-  String? lookingFor;
+  List<String>? lookingFor;
   // double? maxHeight;
   // double? minHeight;
   // List<String>? countries;
@@ -12,7 +12,7 @@ class Filtering {
     this.maxAge = 60,
     // this.maxHeight = 200,
     this.desire,
-    this.lookingFor = '',
+    this.lookingFor,
     this.minAge = 18,
     // this.minHeight = 1,
   });

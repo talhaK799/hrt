@@ -199,7 +199,7 @@ class ProfileScreen extends StatelessWidget {
                       Navigator.push(
                           context, PageFromRight(page: MaestroScreen()));
                     },
-                    title: 'Become a MAESTRO',
+                    title: 'Become a Maestro',
                     color: pinkColor,
                     textColor: primaryColor,
                     iconColor: primaryColor,

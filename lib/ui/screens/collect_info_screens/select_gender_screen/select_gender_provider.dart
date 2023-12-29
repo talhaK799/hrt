@@ -26,7 +26,7 @@ class SelectGenderProvider extends BaseViewModel {
 
   List<InfoItem> items = [];
   List<String> selections = [];
-  String? selectedItem;
+  // List<String> selectedItem=[];
 
   getItems() async {
     // setState(ViewState.busy);
@@ -39,18 +39,23 @@ class SelectGenderProvider extends BaseViewModel {
   /// single selection
 
   select(index) {
-    if (filter) {
-      for (var item in items) {
-        if (item == items[index]) {
-          item.isSelected = true;
-          selectedItem = item.title;
-        } else {
-          item.isSelected = false;
-        }
+    // if (filter) {
+    //   for (var item in items) {
+    //     if (item == items[index]) {
+    //       item.isSelected = true;
+    //       selectedItem = item.title;
+    //     } else {
+    //       item.isSelected = false;
+    //     }
+    //   }
+    // } else {
+    items[index].isSelected = !items[index].isSelected!;
+    if (items[index].isSelected == true) {
+      if (!selections.contains(items[index].title)) {
+        selections.add(items[index].title!);
       }
-    } else {
-      items[index].isSelected = !items[index].isSelected!;
     }
+    // }
 
     notifyListeners();
   }
@@ -75,9 +80,9 @@ class SelectGenderProvider extends BaseViewModel {
       Get.back(result: selections);
     } else {
       if (selections.isNotEmpty) {
-      Get.to(
-        FantasiesScreen(),
-      );
+        Get.to(
+          FantasiesScreen(),
+        );
       } else {
         customSnackBar('alert!', 'Selection Required');
       }
