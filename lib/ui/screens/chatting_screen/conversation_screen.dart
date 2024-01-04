@@ -10,6 +10,7 @@ import 'package:hart/core/models/radio_button.dart';
 import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/ui/custom_widgets/custom_button.dart';
 import 'package:hart/ui/custom_widgets/custom_loaders/red_hart.dart';
+import 'package:hart/ui/custom_widgets/right_navigation.dart';
 import 'package:hart/ui/screens/chatting_screen/conversation_provider.dart';
 import 'package:hart/ui/screens/chatting_screen/conversation_screen/chatting/chatting_screen.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -42,7 +43,13 @@ class ConversationScreen extends StatelessWidget {
                         GestureDetector(
                           behavior: HitTestBehavior.opaque,
                           onTap: () {
-                            Get.to(CreateGroupScreen());
+                            // Get.to(CreateGroupScreen());
+                            Navigator.push(
+                              context,
+                              PageFromRight(
+                                page: CreateGroupScreen(),
+                              ),
+                            );
                             // Get.to(
                             // ChatInfoScreen(),
                             // );
@@ -94,16 +101,30 @@ class ConversationScreen extends StatelessWidget {
                                               onTap: () async {
                                                 // print(
                                                 //     'chat user Id ${model.currentUser.matchedUsers[index].id!}');
-                                                model.firstTime = await Get.to(
-                                                  ChattingScreen(
-                                                    toUserId: model
-                                                        .currentUser
-                                                        .matchedUsers[index]
-                                                        .id!,
-                                                    conversation:
-                                                        Conversation(),
+                                                model.firstTime =
+                                                    await Navigator.push(
+                                                  context,
+                                                  PageFromRight(
+                                                    page: ChattingScreen(
+                                                      toUserId: model
+                                                          .currentUser
+                                                          .matchedUsers[index]
+                                                          .id!,
+                                                      conversation:
+                                                          Conversation(),
+                                                    ),
                                                   ),
                                                 );
+                                                // Get.to(
+                                                //   ChattingScreen(
+                                                //     toUserId: model
+                                                //         .currentUser
+                                                //         .matchedUsers[index]
+                                                //         .id!,
+                                                //     conversation:
+                                                //         Conversation(),
+                                                //   ),
+                                                // );
 
                                                 if (model.firstTime == false) {
                                                   model.currentUser.matchedUsers
@@ -171,18 +192,34 @@ class ConversationScreen extends StatelessWidget {
                                             return _normalChat(
                                               model,
                                               index,
-                                              () => Get.to(
-                                                ChattingScreen(
-                                                  toUserId: model
-                                                          .currentUser
-                                                          .conversations[index]
-                                                          .toUserId ??
-                                                      '',
-                                                  conversation: model
-                                                      .currentUser
-                                                      .conversations[index],
+                                              () => Navigator.push(
+                                                context,
+                                                PageFromRight(
+                                                  page: ChattingScreen(
+                                                    toUserId: model
+                                                            .currentUser
+                                                            .conversations[
+                                                                index]
+                                                            .toUserId ??
+                                                        '',
+                                                    conversation: model
+                                                        .currentUser
+                                                        .conversations[index],
+                                                  ),
                                                 ),
                                               ),
+                                              // Get.to(
+                                              //   ChattingScreen(
+                                              //     toUserId: model
+                                              //             .currentUser
+                                              //             .conversations[index]
+                                              //             .toUserId ??
+                                              //         '',
+                                              //     conversation: model
+                                              //         .currentUser
+                                              //         .conversations[index],
+                                              //   ),
+                                              // ),
                                             );
                                           },
                                           separatorBuilder: (context, index) =>

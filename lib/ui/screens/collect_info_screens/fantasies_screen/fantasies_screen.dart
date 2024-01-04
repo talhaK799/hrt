@@ -130,9 +130,10 @@ class FantasiesScreen extends StatelessWidget {
                         onTap: () {
                           FocusManager.instance.primaryFocus?.unfocus();
                           if (isFilter) {
-                            Get.back(result: model.selectedItems);
+                            // Get.back(result: model.selectedItems);
+                            Navigator.pop(context, model.selectedItems);
                           } else {
-                            model.addSelectedItems();
+                            model.addSelectedItems(context);
                           }
                         },
                       ),

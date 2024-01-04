@@ -134,7 +134,7 @@ class PermissionScreen extends StatelessWidget {
                 CustomButton(
                   title: 'CONTINUE',
                   onTap: () {
-                    model.getPermissions();
+                    model.getPermissions(context);
                   },
                 ),
                 SizedBox(

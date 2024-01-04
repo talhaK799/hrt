@@ -1,10 +1,12 @@
 import 'package:email_otp/email_otp.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/services/auth_service.dart';
 import 'package:hart/core/services/database_service.dart';
 import 'package:hart/core/view_models/base_view_model.dart';
 import 'package:hart/locator.dart';
+import 'package:hart/ui/custom_widgets/right_navigation.dart';
 import 'package:hart/ui/screens/collect_info_screens/dob_screen/dob_screen.dart';
 import 'package:hart/ui/screens/collect_info_screens/verifications/phone_no_screen/add_phone_no.dart';
 
@@ -20,7 +22,7 @@ class EmailOtpProvider extends BaseViewModel {
     emailOTP = otp;
     notifyListeners();
   }
-  verifyOtp() async {
+  verifyOtp(context) async {
     setState(ViewState.busy);
     bool isVerify = await emailOTP!.verifyOTP(otp: emailCode);
     // setState(ViewState.idle);
@@ -32,13 +34,25 @@ class EmailOtpProvider extends BaseViewModel {
       // await _databaseService.updateUserProfile(authService.appUser);
       setState(ViewState.idle);
     if (phone == false) {
-      Get.to(
-        DOBScreen(),
-      );
+      // Get.to(
+      //   DOBScreen(),
+      // );
+      Navigator.push(
+                  context,
+                  PageFromRight(
+                    page: DOBScreen(),
+                  ),
+                );
     } else {
-      Get.to(
-        AddPhoneNumberScreen(),
-      );
+      // Get.to(
+      //   AddPhoneNumberScreen(),
+      // );
+      Navigator.push(
+                  context,
+                  PageFromRight(
+                    page: AddPhoneNumberScreen(),
+                  ),
+                );
     }
     } else {
       Get.snackbar("Error!", "Invalid OTP");

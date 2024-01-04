@@ -12,6 +12,7 @@ import 'package:hart/core/view_models/base_view_model.dart';
 import 'package:hart/locator.dart';
 import 'package:hart/ui/screens/collect_info_screens/dob_screen/dob_screen.dart';
 
+import '../../../../custom_widgets/right_navigation.dart';
 import 'phone_code_confirmation_screen.dart';
 
 class PhoneNoProvider extends BaseViewModel {
@@ -57,7 +58,7 @@ class PhoneNoProvider extends BaseViewModel {
     notifyListeners();
   }
 
-  sentOTP() async {
+  sentOTP(context) async {
     if (appUser.phoneNumber != null || countryCode.isNotEmpty) {
       // isTimeExpired = false;
       authService.appUser.phoneNumber = countryCode + appUser.phoneNumber!;
@@ -68,13 +69,19 @@ class PhoneNoProvider extends BaseViewModel {
           authService.appUser.phoneNumber!);
 
       setState(ViewState.idle);
-      Get.to(() => PhoneCodeConfirmationScreen());
+      // Get.to(() => PhoneCodeConfirmationScreen());
+      Navigator.push(
+        context,
+        PageFromRight(
+          page: PhoneCodeConfirmationScreen(),
+        ),
+      );
       // startTimer();
       notifyListeners();
     }
   }
 
-  verifyPhoneOtp() async {
+  verifyPhoneOtp(context) async {
     setState(ViewState.busy);
     var msg = await verificationService.verifyPhoneNumber(
         authService.appUser.phoneNumber, phoneOtp);
@@ -90,9 +97,15 @@ class PhoneNoProvider extends BaseViewModel {
       //     await _databaseService.updateUserProfile(authService.appUser);
       setState(ViewState.idle);
       // if (isUpdatedProfile) {
-        Get.to(
-          DOBScreen(),
-        );
+      // Get.to(
+      //   DOBScreen(),
+      // );
+      Navigator.push(
+        context,
+        PageFromRight(
+          page: DOBScreen(),
+        ),
+      );
       // }
     }
   }

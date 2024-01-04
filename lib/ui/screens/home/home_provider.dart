@@ -15,6 +15,7 @@ import 'package:hart/core/services/location_service.dart';
 import 'package:hart/core/view_models/base_view_model.dart';
 import 'package:hart/locator.dart';
 import 'package:hart/ui/custom_widgets/dialogs/custom_snackbar.dart';
+import 'package:hart/ui/custom_widgets/right_navigation.dart';
 import 'package:hart/ui/screens/collect_info_screens/fantasies_screen/fantasies_screen.dart';
 import 'package:hart/ui/screens/connection_screen/connect_popup/connect_popup_screen.dart';
 import 'package:hart/ui/screens/profile_screen/kings_hart/king_hart_screen.dart';
@@ -105,35 +106,35 @@ class HomeProvider extends BaseViewModel {
   getAllAppUsers() async {
     try {
 // <<<<<<< text_changes
-try{
-    print("all users: ${currentUser.appUsers}");
-    appUsers = currentUser.appUsers;
-    notifyListeners();
-    if (currentUser.appUsers.isEmpty && currentUser.isHomeloaded == false) {
-      // setState(ViewState.busy);
-      await Future.delayed(Duration(seconds: 2));
-      currentUser.isHomeloaded = true;
-    }
-    log('getting all AppUsers');
-    // int dataLength = _localStorage.getdataLength;
-    // print('data length===> $dataLength');
-    // appUsers = [];
-    currentUser.appUser = await db.getAppUser(currentUser.appUser.id);
-    currentUser.appUsers = await db.getAllUsers(currentUser.appUser);
-    // setState(ViewState.idle);
-    // if (users.length > dataLength) {
-    //   await Future.delayed(Duration(seconds: 5));
+    try {
+      print("all users: ${currentUser.appUsers}");
+      appUsers = currentUser.appUsers;
+      notifyListeners();
+      if (currentUser.appUsers.isEmpty && currentUser.isHomeloaded == false) {
+        // setState(ViewState.busy);
+        await Future.delayed(Duration(seconds: 2));
+        currentUser.isHomeloaded = true;
+      }
+      log('getting all AppUsers');
+      // int dataLength = _localStorage.getdataLength;
+      // print('data length===> $dataLength');
+      // appUsers = [];
+      currentUser.appUser = await db.getAppUser(currentUser.appUser.id);
+      currentUser.appUsers = await db.getAllUsers(currentUser.appUser);
+      // setState(ViewState.idle);
+      // if (users.length > dataLength) {
+      //   await Future.delayed(Duration(seconds: 5));
 
-    //   _localStorage.setdataLength = users.length;
-    //   setState(ViewState.idle);
-    // }
-    log('number of all Appusers ${currentUser.appUsers.length}');
-    await checkUpliftedUser();
-    for (var user in currentUser.appUsers) {
-      print('user ${user.id} onLineTime  ===> ${user.onlineTime.toString()}');
-      // appUsers.add(user);
-      if (currentUser.appUser.likedUsers == null ||
-          currentUser.appUser.disLikedUsers == null) {
+      //   _localStorage.setdataLength = users.length;
+      //   setState(ViewState.idle);
+      // }
+      log('number of all Appusers ${currentUser.appUsers.length}');
+      await checkUpliftedUser();
+      for (var user in currentUser.appUsers) {
+        print('user ${user.id} onLineTime  ===> ${user.onlineTime.toString()}');
+        // appUsers.add(user);
+        if (currentUser.appUser.likedUsers == null ||
+            currentUser.appUser.disLikedUsers == null) {
 // =======
 //     try {
 //       print("all users::: ${currentUser.appUsers.length}");
@@ -180,7 +181,7 @@ try{
             }
           }
         }
-      }}
+      }
 
       print("AllUsers: ${appUsers.length}");
 
@@ -191,7 +192,7 @@ try{
     }
   }
 
-  spank(AppUser user) async {
+  spank(AppUser user, context) async {
     if (currentUser.appUser.spanks != 0) {
       currentUser.appUser.spanks = currentUser.appUser.spanks! - 1;
       notifyListeners();
@@ -216,8 +217,14 @@ try{
       }
       notifyListeners();
     } else {
-      Get.to(
-        KingHartScreen(),
+      // Get.to(
+      //   KingHartScreen(),
+      // );
+      Navigator.push(
+        context,
+        PageFromRight(
+          page: KingHartScreen(),
+        ),
       );
     }
   }
@@ -267,7 +274,7 @@ try{
   ///
   /// Like
   ///
-  like(AppUser user) async {
+  like(AppUser user, context) async {
     // print("User index ==> ${index}");
     // print('liked users ==> ${currentUser.appUser.likedUsers!.length}');
     print('user  id ${currentUser.appUser.id} liked ${user.id}');
@@ -311,8 +318,14 @@ try{
         match.isProgressed = true;
         bool isReqUpdated = await db.updateRequest(match);
         if (isReqUpdated) {
-          Get.to(
-            ConnectPopupScreen(),
+          // Get.to(
+          //   ConnectPopupScreen(),
+          // );
+          Navigator.push(
+            context,
+            PageFromRight(
+              page: ConnectPopupScreen(),
+            ),
           );
         } else {
           print('request faild ==> $isReqUpdated');
@@ -403,23 +416,41 @@ try{
   ///  filter
   ///
 
-  selectGender() async {
-    lookingFor = await Get.to(
-          SelectGenderScreen(
-            isFileter: true,
-          ),
-        ) ??
-        lookingFor;
+  selectGender(context) async {
+    final list = await Navigator.push(
+      context,
+      PageFromRight(
+        page: SelectGenderScreen(
+          isFileter: true,
+        ),
+      ),
+    );
+    lookingFor = list ?? lookingFor;
+    // Get.to(
+    //       SelectGenderScreen(
+    //         isFileter: true,
+    //       ),
+    //     ) ??
+    //     lookingFor;
     notifyListeners();
   }
 
-  selectDesire() async {
-    desire = await Get.to(
-          FantasiesScreen(
-            isFilter: true,
-          ),
-        ) ??
-        desire;
+  selectDesire(context) async {
+    final list = await Navigator.push(
+      context,
+      PageFromRight(
+        page: FantasiesScreen(
+          isFilter: true,
+        ),
+      ),
+    );
+    desire = list ?? desire;
+    // Get.to(
+    //       FantasiesScreen(
+    //         isFilter: true,
+    //       ),
+    //     ) ??
+    //     desire;
     filter.desire = desire;
     print(desire.length);
     notifyListeners();
@@ -508,7 +539,10 @@ try{
     print(
         "filter===> ${filter.minAge} ${filter.lookingFor} ${filter.desire}  ");
 // <<<<<<< HEAD
-    filter = Filtering(desire: currentUser.appUser.desire,lookingFor: currentUser.appUser.lookingFor,);
+    filter = Filtering(
+      desire: currentUser.appUser.desire,
+      lookingFor: currentUser.appUser.lookingFor,
+    );
 // =======
 //     filter = Filtering(desire: [filter.desire!.first]);
 // >>>>>>> 5c30253d5dc233ad1f3b440b9bab2ed0e2f163f8

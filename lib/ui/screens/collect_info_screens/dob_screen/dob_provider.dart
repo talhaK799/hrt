@@ -66,7 +66,8 @@ class DobProvider extends BaseViewModel {
       // if (isProfUpdated) {
       print('updatrion==> $updation');
       if (updation) {
-        Get.back(result: dob);
+        // Get.back(result: dob);
+        Navigator.pop(context, dob);
       } else {
         Navigator.push(context, PageFromRight(page: NickNameScreen()));
       }

@@ -10,6 +10,7 @@ import 'package:hart/ui/custom_widgets/custom_back_button.dart';
 import 'package:hart/ui/custom_widgets/custom_button.dart';
 import 'package:hart/ui/custom_widgets/custom_loader.dart';
 import 'package:hart/ui/custom_widgets/custom_profile_tile.dart';
+import 'package:hart/ui/custom_widgets/right_navigation.dart';
 import 'package:hart/ui/custom_widgets/white_textfield.dart';
 import 'package:hart/ui/screens/collect_info_screens/add_photo/add_photo_screen.dart';
 import 'package:hart/ui/screens/collect_info_screens/dob_screen/dob_screen.dart';
@@ -105,9 +106,17 @@ class EditProfileScreen extends StatelessWidget {
           GestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: () {
-              Get.to(
-                AddPhotoScreen(
-                  isUpdate: true,
+              // Get.to(
+              //   AddPhotoScreen(
+              //     isUpdate: true,
+              //   ),
+              // );
+              Navigator.push(
+                context,
+                PageFromRight(
+                  page: AddPhotoScreen(
+                    isUpdate: true,
+                  ),
                 ),
               );
             },
@@ -135,7 +144,7 @@ class EditProfileScreen extends StatelessWidget {
             textColor: greyColor2,
             iconColor: greyColor2,
             onTap: () {
-              model.changeNickName();
+              model.changeNickName(context);
             },
           ),
 
@@ -151,8 +160,16 @@ class EditProfileScreen extends StatelessWidget {
             iconColor: greyColor2,
             onTap: () {
               // model.pickDate(context);
-              Get.to(
-                DOBScreen(),
+              // Get.to(
+              //   DOBScreen(),
+              // );
+              Navigator.push(
+                context,
+                PageFromRight(
+                  page: DOBScreen(
+                    isUpdate: true,
+                  ),
+                ),
               );
             },
           ),
@@ -165,7 +182,7 @@ class EditProfileScreen extends StatelessWidget {
             textColor: greyColor2,
             iconColor: greyColor2,
             onTap: () {
-              model.changeSexuality();
+              model.changeSexuality(context);
             },
           ),
 
@@ -180,7 +197,7 @@ class EditProfileScreen extends StatelessWidget {
             textColor: greyColor2,
             iconColor: greyColor2,
             onTap: () {
-              model.changeDesires();
+              model.changeDesires(context);
             },
           ),
           // CustomTextFieldWhite(
@@ -209,7 +226,7 @@ class EditProfileScreen extends StatelessWidget {
             textColor: greyColor2,
             iconColor: greyColor2,
             onTap: () {
-              model.changeLookingFor();
+              model.changeLookingFor(context);
             },
           ),
 

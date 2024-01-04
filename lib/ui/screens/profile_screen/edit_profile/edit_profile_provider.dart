@@ -8,6 +8,7 @@ import 'package:hart/core/services/auth_service.dart';
 import 'package:hart/core/services/database_service.dart';
 import 'package:hart/core/view_models/base_view_model.dart';
 import 'package:hart/locator.dart';
+import 'package:hart/ui/custom_widgets/right_navigation.dart';
 import 'package:hart/ui/screens/collect_info_screens/dob_screen/dob_screen.dart';
 import 'package:hart/ui/screens/collect_info_screens/fantasies_screen/fantasies_screen.dart';
 import 'package:hart/ui/screens/collect_info_screens/idetity_screen/identity_screen.dart';
@@ -81,53 +82,100 @@ class EditProfileProvider extends BaseViewModel {
     notifyListeners();
   }
 
-  changeNickName() async {
-    currentUser.appUser.nickName = await Get.to(
-          NickNameScreen(
-            isUpdate: true,
-          ),
-        ) ??
-        currentUser.appUser.nickName;
+  changeNickName(context) async {
+    final update = await Navigator.push(
+      context,
+      PageFromRight(
+        page: NickNameScreen(
+          isUpdate: true,
+        ),
+      ),
+    );
+    currentUser.appUser.nickName = update ?? currentUser.appUser.nickName;
+    // await
+    // Get.to(
+    //       NickNameScreen(
+    //         isUpdate: true,
+    //       ),
+    //     ) ??
+    //     currentUser.appUser.nickName;
     notifyListeners();
   }
 
-  changeDob() async {
-    currentUser.appUser.dob = await Get.to(
-          DOBScreen(
-            isUpdate: true,
-          ),
-        ) ??
-        currentUser.appUser.dob;
+  changeDob(context) async {
+    final update = await Navigator.push(
+      context,
+      PageFromRight(
+        page: DOBScreen(
+          isUpdate: true,
+        ),
+      ),
+    );
+    currentUser.appUser.dob = update ?? currentUser.appUser.dob;
+    // currentUser.appUser.dob = await Get.to(
+    //       DOBScreen(
+    //         isUpdate: true,
+    //       ),
+    //     ) ??
+    //     currentUser.appUser.dob;
     notifyListeners();
   }
 
-  changeSexuality() async {
-    currentUser.appUser.identity = await Get.to(
-          IdentityScreen(
-            isUpdate: true,
-          ),
-        ) ??
-        currentUser.appUser.identity;
+  changeSexuality(context) async {
+    final update = await Navigator.push(
+      context,
+      PageFromRight(
+        page: IdentityScreen(
+          isUpdate: true,
+        ),
+      ),
+    );
+    currentUser.appUser.identity = update ?? currentUser.appUser.identity;
+    // currentUser.appUser.identity = await Get.to(
+    //       IdentityScreen(
+    //         isUpdate: true,
+    //       ),
+    //     ) ??
+    //     currentUser.appUser.identity;
     notifyListeners();
   }
 
-  changeDesires() async {
-    currentUser.appUser.desire = await Get.to(
-          FantasiesScreen(
-            isUpdate: true,
-          ),
-        ) ??
-        currentUser.appUser.desire;
+  changeDesires(context) async {
+    final update = await Navigator.push(
+      context,
+      PageFromRight(
+        page: FantasiesScreen(
+          isUpdate: true,
+        ),
+      ),
+    );
+    print('updated desire list=====> ${update.first}');
+    currentUser.appUser.desire = update ?? currentUser.appUser.desire;
+    // currentUser.appUser.desire = await Get.to(
+    //       FantasiesScreen(
+    //         isUpdate: true,
+    //       ),
+    //     ) ??
+    //     currentUser.appUser.desire;
     notifyListeners();
   }
 
-  changeLookingFor() async {
-    currentUser.appUser.lookingFor = await Get.to(
-          SelectGenderScreen(
-            isUpdate: true,
-          ),
-        ) ??
-        currentUser.appUser.lookingFor;
+  changeLookingFor(context) async {
+    final update = await Navigator.push(
+      context,
+      PageFromRight(
+        page: SelectGenderScreen(
+          isUpdate: true,
+        ),
+      ),
+    );
+    currentUser.appUser.lookingFor = update ?? currentUser.appUser.lookingFor;
+    // currentUser.appUser.lookingFor = await Get.to(
+    //       SelectGenderScreen(
+    //         isUpdate: true,
+    //       ),
+    //     ) ??
+    //     currentUser.appUser.lookingFor;
     notifyListeners();
   }
 }

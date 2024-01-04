@@ -4,6 +4,7 @@ import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/constants/strings.dart';
 import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/ui/custom_widgets/custom_button.dart';
+import 'package:hart/ui/custom_widgets/right_navigation.dart';
 import 'package:hart/ui/screens/collect_info_screens/verifications/phone_no_screen/add_phone_no.dart';
 
 import '../../../core/constants/style.dart';
@@ -78,18 +79,24 @@ class BuyPlanScreen extends StatelessWidget {
           ///
           /// Close button
           ///
-          closeButtton(),
+          closeButtton(context),
         ],
       ),
     );
   }
 
-  GestureDetector closeButtton() {
+  GestureDetector closeButtton(context) {
     return GestureDetector(
       onTap: () {
-        Get.to(
-          AddPhoneNumberScreen(),
-        );
+        // Get.to(
+        //   AddPhoneNumberScreen(),
+        // );
+        Navigator.push(
+                  context,
+                  PageFromRight(
+                    page: AddPhoneNumberScreen(),
+                  ),
+                );
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(

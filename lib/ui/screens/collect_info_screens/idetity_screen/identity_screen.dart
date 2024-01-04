@@ -97,7 +97,7 @@ class IdentityScreen extends StatelessWidget {
                         title: 'CONTINUE',
                         onTap: () {
                           FocusManager.instance.primaryFocus?.unfocus();
-                          model.addSelectedItems();
+                          model.addSelectedItems(context);
                         },
                       ),
                     ),

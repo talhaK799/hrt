@@ -1,25 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/constants/strings.dart';
-import 'package:hart/core/enums/view_state.dart';
-import 'package:hart/core/others/screen_utils.dart';
-import 'package:hart/ui/custom_widgets/custom_loader.dart';
 import 'package:hart/ui/custom_widgets/custom_profile_tile.dart';
 import 'package:hart/ui/custom_widgets/right_navigation.dart';
 import 'package:hart/ui/screens/profile_screen/About/about_screen.dart';
-import 'package:hart/ui/screens/profile_screen/Help/help_screen.dart';
 import 'package:hart/ui/screens/profile_screen/Notifications/notification_screen.dart';
 import 'package:hart/ui/screens/profile_screen/app_setting/app_setting_screen.dart';
 import 'package:hart/ui/screens/profile_screen/edit_profile/edit_profile_screen.dart';
 import 'package:hart/ui/screens/profile_screen/kings_hart/king_hart_screen.dart';
 import 'package:hart/ui/screens/profile_screen/maestro_screen/maestro_screen.dart';
-import 'package:hart/ui/screens/profile_screen/our_community/community_screen.dart';
 import 'package:hart/ui/screens/profile_screen/pair_profile/pair_profile_screen.dart';
 import 'package:hart/ui/screens/profile_screen/premium_setting/premium_screen.dart';
 import 'package:hart/ui/screens/profile_screen/profile_provider.dart';
 import 'package:hart/ui/screens/profile_screen/uplift_screen/uplisft_screen.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/constants/style.dart';
@@ -45,63 +38,30 @@ class ProfileScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Container(
-                        width: 120,
-                        height: 120,
-                        decoration: BoxDecoration(
-                          color: greyColor,
-                          image: model.currentUser.images == null
+                  Container(
+                    width: 120,
+                    height: 120,
+                    decoration: BoxDecoration(
+                      color: greyColor,
+                      image: model.currentUser.images == null
+                          ? DecorationImage(
+                              image: AssetImage(
+                                '$dynamicAsset/image.png',
+                              ),
+                              fit: BoxFit.cover)
+                          : model.currentUser.images!.isNotEmpty
                               ? DecorationImage(
+                                  image: NetworkImage(
+                                    model.currentUser.images!.first,
+                                  ),
+                                  fit: BoxFit.cover)
+                              : DecorationImage(
                                   image: AssetImage(
                                     '$dynamicAsset/image.png',
                                   ),
-                                  fit: BoxFit.cover)
-                              : model.currentUser.images!.isNotEmpty
-                                  ? DecorationImage(
-                                      image: NetworkImage(
-                                        model.currentUser.images!.first,
-                                      ),
-                                      fit: BoxFit.cover)
-                                  : DecorationImage(
-                                      image: AssetImage(
-                                        '$dynamicAsset/image.png',
-                                      ),
-                                      fit: BoxFit.cover),
-                          // borderRadius: BorderRadius.circular(12.r),
-                        ),
-                      ),
-                      Container(
-                        width: 100,
-                        height: 100,
-                        decoration: BoxDecoration(
-                          color: greyColor,
-                          image: model.currentUser.images == null
-                              ? DecorationImage(
-                                  image: AssetImage(
-                                    '$dynamicAsset/image.png',
-                                  ),
-                                  fit: BoxFit.cover)
-                              : model.currentUser.images!.isNotEmpty
-                                  ? DecorationImage(
-                                      image: NetworkImage(
-                                        // model.currentUser.images!.length > 0
-                                        //     ? model.currentUser.images![0]
-                                        //     :
-                                        model.currentUser.images![0],
-                                      ),
-                                      fit: BoxFit.cover)
-                                  : DecorationImage(
-                                      image: AssetImage(
-                                        '$dynamicAsset/image.png',
-                                      ),
-                                      fit: BoxFit.cover),
-                          // borderRadius: BorderRadius.circular(12.r),
-                        ),
-                      ),
-                    ],
+                                  fit: BoxFit.cover),
+                      // borderRadius: BorderRadius.circular(12.r),
+                    ),
                   ),
                   sizeBox20,
                   Row(

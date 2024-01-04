@@ -215,7 +215,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       model.isLiked = false;
                       model.isDisLiked = false;
                     });
-                    model.like(model.currentUser.appUsers[model.index]);
+                    model.like(model.currentUser.appUsers[model.index],context);
                   },
                   child: Container(
                     padding: const EdgeInsets.all(20),
@@ -360,7 +360,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     GestureDetector(
                       behavior: HitTestBehavior.opaque,
                       onTap: () {
-                        model.spank(user);
+                        model.spank(user,context);
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(
@@ -664,7 +664,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             GestureDetector(
                               behavior: HitTestBehavior.translucent,
                               onTap: () async {
-                                await model.selectGender();
+                                await model.selectGender(context);
                                 print(
                                     "looking for ===> ${model.lookingFor.first}");
                               },
@@ -766,7 +766,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: GestureDetector(
                                 behavior: HitTestBehavior.translucent,
                                 onTap: () async {
-                                  await model.selectDesire();
+                                  await model.selectDesire(context);
                                 },
                                 child: Container(
                                   height: 50.h,
