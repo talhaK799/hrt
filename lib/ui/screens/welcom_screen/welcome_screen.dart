@@ -5,6 +5,7 @@ import 'package:hart/core/constants/strings.dart';
 import 'package:hart/core/constants/style.dart';
 import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/ui/custom_widgets/custom_button.dart';
+import 'package:hart/ui/custom_widgets/right_navigation.dart';
 import 'package:hart/ui/screens/base_screen.dart';
 import 'package:hart/ui/screens/buy_plan/buy_plan_screen.dart';
 
@@ -61,8 +62,14 @@ class WelcomeScreen extends StatelessWidget {
             CustomButton(
               title: 'CONFIRM',
               onTap: () {
-                Get.to(
-                  BuyPlanScreen(),
+                // Get.to(
+                //   BuyPlanScreen(),
+                // );
+                Navigator.push(
+                  context,
+                  PageFromRight(
+                    page: BuyPlanScreen(),
+                  ),
                 );
                 // if (model.formkey.currentState!.validate()) {
                 //   // model.signUp();

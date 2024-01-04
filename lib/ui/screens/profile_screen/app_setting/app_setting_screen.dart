@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hart/core/constants/colors.dart';
 import 'package:hart/ui/custom_widgets/custom_app_bar.dart';
+import 'package:hart/ui/custom_widgets/right_navigation.dart';
 import 'package:hart/ui/screens/auth_screens/auth_screens.dart';
 import 'package:hart/ui/screens/profile_screen/Notifications/notification_screen.dart';
 import 'package:hart/ui/screens/profile_screen/app_setting/app_setting_provider.dart';
@@ -128,9 +129,15 @@ class AppSettingsScreen extends StatelessWidget {
                   sizeBox20,
                   GestureDetector(
                     onTap: () {
-                      Get.to(
-                        NotificationScreen(),
-                      );
+                      // Get.to(
+                      //   NotificationScreen(),
+                      // );
+                      Navigator.push(
+                                              context,
+                                              PageFromRight(
+                                                page: NotificationScreen(),
+                                              ),
+                                            );
                     },
                     child: Text(
                       'Notifications',

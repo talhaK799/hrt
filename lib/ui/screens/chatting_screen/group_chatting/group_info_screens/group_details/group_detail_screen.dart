@@ -8,6 +8,7 @@ import 'package:hart/core/models/conversation.dart';
 import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/ui/custom_widgets/custom_app_bar.dart';
 import 'package:hart/ui/custom_widgets/custom_loader.dart';
+import 'package:hart/ui/custom_widgets/right_navigation.dart';
 import 'package:hart/ui/screens/chatting_screen/group_chatting/group_info_screens/add_people/add_people_screen.dart';
 import 'package:hart/ui/screens/chatting_screen/group_chatting/group_info_screens/group_details/group_detail_provider.dart';
 import 'package:hart/ui/screens/chatting_screen/user_details/user_detail_screen.dart';
@@ -41,11 +42,20 @@ class GroupDetailScreen extends StatelessWidget {
                     sizeBox30,
                     GestureDetector(
                       onTap: () {
-                        Get.to(
-                          AddPeopleScreen(
+                        // Get.to(
+                        //   AddPeopleScreen(
+                        //     group: group,
+                        //   ),
+                        // );
+
+                        Navigator.push(
+                  context,
+                  PageFromRight(
+                    page: AddPeopleScreen(
                             group: group,
                           ),
-                        );
+                  ),
+                );
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -113,9 +123,15 @@ class GroupDetailScreen extends StatelessWidget {
                             _removeUser(context, model, index);
                           },
                           onTap: () {
-                            Get.to(
-                              UserDetailScreen(user: model.groupMembers[index]),
-                            );
+                            // Get.to(
+                            //   UserDetailScreen(user: model.groupMembers[index]),
+                            // );
+                            Navigator.push(
+                  context,
+                  PageFromRight(
+                    page: UserDetailScreen(user: model.groupMembers[index]),
+                  ),
+                );
                           },
                           leading: model.groupMembers[index].images!.isEmpty
                               ? CircleAvatar(

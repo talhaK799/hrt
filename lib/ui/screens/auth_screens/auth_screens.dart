@@ -13,6 +13,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/constants/colors.dart';
+import '../../custom_widgets/right_navigation.dart';
 
 class AuthScreen extends StatelessWidget {
   @override
@@ -114,9 +115,15 @@ class AuthScreen extends StatelessWidget {
                       CustomButton(
                           title: 'Sign Up With Telephone Phone number',
                           onTap: () {
-                            Get.to(
-                              PhoneLoginScreen(),
-                            );
+                            // Get.to(
+                            //   PhoneLoginScreen(),
+                            // );
+                            Navigator.push(
+                  context,
+                  PageFromRight(
+                    page: PhoneLoginScreen(),
+                  ),
+                );
                           }),
                       SizedBox(
                         height: 20.h,
@@ -134,7 +141,13 @@ class AuthScreen extends StatelessWidget {
                             ),
                             GestureDetector(
                               onTap: () {
-                                Get.to(LoginScreen());
+                                // Get.to(LoginScreen());
+                                Navigator.push(
+                  context,
+                  PageFromRight(
+                    page: LoginScreen(),
+                  ),
+                );
                               },
                               child: Text(
                                 'Login',

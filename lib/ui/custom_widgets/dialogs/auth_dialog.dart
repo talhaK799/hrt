@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/constants/style.dart';
+import 'package:hart/ui/custom_widgets/right_navigation.dart';
 import 'package:hart/ui/screens/profile_screen/maestro_screen/maestro_screen.dart';
 
 showMyDialog(context, String? error) async {
@@ -71,7 +72,13 @@ becomeMaestroDialog(context, String? error) async {
               ),
               onPressed: () {
                 Get.back();
-                Get.to(MaestroScreen());
+                // Get.to(MaestroScreen());
+                Navigator.push(
+                  context,
+                  PageFromRight(
+                    page: MaestroScreen(),
+                  ),
+                );
               },
             ),
           ),

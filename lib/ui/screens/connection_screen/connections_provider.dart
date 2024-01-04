@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/models/app_user.dart';
@@ -5,6 +6,7 @@ import 'package:hart/core/models/matches.dart';
 import 'package:hart/core/services/auth_service.dart';
 import 'package:hart/core/view_models/base_view_model.dart';
 import 'package:hart/locator.dart';
+import 'package:hart/ui/custom_widgets/right_navigation.dart';
 import 'package:hart/ui/screens/connection_screen/connect_popup/connect_popup_screen.dart';
 import 'package:hart/ui/screens/profile_screen/maestro_screen/maestro_screen.dart';
 import '../../../core/services/database_service.dart';
@@ -45,7 +47,7 @@ class ConnectionsProvider extends BaseViewModel {
     notifyListeners();
   }
 
-  like(AppUser user, Matches match) async {
+  like(AppUser user, Matches match, context) async {
     print('user  id ${currentUser.appUser.id} liked ${user.id}');
     if (await !currentUser.appUser.likedUsers!.contains(user.id)) {
       if (currentUser.appUser.likedUsers!.length <=
@@ -61,14 +63,26 @@ class ConnectionsProvider extends BaseViewModel {
             'profile update ==> ${isUpdated} requestUpdate==>${isUpdatedMatch}');
         if (isUpdated && isUpdatedMatch) {
           currentUser.likingUsers.remove(user);
-          Get.to(
-            ConnectPopupScreen(),
+          // Get.to(
+          //   ConnectPopupScreen(),
+          // );
+          Navigator.push(
+            context,
+            PageFromRight(
+              page: ConnectPopupScreen(),
+            ),
           );
         }
         notifyListeners();
       } else {
-        Get.to(
-          MaestroScreen(),
+        // Get.to(
+        //   MaestroScreen(),
+        // );
+        Navigator.push(
+          context,
+          PageFromRight(
+            page: MaestroScreen(),
+          ),
         );
       }
     }

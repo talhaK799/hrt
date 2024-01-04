@@ -74,7 +74,7 @@ class AddPhoneNumberScreen extends StatelessWidget {
                   onTap: () {
                     FocusManager.instance.primaryFocus?.unfocus();
                     if (model.formKey.currentState!.validate()) {
-                      model.sentOTP();
+                      model.sentOTP(context);
                     }
                   },
                 ),

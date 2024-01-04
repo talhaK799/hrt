@@ -108,7 +108,7 @@ class PhoneCodeConfirmationScreen extends StatelessWidget {
                   title: 'CONTINUE',
                   onTap: () {
                     FocusManager.instance.primaryFocus?.unfocus();
-                    model.verifyPhoneOtp();
+                    model.verifyPhoneOtp(context);
                   },
                 ),
                 SizedBox(

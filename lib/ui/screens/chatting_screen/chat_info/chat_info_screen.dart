@@ -6,6 +6,7 @@ import 'package:hart/core/constants/style.dart';
 import 'package:hart/core/models/app_user.dart';
 import 'package:hart/core/models/conversation.dart';
 import 'package:hart/ui/custom_widgets/custom_app_bar.dart';
+import 'package:hart/ui/custom_widgets/right_navigation.dart';
 
 import 'package:hart/ui/screens/chatting_screen/create_group/create_group_screen.dart';
 import 'package:provider/provider.dart';
@@ -38,9 +39,15 @@ class ChatInfoScreen extends StatelessWidget {
                   sizeBox30,
                   GestureDetector(
                     onTap: () {
-                      Get.to(
-                        CreateGroupScreen(),
-                      );
+                      // Get.to(
+                      //   CreateGroupScreen(),
+                      // );
+                      Navigator.push(
+                  context,
+                  PageFromRight(
+                    page: CreateGroupScreen(),
+                  ),
+                );
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

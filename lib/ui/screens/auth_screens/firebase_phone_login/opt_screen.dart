@@ -116,7 +116,7 @@ class OtpVerificationScreen extends StatelessWidget {
                         color: pinkColor,
                         textColor: primaryColor,
                         onTap: () {
-                          model.sentOTP();
+                          model.sentOTP(context);
                         })
                     : Container(),
                 Spacer(),
@@ -124,7 +124,7 @@ class OtpVerificationScreen extends StatelessWidget {
                   title: 'CONTINUE',
                   onTap: () {
                     FocusManager.instance.primaryFocus?.unfocus();
-                    model.verifyPhoneOtp();
+                    model.verifyPhoneOtp(context);
                   },
                 ),
                 SizedBox(

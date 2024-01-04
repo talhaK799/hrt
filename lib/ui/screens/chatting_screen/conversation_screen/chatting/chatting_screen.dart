@@ -12,6 +12,7 @@ import 'package:hart/core/models/conversation.dart';
 import 'package:hart/ui/custom_widgets/custom_back_button.dart';
 import 'package:hart/ui/custom_widgets/custom_button.dart';
 import 'package:hart/ui/custom_widgets/custom_loader.dart';
+import 'package:hart/ui/custom_widgets/right_navigation.dart';
 import 'package:hart/ui/screens/chatting_screen/conversation_screen/chatting/chatting_provider.dart';
 import 'package:hart/ui/screens/chatting_screen/create_group/create_group_screen.dart';
 import 'package:hart/ui/screens/chatting_screen/group_chatting/group_info_screens/group_details/group_detail_screen.dart';
@@ -74,7 +75,9 @@ class _ChattingScreenState extends State<ChattingScreen> {
                   padding: const EdgeInsets.fromLTRB(20, 42, 14, 0),
                   child: Row(
                     children: [
-                      CustomBackButton(data: model.toUser.isFirstTimeChat,),
+                      CustomBackButton(
+                        data: model.toUser.isFirstTimeChat,
+                      ),
                       Expanded(
                         child: ListTile(
                           leading: model.conversation.isGroupChat == true
@@ -86,9 +89,17 @@ class _ChattingScreenState extends State<ChattingScreen> {
                               : model.toUser.images != null
                                   ? GestureDetector(
                                       onTap: () {
-                                        Get.to(UserDetailScreen(
-                                          user: model.toUser,
-                                        ));
+                                        // Get.to(UserDetailScreen(
+                                        //   user: model.toUser,
+                                        // ));
+                                        Navigator.push(
+                                          context,
+                                          PageFromRight(
+                                            page: UserDetailScreen(
+                                              user: model.toUser,
+                                            ),
+                                          ),
+                                        );
                                       },
                                       child: CircleAvatar(
                                         radius: 35.r,
@@ -120,17 +131,35 @@ class _ChattingScreenState extends State<ChattingScreen> {
                             behavior: HitTestBehavior.opaque,
                             onTap: () {
                               model.conversation.isGroupChat == true
-                                  ? Get.to(
-                                      GroupDetailScreen(
-                                        group: model.conversation,
+                                  ?
+                                  // Get.to(
+                                  //     GroupDetailScreen(
+                                  //       group: model.conversation,
+                                  //     ),
+                                  //   )
+                                  Navigator.push(
+                                      context,
+                                      PageFromRight(
+                                        page: GroupDetailScreen(
+                                          group: model.conversation,
+                                        ),
                                       ),
                                     )
-                                  : Get.to(
-                                      ChatInfoScreen(
-                                        user: model.toUser,
-                                        conversation: model.conversation,
+                                  : Navigator.push(
+                                      context,
+                                      PageFromRight(
+                                        page: ChatInfoScreen(
+                                          user: model.toUser,
+                                          conversation: model.conversation,
+                                        ),
                                       ),
                                     );
+                                    //  Get.to(
+                                    //   ChatInfoScreen(
+                                    //     user: model.toUser,
+                                    //     conversation: model.conversation,
+                                    //   ),
+                                    // );
                             },
                             child: Image.asset(
                               '$staticAsset/more.png',

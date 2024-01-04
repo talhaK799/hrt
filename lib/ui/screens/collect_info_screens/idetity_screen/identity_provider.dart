@@ -10,6 +10,7 @@ import 'package:hart/core/services/database_service.dart';
 import 'package:hart/core/view_models/base_view_model.dart';
 import 'package:hart/locator.dart';
 import 'package:hart/ui/custom_widgets/dialogs/custom_snackbar.dart';
+import 'package:hart/ui/custom_widgets/right_navigation.dart';
 import 'package:hart/ui/screens/collect_info_screens/select_gender_screen/select_gender_screen.dart';
 
 class IdentityProvider extends BaseViewModel {
@@ -48,7 +49,7 @@ class IdentityProvider extends BaseViewModel {
     notifyListeners();
   }
 
-  addSelectedItems() async {
+  addSelectedItems(context) async {
     // currentUser.identity = items[index].title;
     currentUser.identity = identity;
     // setState(ViewState.busy);
@@ -56,12 +57,19 @@ class IdentityProvider extends BaseViewModel {
     // setState(ViewState.idle);
     // if (isUpdated) {
     if (updation == true) {
-      Get.back(result: identity);
+      // Get.back(result: identity);
+      Navigator.pop(context, identity);
     } else {
       if (identity.isEmpty) {
         customSnackBar('alert!', 'Selection Required');
       } else {
-        Get.to(SelectGenderScreen());
+        // Get.to(SelectGenderScreen());
+        Navigator.push(
+          context,
+          PageFromRight(
+            page: SelectGenderScreen(),
+          ),
+        );
       }
     }
     // }

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/models/info_item.dart';
@@ -8,6 +9,7 @@ import 'package:hart/ui/custom_widgets/dialogs/custom_snackbar.dart';
 import 'package:hart/ui/screens/collect_info_screens/fantasies_screen/fantasies_screen.dart';
 
 import '../../../../core/services/auth_service.dart';
+import '../../../custom_widgets/right_navigation.dart';
 import 'select_gender_screen.dart';
 
 class SelectGenderProvider extends BaseViewModel {
@@ -60,7 +62,7 @@ class SelectGenderProvider extends BaseViewModel {
     notifyListeners();
   }
 
-  addSelectedItems() async {
+  addSelectedItems(context) async {
     currentUser.lookingFor = [];
     for (var element in items) {
       if (element.isSelected == true) {
@@ -70,7 +72,7 @@ class SelectGenderProvider extends BaseViewModel {
     }
     currentUser.lookingFor = selections;
     // print('first element==> ${selections.first}');
-    // setState(ViewState.busy);
+    setState(ViewState.busy);
 
     // bool isUpdated = await _db.updateUserProfile(currentUser);
     // setState(ViewState.idle);
@@ -80,9 +82,15 @@ class SelectGenderProvider extends BaseViewModel {
       Get.back(result: selections);
     } else {
       if (selections.isNotEmpty) {
-        Get.to(
-          FantasiesScreen(),
-        );
+        // Get.to(
+        //   FantasiesScreen(),
+        // );
+        Navigator.push(
+                  context,
+                  PageFromRight(
+                    page: FantasiesScreen(),
+                  ),
+                );
       } else {
         customSnackBar('alert!', 'Selection Required');
       }

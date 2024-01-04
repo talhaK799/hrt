@@ -10,6 +10,7 @@ import 'package:hart/core/services/location_service.dart';
 import 'package:hart/core/services/verification_service.dart';
 import 'package:hart/core/view_models/base_view_model.dart';
 import 'package:hart/locator.dart';
+import 'package:hart/ui/custom_widgets/right_navigation.dart';
 import 'package:hart/ui/screens/auth_screens/firebase_phone_login/opt_screen.dart';
 import 'package:hart/ui/screens/collect_info_screens/dob_screen/dob_screen.dart';
 
@@ -66,7 +67,7 @@ class PhoneLoginProvider extends BaseViewModel {
     notifyListeners();
   }
 
-  sentOTP() async {
+  sentOTP(context) async {
     if (appUser.phoneNumber != null || countryCode.isNotEmpty) {
       // isTimeExpired = false;
       appUser.phoneNumber = countryCode + appUser.phoneNumber!;
@@ -91,7 +92,13 @@ class PhoneLoginProvider extends BaseViewModel {
       if (isSent) {
         startTimer();
         if (!isResend) {
-          Get.to(() => OtpVerificationScreen());
+          // Get.to(() => OtpVerificationScreen());
+          Navigator.push(
+                  context,
+                  PageFromRight(
+                    page: OtpVerificationScreen(),
+                  ),
+                );
         }
         isEnable = false;
         notifyListeners();
@@ -107,7 +114,7 @@ class PhoneLoginProvider extends BaseViewModel {
     }
   }
 
-  verifyPhoneOtp() async {
+  verifyPhoneOtp(context) async {
     if (otpController.text == '') {
       Get.snackbar('Error!!', "Otp must be entered");
     } else {
@@ -123,10 +130,16 @@ class PhoneLoginProvider extends BaseViewModel {
         _timer.cancel();
         notifyListeners();
         authService.appUser.isPhoneNoVerified = true;
-        Get.to(DOBScreen());
-        Get.to(
-          DOBScreen(),
-        );
+        // Get.to(DOBScreen());
+        // Get.to(
+        //   DOBScreen(),
+        // );
+        Navigator.push(
+                  context,
+                  PageFromRight(
+                    page: DOBScreen(),
+                  ),
+                );
       }
       // setState(ViewState.idle);
     }

@@ -87,7 +87,7 @@ class NickNameScreen extends StatelessWidget {
                     onTap: () {
                       FocusManager.instance.primaryFocus?.unfocus();
                       if (model.formKey.currentState!.validate()) {
-                        model.addNickName();
+                        model.addNickName(context);
                       }
                     },
                   ),

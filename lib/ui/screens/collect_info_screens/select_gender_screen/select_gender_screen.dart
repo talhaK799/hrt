@@ -116,10 +116,12 @@ class SelectGenderScreen extends StatelessWidget {
                         title: 'CONTINUE',
                         onTap: () {
                           if (isFileter) {
-                            print('selected item==> ${model.selections.length}');
-                            Get.back(result: model.selections);
+                            print(
+                                'selected item==> ${model.selections.length}');
+                            // Get.back(result: model.selections);
+                            Navigator.pop(context, model.selections);
                           } else {
-                            model.addSelectedItems();
+                            model.addSelectedItems(context);
                           }
                         },
                       ),

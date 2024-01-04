@@ -7,6 +7,7 @@ import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/ui/custom_widgets/custom_loader.dart';
 import 'package:hart/ui/custom_widgets/custom_text_feild.dart';
+import 'package:hart/ui/custom_widgets/right_navigation.dart';
 import 'package:hart/ui/screens/auth_screens/signup_email/signup_email_screen.dart';
 import 'package:hart/ui/screens/base_screen.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -135,9 +136,15 @@ class LoginScreen extends StatelessWidget {
                         ),
                         GestureDetector(
                             onTap: () {
-                              Get.to(
-                                ForgotPasswordScreen(),
-                              );
+                              // Get.to(
+                              //   ForgotPasswordScreen(),
+                              // );
+                              Navigator.push(
+                  context,
+                  PageFromRight(
+                    page: ForgotPasswordScreen(),
+                  ),
+                );
                             },
                             child: Text(
                               'Forgot password?',
@@ -175,9 +182,15 @@ class LoginScreen extends StatelessWidget {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  Get.to(
-                                    SignUpWithEmail(),
-                                  );
+                                  // Get.to(
+                                  //   SignUpWithEmail(),
+                                  // );
+                                  Navigator.push(
+                  context,
+                  PageFromRight(
+                    page: SignUpWithEmail(),
+                  ),
+                );
                                 },
                                 child: Text(
                                   'Sign Up',

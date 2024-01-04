@@ -116,7 +116,7 @@ class EmailOtpScreen extends StatelessWidget {
                       title: 'CONTINUE',
                       onTap: () {
                         FocusManager.instance.primaryFocus?.unfocus();
-                        model.verifyOtp();
+                        model.verifyOtp(context);
                       },
                     ),
                     SizedBox(

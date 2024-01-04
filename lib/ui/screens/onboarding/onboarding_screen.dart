@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/constants/style.dart';
+import 'package:hart/ui/custom_widgets/right_navigation.dart';
 import 'package:hart/ui/screens/auth_screens/auth_screens.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -88,7 +89,13 @@ class OnboardingScreen extends StatelessWidget {
                                             const EdgeInsets.only(bottom: 30.0),
                                         child: GestureDetector(
                                           onTap: () {
-                                            Get.to(AuthScreen());
+                                            // Get.to(AuthScreen());
+                                            Navigator.push(
+                                              context,
+                                              PageFromRight(
+                                                page: AuthScreen(),
+                                              ),
+                                            );
                                           },
                                           child: Text(
                                             "Get started",

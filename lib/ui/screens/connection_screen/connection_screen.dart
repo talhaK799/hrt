@@ -30,7 +30,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
             backgroundColor: Colors.white,
             body: model.state == ViewState.busy
                 ? Container()
-                : model.currentUser.appUsers.isNotEmpty
+                : model.currentUser.likingUsers.isNotEmpty
                     ? Padding(
                         padding: EdgeInsets.fromLTRB(22, 50, 22, 10),
                         child: Column(
@@ -319,7 +319,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
             setState(() {
               model.isLiked = false;
             });
-            model.like(user, match);
+            model.like(user, match, context);
           },
           child: Container(
             padding: const EdgeInsets.all(15),

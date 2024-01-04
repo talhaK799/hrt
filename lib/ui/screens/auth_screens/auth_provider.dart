@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/models/custom_auth_result.dart';
@@ -6,6 +7,7 @@ import 'package:hart/core/services/database_service.dart';
 import 'package:hart/core/view_models/base_view_model.dart';
 import 'package:hart/locator.dart';
 import 'package:hart/ui/custom_widgets/dialogs/auth_dialog.dart';
+import 'package:hart/ui/custom_widgets/right_navigation.dart';
 import 'package:hart/ui/screens/collect_info_screens/dob_screen/dob_screen.dart';
 
 class AuthProvider extends BaseViewModel {
@@ -22,9 +24,15 @@ class AuthProvider extends BaseViewModel {
     if (authResult.user != null) {
       _auth.appUser.isGoogle = true;
       profileUpdate();
-      Get.to(
-        DOBScreen(),
-      );
+      // Get.to(
+      //   DOBScreen(),
+      // );
+      Navigator.push(
+                  context,
+                  PageFromRight(
+                    page: DOBScreen(),
+                  ),
+                );
     } else {
       showMyDialog(
         context,
@@ -43,9 +51,15 @@ class AuthProvider extends BaseViewModel {
       if (authResult.user != null) {
         _auth.appUser.isGoogle = true;
         profileUpdate();
-        Get.to(
-          DOBScreen(),
-        );
+        // Get.to(
+        //   DOBScreen(),
+        // );
+        Navigator.push(
+                  context,
+                  PageFromRight(
+                    page: DOBScreen(),
+                  ),
+                );
       } else {
         showMyDialog(
           context,
@@ -65,9 +79,16 @@ class AuthProvider extends BaseViewModel {
     if (authResult.appuser!.id != null) {
       _auth.appUser.isFacebook = true;
       profileUpdate();
-      Get.to(
-        DOBScreen(),
-      );
+      // Get.to(
+      //   DOBScreen(),
+      // );
+
+      Navigator.push(
+                  context,
+                  PageFromRight(
+                    page: DOBScreen(),
+                  ),
+                );
     } else {
       showMyDialog(
         context,

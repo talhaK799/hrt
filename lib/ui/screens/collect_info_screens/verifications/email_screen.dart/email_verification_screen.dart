@@ -71,7 +71,7 @@ class EmailVerificationScreen extends StatelessWidget {
                             FocusManager.instance.primaryFocus?.unfocus();
                             // model.sendotptoEmail();
                             if (model.formKey.currentState!.validate()) {
-                              model.sendotptoEmail();
+                              model.sendotptoEmail(context);
                             }
                           },
                         ),
