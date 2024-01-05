@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -14,6 +16,7 @@ import 'package:hart/ui/custom_widgets/custom_button.dart';
 import 'package:hart/ui/custom_widgets/custom_loader.dart';
 import 'package:hart/ui/custom_widgets/right_navigation.dart';
 import 'package:hart/ui/screens/chatting_screen/conversation_screen/chatting/chatting_provider.dart';
+import 'package:hart/ui/screens/chatting_screen/create_group/create_group_screen.dart';
 import 'package:hart/ui/screens/chatting_screen/group_chatting/group_info_screens/group_details/group_detail_screen.dart';
 import 'package:hart/ui/screens/chatting_screen/user_details/user_detail_screen.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -233,7 +236,7 @@ class _ChattingScreenState extends State<ChattingScreen> {
                       ),
                       Container(
                         color: whiteColor,
-                        // width: 1.sw,
+                        width: 1.sw,
                         child: _chatFeild(model, context),
                       )
                     ],
@@ -380,11 +383,13 @@ class _ChattingScreenState extends State<ChattingScreen> {
     return Align(
       alignment: Alignment.bottomCenter,
       child: Padding(
-        padding: const EdgeInsets.only(
-          left: 20,
-          bottom: 10,
-          right: 20,
-        ),
+        padding: Platform.isAndroid
+            ? EdgeInsets.symmetric(horizontal: 20)
+            : EdgeInsets.only(
+                left: 20,
+                right: 20,
+                bottom: 15,
+              ),
         child: Stack(
           children: [
             Container(
