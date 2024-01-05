@@ -380,11 +380,13 @@ class _ChattingScreenState extends State<ChattingScreen> {
     return Align(
       alignment: Alignment.bottomCenter,
       child: Padding(
-        padding: const EdgeInsets.only(
-          left: 20,
-          bottom: 10,
-          right: 20,
-        ),
+        padding: Platform.isAndroid
+            ? EdgeInsets.symmetric(horizontal: 20)
+            : EdgeInsets.only(
+                left: 20,
+                right: 20,
+                bottom: 15,
+              ),
         child: Stack(
           children: [
             Container(
