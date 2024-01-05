@@ -13,6 +13,7 @@ import 'package:hart/locator.dart';
 import 'package:hart/ui/custom_widgets/right_navigation.dart';
 import 'package:hart/ui/screens/auth_screens/firebase_phone_login/opt_screen.dart';
 import 'package:hart/ui/screens/collect_info_screens/dob_screen/dob_screen.dart';
+import 'package:hart/ui/screens/root_screen/root_screen.dart';
 
 class PhoneLoginProvider extends BaseViewModel {
   final authService = locator<AuthService>();
@@ -94,11 +95,11 @@ class PhoneLoginProvider extends BaseViewModel {
         if (!isResend) {
           // Get.to(() => OtpVerificationScreen());
           Navigator.push(
-                  context,
-                  PageFromRight(
-                    page: OtpVerificationScreen(),
-                  ),
-                );
+            context,
+            PageFromRight(
+              page: OtpVerificationScreen(),
+            ),
+          );
         }
         isEnable = false;
         notifyListeners();
@@ -129,17 +130,27 @@ class PhoneLoginProvider extends BaseViewModel {
       if (customAuthResult.user != null) {
         _timer.cancel();
         notifyListeners();
+        authService.appUser.phoneNumber = appUser.phoneNumber;
         authService.appUser.isPhoneNoVerified = true;
         // Get.to(DOBScreen());
         // Get.to(
         //   DOBScreen(),
         // );
-        Navigator.push(
-                  context,
-                  PageFromRight(
-                    page: DOBScreen(),
-                  ),
-                );
+        if (authService.appUser.isProfileCompleted == true) {
+          Navigator.push(
+            context,
+            PageFromRight(
+              page: RootScreen(),
+            ),
+          );
+        } else {
+          Navigator.push(
+            context,
+            PageFromRight(
+              page: DOBScreen(),
+            ),
+          );
+        }
       }
       // setState(ViewState.idle);
     }

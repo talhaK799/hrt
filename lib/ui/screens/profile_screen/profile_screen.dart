@@ -68,7 +68,7 @@ class ProfileScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        model.currentUser.name ?? 'Ali Khan',
+                        model.currentUser.nickName ?? 'User',
                         style: descriptionTextStyle,
                       ),
                       GestureDetector(
@@ -90,7 +90,7 @@ class ProfileScreen extends StatelessWidget {
                       bottom: 5,
                     ),
                     child: Text(
-                      '${model.currentUser.age ?? ""} man ${model.currentUser.identity ?? ""}',
+                      '${model.currentUser.age ?? ""} ${model.currentUser.lookingFor != null || model.currentUser.lookingFor!.isNotEmpty ? model.currentUser.lookingFor![0] : ""} ${model.currentUser.identity ?? ""}',
                       style: buttonTextStyleGrey,
                     ),
                   ),
@@ -104,7 +104,9 @@ class ProfileScreen extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    'Basic member',
+                    model.currentUser.isPremiumUser == true
+                        ? 'Premium member'
+                        : 'Basic member',
                     style: buttonTextStyleGrey,
                   ),
                   sizeBox30,

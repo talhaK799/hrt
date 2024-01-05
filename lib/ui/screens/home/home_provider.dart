@@ -106,7 +106,7 @@ class HomeProvider extends BaseViewModel {
   getAllAppUsers() async {
 // <<<<<<< text_changes
     try {
-      print("all users: ${currentUser.appUsers}");
+      print("all users: ${currentUser.appUsers.length}");
       appUsers = currentUser.appUsers;
       notifyListeners();
       if (currentUser.appUsers.isEmpty && currentUser.isHomeloaded == false) {

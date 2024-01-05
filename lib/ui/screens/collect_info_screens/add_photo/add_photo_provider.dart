@@ -171,7 +171,7 @@ class AddPhotoProvider extends BaseViewModel {
 
       //   currentUser.images = imagesUrls;
       // }
-
+      currentUser.isProfileCompleted = true;
       bool isUpdated = await _db.updateUserProfile(currentUser);
       setState(ViewState.idle);
       if (isUpdated) {

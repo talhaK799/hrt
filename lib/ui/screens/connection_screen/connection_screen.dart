@@ -257,13 +257,13 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                   ),
                   sizeBox10,
                   Text(
-                    '15 woman straight',
+                    '${user.age}, ${user.lookingFor![0] ?? ""}, ${user.identity} ${user.desire!.first}',
                     style: buttonTextStyleGrey,
                   ),
-                  Text(
-                    'Single, 8 km away, Last seen 30 min ago',
-                    style: buttonTextStyleGrey,
-                  ),
+                  // Text(
+                  //   '${user.desire!.first}',
+                  //   style: buttonTextStyleGrey,
+                  // ),
                 ],
               ),
             ),

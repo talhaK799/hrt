@@ -16,6 +16,7 @@ class AppUser {
   bool? isGoogle;
   bool? isApple;
   bool? isUplifted;
+  bool? isProfileCompleted;
 
   bool? isFacebook;
   int? likesCount;
@@ -80,6 +81,7 @@ class AppUser {
     this.users,
     this.isFirstTimeChat = false,
     this.isSelected = false,
+    this.isProfileCompleted,
     this.isApple,
     this.onlineTime,
     this.offlineTime = '',
@@ -105,6 +107,7 @@ class AppUser {
 
     data['fcmToken'] = fcmToken;
     data['isEmailVerified'] = isEmailVerified ?? false;
+    data['isProfileCompleted'] = isProfileCompleted ?? false;
     data['isPhoneNoVerified'] = isPhoneNoVerified ?? false;
     data['isNotificationsOn'] = isNotificationsOn ?? false;
     data['isFirstTimeChat'] = isFirstTimeChat ?? false;
@@ -140,6 +143,7 @@ class AppUser {
       phoneNumber = json['phoneNumber'];
       isEmailVerified = json['isEmailVerified'] ?? false;
       isPhoneNoVerified = json['isPhoneNoVerified'] ?? false;
+      isProfileCompleted = json['isProfileCompleted'] ?? false;
       isLiked = json['isLiked'] ?? false;
       isUplifted = json['isUplifted'] ?? false;
       isDesLiked = json['isDesLiked'] ?? false;
