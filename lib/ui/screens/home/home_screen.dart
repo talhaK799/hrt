@@ -215,7 +215,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       model.isLiked = false;
                       model.isDisLiked = false;
                     });
-                    model.like(model.currentUser.appUsers[model.index],context);
+                    model.like(
+                        model.currentUser.appUsers[model.index], context);
                   },
                   child: Container(
                     padding: const EdgeInsets.all(20),
@@ -348,7 +349,8 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  user.name ?? '${user.nickName}',
+                  // user.name ??
+                  '${user.nickName}',
                   style: subHeadingText1,
                 ),
                 Row(
@@ -360,7 +362,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     GestureDetector(
                       behavior: HitTestBehavior.opaque,
                       onTap: () {
-                        model.spank(user,context);
+                        model.spank(user, context);
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(
@@ -395,7 +397,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     // _infoContainer('23 men straight'),
                     Text(
-                      '${user.age} Women Straight',
+                      '${user.age} ${user.lookingFor != null || user.lookingFor!.isNotEmpty ? user.lookingFor!.first : ""} ${user.identity}',
                       style: buttonTextStyle2,
                     ),
                   ],
@@ -407,7 +409,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     // _infoContainer('Madrid, Spain'),
                     Text(
-                      'Single, ${(user.distance / 1000).round()} km away,',
+                      '${user.desire != null || user.desire!.isNotEmpty ? user.desire!.first : ""}, ${(user.distance / 1000).round()} km away,',
                       style: buttonTextStyle2,
                     ),
                     SizedBox(

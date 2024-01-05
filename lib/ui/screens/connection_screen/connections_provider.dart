@@ -1,5 +1,6 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/models/app_user.dart';
 import 'package:hart/core/models/matches.dart';
@@ -40,6 +41,7 @@ class ConnectionsProvider extends BaseViewModel {
     if (currentUser.likingUsers.length < currentUser.matches.length) {
       currentUser.likingUsers = [];
       for (var m in currentUser.matches) {
+        log('liking user : ${m.likedByUserId}');
         user = await db.getAppUser(m.likedByUserId);
         currentUser.likingUsers.add(user);
       }
