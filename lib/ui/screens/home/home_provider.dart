@@ -104,7 +104,6 @@ class HomeProvider extends BaseViewModel {
   }
 
   getAllAppUsers() async {
-    try {
 // <<<<<<< text_changes
     try {
       print("all users: ${currentUser.appUsers.length}");
