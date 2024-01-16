@@ -30,16 +30,33 @@ class DobProvider extends BaseViewModel {
   }
 
   pickDate(context) async {
-    pickedDate = await DatePicker.showSimpleDatePicker(
-      context,
+    pickedDate = await showDatePicker(
+      context: context,
       initialDate: DateTime(2002),
       firstDate: DateTime(1971),
       lastDate: DateTime(2090),
-      dateFormat: "dd/MM/yyyy",
-      looping: true,
-      backgroundColor:Platform.isIOS? whiteColor:whiteColor,
-      itemTextStyle: bodyTextStyle,
-      textColor: primaryColor,
+// <<<<<<< locationUpdates
+//       dateFormat: "dd/MM/yyyy",
+//       looping: true,
+//       backgroundColor:Platform.isIOS? whiteColor:whiteColor,
+//       itemTextStyle: bodyTextStyle,
+//       textColor: primaryColor,
+// =======
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            colorScheme: ColorScheme.light(
+              primary: primaryColor,
+              onPrimary: Colors.white,
+              surface: Colors.white,
+              onSurface: blackColor,
+            ),
+            dialogBackgroundColor: Colors.white,
+          ),
+          child: child!,
+        );
+      },
+// >>>>>>> dev
     );
     if (pickedDate != null) {
       dob = date.format(pickedDate!);

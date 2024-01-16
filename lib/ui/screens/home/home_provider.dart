@@ -191,7 +191,7 @@ class HomeProvider extends BaseViewModel {
       currentUser.appUsers = appUsers;
       print('number of filtered users ${appUsers.length}');
     } catch (e) {
-      print("@errorGetAllAppUsers: $e");
+      print("@errorGetAllAppUsersHome: $e");
     }
   }
 
