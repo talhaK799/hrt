@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:country_code_picker/country_code_picker.dart';
+import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -43,6 +45,34 @@ class PhoneLoginProvider extends BaseViewModel {
     currentLocation = await locationService.determinePosition();
     await convertLatAndLongIntoAddress();
     initialCountry = placemarks.first.country!;
+  }
+
+  List<String> preferredCountries = [
+    'Italia',
+    'United Kingdom',
+    'United States'
+  ];
+
+// Define a function to compare two countries
+  int compareCountries(CountryCode c1, CountryCode c2) {
+    // Get the index of each country in the preferred list, or -1 if not found
+    int indexA = preferredCountries.indexOf(c1.name!);
+    int indexB = preferredCountries.indexOf(c2.name!);
+
+    // If both countries are in the preferred list, compare their indices
+    if (indexA != -1 && indexB != -1) {
+      return indexA.compareTo(indexB);
+    }
+    // If only one country is in the preferred list, put it first
+    else if (indexA != -1) {
+      return -1;
+    } else if (indexB != -1) {
+      return 1;
+    }
+    // If neither country is in the preferred list, use the default order
+    else {
+      return c1.name!.compareTo(c2.name!);
+    }
   }
 
   convertLatAndLongIntoAddress() async {

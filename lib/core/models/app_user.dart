@@ -98,13 +98,11 @@ class AppUser {
     data['isUplifted'] = isUplifted ?? false;
     data['createdAt'] = createdAt ?? DateTime.now();
     data['uplift'] = uplift ?? DateTime.now();
-
     data['onlineTime'] = onlineTime ?? DateTime.now();
     data['name'] = name;
     data['phoneNumber'] = phoneNumber;
     data['longitude'] = longitude ?? 10;
     data['latitude'] = latitude ?? 8;
-
     data['fcmToken'] = fcmToken;
     data['isEmailVerified'] = isEmailVerified ?? false;
     data['isProfileCompleted'] = isProfileCompleted ?? false;

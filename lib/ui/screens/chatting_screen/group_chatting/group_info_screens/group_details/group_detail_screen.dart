@@ -180,6 +180,7 @@ class GroupDetailScreen extends StatelessWidget {
         context: context,
         builder: (context) {
           return AlertDialog(
+            backgroundColor: whiteColor,
             title: Text(
               'Are you sure?',
               style: bodyTextStyle.copyWith(color: primaryColor),

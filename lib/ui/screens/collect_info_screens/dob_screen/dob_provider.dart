@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_holo_date_picker/date_picker.dart';
 import 'package:get/get.dart';
@@ -33,6 +35,13 @@ class DobProvider extends BaseViewModel {
       initialDate: DateTime(2002),
       firstDate: DateTime(1971),
       lastDate: DateTime(2090),
+// <<<<<<< locationUpdates
+//       dateFormat: "dd/MM/yyyy",
+//       looping: true,
+//       backgroundColor:Platform.isIOS? whiteColor:whiteColor,
+//       itemTextStyle: bodyTextStyle,
+//       textColor: primaryColor,
+// =======
       builder: (BuildContext context, Widget? child) {
         return Theme(
           data: ThemeData.light().copyWith(
@@ -47,6 +56,7 @@ class DobProvider extends BaseViewModel {
           child: child!,
         );
       },
+// >>>>>>> dev
     );
     if (pickedDate != null) {
       dob = date.format(pickedDate!);

@@ -1,5 +1,4 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:country_picker/country_picker.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -12,6 +11,8 @@ import 'package:hart/core/models/app_user.dart';
 import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/ui/custom_widgets/custom_button.dart';
 import 'package:hart/ui/custom_widgets/custom_loaders/red_hart_10sec.dart';
+import 'package:hart/ui/custom_widgets/right_navigation.dart';
+import 'package:hart/ui/screens/home/country_city_picker.dart';
 import 'package:hart/ui/screens/home/home_provider.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
@@ -40,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ? model.filteredUsers.isEmpty
                       ? primaryColor
                       : whiteColor
-                  : model.currentUser.appUsers.isEmpty
+                  : model.appUsers.isEmpty
                       ? primaryColor
                       : whiteColor,
               body: Stack(
@@ -53,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         )
                       : Column(
                           children: [
-                            model.currentUser.appUsers.isEmpty
+                            model.appUsers.isEmpty
                                 ? Container()
                                 : Padding(
                                     padding: const EdgeInsets.fromLTRB(
@@ -92,8 +93,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ? model.filteredUsers.length > 0
                                         ? model.filteredUsers.length
                                         : 1
-                                    : model.currentUser.appUsers.length > 0
-                                        ? model.currentUser.appUsers.length
+                                    : model.appUsers.length > 0
+                                        ? model.appUsers.length
                                         : 1,
                                 itemBuilder: (context, index) {
                                   model.index = index;
@@ -108,8 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 )
                                       : model.state == ViewState.busy
                                           ? Container()
-                                          : model.currentUser.appUsers.length ==
-                                                  0
+                                          : model.appUsers.length == 0
                                               ? _staticScreen(context)
                                               : _homeScreenData(
                                                   model,
@@ -117,8 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
 //                                                   model.appUsers[index],
 //                                                 );
 // =======
-                                                  model.currentUser
-                                                      .appUsers[index]);
+                                                  model.appUsers[index]);
 // >>>>>>> dev
                                 },
                                 onPageChanged: (val) => model.changePage(val),
@@ -130,7 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ? model.filteredUsers.isEmpty
                           ? Container()
                           : _likeButtons(model)
-                      : model.currentUser.appUsers.isEmpty
+                      : model.appUsers.isEmpty
                           ? Container()
                           : _likeButtons(model),
 
@@ -180,7 +179,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     setState(() {
                       model.isDisLiked = false;
                     });
-                    model.disLike(model.currentUser.appUsers[model.index]);
+                    model.disLike(model.appUsers[model.index]);
                   },
                   child: Container(
                     padding: const EdgeInsets.all(20),
@@ -215,8 +214,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       model.isLiked = false;
                       model.isDisLiked = false;
                     });
-                    model.like(
-                        model.currentUser.appUsers[model.index], context);
+                    model.like(model.appUsers[model.index], context);
                   },
                   child: Container(
                     padding: const EdgeInsets.all(20),
@@ -711,18 +709,20 @@ class _HomeScreenState extends State<HomeScreen> {
                             GestureDetector(
                               behavior: HitTestBehavior.translucent,
                               onTap: () {
-                                showCountryPicker(
-                                  context: context,
-                                  onSelect: (countery) {
-                                    // model.country = countery.displayName;
-                                    model.selectCountry(countery.name);
-                                  },
-                                );
-                              },
+                                model.selectCountry(context);
+                              }
+                              // showCountryPicker(
+                              //   context: context,
+                              //   onSelect: (countery) {
+                              //     // model.country = countery.displayName;
+                              //     model.selectCountry(countery.name);
+                              //   },
+                              // );
+                              ,
                               child: Row(
                                 children: [
                                   Text(
-                                    model.country,
+                                    "${model.country} , ${model.city}",
                                     style: buttonTextStyle.copyWith(
                                       color: greyColor2,
                                     ),
