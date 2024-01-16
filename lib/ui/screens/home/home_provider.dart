@@ -23,6 +23,7 @@ import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 import '../../custom_widgets/dialogs/auth_dialog.dart';
 import '../collect_info_screens/select_gender_screen/select_gender_screen.dart';
+import 'country_city_picker.dart';
 
 class HomeProvider extends BaseViewModel {
   int dotIndex = 0;
@@ -33,6 +34,7 @@ class HomeProvider extends BaseViewModel {
   bool isDisLiked = false;
   bool isRecent = false;
   bool isLast = false;
+  bool isCurrent = false;
   final currentUser = locator<AuthService>();
   final location = locator<LocationService>();
   // final _localStorage = locator<LocalStorageService>();
@@ -48,6 +50,7 @@ class HomeProvider extends BaseViewModel {
   List<String> lookingFor = ['Woman'];
   List<String> desire = ['Singles'];
   String country = '';
+  String city = '';
   Matches match = Matches();
   Filtering filter = Filtering(desire: []);
   UPlift uPlift = UPlift();
@@ -99,8 +102,10 @@ class HomeProvider extends BaseViewModel {
     // setState(ViewState.idle);
 
     country = placemarks.first.country!;
+    city = placemarks.first.locality!;
     notifyListeners();
     print("country =>" + placemarks.first.country!);
+    print("country =>" + placemarks.first.locality!);
   }
 
   getAllAppUsers() async {
@@ -132,8 +137,8 @@ class HomeProvider extends BaseViewModel {
       for (var user in currentUser.appUsers) {
         print('user ${user.id} onLineTime  ===> ${user.onlineTime.toString()}');
         // appUsers.add(user);
-        if (currentUser.appUser.likedUsers == null ||
-            currentUser.appUser.disLikedUsers == null) {
+        // if (currentUser.appUser.likedUsers == null ||
+        //     currentUser.appUser.disLikedUsers == null) {
 // =======
 //     try {
 //       print("all users::: ${currentUser.appUsers.length}");
@@ -154,32 +159,31 @@ class HomeProvider extends BaseViewModel {
 //       for (var user in currentUser.appUsers) {
 //         print('user ${user.id} onLineTime  ===> ${user.onlineTime.toString()}');
 // >>>>>>> dev
-          // appUsers.add(user);
-          if (currentUser.appUser.likedUsers == null ||
-              currentUser.appUser.disLikedUsers == null) {
-            // appUsers.add(user);
-          } else {
-            if (!currentUser.appUser.likedUsers!.contains(user.id) &&
-                !currentUser.appUser.disLikedUsers!.contains(user.id) &&
-                user.id != currentUser.appUser.id) {
-              user.offlineTime =
-                  formatRelativeTime(user.onlineTime ?? DateTime.now()) ??
-                      "1 minute ago";
-              user.distance = await location.distance(
-                  user.latitude,
-                  user.longitude,
-                  currentUser.appUser.latitude,
-                  currentUser.appUser.longitude);
-              if (user.isUplifted == true) {
-                log('id==> ${user.id} and uplifted==> ${user.isUplifted}');
-                appUsers.insert(0, user);
-              } else {
-                log('id==> ${user.id} and uplifted==> ${user.isUplifted}');
-                appUsers.add(user);
-              }
+        // appUsers.add(user);
+        if (currentUser.appUser.likedUsers == null ||
+            currentUser.appUser.disLikedUsers == null) {
+          appUsers.add(user);
+        } else {
+          if (!currentUser.appUser.likedUsers!.contains(user.id) &&
+              !currentUser.appUser.disLikedUsers!.contains(user.id) &&
+              user.id != currentUser.appUser.id) {
+            user.offlineTime =
+                formatRelativeTime(user.onlineTime ?? DateTime.now()) ?? " ";
+            user.distance = await location.distance(
+                user.latitude,
+                user.longitude,
+                currentUser.appUser.latitude,
+                currentUser.appUser.longitude);
+            if (user.isUplifted == true) {
+              log('id==> ${user.id} and uplifted==> ${user.isUplifted}');
+              appUsers.insert(0, user);
+            } else {
+              log('id==> ${user.id} and uplifted==> ${user.isUplifted}');
+              appUsers.add(user);
             }
           }
         }
+        // }
       }
 
       print("AllUsers: ${appUsers.length}");
@@ -455,8 +459,17 @@ class HomeProvider extends BaseViewModel {
     notifyListeners();
   }
 
-  selectCountry(val) {
-    country = val;
+  selectCountry(context) async {
+    List lis = [];
+    lis = await Navigator.push(
+      context,
+      PageFromRight(
+        page: CountrySelectionScren(),
+      ),
+    );
+    print('list values ${lis[0]} and ${lis[1]}');
+    country = lis[0];
+    city = lis[1];
     notifyListeners();
   }
 
@@ -467,6 +480,11 @@ class HomeProvider extends BaseViewModel {
       becomeMaestroDialog(context, "This feature is only for Premium users");
       // customSnackBar('Alert!!', 'Allowed for Premium Users only');
     }
+    notifyListeners();
+  }
+
+  current(val) {
+    isCurrent = val;
     notifyListeners();
   }
 

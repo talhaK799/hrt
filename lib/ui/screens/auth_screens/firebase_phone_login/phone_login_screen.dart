@@ -68,7 +68,7 @@ class PhoneLoginScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                Spacer(),
+                // Spacer(),
                 CustomButton(
                   title: 'CONTINUE',
                   onTap: () {
@@ -122,6 +122,8 @@ class PhoneLoginScreen extends StatelessWidget {
                       value.dialCode,
                     );
                   },
+
+                  comparator: (a, b) => model.compareCountries(a, b),
                 ),
               ),
             ),

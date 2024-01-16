@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_holo_date_picker/date_picker.dart';
 import 'package:get/get.dart';
@@ -35,7 +37,7 @@ class DobProvider extends BaseViewModel {
       lastDate: DateTime(2090),
       dateFormat: "dd/MM/yyyy",
       looping: true,
-      backgroundColor: whiteColor,
+      backgroundColor:Platform.isIOS? whiteColor:whiteColor,
       itemTextStyle: bodyTextStyle,
       textColor: primaryColor,
     );
