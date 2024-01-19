@@ -44,13 +44,15 @@ class DobProvider extends BaseViewModel {
 // =======
       builder: (BuildContext context, Widget? child) {
         return Theme(
-          data: ThemeData.light().copyWith(
+          data: ThemeData.light(useMaterial3: false).copyWith(
             colorScheme: ColorScheme.light(
               primary: primaryColor,
               onPrimary: Colors.white,
               surface: Colors.white,
               onSurface: blackColor,
             ),
+            primaryColor: primaryColor,
+            unselectedWidgetColor: primaryColor,
             dialogBackgroundColor: Colors.white,
           ),
           child: child!,
