@@ -289,6 +289,7 @@ class HomeProvider extends BaseViewModel {
     ///if currentUser likes other users
     ///
     if (await !currentUser.appUser.likedUsers!.contains(user.id)) {
+      await Future.delayed(Duration(milliseconds: 400));
       // if (currentUser.appUser.likedUsers!.length <
       //     currentUser.appUser.likesCount!) {
       //////
@@ -379,7 +380,7 @@ class HomeProvider extends BaseViewModel {
       // if (currentUser.appUser.disLikedUsers!.length <
       //     currentUser.appUser.likesCount!) {
       ////
-      await Future.delayed(Duration(seconds: 1));
+      await Future.delayed(Duration(milliseconds: 500));
       if (await !currentUser.previousUsers.contains(user)) {
         print(
             'previous USERS list==> BEFORE ${currentUser.previousUsers.length}');

@@ -269,6 +269,15 @@ class ProfileScreen extends StatelessWidget {
                   Divider(
                     color: greyColor2,
                   ),
+                  CustomProfileTile(
+                    onTap: () {
+                      model.launchAppUrl();
+                    },
+                    title: 'hart-app.com',
+                  ),
+                  Divider(
+                    color: greyColor2,
+                  ),
                   // CustomProfileTile(
                   //   onTap: () {
                   //     Get.to(
