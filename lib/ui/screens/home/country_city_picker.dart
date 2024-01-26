@@ -1,4 +1,4 @@
-import 'package:country_state_city_pro/country_state_city_pro.dart';
+import 'package:csc_picker_i18n/csc_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hart/core/constants/colors.dart';
@@ -10,16 +10,16 @@ import 'package:hart/ui/screens/home/home_provider.dart';
 import 'package:provider/provider.dart';
 
 class CountrySelectionScren extends StatelessWidget {
-  String countryValue = "Country";
-
-  String cityValue = "City";
   // Variables to store country, state, and city data in onChanged method.
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController country = TextEditingController();
-    TextEditingController state = TextEditingController();
-    TextEditingController city = TextEditingController();
+    String countryValue = "Country";
+
+    String cityValue = "City";
+    // TextEditingController country = TextEditingController();
+    // TextEditingController state = TextEditingController();
+    // TextEditingController city = TextEditingController();
     return ChangeNotifierProvider(
       create: (context) => HomeProvider(),
       child: Consumer<HomeProvider>(builder: (context, model, child) {
@@ -79,29 +79,40 @@ class CountrySelectionScren extends StatelessWidget {
                       : Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            CountryStateCityPicker(
-                              country: country,
-                              state: state,
-                              city: city,
-                              dialogColor: Colors.grey.shade200,
-                              textFieldDecoration: InputDecoration(
-                                fillColor: whiteColor,
-                                filled: true,
-                                suffixIcon:
-                                    const Icon(Icons.arrow_downward_rounded),
-                                border: const OutlineInputBorder(
-                                    borderSide: BorderSide.none),
-                              ),
+                            CSCPicker(
+                              onCountryChanged: (value) {
+                                countryValue = value ?? "";
+                              },
+                              onStateChanged: (value) {
+                                cityValue = value ?? "";
+                              },
+                              onCityChanged: (value) {},
+                              showCities: false,
+                              stateDropdownLabel: 'City',
                             ),
+                            // CountryStateCityPicker(
+                            //   country: country,
+                            //   state: state,
+                            //   city: city,
+                            //   dialogColor: Colors.grey.shade200,
+                            //   textFieldDecoration: InputDecoration(
+                            //     fillColor: whiteColor,
+                            //     filled: true,
+                            //     suffixIcon:
+                            //         const Icon(Icons.arrow_downward_rounded),
+                            //     border: const OutlineInputBorder(
+                            //         borderSide: BorderSide.none),
+                            //   ),
+                            // ),
                             50.verticalSpace,
                             CustomButton(
                                 title: 'Continue',
                                 onTap: () {
                                   print(
-                                      'country ==> ${country.text} and city==> ${city.text}');
+                                      'country ==> ${countryValue} and city==> ${cityValue}');
                                   Navigator.pop(context, [
-                                    country.text,
-                                    city.text,
+                                    countryValue,
+                                    cityValue,
                                   ]);
                                 }),
                           ],

@@ -63,7 +63,8 @@ dependencies:
   flutter_local_notifications: ^16.1.0
   internet_connection_checker: ^1.0.0+1
   firebase_database: ^10.3.6
-  country_state_city_pro: ^0.0.6
+  csc_picker_i18n: ^0.2.8
+  url_launcher: ^6.2.4
 
 dev_dependencies:
   flutter_test:
