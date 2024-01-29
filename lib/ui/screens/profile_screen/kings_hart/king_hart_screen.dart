@@ -39,8 +39,10 @@ class KingHartScreen extends StatelessWidget {
                   children: [
                     CustomAppBar(title: 'Spanks'),
                     sizeBox30,
-                    SvgPicture.asset(
-                      '$staticAsset/Character.svg',
+                    Image.asset(
+                      '$staticAsset/img4.png',
+                      fit: BoxFit.fill,
+                      width: 1.sw,
                     ),
                     sizeBox20,
                     Text(

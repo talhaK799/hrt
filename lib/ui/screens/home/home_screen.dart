@@ -529,10 +529,15 @@ class _HomeScreenState extends State<HomeScreen> {
                             color: greyColor2,
                           ),
                           10.horizontalSpace,
-                          Text(
-                            'Report Profile ',
-                            style: bodyTextStyle.copyWith(
-                              color: greyColor2,
+                          GestureDetector(
+                            onTap: () {
+                              model.reportUser(user);
+                            },
+                            child: Text(
+                              'Report Profile ',
+                              style: bodyTextStyle.copyWith(
+                                color: greyColor2,
+                              ),
                             ),
                           )
                         ],

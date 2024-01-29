@@ -8,6 +8,7 @@ import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/models/app_user.dart';
 import 'package:hart/core/models/filter.dart';
 import 'package:hart/core/models/matches.dart';
+import 'package:hart/core/models/report_user.dart';
 import 'package:hart/core/models/uplift.dart';
 import 'package:hart/core/services/auth_service.dart';
 import 'package:hart/core/services/database_service.dart';
@@ -54,6 +55,7 @@ class HomeProvider extends BaseViewModel {
   Matches match = Matches();
   Filtering filter = Filtering(desire: []);
   UPlift uPlift = UPlift();
+  ReportedUser reportedUser = ReportedUser();
 
   bool isDataLoaded = false;
 
@@ -192,6 +194,16 @@ class HomeProvider extends BaseViewModel {
       print('number of filtered users ${appUsers.length}');
     } catch (e) {
       print("@errorGetAllAppUsers: $e");
+    }
+  }
+
+  reportUser(AppUser user) async {
+    reportedUser.reportedUserId = user.id;
+    reportedUser.reportingUserId = currentUser.appUser.id;
+    reportedUser.reportedAt = DateTime.now();
+    bool isreported = await db.reportUser(reportedUser);
+    if (isreported == true) {
+      Get.snackbar('Alert!', 'Profile Reported');
     }
   }
 

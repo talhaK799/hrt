@@ -5,6 +5,7 @@ import 'package:hart/core/models/chat_message.dart';
 import 'package:hart/core/models/conversation.dart';
 import 'package:hart/core/models/info_item.dart';
 import 'package:hart/core/models/matches.dart';
+import 'package:hart/core/models/report_user.dart';
 import 'package:hart/core/models/spank.dart';
 import 'package:hart/core/models/subscripton.dart';
 import 'package:hart/core/models/uplift.dart';
@@ -189,6 +190,17 @@ class DatabaseService {
       }
     } catch (e, s) {
       debugPrint('Exception @DatabaseService/getAppUser');
+      debugPrint(s.toString());
+      return false;
+    }
+  }
+
+  reportUser(ReportedUser user) async {
+    try {
+      await _db.collection('Reported Users').add(user.toJson());
+      return true;
+    } catch (e, s) {
+      debugPrint('Exception @DatabaseService/reportUser');
       debugPrint(s.toString());
       return false;
     }
