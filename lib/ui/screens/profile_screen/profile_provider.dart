@@ -21,7 +21,7 @@ class ProfileProvider extends BaseViewModel {
   final db = locator<DatabaseService>();
   String? country;
   List<Placemark> placemark = [];
-  Uri appurl = Uri(path: 'https://hart-app.com/');
+  Uri appurl = Uri.parse('https://hart-landing-page.web.app');
 
   final currentLocation = locator<LocationService>().currentLocation;
 
@@ -69,8 +69,15 @@ class ProfileProvider extends BaseViewModel {
     notifyListeners();
   }
 
-   launchAppUrl() async {
-    if (!await launchUrl(appurl)) {
+  launchAppUrl() async {
+    if (await canLaunchUrl(appurl)) {
+      await launchUrl(
+        appurl,
+        // webViewConfiguration: WebViewConfiguration(
+        //   enableJavaScript: true,
+        // ),
+      );
+    } else {
       throw Exception('Could not launch $appurl');
     }
   }

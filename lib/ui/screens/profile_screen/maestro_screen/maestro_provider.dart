@@ -48,27 +48,27 @@ class MaestroProvider extends BaseViewModel {
         image: '$staticAsset/connection_d.png',
         title: 'One free Ping a day',
         description: 'Express your interest by sending a Ping'),
-    // SliderImg(
-    //     image: '$staticAsset/image 7.png',
-    //     title: 'Incognito',
-    //     description: 'Hide your profile from Discover but still send Likes'),
-    // SliderImg(
-    //     image: '$staticAsset/image 8.jpg',
-    //     title: 'See who Likes you',
-    //     description: 'Discover people who\'re already into you'),
-    // SliderImg(
-    //     image: '$staticAsset/image 9.jpg',
-    //     title: 'Private Photoes',
-    //     description:
-    //         'Have the option to add photoes only visible to Connections'),
-    // SliderImg(
-    //     image: '$staticAsset/image 10.png',
-    //     title: 'Incognito',
-    //     description: 'Hide your profile from Discover but still send Likes'),
-    // SliderImg(
-    //     image: '$staticAsset/image 11.jpg',
-    //     title: 'See who Likes you',
-    //     description: 'Discover people who\'re already into you'),
+    SliderImg(
+        image: '$staticAsset/img1.png',
+        title: 'Incognito',
+        description: 'Hide your profile from Discover but still send Likes'),
+    SliderImg(
+        image: '$staticAsset/img2.png',
+        title: 'See who Likes you',
+        description: 'Discover people who\'re already into you'),
+    SliderImg(
+        image: '$staticAsset/img3.png',
+        title: 'Private Photoes',
+        description:
+            'Have the option to add photoes only visible to Connections'),
+    SliderImg(
+        image: '$staticAsset/img4.png',
+        title: 'Incognito',
+        description: 'Hide your profile from Discover but still send Likes'),
+    SliderImg(
+        image: '$staticAsset/img5.png',
+        title: 'See who Likes you',
+        description: 'Discover people who\'re already into you'),
   ];
 
   List<Subscription> subscriptions = [
