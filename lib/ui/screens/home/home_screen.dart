@@ -424,7 +424,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 20.h,
                 ),
                 Text(
-                  'Desire',
+                  'Desires',
                   style: subHeadingText1,
                 ),
                 SizedBox(
@@ -513,9 +513,36 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 100),
-                  child: Text(
-                    'Lorem ipsum dolor sit amet consectetur. Nulla ut proin diam est ac quam pretium lacus mollis. Pretium quam ac nibh nibh. Nec neque pulvinar risus sit consectetur cursus ut etiam risus...',
-                    style: buttonTextStyle2,
+                  child: Column(
+                    children: [
+                      Text(
+                        'Lorem ipsum dolor sit amet consectetur. Nulla ut proin diam est ac quam pretium lacus mollis. Pretium quam ac nibh nibh. Nec neque pulvinar risus sit consectetur cursus ut etiam risus...',
+                        style: buttonTextStyle2,
+                        textAlign: TextAlign.justify,
+                      ),
+                      20.verticalSpace,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.report,
+                            color: greyColor2,
+                          ),
+                          10.horizontalSpace,
+                          GestureDetector(
+                            onTap: () {
+                              model.reportUser(user);
+                            },
+                            child: Text(
+                              'Report Profile ',
+                              style: bodyTextStyle.copyWith(
+                                color: greyColor2,
+                              ),
+                            ),
+                          )
+                        ],
+                      )
+                    ],
                   ),
                 ),
               ],

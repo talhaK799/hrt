@@ -8,6 +8,7 @@ import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/models/app_user.dart';
 import 'package:hart/core/models/filter.dart';
 import 'package:hart/core/models/matches.dart';
+import 'package:hart/core/models/report_user.dart';
 import 'package:hart/core/models/uplift.dart';
 import 'package:hart/core/services/auth_service.dart';
 import 'package:hart/core/services/database_service.dart';
@@ -54,6 +55,7 @@ class HomeProvider extends BaseViewModel {
   Matches match = Matches();
   Filtering filter = Filtering(desire: []);
   UPlift uPlift = UPlift();
+  ReportedUser reportedUser = ReportedUser();
 
   bool isDataLoaded = false;
 
@@ -195,6 +197,16 @@ class HomeProvider extends BaseViewModel {
     }
   }
 
+  reportUser(AppUser user) async {
+    reportedUser.reportedUserId = user.id;
+    reportedUser.reportingUserId = currentUser.appUser.id;
+    reportedUser.reportedAt = DateTime.now();
+    bool isreported = await db.reportUser(reportedUser);
+    if (isreported == true) {
+      Get.snackbar('Alert!', 'Profile Reported');
+    }
+  }
+
   spank(AppUser user, context) async {
     if (currentUser.appUser.spanks != 0) {
       currentUser.appUser.spanks = currentUser.appUser.spanks! - 1;
@@ -289,6 +301,7 @@ class HomeProvider extends BaseViewModel {
     ///if currentUser likes other users
     ///
     if (await !currentUser.appUser.likedUsers!.contains(user.id)) {
+      await Future.delayed(Duration(milliseconds: 400));
       // if (currentUser.appUser.likedUsers!.length <
       //     currentUser.appUser.likesCount!) {
       //////
@@ -379,7 +392,7 @@ class HomeProvider extends BaseViewModel {
       // if (currentUser.appUser.disLikedUsers!.length <
       //     currentUser.appUser.likesCount!) {
       ////
-      await Future.delayed(Duration(seconds: 1));
+      await Future.delayed(Duration(milliseconds: 500));
       if (await !currentUser.previousUsers.contains(user)) {
         print(
             'previous USERS list==> BEFORE ${currentUser.previousUsers.length}');

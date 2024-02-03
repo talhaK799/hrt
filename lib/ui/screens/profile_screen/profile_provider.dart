@@ -13,6 +13,7 @@ import 'package:hart/core/view_models/base_view_model.dart';
 import 'package:hart/locator.dart';
 import 'package:hart/ui/screens/splash_screen.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfileProvider extends BaseViewModel {
   final _auth = locator<AuthService>();
@@ -20,6 +21,7 @@ class ProfileProvider extends BaseViewModel {
   final db = locator<DatabaseService>();
   String? country;
   List<Placemark> placemark = [];
+  Uri appurl = Uri.parse('https://hart-landing-page.web.app');
 
   final currentLocation = locator<LocationService>().currentLocation;
 
@@ -65,6 +67,19 @@ class ProfileProvider extends BaseViewModel {
     });
 
     notifyListeners();
+  }
+
+  launchAppUrl() async {
+    if (await canLaunchUrl(appurl)) {
+      await launchUrl(
+        appurl,
+        // webViewConfiguration: WebViewConfiguration(
+        //   enableJavaScript: true,
+        // ),
+      );
+    } else {
+      throw Exception('Could not launch $appurl');
+    }
   }
 
   logout(context) async {
