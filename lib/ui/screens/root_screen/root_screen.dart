@@ -45,7 +45,7 @@ class RootScreen extends StatelessWidget {
                 ],
                 color: whiteColor,
               ),
-              height: 70.h,
+              height: 85.h,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.center,

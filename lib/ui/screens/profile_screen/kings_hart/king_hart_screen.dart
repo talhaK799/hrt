@@ -40,7 +40,7 @@ class KingHartScreen extends StatelessWidget {
                     CustomAppBar(title: 'Spanks'),
                     sizeBox30,
                     Image.asset(
-                      '$staticAsset/img4.png',
+                      '$staticAsset/img3.png',
                       fit: BoxFit.fill,
                       width: 1.sw,
                     ),

@@ -563,6 +563,7 @@ class HomeProvider extends BaseViewModel {
     end = 60.0;
 
     ageValues = SfRangeValues(18, 60);
+    distanceValues = SfRangeValues(0, 50);
     isFiltering = false;
     filteredUsers = [];
 
