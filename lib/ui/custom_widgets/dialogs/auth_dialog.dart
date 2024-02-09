@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hart/core/constants/colors.dart';
@@ -45,7 +47,7 @@ becomeMaestroDialog(context, String? error) async {
     barrierDismissible: false, // user must tap button!
     builder: (BuildContext context) {
       return AlertDialog(
-        backgroundColor: whiteColor,
+        backgroundColor: Platform.isIOS ? whiteColor : whiteColor,
         title: Text('Alert'),
         content: SingleChildScrollView(
           child: ListBody(
@@ -56,7 +58,10 @@ becomeMaestroDialog(context, String? error) async {
         ),
         actions: <Widget>[
           TextButton(
-            child: Text('Cancel'),
+            child: Text(
+              'Cancel',
+              style: TextStyle(color: Colors.grey),
+            ),
             onPressed: () {
               Navigator.of(context).pop();
             },
