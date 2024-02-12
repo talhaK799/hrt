@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -74,17 +76,27 @@ class MyApp extends StatelessWidget {
             locale: Locale(langCode),
             translations: LocalizationService(),
             debugShowCheckedModeBanner: false,
+
             theme: ThemeData(
               // useMaterial3: true,
               primaryColor: primaryColor,
-              primarySwatch: Colors.brown,
+              // primarySwatch: Colors.brown,
+              dialogBackgroundColor: Platform.isIOS ? whiteColor : whiteColor,
+              dropdownMenuTheme: DropdownMenuThemeData(
+                menuStyle: MenuStyle(
+                  backgroundColor: MaterialStatePropertyAll(
+                    whiteColor,
+                  ),
+                ),
+              ),
+              popupMenuTheme: PopupMenuThemeData(color: whiteColor),
               scaffoldBackgroundColor: Colors.white.withOpacity(0.96),
               colorScheme: ColorScheme.fromSwatch().copyWith(
                 primary: primaryColor,
                 secondary: whiteColor,
               ),
             ),
-            darkTheme: model.isDarkTheme ? ThemeData.dark() : ThemeData.light(),
+            // darkTheme: model.isDarkTheme ? ThemeData.dark() : ThemeData.light(),
             home: SplashScreen(),
           );
         }),
