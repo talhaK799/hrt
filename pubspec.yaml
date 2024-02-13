@@ -65,6 +65,7 @@ dependencies:
   firebase_database: ^10.3.6
   csc_picker_i18n: ^0.2.8
   url_launcher: ^6.2.4
+  vibration: ^1.8.4
 
 dev_dependencies:
   flutter_test:

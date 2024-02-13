@@ -17,6 +17,7 @@ import 'package:hart/ui/screens/home/home_provider.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
+import 'package:vibration/vibration.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({
@@ -174,8 +175,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       model.isLiked = false;
                       model.isDisLiked = true;
                     });
-                    await Future.delayed(Duration(milliseconds: 100));
-
+                    bool? vibrate = await Vibration.hasVibrator() ?? false;
+                    if (vibrate == true) {
+                      Vibration.vibrate(duration: 130);
+                    }
+                    await Future.delayed(Duration(milliseconds: 550));
                     setState(() {
                       model.isDisLiked = false;
                     });
@@ -208,8 +212,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       model.isLiked = true;
                       model.isDisLiked = false;
                     });
-                    await Future.delayed(Duration(milliseconds: 100));
-
+                    bool? vibrate = await Vibration.hasVibrator() ?? false;
+                    if (vibrate == true) {
+                      Vibration.vibrate(duration: 130);
+                    }
+                    await Future.delayed(Duration(milliseconds: 550));
                     setState(() {
                       model.isLiked = false;
                       model.isDisLiked = false;
