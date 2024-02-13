@@ -78,7 +78,7 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
 
             theme: ThemeData(
-              // useMaterial3: true,
+              useMaterial3: false,
               primaryColor: primaryColor,
               // primarySwatch: Colors.brown,
               dialogBackgroundColor: Platform.isIOS ? whiteColor : whiteColor,

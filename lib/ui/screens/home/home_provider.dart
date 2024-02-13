@@ -21,6 +21,7 @@ import 'package:hart/ui/screens/collect_info_screens/fantasies_screen/fantasies_
 import 'package:hart/ui/screens/connection_screen/connect_popup/connect_popup_screen.dart';
 import 'package:hart/ui/screens/profile_screen/kings_hart/king_hart_screen.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
+import 'package:vibration/vibration.dart';
 
 import '../../custom_widgets/dialogs/auth_dialog.dart';
 import '../collect_info_screens/select_gender_screen/select_gender_screen.dart';
@@ -392,7 +393,7 @@ class HomeProvider extends BaseViewModel {
       // if (currentUser.appUser.disLikedUsers!.length <
       //     currentUser.appUser.likesCount!) {
       ////
-      await Future.delayed(Duration(milliseconds: 500));
+      await Future.delayed(Duration(milliseconds: 400));
       if (await !currentUser.previousUsers.contains(user)) {
         print(
             'previous USERS list==> BEFORE ${currentUser.previousUsers.length}');
@@ -403,6 +404,7 @@ class HomeProvider extends BaseViewModel {
       currentUser.appUser.disLikedUsers!.add(user.id!);
 
       appUsers.removeWhere((element) => element.id == user.id);
+
       notifyListeners();
       // notifyListeners();
       // pageController!.nextPage(

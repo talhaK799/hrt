@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_facebook_keyhash/flutter_facebook_keyhash.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:hart/core/constants/colors.dart';
@@ -50,33 +49,34 @@ class _SplashScreenState extends State<SplashScreen> {
     // print(
     //     'this is the current location ${_location.currentLocation!.latitude} === ${_location.currentLocation!.longitude}');
 
-    Get.to(
-      DOBScreen(),
-    );
-    // if (networkSetvice.hasConnection == true) {
-    //   if (_auth.isLogin) {
-    //     // if (_auth.appUser.isEmailVerified == false) {
-    //     //   Get.offAll(EmailVerificationScreen());
-    //     // } else
-    //     if (_auth.appUser.isPhoneNoVerified == false) {
-    //       Get.offAll(
-    //         PhoneLoginScreen(),
-    //       );
-    //     } else {
-    //       if (_auth.appUser.images == null) {
-    //         Get.to(DOBScreen());
-    //       } else if (_auth.appUser.images!.isEmpty) {
-    //         Get.to(DOBScreen());
-    //       } else {
-    //         Get.offAll(RootScreen());
-    //       }
-    //     }
-    //   } else {
-    //     Get.offAll(InitialAgeScreen());
-    //   }
-    // } else {
-    //   Get.to(OfflineScreen());
-    // }
+    // Get.to(
+    //   DOBScreen(),
+    // );
+    if (networkSetvice.hasConnection == true) {
+      if (_auth.isLogin) {
+        // if (_auth.appUser.isEmailVerified == false) {
+        //   Get.offAll(EmailVerificationScreen());
+        // } else
+        if (_auth.appUser.isPhoneNoVerified == false) {
+          Get.offAll(
+            PhoneLoginScreen(),
+          );
+        } else {
+          if (_auth.appUser.images == null) {
+            Get.to(DOBScreen());
+          } else if (_auth.appUser.images!.isEmpty ||
+              _auth.appUser.isProfileCompleted == false) {
+            Get.to(DOBScreen());
+          } else {
+            Get.offAll(RootScreen());
+          }
+        }
+      } else {
+        Get.offAll(InitialAgeScreen());
+      }
+    } else {
+      Get.to(OfflineScreen());
+    }
   }
 
   // void printKeyHash() async {
