@@ -75,7 +75,7 @@ class HomeProvider extends BaseViewModel {
     }
 
     await getAllAppUsers();
-    appUsers = currentUser.appUsers;
+    // appUsers = currentUser.appUsers;
 
     await convertLatAndLongIntoAddress();
 
@@ -112,10 +112,9 @@ class HomeProvider extends BaseViewModel {
   }
 
   getAllAppUsers() async {
-// <<<<<<< text_changes
     try {
       print("all users: ${currentUser.appUsers.length}");
-      appUsers = currentUser.appUsers;
+      // appUsers = currentUser.appUsers;
       notifyListeners();
       if (currentUser.appUsers.isEmpty && currentUser.isHomeloaded == false) {
         // setState(ViewState.busy);
@@ -126,43 +125,15 @@ class HomeProvider extends BaseViewModel {
       // int dataLength = _localStorage.getdataLength;
       // print('data length===> $dataLength');
       // appUsers = [];
-      currentUser.appUser = await db.getAppUser(currentUser.appUser.id);
-      currentUser.appUsers = await db.getAllUsers(currentUser.appUser);
-      // setState(ViewState.idle);
-      // if (users.length > dataLength) {
-      //   await Future.delayed(Duration(seconds: 5));
-
-      //   _localStorage.setdataLength = users.length;
-      //   setState(ViewState.idle);
-      // }
+      currentUser.appUser =
+          await db.getAppUser(currentUser.appUser.id); // Current User
+      currentUser.appUsers =
+          await db.getAllUsers(currentUser.appUser); // All Users
       log('number of all Appusers ${currentUser.appUsers.length}');
       await checkUpliftedUser();
       for (var user in currentUser.appUsers) {
         print('user ${user.id} onLineTime  ===> ${user.onlineTime.toString()}');
-        // appUsers.add(user);
-        // if (currentUser.appUser.likedUsers == null ||
-        //     currentUser.appUser.disLikedUsers == null) {
-// =======
-//     try {
-//       print("all users::: ${currentUser.appUsers.length}");
-
-//       // int dataLength = _localStorage.getdataLength;
-//       // print('data length===> $dataLength');
-//       // appUsers = [];
-//       currentUser.appUser = await db.getAppUser(currentUser.appUser.id);
-//       currentUser.appUsers = await db.getAllUsers(currentUser.appUser);
-//       // if (users.length > dataLength) {
-//       //   await Future.delayed(Duration(seconds: 5));
-
-//       //   _localStorage.setdataLength = users.length;
-//       //   setState(ViewState.idle);
-//       // }
-//       print('number of all Appusers ${currentUser.appUsers.length}');
-//       await checkUpliftedUser();
-//       for (var user in currentUser.appUsers) {
-//         print('user ${user.id} onLineTime  ===> ${user.onlineTime.toString()}');
-// >>>>>>> dev
-        // appUsers.add(user);
+        
         if (currentUser.appUser.likedUsers == null ||
             currentUser.appUser.disLikedUsers == null) {
           appUsers.add(user);
