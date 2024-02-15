@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:hart/core/constants/strings.dart';
 import 'package:hart/core/constants/style.dart';
 import 'package:hart/core/enums/view_state.dart';
@@ -8,7 +7,6 @@ import 'package:hart/ui/custom_widgets/custom_button.dart';
 import 'package:hart/ui/screens/auth_screens/auth_provider.dart';
 import 'package:hart/ui/screens/auth_screens/login/login_screen.dart';
 import 'package:hart/ui/screens/auth_screens/firebase_phone_login/phone_login_screen.dart';
-import 'package:hart/ui/screens/auth_screens/signup_email/signup_email_screen.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
@@ -119,11 +117,11 @@ class AuthScreen extends StatelessWidget {
                             //   PhoneLoginScreen(),
                             // );
                             Navigator.push(
-                  context,
-                  PageFromRight(
-                    page: PhoneLoginScreen(),
-                  ),
-                );
+                              context,
+                              PageFromRight(
+                                page: PhoneLoginScreen(),
+                              ),
+                            );
                           }),
                       SizedBox(
                         height: 20.h,
@@ -143,11 +141,11 @@ class AuthScreen extends StatelessWidget {
                               onTap: () {
                                 // Get.to(LoginScreen());
                                 Navigator.push(
-                  context,
-                  PageFromRight(
-                    page: LoginScreen(),
-                  ),
-                );
+                                  context,
+                                  PageFromRight(
+                                    page: LoginScreen(),
+                                  ),
+                                );
                               },
                               child: Text(
                                 'Login',
