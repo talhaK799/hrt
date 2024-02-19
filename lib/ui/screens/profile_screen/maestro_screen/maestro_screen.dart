@@ -217,7 +217,7 @@ class MaestroScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            '\$ ${subscription.price}',
+            '€ ${subscription.price}',
             style: bodyTextStyle.copyWith(
               color: primaryColor,
             ),

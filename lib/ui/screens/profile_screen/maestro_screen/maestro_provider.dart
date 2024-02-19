@@ -41,12 +41,12 @@ class MaestroProvider extends BaseViewModel {
     // ),
     SliderImg(
         image: '$staticAsset/profile_d.png',
-        title: 'Private Photoes',
+        title: 'Private Photos',
         description:
-            'Have the option to add photoes only visible to Connections'),
+            'Have the option to add Photos only visible to Connections'),
     SliderImg(
         image: '$staticAsset/connection_d.png',
-        title: 'One free Ping a day',
+        title: '1x Free Spank a Day',
         description: 'Express your interest by sending a Ping'),
     SliderImg(
       image: '$staticAsset/img1.png',
@@ -55,12 +55,12 @@ class MaestroProvider extends BaseViewModel {
     ),
     SliderImg(
         image: '$staticAsset/img2.png',
-        title: 'Private Photoes',
+        title: 'Private Photos',
         description:
             'Have the option to add photoes only visible to Connections'),
     SliderImg(
         image: '$staticAsset/img3.png',
-        title: 'One free Ping a day',
+        title: '1x Free Spank a Day',
         description: 'Express your interest by sending a Ping'),
     SliderImg(
         image: '$staticAsset/img4.png',

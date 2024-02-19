@@ -175,10 +175,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       model.isLiked = false;
                       model.isDisLiked = true;
                     });
-                    bool? vibrate = await Vibration.hasVibrator() ?? false;
-                    if (vibrate == true) {
-                      Vibration.vibrate(duration: 130);
-                    }
+                    // bool? vibrate = await Vibration.hasVibrator() ?? false;
+                    // if (vibrate == true) {
+                    //   Vibration.vibrate(duration: 130);
+                    // }
                     await Future.delayed(Duration(milliseconds: 550));
                     setState(() {
                       model.isDisLiked = false;
@@ -214,7 +214,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     });
                     bool? vibrate = await Vibration.hasVibrator() ?? false;
                     if (vibrate == true) {
-                      Vibration.vibrate(duration: 130);
+                      Vibration.vibrate(duration: 130, amplitude: 1);
                     }
                     await Future.delayed(Duration(milliseconds: 550));
                     setState(() {
@@ -523,7 +523,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Column(
                     children: [
                       Text(
-                        'Lorem ipsum dolor sit amet consectetur. Nulla ut proin diam est ac quam pretium lacus mollis. Pretium quam ac nibh nibh. Nec neque pulvinar risus sit consectetur cursus ut etiam risus...',
+                        "${user.about}",
                         style: buttonTextStyle2,
                         textAlign: TextAlign.justify,
                       ),
@@ -538,7 +538,90 @@ class _HomeScreenState extends State<HomeScreen> {
                           10.horizontalSpace,
                           GestureDetector(
                             onTap: () {
-                              model.reportUser(user);
+                              ///
+                              /// Report bottomsheet
+                              ///
+                              showModalBottomSheet(
+                                context: context,
+                                isScrollControlled: true,
+                                constraints: BoxConstraints(
+                                  maxHeight:
+                                      MediaQuery.of(context).size.height * 0.75,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.only(
+                                      topRight: Radius.circular(20),
+                                      topLeft: Radius.circular(20)),
+                                ),
+                                builder: (context) {
+                                  return StatefulBuilder(
+                                      builder: (context, setState) {
+                                    return Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 15),
+                                      child: Column(
+                                        children: [
+                                          Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 10),
+                                            child: Text(
+                                              "Why are you reporting",
+                                              style: headingText.copyWith(
+                                                color: primaryColor,
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: ListView.builder(
+                                              padding: EdgeInsets.zero,
+                                              itemCount:
+                                                  model.reportsOptions.length,
+                                              itemBuilder: (context, index) =>
+                                                  ListTile(
+                                                title: Text(
+                                                    "${model.reportsOptions[index]}"),
+                                                trailing:
+                                                    model.reportsOptionsIndex ==
+                                                            index
+                                                        ? Icon(Icons
+                                                            .circle_rounded)
+                                                        : Icon(Icons
+                                                            .circle_outlined),
+                                                onTap: () {
+                                                  setState(
+                                                    () {
+                                                      model.reportsOptionsIndex =
+                                                          index;
+                                                    },
+                                                  );
+
+                                                  // model.selectReportOption(index);
+                                                },
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(height: 20.h),
+                                          Padding(
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: 40,
+                                            ),
+                                            child: CustomButton(
+                                              title: 'Report',
+                                              onTap: () {
+                                                FocusManager
+                                                    .instance.primaryFocus
+                                                    ?.unfocus();
+                                                model.reportUser(user);
+                                              },
+                                            ),
+                                          ),
+                                          SizedBox(height: 30.h),
+                                        ],
+                                      ),
+                                    );
+                                  });
+                                },
+                              );
                             },
                             child: Text(
                               'Report Profile ',
