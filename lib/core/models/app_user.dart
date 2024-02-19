@@ -1,5 +1,3 @@
-import 'package:hart/core/constants/format_date.dart';
-
 class AppUser {
   String? id;
   String? paymentId;
@@ -17,14 +15,12 @@ class AppUser {
   bool? isApple;
   bool? isUplifted;
   bool? isProfileCompleted;
-
   bool? isFacebook;
   int? likesCount;
   int? spanks;
   double? latitude;
   double? longitude;
   double distance = 0.0;
-
   String? fcmToken;
   int? age;
   DateTime? createdAt = DateTime.now();
@@ -45,6 +41,7 @@ class AppUser {
   List<String>? users;
   bool? isFirstTimeChat;
   bool? isSelected;
+  String? about;
 
   AppUser({
     this.id,
@@ -86,6 +83,7 @@ class AppUser {
     this.onlineTime,
     this.offlineTime = '',
     this.distance = 0.0,
+    this.about,
   });
 
   toJson() {
@@ -126,6 +124,7 @@ class AppUser {
     data['likedUsers'] = likedUsers ?? [];
     data['disLikedUsers'] = disLikedUsers ?? [];
     data["isApple"] = isApple ?? false;
+    data["about"] = this.about;
     return data;
   }
 
@@ -161,7 +160,7 @@ class AppUser {
       spanks = json['spanks'] ?? 0;
       latitude = json['latitude'].toDouble() ?? 2.0;
       longitude = json['longitude'].toDouble() ?? 3.0;
-      // lookingFor = json['lookingFor'];
+      about = json['about'] ?? "";
       if (json["lookingFor"] != null) {
         lookingFor = [];
         json["lookingFor"].forEach((element) {

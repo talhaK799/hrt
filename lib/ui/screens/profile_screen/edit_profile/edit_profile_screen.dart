@@ -147,6 +147,28 @@ class EditProfileScreen extends StatelessWidget {
               model.changeNickName(context);
             },
           ),
+          sizeBox20,
+          heading('Name'),
+          CustomProfileTile(
+            title: model.currentUser.appUser.name ?? "No Name",
+            textColor: greyColor2,
+            iconColor: greyColor2,
+            onTap: () {
+              model.changeUserName(context);
+            },
+          ),
+
+          sizeBox20,
+          heading('About'),
+          CustomProfileTile(
+            title: model.currentUser.appUser.about ?? "No Name",
+            textColor: greyColor2,
+            iconColor: greyColor2,
+            onTap: () {
+              //
+              model.changeAbout(context);
+            },
+          ),
 
           sizeBox20,
           ////

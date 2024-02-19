@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
@@ -21,8 +20,6 @@ import 'package:hart/ui/screens/collect_info_screens/fantasies_screen/fantasies_
 import 'package:hart/ui/screens/connection_screen/connect_popup/connect_popup_screen.dart';
 import 'package:hart/ui/screens/profile_screen/kings_hart/king_hart_screen.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
-import 'package:vibration/vibration.dart';
-
 import '../../custom_widgets/dialogs/auth_dialog.dart';
 import '../collect_info_screens/select_gender_screen/select_gender_screen.dart';
 import 'country_city_picker.dart';
@@ -45,7 +42,16 @@ class HomeProvider extends BaseViewModel {
   // final _db = DatabaseService();
   PageController? pageController;
   int index = 0;
-  // List<AppUser> users = [];
+  int reportsOptionsIndex = -1;
+  List<String> reportsOptions = [
+    "This profile has inappropiate photos or content",
+    "This is a fake account",
+    "They are underage",
+    "They're abusive or harassing",
+    "They're solicting me or others",
+    "Doesn't match search setting",
+    "Something else",
+  ];
   List<AppUser> appUsers = [];
   List<AppUser> filteredUsers = [];
   List<Placemark> placemarks = [];
@@ -106,9 +112,9 @@ class HomeProvider extends BaseViewModel {
 
     country = placemarks.first.country!;
     city = placemarks.first.locality!;
-    notifyListeners();
-    print("country =>" + placemarks.first.country!);
-    print("country =>" + placemarks.first.locality!);
+    // notifyListeners();
+    // print("country =>" + placemarks.first.country!);
+    // print("country =>" + placemarks.first.locality!);
   }
 
   getAllAppUsers() async {
@@ -133,7 +139,7 @@ class HomeProvider extends BaseViewModel {
       await checkUpliftedUser();
       for (var user in currentUser.appUsers) {
         print('user ${user.id} onLineTime  ===> ${user.onlineTime.toString()}');
-        
+
         if (currentUser.appUser.likedUsers == null ||
             currentUser.appUser.disLikedUsers == null) {
           appUsers.add(user);
@@ -170,12 +176,19 @@ class HomeProvider extends BaseViewModel {
   }
 
   reportUser(AppUser user) async {
-    reportedUser.reportedUserId = user.id;
-    reportedUser.reportingUserId = currentUser.appUser.id;
-    reportedUser.reportedAt = DateTime.now();
-    bool isreported = await db.reportUser(reportedUser);
-    if (isreported == true) {
-      Get.snackbar('Alert!', 'Profile Reported');
+    if (reportsOptionsIndex >= 0) {
+      reportedUser.reason = reportsOptions[reportsOptionsIndex];
+      reportedUser.reportedUserId = user.id;
+      reportedUser.reportingUserId = currentUser.appUser.id;
+      reportedUser.reportedAt = DateTime.now();
+      bool isreported = await db.reportUser(reportedUser);
+      if (isreported == true) {
+        Get.back();
+        Get.snackbar('Alert!', 'User Reported');
+      }
+      reportsOptionsIndex = -1;
+    } else {
+      Get.snackbar('Alert!', 'Please select reason');
     }
   }
 
@@ -552,5 +565,11 @@ class HomeProvider extends BaseViewModel {
 // >>>>>>> 5c30253d5dc233ad1f3b440b9bab2ed0e2f163f8
     notifyListeners();
     Get.back();
+  }
+
+  selectReportOption(val) {
+    print(val);
+    reportsOptionsIndex = val;
+    notifyListeners();
   }
 }
