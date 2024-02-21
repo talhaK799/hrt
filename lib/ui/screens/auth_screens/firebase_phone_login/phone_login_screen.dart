@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/others/screen_utils.dart';
+import 'package:hart/ui/custom_widgets/custom_back_button.dart';
 import 'package:hart/ui/custom_widgets/custom_button.dart';
 import 'package:hart/ui/custom_widgets/custom_loader.dart';
 import 'package:hart/ui/screens/auth_screens/firebase_phone_login/phone_login_provider.dart';
@@ -36,6 +37,10 @@ class PhoneLoginScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      CustomBackButton(
+                        isWhite: true,
+                      ),
+                      20.verticalSpace,
                       Text(
                         'Login with your phone number',
                         style: headingText.copyWith(
@@ -74,7 +79,7 @@ class PhoneLoginScreen extends StatelessWidget {
                   onTap: () {
                     FocusManager.instance.primaryFocus?.unfocus();
                     if (model.formKey.currentState!.validate()) {
-                      model.sentOTP(context);
+                      model.sentOTP(context, false);
                     }
                   },
                 ),

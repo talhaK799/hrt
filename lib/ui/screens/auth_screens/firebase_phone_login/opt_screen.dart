@@ -116,7 +116,7 @@ class OtpVerificationScreen extends StatelessWidget {
                         color: pinkColor,
                         textColor: primaryColor,
                         onTap: () {
-                          model.sentOTP(context);
+                          model.sentOTP(context, true);
                         })
                     : Container(),
                 Spacer(),

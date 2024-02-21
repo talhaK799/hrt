@@ -55,7 +55,6 @@ class AuthService extends ChangeNotifier {
     updateUserOnlineStatus();
     if (user != null) {
       isLogin = true;
-      print('current User==> ${_auth.currentUser!.uid}');
       appUser = (await _dbService.getAppUser(user!.uid));
       if (appUser.id == null) {
         isLogin = false;

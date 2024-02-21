@@ -179,9 +179,7 @@ class AddPhotoProvider extends BaseViewModel {
           //profile update
           Get.back();
         } else {
-          Get.offAll(
-            RootScreen(),
-          );
+          Get.offAll(RootScreen());
         }
       }
     }
