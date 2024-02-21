@@ -3,13 +3,13 @@ description: A new Flutter project.
 # Flutter Version: 3.13.0
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # Version
 version: 1.0.1+2
 
 environment:
-  sdk: '>=3.1.0 <4.0.0'
+  sdk: ">=3.1.0 <4.0.0"
 
 # Dependencies
 dependencies:
@@ -66,6 +66,7 @@ dependencies:
   csc_picker_i18n: ^0.2.8
   url_launcher: ^6.2.4
   vibration: ^1.8.4
+  blurry_modal_progress_hud: ^1.1.1
 
 dev_dependencies:
   flutter_test:
@@ -87,7 +88,6 @@ flutter_launcher_icons:
 # following page: https://dart.dev/tools/pub/pubspec
 # The following section is specific to Flutter packages.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

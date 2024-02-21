@@ -98,11 +98,14 @@ class PhoneLoginProvider extends BaseViewModel {
     notifyListeners();
   }
 
-  sentOTP(context) async {
+  sentOTP(context, isResend) async {
     if (appUser.phoneNumber != null || countryCode.isNotEmpty) {
       // isTimeExpired = false;
-      appUser.phoneNumber = countryCode + appUser.phoneNumber!;
-      print("Phone number ==> ${appUser.phoneNumber}");
+
+      if (isResend == false) {
+        appUser.phoneNumber = countryCode + appUser.phoneNumber!;
+        print("Phone number ==> ${appUser.phoneNumber}");
+      }
 
       // setState(ViewState.busy);
       bool isSent = await authService.verifyPhoneNumber(
