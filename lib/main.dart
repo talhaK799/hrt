@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hart/core/constants/colors.dart';
@@ -41,7 +42,10 @@ void main() async {
 
   await setupLocator();
   final langCode = await locator<LocalStorageService>().getSelectedLanguage();
-  runApp(MyApp(langCode));
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]).then((value) => runApp(MyApp(langCode)));
+  // runApp(MyApp(langCode));
 }
 
 class MyApp extends StatelessWidget {
@@ -51,8 +55,11 @@ class MyApp extends StatelessWidget {
   }
   @override
   Widget build(BuildContext context) {
+    Size screenSize = MediaQuery.of(context).size;
     return ScreenUtilInit(
-      designSize: Size(Get.width, Get.height),
+      designSize: Size(screenSize.width, screenSize.height),
+      minTextAdapt: true,
+      splitScreenMode: true,
       builder: (context, child) => MultiProvider(
         providers: [
           ChangeNotifierProvider(
