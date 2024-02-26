@@ -45,8 +45,10 @@ class SignUpWithEmail extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('Sign Up', style: headingText),
-                      Text('We’re happy to see you here.',
-                          style: subHeadingTextStyle),
+                      Text(
+                        'We’re happy to see you here.',
+                        style: subHeadingTextStyle,
+                      ),
                     ],
                   ),
                   SizedBox(

@@ -15,13 +15,19 @@ class VerificationService {
   }
 
   sendVerificationCodeThroughPhoneNumber(String phoneNumber) async {
+    _twilioPhoneVerify = TwilioPhoneVerify(
+      accountSid: Keys.account_sid,
+      authToken: Keys.auth_token,
+      serviceSid: Keys.service_id,
+    );
     try {
       twilioResponse = await _twilioPhoneVerify.sendSmsCode("$phoneNumber");
       print("Error msg ==> ${twilioResponse.errorMessage}");
+      print("Error msg ==> ${twilioResponse.statusCode}");
 
-      return "Code sent";
+      return twilioResponse.successful;
     } catch (e) {
-      return "${twilioResponse.errorMessage}";
+      return twilioResponse.successful;
     }
   }
 

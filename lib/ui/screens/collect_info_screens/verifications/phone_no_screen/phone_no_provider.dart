@@ -50,8 +50,8 @@ class PhoneNoProvider extends BaseViewModel {
   AppUser appUser = AppUser();
   String phoneOtp = '';
   String? initialCountry;
-
   String countryCode = "+92";
+
   selectCountryCode(val) {
     countryCode = val.toString();
     print('Country ==> $countryCode');
@@ -93,8 +93,7 @@ class PhoneNoProvider extends BaseViewModel {
       authService.appUser.isPhoneNoVerified = true;
       authService.appUser.phoneNumber = countryCode + appUser.phoneNumber!;
 
-      // bool isUpdatedProfile =
-      //     await _databaseService.updateUserProfile(authService.appUser);
+      _databaseService.updateUserProfile(authService.appUser);
       setState(ViewState.idle);
       // if (isUpdatedProfile) {
       // Get.to(

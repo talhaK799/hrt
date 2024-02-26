@@ -61,7 +61,7 @@ class SignUpwithEmailProvider extends BaseViewModel {
     print(appuser.email);
     // setState(ViewState.busy);
     await emailOTP.setConfig(
-        appEmail: "talhakhurshed799@gmail.com",
+        appEmail: "infohartapp@gmail.com",
         appName: "Hart",
         userEmail: appuser.email,
         otpLength: 4,

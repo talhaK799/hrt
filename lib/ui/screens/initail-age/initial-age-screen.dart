@@ -71,10 +71,11 @@ class InitialAgeScreen extends StatelessWidget {
                   ),
                   10.verticalSpace,
                   CustomButton(
-                      title: "I'm 18+",
-                      onTap: () {
-                        Get.offAll(AuthScreen());
-                      })
+                    title: "I'm 18+",
+                    onTap: () {
+                      Get.offAll(AuthScreen());
+                    },
+                  )
                 ],
               ),
             ),
