@@ -28,11 +28,11 @@ class AuthProvider extends BaseViewModel {
       //   DOBScreen(),
       // );
       Navigator.push(
-                  context,
-                  PageFromRight(
-                    page: DOBScreen(),
-                  ),
-                );
+        context,
+        PageFromRight(
+          page: DOBScreen(),
+        ),
+      );
     } else {
       showMyDialog(
         context,
@@ -55,11 +55,11 @@ class AuthProvider extends BaseViewModel {
         //   DOBScreen(),
         // );
         Navigator.push(
-                  context,
-                  PageFromRight(
-                    page: DOBScreen(),
-                  ),
-                );
+          context,
+          PageFromRight(
+            page: DOBScreen(),
+          ),
+        );
       } else {
         showMyDialog(
           context,
@@ -84,11 +84,11 @@ class AuthProvider extends BaseViewModel {
       // );
 
       Navigator.push(
-                  context,
-                  PageFromRight(
-                    page: DOBScreen(),
-                  ),
-                );
+        context,
+        PageFromRight(
+          page: DOBScreen(),
+        ),
+      );
     } else {
       showMyDialog(
         context,

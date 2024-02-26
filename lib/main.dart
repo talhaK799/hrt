@@ -68,9 +68,9 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(
             create: (context) => HomeProvider(),
           ),
-          ChangeNotifierProvider(
-            create: (context) => PhoneLoginProvider(),
-          ),
+          // ChangeNotifierProvider(
+          //   create: (context) => PhoneLoginProvider(),
+          // ),
           ChangeNotifierProvider(
             create: (context) => PhoneNoProvider(),
           ),

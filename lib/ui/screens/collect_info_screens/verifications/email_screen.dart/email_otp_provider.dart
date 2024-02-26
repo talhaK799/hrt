@@ -33,27 +33,27 @@ class EmailOtpProvider extends BaseViewModel {
       // setState(ViewState.busy);
       // await _databaseService.updateUserProfile(authService.appUser);
       setState(ViewState.idle);
-    if (phone == false) {
-      // Get.to(
-      //   DOBScreen(),
-      // );
-      Navigator.push(
-                  context,
-                  PageFromRight(
-                    page: DOBScreen(),
-                  ),
-                );
-    } else {
-      // Get.to(
-      //   AddPhoneNumberScreen(),
-      // );
-      Navigator.push(
-                  context,
-                  PageFromRight(
-                    page: AddPhoneNumberScreen(),
-                  ),
-                );
-    }
+      if (phone == false) {
+        // Get.to(
+        //   DOBScreen(),
+        // );
+        Navigator.push(
+          context,
+          PageFromRight(
+            page: DOBScreen(),
+          ),
+        );
+      } else {
+        // Get.to(
+        //   AddPhoneNumberScreen(),
+        // );
+        Navigator.push(
+          context,
+          PageFromRight(
+            page: AddPhoneNumberScreen(),
+          ),
+        );
+      }
     } else {
       Get.snackbar("Error!", "Invalid OTP");
     }
