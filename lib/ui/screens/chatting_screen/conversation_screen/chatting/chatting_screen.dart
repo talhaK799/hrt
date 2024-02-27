@@ -45,8 +45,8 @@ class _ChattingScreenState extends State<ChattingScreen> {
 
   @override
   void dispose() {
+    Provider.of<ChattingProvider>(context, listen: false).disposestream();
     super.dispose();
-    Provider.of<ChattingProvider>(context, listen: false).disposestream;
   }
 
   void _init() async {
