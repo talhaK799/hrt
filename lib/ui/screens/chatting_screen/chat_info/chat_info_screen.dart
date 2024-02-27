@@ -43,11 +43,11 @@ class ChatInfoScreen extends StatelessWidget {
                       //   CreateGroupScreen(),
                       // );
                       Navigator.push(
-                  context,
-                  PageFromRight(
-                    page: CreateGroupScreen(),
-                  ),
-                );
+                        context,
+                        PageFromRight(
+                          page: CreateGroupScreen(),
+                        ),
+                      );
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

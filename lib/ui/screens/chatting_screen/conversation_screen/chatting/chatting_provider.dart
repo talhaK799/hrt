@@ -163,7 +163,8 @@ class ChattingProvider extends BaseViewModel {
   }
 
   disposestream() {
-    // super.dispose();
+    // super.dispose();.
+
     messageStream = null;
   }
 

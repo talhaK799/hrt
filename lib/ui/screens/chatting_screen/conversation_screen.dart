@@ -115,6 +115,7 @@ class ConversationScreen extends StatelessWidget {
                                                     ),
                                                   ),
                                                 );
+                                                model.filterMatches();
                                                 // Get.to(
                                                 //   ChattingScreen(
                                                 //     toUserId: model
@@ -126,12 +127,12 @@ class ConversationScreen extends StatelessWidget {
                                                 //   ),
                                                 // );
 
-                                                if (model.firstTime == false) {
-                                                  model.currentUser.matchedUsers
-                                                      .removeAt(index);
-                                                  model
-                                                      .setState(ViewState.idle);
-                                                }
+                                                // if (model.firstTime == false) {
+                                                //   model.currentUser.matchedUsers
+                                                //       .removeAt(index);
+                                                //   model
+                                                //       .setState(ViewState.idle);
+                                                // }
                                               },
                                               child: model
                                                       .currentUser
@@ -253,132 +254,6 @@ class ConversationScreen extends StatelessWidget {
         );
       }),
     );
-  }
-
-  _disconnectionSheet(BuildContext context) {
-    return showModalBottomSheet(
-        context: context,
-        useSafeArea: true,
-        isScrollControlled: true,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(
-            20.0,
-          ),
-        ),
-        builder: (context) {
-          return Consumer<ConversationProvider>(
-              builder: (context, model, child) {
-            return Container(
-              padding: EdgeInsets.only(
-                left: 25,
-                right: 25,
-                top: 100,
-                bottom: 30,
-              ),
-              child: Column(children: [
-                Text(
-                  'Do you want to disconnect from Josef?',
-                  textAlign: TextAlign.center,
-                  style: bodyTextStyle,
-                ),
-                sizeBox20,
-                Text(
-                  'If you disconnect, Josef will no longer be able to message or access your chat history.',
-                  textAlign: TextAlign.center,
-                  style: buttonTextStyle.copyWith(
-                    color: Colors.grey,
-                  ),
-                ),
-                sizeBox30,
-                ListView.separated(
-                  shrinkWrap: true,
-                  itemCount: model.buttons.length,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () => model.selectButton(index),
-                      child: _selecions(
-                        model.buttons[index],
-                      ),
-                    );
-                  },
-                  separatorBuilder: (context, index) => sizeBox20,
-                ),
-                sizeBox30,
-                CustomButton(
-                  title: 'LEAVE',
-                  onTap: () {},
-                ),
-                sizeBox20,
-                CustomButton(
-                  title: 'Back',
-                  textColor: primaryColor,
-                  color: pinkColor,
-                  onTap: () {},
-                ),
-              ]),
-            );
-          });
-        });
-  }
-
-  _selecions(RadioButton button) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          button.title!,
-          style: bodyTextStyle,
-        ),
-        Container(
-          width: 15.w,
-          height: 15.h,
-          decoration: BoxDecoration(
-            color: button.isSelected == true ? primaryColor : pinkColor,
-            shape: BoxShape.circle,
-          ),
-        ),
-      ],
-    );
-  }
-
-  _leaveGroupBottomsheet(BuildContext context) {
-    return showModalBottomSheet(
-        context: context,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20.0),
-        ),
-        builder: (context) {
-          return Container(
-            padding: EdgeInsets.symmetric(horizontal: 25, vertical: 40),
-            child: Column(children: [
-              Text(
-                'Are you sure you want to leave this group XYZ',
-                textAlign: TextAlign.center,
-                style: bodyTextStyle,
-              ),
-              sizeBox20,
-              Text(
-                'A member of the group should add you backagain if you change your mind',
-                textAlign: TextAlign.center,
-                style: buttonTextStyle.copyWith(
-                  color: Colors.grey,
-                ),
-              ),
-              sizeBox30,
-              CustomButton(
-                title: 'LEAVE',
-                onTap: () {},
-              ),
-              sizeBox20,
-              CustomButton(
-                title: 'Back',
-                textColor: primaryColor,
-                color: pinkColor,
-                onTap: () {},
-              ),
-            ]),
-          );
-        });
   }
 
   _normalChat(ConversationProvider model, int index, onTap) {
