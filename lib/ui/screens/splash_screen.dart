@@ -55,10 +55,11 @@ class _SplashScreenState extends State<SplashScreen> {
     // );
     if (networkSetvice.hasConnection == true) {
       if (_auth.isLogin) {
-        if (_auth.appUser.images == null) {
-          Get.to(DOBScreen());
-        } else if (_auth.appUser.images!.isEmpty ||
-            _auth.appUser.isProfileCompleted == false) {
+        // if (_auth.appUser.images == null) {
+        //   Get.to(DOBScreen());
+        // }
+        // else
+        if (_auth.appUser.isProfileCompleted == false) {
           Get.to(DOBScreen());
         } else {
           Get.offAll(RootScreen());
