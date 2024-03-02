@@ -7,7 +7,8 @@ class Matches {
   String? likedByUserId;
   String? likedUserId;
   String? otherUserId;
-  bool? isActionTaken;
+  bool? isLike;
+  bool? isDislike;
 
   Matches({
     this.isAccepted,
@@ -18,7 +19,8 @@ class Matches {
     this.likedByUserId,
     this.likedUserId,
     this.otherUserId,
-    this.isActionTaken = false,
+    this.isLike = false,
+    this.isDislike = false,
   });
 
   Matches.fromJson(json, id) {
