@@ -282,26 +282,26 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
         GestureDetector(
           onTap: () async {
             setState(() {
-              match.isActionTaken = true;
+              match.isDislike = true;
             });
 
             await Future.delayed(Duration(milliseconds: 500));
 
             setState(() {
-              match.isActionTaken = false;
+              match.isDislike = false;
             });
             model.dilike(user, match);
           },
           child: Container(
             padding: const EdgeInsets.all(15),
             decoration: BoxDecoration(
-              color: match.isActionTaken == true ? greyColor2 : whiteColor,
+              color: match.isDislike == true ? greyColor2 : whiteColor,
               shape: BoxShape.circle,
               boxShadow: boxShadow,
             ),
             child: Image.asset(
               '$staticAsset/cross.png',
-              color: match.isActionTaken == true ? whiteColor : null,
+              color: match.isDislike == true ? whiteColor : null,
               scale: 6,
             ),
           ),
@@ -312,24 +312,24 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
         GestureDetector(
           onTap: () async {
             setState(() {
-              match.isActionTaken = true;
+              match.isLike = true;
             });
 
             await Future.delayed(Duration(milliseconds: 500));
 
             setState(() {
-              match.isActionTaken = false;
+              match.isLike = false;
             });
             model.like(user, match, context);
           },
           child: Container(
             padding: EdgeInsets.all(15),
             decoration: BoxDecoration(
-              color: match.isActionTaken == true ? primaryColor : whiteColor,
+              color: match.isLike == true ? primaryColor : whiteColor,
               shape: BoxShape.circle,
               boxShadow: boxShadow,
             ),
-            child: match.isActionTaken == true
+            child: match.isLike == true
                 ? Image.asset(
                     '$staticAsset/likeWhite.png',
                     scale: 8,

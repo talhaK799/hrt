@@ -163,6 +163,7 @@ class ConversationProvider extends BaseViewModel {
       }
     }
     notifyListeners();
+    filterMatches();
   }
 
   // List<Conversation> conversations = [];

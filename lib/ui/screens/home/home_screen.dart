@@ -110,7 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 )
                                       : model.state == ViewState.busy
                                           ? Container()
-                                          : model.appUsers.length == 0
+                                          : model.appUsers.isEmpty
                                               ? _staticScreen(context)
                                               : _homeScreenData(
                                                   model,
