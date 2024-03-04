@@ -7,6 +7,8 @@ import 'package:hart/core/models/custom_auth_result.dart';
 import 'package:hart/core/services/auth_service.dart';
 import 'package:hart/locator.dart';
 import 'package:hart/ui/custom_widgets/dialogs/auth_dialog.dart';
+import 'package:hart/ui/custom_widgets/right_navigation.dart';
+import 'package:hart/ui/screens/collect_info_screens/dob_screen/dob_screen.dart';
 import 'package:hart/ui/screens/collect_info_screens/verifications/email_screen.dart/code_confirmation_screen.dart';
 import 'package:hart/ui/screens/collect_info_screens/verifications/email_screen.dart/email_verification_screen.dart';
 
@@ -30,7 +32,7 @@ class SignUpwithEmailProvider extends BaseViewModel {
     setState(ViewState.busy);
     authResult = await authService.signUpWithEmailPassword(appuser);
     if (authResult.user != null) {
-      await sendotptoEmail();
+      await sendotptoEmail(context);
       setState(ViewState.idle);
       // Get.to(
       //   EmailVerificationScreen(),
@@ -55,38 +57,43 @@ class SignUpwithEmailProvider extends BaseViewModel {
     notifyListeners();
   }
 
-  sendotptoEmail() async {
-    emailOTP = EmailOTP();
+  sendotptoEmail(BuildContext context) async {
+    Navigator.push(
+      context,
+      PageFromRight(
+        page: DOBScreen(),
+      ),
+    );
+    //   emailOTP = EmailOTP();
 
-    print(appuser.email);
-    // setState(ViewState.busy);
-    await emailOTP.setConfig(
-        appEmail: "talhakhurshed799@gmail.com",
-        appName: "Hart",
-        userEmail: appuser.email,
-        otpLength: 4,
-        otpType: OTPType.digitsOnly);
-    // setState(ViewState.idle);
-    bool isOTPSend = await emailOTP.sendOTP();
+    //   // setState(ViewState.busy);
+    //   await emailOTP.setConfig(
+    //       appEmail: "infohartapp@gmail.com",
+    //       appName: "Hart",
+    //       userEmail: appuser.email,
+    //       otpLength: 4,
+    //       otpType: OTPType.digitsOnly);
+    //   // setState(ViewState.idle);
+    //   bool isOTPSend = await emailOTP.sendOTP();
 
-    if (isOTPSend) {
-      Get.snackbar("Success!", "OTP sent to your email");
-      Get.to(
-        EmailOtpScreen(
-          emailOTP: emailOTP,
-        ),
-      );
+    //   if (isOTPSend) {
+    //     Get.snackbar("Success!", "OTP sent to your email");
+    //     Get.to(
+    //       EmailOtpScreen(
+    //         emailOTP: emailOTP,
+    //       ),
+    //     );
 
-      notifyListeners();
-      // startTimer();
-      // otp = myauth.toString();
-      // print("OTP sent ==> ${myauth.toString()}");
-    } else {
-      print("Oops, OTP send failed");
-      Get.snackbar("Error!", "Send again opt");
-    }
-    // await _verificationService.sendCodeToEmail();
-    // print("${_verificationService.twilioResponse.statusCode}");
+    //     notifyListeners();
+    //     // startTimer();
+    //     // otp = myauth.toString();
+    //     // print("OTP sent ==> ${myauth.toString()}");
+    //   } else {
+    //     print("Oops, OTP send failed");
+    //     Get.snackbar("Error!", "Send again opt");
+    //   }
+    //   // await _verificationService.sendCodeToEmail();
+    //   // print("${_verificationService.twilioResponse.statusCode}");
   }
 }
 

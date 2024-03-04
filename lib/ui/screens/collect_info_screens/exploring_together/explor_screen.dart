@@ -102,11 +102,11 @@ class ExploreScreen extends StatelessWidget {
                       //   AddPhotoScreen(),
                       // );
                       Navigator.push(
-                  context,
-                  PageFromRight(
-                    page: AddPhotoScreen(),
-                  ),
-                );
+                        context,
+                        PageFromRight(
+                          page: AddPhotoScreen(),
+                        ),
+                      );
                     },
                   ),
                   SizedBox(

@@ -9,9 +9,11 @@ import 'package:hart/core/services/database_service.dart';
 import 'package:hart/core/view_models/base_view_model.dart';
 import 'package:hart/locator.dart';
 import 'package:hart/ui/custom_widgets/right_navigation.dart';
+import 'package:hart/ui/screens/collect_info_screens/about/user_about_screen.dart';
 import 'package:hart/ui/screens/collect_info_screens/dob_screen/dob_screen.dart';
 import 'package:hart/ui/screens/collect_info_screens/fantasies_screen/fantasies_screen.dart';
 import 'package:hart/ui/screens/collect_info_screens/idetity_screen/identity_screen.dart';
+import 'package:hart/ui/screens/collect_info_screens/name/name_screen.dart';
 import 'package:hart/ui/screens/collect_info_screens/select_gender_screen/select_gender_screen.dart';
 
 import '../../../custom_widgets/dialogs/auth_dialog.dart';
@@ -92,13 +94,35 @@ class EditProfileProvider extends BaseViewModel {
       ),
     );
     currentUser.appUser.nickName = update ?? currentUser.appUser.nickName;
-    // await
-    // Get.to(
-    //       NickNameScreen(
-    //         isUpdate: true,
-    //       ),
-    //     ) ??
-    //     currentUser.appUser.nickName;
+
+    notifyListeners();
+  }
+
+  changeAbout(context) async {
+    final update = await Navigator.push(
+      context,
+      PageFromRight(
+        page: UserAboutScreen(
+          isUpdate: true,
+        ),
+      ),
+    );
+    currentUser.appUser.about = update ?? currentUser.appUser.about;
+
+    notifyListeners();
+  }
+
+  changeUserName(context) async {
+    final update = await Navigator.push(
+      context,
+      PageFromRight(
+        page: NameScreen(
+          isUpdate: true,
+        ),
+      ),
+    );
+    currentUser.appUser.name = update ?? currentUser.appUser.name;
+
     notifyListeners();
   }
 

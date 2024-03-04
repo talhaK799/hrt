@@ -18,7 +18,7 @@ class AddPhoneNumberScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<PhoneNoProvider>(builder: (context, model, child) {
       return ModalProgressHUD(
-        inAsyncCall: model.state==ViewState.busy,
+        inAsyncCall: model.state == ViewState.busy,
         progressIndicator: CustomLoader(),
         child: Scaffold(
           body: Padding(
@@ -46,7 +46,7 @@ class AddPhoneNumberScreen extends StatelessWidget {
                       SizedBox(
                         height: 60.h,
                       ),
-      
+
                       Stack(
                         children: [
                           Container(

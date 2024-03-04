@@ -32,6 +32,7 @@ class _SplashScreenState extends State<SplashScreen> {
   final link = locator<DynamicLinkHandler>();
   final networkSetvice = locator<NetworkStatusService>();
   final _location = locator<LocationService>();
+
   init() async {
     // printKeyHash();
 
@@ -54,23 +55,30 @@ class _SplashScreenState extends State<SplashScreen> {
     // );
     if (networkSetvice.hasConnection == true) {
       if (_auth.isLogin) {
-        // if (_auth.appUser.isEmailVerified == false) {
-        //   Get.offAll(EmailVerificationScreen());
-        // } else
-        if (_auth.appUser.isPhoneNoVerified == false) {
-          Get.offAll(
-            PhoneLoginScreen(),
-          );
+        // if (_auth.appUser.images == null) {
+        //   Get.to(DOBScreen());
+        // }
+        // else
+        if (_auth.appUser.isProfileCompleted == false) {
+          Get.to(DOBScreen());
         } else {
-          if (_auth.appUser.images == null) {
-            Get.to(DOBScreen());
-          } else if (_auth.appUser.images!.isEmpty ||
-              _auth.appUser.isProfileCompleted == false) {
-            Get.to(DOBScreen());
-          } else {
-            Get.offAll(RootScreen());
-          }
+          Get.offAll(RootScreen());
         }
+        // // if (_auth.appUser.isEmailVerified == false) {
+        // //   Get.offAll(EmailVerificationScreen());
+        // // } else
+        // if (_auth.appUser.isPhoneNoVerified == false) {
+        //   Get.offAll(PhoneLoginScreen());
+        // } else {
+        //   if (_auth.appUser.images == null) {
+        //     Get.to(DOBScreen());
+        //   } else if (_auth.appUser.images!.isEmpty ||
+        //       _auth.appUser.isProfileCompleted == false) {
+        //     Get.to(DOBScreen());
+        //   } else {
+        //     Get.offAll(RootScreen());
+        //   }
+        // }
       } else {
         Get.offAll(InitialAgeScreen());
       }

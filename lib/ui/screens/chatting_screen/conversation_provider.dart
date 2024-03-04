@@ -17,9 +17,7 @@ class ConversationProvider extends BaseViewModel {
   final currentUser = locator<AuthService>();
   final localStorage = locator<LocalStorageService>();
   bool firstTime = true;
-
   Stream<QuerySnapshot>? stream;
-
   TextEditingController messageController = TextEditingController();
   AppUser user = AppUser();
   Message message = Message();
@@ -43,6 +41,27 @@ class ConversationProvider extends BaseViewModel {
     }
   }
 
+  filterMatches() async {
+    currentUser.matchedUsers = [];
+    for (var i = 0; i < likedUsers.length; i++) {
+      likedUsers[i].isSelected = false;
+      if (likedUsers[i].likedUsers!.contains(currentUser.appUser.id)) {
+        if (currentUser.conversations.isNotEmpty) {
+          for (var j = 0; j < currentUser.conversations.length; j++) {
+            if (likedUsers[i].id == currentUser.conversations[j].appUser!.id) {
+              // dont add to match collection
+            } else {
+              currentUser.matchedUsers.add(likedUsers[i]);
+            }
+          }
+        } else {
+          currentUser.matchedUsers.add(likedUsers[i]);
+        }
+      }
+    }
+    notifyListeners();
+  }
+
   getMatches() async {
     if (currentUser.matchedUsers.isEmpty && currentUser.isChatloaded == false) {
       setState(ViewState.busy);
@@ -55,36 +74,42 @@ class ConversationProvider extends BaseViewModel {
     likedUsers = [];
 
     likedUsers = await db.getMatchedUsers(currentUser.appUser);
+    print("Liked users ===> ${likedUsers.length}");
+    filterMatches();
 
     notifyListeners();
 
     try {
       // currentUser.matches = [];
-      for (var i = 0; i < likedUsers.length; i++) {
-        likedUsers[i].isSelected = false;
-        if (likedUsers[i].likedUsers!.contains(currentUser.appUser.id)) {
-          print('current user ${i + 1} likes <===> ${likedUsers[i].id}');
-          if (!currentUser.matchedUsers.contains(likedUsers[i])) {
-            if (likedUsers[i].isFirstTimeChat == true) {
-              currentUser.matchedUsers.add(likedUsers[i]);
-            } else {
-              print(' user${i + 1} Name <===> ${likedUsers[i].name}');
-              currentUser.matchedUsers.remove(likedUsers[i]);
-              notifyListeners();
-            }
-          }
-          // for (var element in currentUser.conversations) {
-          //   if (!currentUser.matchedUsers.contains(likedUsers[i]) &&
-          //       element.toUserId != likedUsers[i].id) {
-          //     currentUser.matchedUsers.add(likedUsers[i]);
-          //   } else {
-          //     currentUser.matchedUsers.remove(likedUsers[i]);
+      // for (var i = 0; i < likedUsers.length; i++) {
+      //   likedUsers[i].isSelected = false;
+      //   if (likedUsers[i].likedUsers!.contains(currentUser.appUser.id)) {
+      //     print('User Matched');
+      //     print('Is chat created ===> ${likedUsers[i].isFirstTimeChat}');
+      //     // if (!currentUser.matchedUsers.contains(likedUsers[i])) {
+      //     if (likedUsers[i].isFirstTimeChat == true) {
+      //       currentUser.matchedUsers.add(likedUsers[i]);
+      //     } else {
+      //       currentUser.matchedUsers.remove(likedUsers[i]);
+      //       notifyListeners();
+      //     }
+      //     // }
+      //     // for (var element in currentUser.conversations) {
+      //     //   if (!currentUser.matchedUsers.contains(likedUsers[i]) &&
+      //     //       element.toUserId != likedUsers[i].id) {
+      //     //     currentUser.matchedUsers.add(likedUsers[i]);
+      //     //   } else {
+      //     //     currentUser.matchedUsers.remove(likedUsers[i]);
 
-          //     notifyListeners();
-          //   }
-          // }
-        }
-      }
+      //     //     notifyListeners();
+      //     //   }
+      //     // }
+      //   }
+      // }
+      filterMatches();
+
+      print("Match users ===> ${currentUser.matchedUsers.length}");
+
       notifyListeners();
     } catch (e) {
       print("Error @ getMatches $e");
@@ -138,6 +163,7 @@ class ConversationProvider extends BaseViewModel {
       }
     }
     notifyListeners();
+    filterMatches();
   }
 
   // List<Conversation> conversations = [];

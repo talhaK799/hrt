@@ -1,6 +1,5 @@
 import 'package:csc_picker_i18n/csc_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/constants/style.dart';
 import 'package:hart/core/others/screen_utils.dart';
@@ -88,15 +87,19 @@ class CountrySelectionScren extends StatelessWidget {
                               ),
                               400.verticalSpace,
                               CustomButton(
-                                  title: 'Continue',
-                                  onTap: () {
-                                    print(
-                                        'country ==> ${countryValue} and city==> ${cityValue}');
-                                    Navigator.pop(context, [
+                                title: 'Continue',
+                                onTap: () {
+                                  print(
+                                      'country ==> ${countryValue} and city==> ${cityValue}');
+                                  Navigator.pop(
+                                    context,
+                                    [
                                       countryValue,
                                       cityValue,
-                                    ]);
-                                  }),
+                                    ],
+                                  );
+                                },
+                              ),
                             ],
                           ),
                   ],

@@ -100,9 +100,10 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
                                 shrinkWrap: true,
                                 itemBuilder: (context, index) {
                                   return _userDetails(
-                                      model,
-                                      model.currentUser.likingUsers[index],
-                                      model.currentUser.matches[index]);
+                                    model,
+                                    model.currentUser.likingUsers[index],
+                                    model.currentUser.matches[index],
+                                  );
                                 },
                                 separatorBuilder: (context, index) => SizedBox(
                                   height: 40.h,
@@ -274,33 +275,33 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
     );
   }
 
-  _likeButtons(ConnectionsProvider model, user, match) {
+  _likeButtons(ConnectionsProvider model, user, Matches match) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         GestureDetector(
           onTap: () async {
             setState(() {
-              model.disLiked = true;
+              match.isDislike = true;
             });
 
             await Future.delayed(Duration(milliseconds: 500));
 
             setState(() {
-              model.disLiked = false;
+              match.isDislike = false;
             });
             model.dilike(user, match);
           },
           child: Container(
             padding: const EdgeInsets.all(15),
             decoration: BoxDecoration(
-              color: model.disLiked == true ? greyColor2 : whiteColor,
+              color: match.isDislike == true ? greyColor2 : whiteColor,
               shape: BoxShape.circle,
               boxShadow: boxShadow,
             ),
             child: Image.asset(
               '$staticAsset/cross.png',
-              color: model.disLiked == true ? whiteColor : null,
+              color: match.isDislike == true ? whiteColor : null,
               scale: 6,
             ),
           ),
@@ -311,24 +312,24 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
         GestureDetector(
           onTap: () async {
             setState(() {
-              model.isLiked = true;
+              match.isLike = true;
             });
 
             await Future.delayed(Duration(milliseconds: 500));
 
             setState(() {
-              model.isLiked = false;
+              match.isLike = false;
             });
             model.like(user, match, context);
           },
           child: Container(
-            padding: const EdgeInsets.all(15),
+            padding: EdgeInsets.all(15),
             decoration: BoxDecoration(
-              color: model.isLiked == true ? primaryColor : whiteColor,
+              color: match.isLike == true ? primaryColor : whiteColor,
               shape: BoxShape.circle,
               boxShadow: boxShadow,
             ),
-            child: model.isLiked == true
+            child: match.isLike == true
                 ? Image.asset(
                     '$staticAsset/likeWhite.png',
                     scale: 8,
