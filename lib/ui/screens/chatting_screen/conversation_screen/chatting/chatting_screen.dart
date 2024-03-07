@@ -250,7 +250,9 @@ class _ChattingScreenState extends State<ChattingScreen> {
                 ///
                 /// Send Image
                 ///
-                model.isSelect ? sendImageContainer(model) : Container(),
+                model.message.file != null
+                    ? sendImageContainer(model)
+                    : Container(),
               ],
             ),
           ),
@@ -313,70 +315,72 @@ class _ChattingScreenState extends State<ChattingScreen> {
   }
 
   sendImageContainer(ChattingProvider model) {
-    return Column(
-      children: [
-        Spacer(),
-        Padding(
-          padding: EdgeInsets.only(
-            bottom: 80,
-            left: 32,
-            right: 32,
-            top: 0,
-          ),
-          child: Stack(
+    return model.isShowImagePreview == false
+        ? Container()
+        : Column(
             children: [
-              Container(
-                height: 0.45.sh,
-                decoration: BoxDecoration(
-                    color: greyColor2,
-                    image: model.image != null
-                        ? DecorationImage(
-                            image: FileImage(model.image!),
-                            fit: BoxFit.cover,
-                          )
-                        : null,
-                    borderRadius: BorderRadius.circular(12.r)),
-                width: 1.sw,
-                alignment: Alignment.bottomCenter,
-                child: model.image == null
-                    ? ElevatedButton(
-                        onPressed: () {
-                          model.pickImage();
-                        },
-                        child: Text('Pick Image'),
-                      )
-                    : Container(),
-              ),
-              model.image != null
-                  ? Padding(
-                      padding: const EdgeInsets.only(
-                        top: 10,
-                        left: 10,
-                      ),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: primaryColor,
-                        ),
-                        child: IconButton(
-                          onPressed: () {
-                            model.image = null;
+              Spacer(),
+              Padding(
+                padding: EdgeInsets.only(
+                  bottom: 80,
+                  left: 32,
+                  right: 32,
+                  top: 0,
+                ),
+                child: Stack(
+                  children: [
+                    Container(
+                      height: 0.45.sh,
+                      decoration: BoxDecoration(
+                          color: greyColor2,
+                          image: model.message.file != null
+                              ? DecorationImage(
+                                  image: FileImage(model.message.file!),
+                                  fit: BoxFit.cover,
+                                )
+                              : null,
+                          borderRadius: BorderRadius.circular(12.r)),
+                      width: 1.sw,
+                      alignment: Alignment.bottomCenter,
+                      child: model.image == null
+                          ? ElevatedButton(
+                              onPressed: () {
+                                model.pickImage();
+                              },
+                              child: Text('Pick Image'),
+                            )
+                          : Container(),
+                    ),
+                    model.message.file != null
+                        ? Padding(
+                            padding: const EdgeInsets.only(
+                              top: 10,
+                              left: 10,
+                            ),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: primaryColor,
+                              ),
+                              child: IconButton(
+                                onPressed: () {
+                                  model.removeImage();
 
-                            model.setState(ViewState.idle);
-                          },
-                          icon: Icon(
-                            Icons.close,
-                          ),
-                          color: whiteColor,
-                        ),
-                      ),
-                    )
-                  : Container(),
+                                  model.setState(ViewState.idle);
+                                },
+                                icon: Icon(
+                                  Icons.close,
+                                ),
+                                color: whiteColor,
+                              ),
+                            ),
+                          )
+                        : Container(),
+                  ],
+                ),
+              ),
             ],
-          ),
-        ),
-      ],
-    );
+          );
   }
 
   _chatFeild(ChattingProvider model, context) {
@@ -558,36 +562,48 @@ class ImageMessageCard extends StatelessWidget {
                           : blackColor,
                     ),
                   ))
-              : Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      height: 200,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12.r),
-                        image: DecorationImage(
-                          image: NetworkImage(
-                            message.imageUrl!,
-                          ),
-                          fit: BoxFit.cover,
+              : Container(
+                  height: 220,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        height: 200,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12.r),
+                          image: message.file != null
+                              ? DecorationImage(
+                                  image: FileImage(
+                                    message.file!,
+                                  ),
+                                  fit: BoxFit.cover,
+                                )
+                              : DecorationImage(
+                                  image: NetworkImage(
+                                    message.imageUrl!,
+                                  ),
+                                  fit: BoxFit.cover,
+                                ),
                         ),
                       ),
-                    ),
-                    message.textMessage!.isNotEmpty
-                        ? Padding(
-                            padding: const EdgeInsets.only(left: 10, right: 10),
-                            child: Text(
-                              message.textMessage!,
-                              style: subtitleText.copyWith(
-                                fontSize: 15.sp,
-                                color: message.fromUserId == appUser.id
-                                    ? whiteColor
-                                    : blackColor,
+                      message.textMessage != null
+                          ? Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 10, right: 10),
+                              child: Text(
+                                message.textMessage!,
+                                style: subtitleText.copyWith(
+                                  fontSize: 15.sp,
+                                  color: message.fromUserId == appUser.id
+                                      ? whiteColor
+                                      : blackColor,
+                                ),
                               ),
-                            ),
-                          )
-                        : Container(),
-                  ],
+                            )
+                          : Container(),
+                    ],
+                  ),
                 ),
         ),
         sizeBox10,
@@ -599,7 +615,7 @@ class ImageMessageCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 40),
               child: Text(
-                onlyTime.format(message.sendat!),
+                onlyTime.format(message.sendat ?? DateTime.now()),
                 style: miniText.copyWith(
                   color: greyColor2,
                 ),

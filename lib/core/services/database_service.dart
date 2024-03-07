@@ -132,6 +132,20 @@ class DatabaseService {
   //   return list;
   // }
 
+  chackMatch(String likedByUserId, String myId) async {
+    try {
+      await _db
+          .collection("Matches")
+          .where("likedByUserId", isEqualTo: likedByUserId)
+          .where("likedUserId", isEqualTo: myId)
+          .get();
+      return true;
+    } catch (e) {
+      print("Exception@checkMatch ==> $e");
+      return false;
+    }
+  }
+
   updateRequest(Matches request) async {
     try {
       await _db.collection("Matches").doc(request.id).update(request.toJson());

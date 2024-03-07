@@ -33,124 +33,123 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
         // ChangeNotifierProvider(
         //   create: (context) => CreateGroupProvider(),
         //   child:
-        Consumer<CreateGroupProvider>(builder: (context, model, child) {
-      return ModalProgressHUD(
-        inAsyncCall: model.state == ViewState.busy,
-        child: Scaffold(
-          body: Padding(
-            padding: const EdgeInsets.fromLTRB(24, 55, 24, 0),
-            child: Stack(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CustomAppBar(
-                      title: 'Create Group Chat',
-                    ),
-                    sizeBox30,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Select group members',
-                          style: bodyTextStyle,
-                        ),
-                        Image.asset(
-                          '$staticAsset/search.png',
-                          scale: 3,
-                        ),
-                      ],
-                    ),
-                    sizeBox20,
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 95),
-                        child: ListView.separated(
-                          padding: EdgeInsets.zero,
-                          primary: false,
-                          shrinkWrap: true,
-                          itemCount: model.matchedUsers.length,
-                          itemBuilder: (context, index) {
-                            return ListTile(
-                              onTap: () {
-                                model.check(index);
-                              },
-                              leading:
-                                  model.matchedUsers[index].images!.isNotEmpty
-                                      ? CircleAvatar(
-                                          radius: 35.r,
-                                          backgroundImage: NetworkImage(
-                                            '${model.matchedUsers[index].images!.first}',
+        Consumer<CreateGroupProvider>(
+      builder: (context, model, child) {
+        return ModalProgressHUD(
+          inAsyncCall: model.state == ViewState.busy,
+          child: Scaffold(
+            body: Padding(
+              padding: const EdgeInsets.fromLTRB(24, 55, 24, 0),
+              child: Stack(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomAppBar(
+                        title: 'Create Group Chat',
+                      ),
+                      sizeBox30,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Select group members',
+                            style: bodyTextStyle,
+                          ),
+                          Image.asset(
+                            '$staticAsset/search.png',
+                            scale: 3,
+                          ),
+                        ],
+                      ),
+                      sizeBox20,
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 95),
+                          child: ListView.separated(
+                            padding: EdgeInsets.zero,
+                            primary: false,
+                            shrinkWrap: true,
+                            itemCount: model.matchedUsers.length,
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                onTap: () {
+                                  model.check(index);
+                                },
+                                leading:
+                                    model.matchedUsers[index].images!.isNotEmpty
+                                        ? CircleAvatar(
+                                            radius: 35.r,
+                                            backgroundImage: NetworkImage(
+                                              '${model.matchedUsers[index].images!.first}',
+                                            ),
+                                          )
+                                        : CircleAvatar(
+                                            radius: 35.r,
+                                            backgroundImage: AssetImage(
+                                              '$dynamicAsset/profile.png',
+                                            ),
                                           ),
-                                        )
-                                      : CircleAvatar(
-                                          radius: 35.r,
-                                          backgroundImage: AssetImage(
-                                            '$dynamicAsset/profile.png',
-                                          ),
-                                        ),
-                              title: Text(
-                                "${model.matchedUsers[index].name}",
-                                style: subHeadingTextStyle2,
-                              ),
-                              subtitle: Text(
-                                "${model.matchedUsers[index].nickName}",
-                                style: subtitleText,
-                              ),
-                              trailing:
-                                  model.matchedUsers[index].isSelected == true
-                                      ? Image.asset(
-                                          '$staticAsset/tick.png',
-                                          scale: 3.5,
-                                        )
-                                      : null,
-                            );
-                          },
-                          separatorBuilder: (context, index) => SizedBox(
-                            height: 15.h,
+                                title: Text(
+                                  "${model.matchedUsers[index].name}",
+                                  style: subHeadingTextStyle2,
+                                ),
+                                subtitle: Text(
+                                  "${model.matchedUsers[index].nickName}",
+                                  style: subtitleText,
+                                ),
+                                trailing:
+                                    model.matchedUsers[index].isSelected == true
+                                        ? Image.asset(
+                                            '$staticAsset/tick.png',
+                                            scale: 3.5,
+                                          )
+                                        : null,
+                              );
+                            },
+                            separatorBuilder: (context, index) => SizedBox(
+                              height: 15.h,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 15),
-                    child: model.isEnable
-                        ? CustomButton(
-                            title: 'Continue',
-                            onTap: () {
-                              FocusManager.instance.primaryFocus?.unfocus();
-                              // Get.to(
-                              //   MembersScreen(),
-                              // );
-                              Navigator.push(
-                                context,
-                                PageFromRight(
-                                  page: MembersScreen(),
-                                ),
-                              );
-                            },
-                          )
-                        : CustomButton(
-                            title: 'Continue',
-                            onTap: () {
-                              Get.snackbar("Error!", "Please select members");
-                            },
-                            textColor: primaryColor,
-                            color: pinkColor,
-                          ),
+                    ],
                   ),
-                ),
-              ],
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 15),
+                      child: model.isEnable
+                          ? CustomButton(
+                              title: 'Continue',
+                              onTap: () {
+                                FocusManager.instance.primaryFocus?.unfocus();
+
+                                Navigator.push(
+                                  context,
+                                  PageFromRight(
+                                    page: MembersScreen(),
+                                  ),
+                                );
+                              },
+                            )
+                          : CustomButton(
+                              title: 'Continue',
+                              onTap: () {
+                                Get.snackbar("Error!", "Please select members");
+                              },
+                              textColor: primaryColor,
+                              color: pinkColor,
+                            ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-      );
-    }
-            // ),
-            );
+        );
+      },
+    );
+    // );
   }
 }

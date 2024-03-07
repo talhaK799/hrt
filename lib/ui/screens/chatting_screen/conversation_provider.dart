@@ -48,10 +48,13 @@ class ConversationProvider extends BaseViewModel {
       if (likedUsers[i].likedUsers!.contains(currentUser.appUser.id)) {
         if (currentUser.conversations.isNotEmpty) {
           for (var j = 0; j < currentUser.conversations.length; j++) {
-            if (likedUsers[i].id == currentUser.conversations[j].appUser!.id) {
-              // dont add to match collection
-            } else {
-              currentUser.matchedUsers.add(likedUsers[i]);
+            if (currentUser.conversations[j].isGroupChat == false) {
+              if (likedUsers[i].id ==
+                  currentUser.conversations[j].appUser!.id) {
+                // dont add to match collection
+              } else {
+                currentUser.matchedUsers.add(likedUsers[i]);
+              }
             }
           }
         } else {
@@ -130,8 +133,6 @@ class ConversationProvider extends BaseViewModel {
                 .add(Conversation.fromJson(element.data()));
             notifyListeners();
             // }
-            print(
-                "Conversation == > ${currentUser.conversations.first.toJson()}");
           });
           getUsers();
         } else {
@@ -155,10 +156,12 @@ class ConversationProvider extends BaseViewModel {
     // setState(ViewState.busy);
     if (currentUser.conversations.isNotEmpty) {
       for (var i = 0; i < currentUser.conversations.length; i++) {
-        currentUser.conversations[i].appUser = AppUser();
         if (currentUser.conversations[i].isGroupChat == false) {
-          currentUser.conversations[i].appUser =
-              await db.getAppUser(currentUser.conversations[i].toUserId);
+          currentUser.conversations[i].appUser = AppUser();
+          if (currentUser.conversations[i].isGroupChat == false) {
+            currentUser.conversations[i].appUser =
+                await db.getAppUser(currentUser.conversations[i].toUserId);
+          }
         }
       }
     }

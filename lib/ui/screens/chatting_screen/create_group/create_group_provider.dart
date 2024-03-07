@@ -24,11 +24,10 @@ class CreateGroupProvider extends BaseViewModel {
   bool isCreated = false;
 
   CreateGroupProvider() {
-    init();
+    // init();
   }
 
-  init() async {
-    setState(ViewState.busy);
+  init() {
     message = Message();
     conversation = Conversation();
     isEnable = false;
@@ -36,8 +35,14 @@ class CreateGroupProvider extends BaseViewModel {
     likedUsers = [];
     matchedUsers = [];
     selectedUsers = [];
+    getConnectedUser();
+  }
+
+  getConnectedUser() async {
+    setState(ViewState.busy);
     await getLikedUsers();
     setState(ViewState.idle);
+    // notifyListeners();
   }
 
   check(ind) {
@@ -46,6 +51,12 @@ class CreateGroupProvider extends BaseViewModel {
       isEnable = true;
     } else {
       isEnable = false;
+    }
+    selectedUsers = [];
+    for (var i = 0; i < matchedUsers.length; i++) {
+      if (matchedUsers[i].isSelected == true) {
+        selectedUsers.add(matchedUsers[i]);
+      }
     }
 
     // for (var i = 0; i < matchedUsers.length; i++) {
@@ -68,8 +79,6 @@ class CreateGroupProvider extends BaseViewModel {
     for (var i = 0; i < likedUsers.length; i++) {
       likedUsers[i].isSelected = false;
       if (likedUsers[i].likedUsers!.contains(currentUser.appUser.id)) {
-        print('current user${i + 1} likes===>${likedUsers[i].id}');
-        print('other user likes current user===>${likedUsers[i].id}');
         if (!matchedUsers.contains(likedUsers[i])) {
           matchedUsers.add(likedUsers[i]);
         }
