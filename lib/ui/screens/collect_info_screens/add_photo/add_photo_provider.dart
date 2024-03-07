@@ -12,6 +12,8 @@ import 'package:hart/core/services/firebase_storage_service.dart';
 import 'package:hart/core/view_models/base_view_model.dart';
 import 'package:hart/locator.dart';
 import 'package:hart/ui/custom_widgets/dialogs/custom_snackbar.dart';
+import 'package:hart/ui/custom_widgets/right_navigation.dart';
+import 'package:hart/ui/screens/collect_info_screens/about/user_about_screen.dart';
 import 'package:hart/ui/screens/root_screen/root_screen.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -154,9 +156,9 @@ class AddPhotoProvider extends BaseViewModel {
     notifyListeners();
   }
 
-  addUserImages() async {
+  addUserImages(BuildContext context) async {
     if (newImages.length < 1) {
-      customSnackBar('alert!', 'Image must be selected');
+      customSnackBar('Alert!', 'Image must be selected');
     } else {
       setState(ViewState.busy);
       // if (currentImages.length != 0) {
@@ -179,7 +181,15 @@ class AddPhotoProvider extends BaseViewModel {
           //profile update
           Get.back();
         } else {
-          Get.offAll(RootScreen());
+          Navigator.push(
+            context,
+            PageFromRight(
+              page: UserAboutScreen(
+                isUpdate: false,
+              ),
+            ),
+          );
+          // Get.offAll(RootScreen());
         }
       }
     }

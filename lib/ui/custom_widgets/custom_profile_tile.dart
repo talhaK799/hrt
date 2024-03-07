@@ -113,10 +113,12 @@ class CustomProfileTile extends StatelessWidget {
                             ],
                           ),
                         )
-                      : Text(
-                          title,
-                          style: buttonTextStyle.copyWith(
-                            color: textColor ?? blackColor,
+                      : Expanded(
+                          child: Text(
+                            title,
+                            style: buttonTextStyle.copyWith(
+                              color: textColor ?? blackColor,
+                            ),
                           ),
                         ),
                   Image.asset(
