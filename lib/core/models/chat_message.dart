@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Message {
@@ -6,12 +8,14 @@ class Message {
   String? toUserId;
   String? textMessage;
   String? imageUrl;
+  File? file;
   String? voiceUrl;
   FieldValue? sendAt;
   DateTime? sendat;
   String? type;
 
   Message({
+    this.file,
     this.fromUserId,
     this.messageId,
     this.sendAt,
