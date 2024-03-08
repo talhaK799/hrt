@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -26,12 +27,11 @@ class ChattingProvider extends BaseViewModel {
   TextEditingController messageController = TextEditingController();
   AppUser toUser = AppUser();
   Message message = Message();
-
   Conversation conversationTo = Conversation();
   Conversation conversationFrom = Conversation();
   Conversation conversation = Conversation();
-
   Stream<QuerySnapshot>? messageStream;
+  StreamSubscription<QuerySnapshot>? messageStreamSubscription;
   bool isSelect = false;
   File? image;
   List<Matches> matches = [];
@@ -144,7 +144,7 @@ class ChattingProvider extends BaseViewModel {
     setState(ViewState.busy);
     messageStream = db.getRealTimeMessages(conversation.conversationId);
     setState(ViewState.idle);
-    messageStream!.listen(
+    messageStreamSubscription = messageStream!.listen(
       (event) {
         messages = [];
         if (event.docs.length > 0) {
@@ -164,7 +164,7 @@ class ChattingProvider extends BaseViewModel {
 
   disposestream() {
     // super.dispose();.
-
+    messageStreamSubscription?.cancel();
     messageStream = null;
   }
 

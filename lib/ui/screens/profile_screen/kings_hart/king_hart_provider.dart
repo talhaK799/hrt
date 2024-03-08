@@ -9,7 +9,6 @@ import 'package:hart/core/services/payment_service.dart';
 import 'package:hart/core/view_models/base_view_model.dart';
 import 'package:hart/locator.dart';
 import 'package:hart/ui/custom_widgets/dialogs/succes_dialog.dart';
-import 'package:hart/ui/screens/profile_screen/profile_screen.dart';
 
 class KingHartProvider extends BaseViewModel {
   int currentIndex = 0;
