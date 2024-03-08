@@ -12,9 +12,9 @@ import 'package:hart/ui/screens/profile_screen/maestro_screen/maestro_screen.dar
 import 'package:hart/ui/screens/profile_screen/pair_profile/pair_profile_screen.dart';
 import 'package:hart/ui/screens/profile_screen/premium_setting/premium_screen.dart';
 import 'package:hart/ui/screens/profile_screen/profile_provider.dart';
+import 'package:hart/ui/screens/profile_screen/profile_view/profile_view_screen.dart';
 import 'package:hart/ui/screens/profile_screen/uplift_screen/uplisft_screen.dart';
 import 'package:provider/provider.dart';
-
 import '../../../core/constants/style.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -29,7 +29,7 @@ class ProfileScreen extends StatelessWidget {
           body: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(
+              padding: EdgeInsets.fromLTRB(
                 24,
                 60,
                 24,
@@ -38,30 +38,49 @@ class ProfileScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    width: 120,
-                    height: 120,
-                    decoration: BoxDecoration(
-                      color: greyColor,
-                      image: model.currentUser.images == null
-                          ? DecorationImage(
-                              image: AssetImage(
-                                '$dynamicAsset/image.png',
-                              ),
-                              fit: BoxFit.cover)
-                          : model.currentUser.images!.isNotEmpty
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        width: 120,
+                        height: 120,
+                        decoration: BoxDecoration(
+                          color: greyColor,
+                          image: model.currentUser.images == null
                               ? DecorationImage(
-                                  image: NetworkImage(
-                                    model.currentUser.images!.first,
-                                  ),
-                                  fit: BoxFit.cover)
-                              : DecorationImage(
                                   image: AssetImage(
                                     '$dynamicAsset/image.png',
                                   ),
-                                  fit: BoxFit.cover),
-                      // borderRadius: BorderRadius.circular(12.r),
-                    ),
+                                  fit: BoxFit.cover)
+                              : model.currentUser.images!.isNotEmpty
+                                  ? DecorationImage(
+                                      image: NetworkImage(
+                                        model.currentUser.images!.first,
+                                      ),
+                                      fit: BoxFit.cover)
+                                  : DecorationImage(
+                                      image: AssetImage(
+                                        '$dynamicAsset/image.png',
+                                      ),
+                                      fit: BoxFit.cover),
+                          // borderRadius: BorderRadius.circular(12.r),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(context,
+                              PageFromRight(page: ProfileViewScreen()));
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(7),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: greyColor,
+                          ),
+                          child: Icon(Icons.preview_outlined),
+                        ),
+                      ),
+                    ],
                   ),
                   sizeBox20,
                   Row(

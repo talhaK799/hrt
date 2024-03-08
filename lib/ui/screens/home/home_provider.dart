@@ -304,7 +304,6 @@ class HomeProvider extends BaseViewModel {
       /// if other user liked currentUser
       ///
       if (await user.likedUsers!.contains(currentUser.appUser.id)) {
-        print('liked user id in user list ${user.likedUsers!.first}');
         match = await db.getRequest(
           user.id!,
           currentUser.appUser.id!,
@@ -312,24 +311,20 @@ class HomeProvider extends BaseViewModel {
 
         appUsers.removeWhere((element) => element.id == user.id);
         notifyListeners();
-        print(
-            'match likedById ${match.likedByUserId}=== likedId ${match.likedUserId}');
 
         match.isAccepted = true;
         match.isProgressed = true;
         bool isReqUpdated = await db.updateRequest(match);
         if (isReqUpdated) {
-          // Get.to(
-          //   ConnectPopupScreen(),
+          Get.snackbar("Alert!", "You have a new connection with ${user.name}");
+          // Navigator.push(
+          //   context,
+          //   PageFromRight(
+          //     page: ConnectPopupScreen(),
+          //   ),
           // );
-          Navigator.push(
-            context,
-            PageFromRight(
-              page: ConnectPopupScreen(),
-            ),
-          );
         } else {
-          print('request faild ==> $isReqUpdated');
+          debugPrint('request faild ==> $isReqUpdated');
         }
       } else {
         appUsers.removeWhere((element) => element.id == user.id);
@@ -341,7 +336,8 @@ class HomeProvider extends BaseViewModel {
       // notifyListeners();
       await db.updateUserProfile(currentUser.appUser);
 
-      print('profile update ==> ${currentUser.appUser.likedUsers!.length}');
+      debugPrint(
+          'profile update ==> ${currentUser.appUser.likedUsers!.length}');
       // if (isUpdated) {
 
       // notifyListeners();
@@ -355,7 +351,7 @@ class HomeProvider extends BaseViewModel {
       // }
       notifyListeners();
 
-      print("Users ====> ${appUsers.first.name}");
+      debugPrint("Users ====> ${appUsers.first.name}");
       //////
       // } else {
       //   Get.to(
@@ -379,10 +375,10 @@ class HomeProvider extends BaseViewModel {
       ////
       await Future.delayed(Duration(milliseconds: 400));
       if (await !currentUser.previousUsers.contains(user)) {
-        print(
+        debugPrint(
             'previous USERS list==> BEFORE ${currentUser.previousUsers.length}');
         currentUser.previousUsers.add(user);
-        print(
+        debugPrint(
             'previous USERS list==> AFTER ${currentUser.previousUsers.length}');
       }
       currentUser.appUser.disLikedUsers!.add(user.id!);

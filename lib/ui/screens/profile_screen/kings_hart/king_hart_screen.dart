@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:hart/core/constants/colors.dart';
 import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/others/screen_utils.dart';
@@ -10,7 +9,6 @@ import 'package:hart/ui/custom_widgets/offer_container.dart';
 import 'package:hart/ui/screens/profile_screen/kings_hart/king_hart_provider.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
-
 import '../../../../core/constants/strings.dart';
 import '../../../../core/constants/style.dart';
 

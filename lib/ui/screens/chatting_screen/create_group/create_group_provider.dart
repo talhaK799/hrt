@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/models/app_user.dart';
@@ -39,10 +40,9 @@ class CreateGroupProvider extends BaseViewModel {
   }
 
   getConnectedUser() async {
-    setState(ViewState.busy);
-    await getLikedUsers();
-    setState(ViewState.idle);
-    // notifyListeners();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await getLikedUsers();
+    });
   }
 
   check(ind) {
@@ -84,6 +84,7 @@ class CreateGroupProvider extends BaseViewModel {
         }
       }
     }
+    setState(ViewState.idle);
     // filterSelectedUsers();
   }
 
