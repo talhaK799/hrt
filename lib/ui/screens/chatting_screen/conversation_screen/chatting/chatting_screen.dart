@@ -45,7 +45,7 @@ class _ChattingScreenState extends State<ChattingScreen> {
 
   @override
   void dispose() {
-    Provider.of<ChattingProvider>(context, listen: false).disposestream();
+    // Provider.of<ChattingProvider>(context, listen: false).disposestream();
     super.dispose();
   }
 
@@ -62,196 +62,220 @@ class _ChattingScreenState extends State<ChattingScreen> {
         return ModalProgressHUD(
           inAsyncCall: model.state == ViewState.busy,
           progressIndicator: CustomLoader(),
-          child: Scaffold(
-            backgroundColor: primaryColor,
-            body: Stack(
-              children: [
-                ////
-                /// App Bar
-                ///
-                // Padding(
-                //   padding: EdgeInsets.fromLTRB(32, 50, 32, 16),
-                //   child: CustomBackButton(),
-                // ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 42, 14, 0),
-                  child: Row(
-                    children: [
-                      CustomBackButton(
-                        data: model.toUser.isFirstTimeChat,
-                      ),
-                      Expanded(
-                        child: ListTile(
-                          leading: model.conversation.isGroupChat == true
-                              ? CircleAvatar(
-                                  radius: 35.r,
-                                  backgroundImage:
-                                      AssetImage('$staticAsset/person.png'),
-                                )
-                              : model.toUser.images != null
-                                  ? GestureDetector(
-                                      onTap: () {
-                                        // Get.to(UserDetailScreen(
-                                        //   user: model.toUser,
-                                        // ));
-                                        Navigator.push(
-                                          context,
-                                          PageFromRight(
-                                            page: UserDetailScreen(
-                                              user: model.toUser,
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                      child: CircleAvatar(
-                                        radius: 35.r,
-                                        backgroundImage: NetworkImage(
-                                          '${model.toUser.images!.first}',
-                                        ),
-                                      ),
-                                    )
-                                  : GestureDetector(
-                                      child: CircleAvatar(
-                                        radius: 35.r,
-                                        backgroundImage: AssetImage(
-                                            '$staticAsset/person.png'),
-                                      ),
-                                    ),
-                          title: Text(
-                            widget.conversation.isGroupChat == true
-                                ? "${model.conversation.name}"
-                                : "${model.toUser.name}",
-                            style: subHeadingTextStyle,
+          child: PopScope(
+            canPop: true,
+            onPopInvoked: (didPop) {
+              model.disposestream();
+              Get.back();
+            },
+            child: Scaffold(
+              backgroundColor: primaryColor,
+              body: Stack(
+                children: [
+                  ////
+                  /// App Bar
+                  ///
+                  // Padding(
+                  //   padding: EdgeInsets.fromLTRB(32, 50, 32, 16),
+                  //   child: CustomBackButton(),
+                  // ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 42, 14, 0),
+                    child: Row(
+                      children: [
+                        GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onTap: () {
+                            model.disposestream();
+                            Get.back(
+                                // result: model.toUser.isFirstTimeChat,
+                                );
+                          },
+                          child: Image.asset(
+                            '$staticAsset/Back.png',
+                            scale: 2.8,
                           ),
-                          // subtitle: Text(
-                          //   'online',
-                          //   style: miniText.copyWith(
-                          //     color: whiteColor,
-                          //   ),
-                          // ),
-                          trailing: GestureDetector(
-                            behavior: HitTestBehavior.opaque,
-                            onTap: () {
-                              model.conversation.isGroupChat == true
-                                  ?
-                                  // Get.to(
-                                  //     GroupDetailScreen(
-                                  //       group: model.conversation,
-                                  //     ),
-                                  //   )
-                                  Navigator.push(
-                                      context,
-                                      PageFromRight(
-                                        page: GroupDetailScreen(
-                                          group: model.conversation,
+                        ),
+                        // CustomBackButton(
+                        //   data: model.toUser.isFirstTimeChat,
+                        // ),
+                        Expanded(
+                          child: ListTile(
+                            leading: model.conversation.isGroupChat == true
+                                ? CircleAvatar(
+                                    radius: 35.r,
+                                    backgroundImage:
+                                        AssetImage('$staticAsset/person.png'),
+                                  )
+                                : model.toUser.images != null
+                                    ? GestureDetector(
+                                        onTap: () {
+                                          // Get.to(UserDetailScreen(
+                                          //   user: model.toUser,
+                                          // ));
+                                          Navigator.push(
+                                            context,
+                                            PageFromRight(
+                                              page: UserDetailScreen(
+                                                user: model.toUser,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        child: CircleAvatar(
+                                          radius: 35.r,
+                                          backgroundImage: NetworkImage(
+                                            '${model.toUser.images!.first}',
+                                          ),
+                                        ),
+                                      )
+                                    : GestureDetector(
+                                        child: CircleAvatar(
+                                          radius: 35.r,
+                                          backgroundImage: AssetImage(
+                                              '$staticAsset/person.png'),
                                         ),
                                       ),
-                                    )
-                                  : Navigator.push(
-                                      context,
-                                      PageFromRight(
-                                        page: ChatInfoScreen(
-                                          user: model.toUser,
-                                          conversation: model.conversation,
+                            title: Text(
+                              widget.conversation.isGroupChat == true
+                                  ? "${model.conversation.name}"
+                                  : "${model.toUser.name}",
+                              style: subHeadingTextStyle,
+                            ),
+                            // subtitle: Text(
+                            //   'online',
+                            //   style: miniText.copyWith(
+                            //     color: whiteColor,
+                            //   ),
+                            // ),
+                            trailing: GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: () {
+                                model.conversation.isGroupChat == true
+                                    ?
+                                    // Get.to(
+                                    //     GroupDetailScreen(
+                                    //       group: model.conversation,
+                                    //     ),
+                                    //   )
+                                    Navigator.push(
+                                        context,
+                                        PageFromRight(
+                                          page: GroupDetailScreen(
+                                            group: model.conversation,
+                                          ),
                                         ),
-                                      ),
-                                    );
-                              //  Get.to(
-                              //   ChatInfoScreen(
-                              //     user: model.toUser,
-                              //     conversation: model.conversation,
-                              //   ),
-                              // );
-                            },
-                            child: Image.asset(
-                              '$staticAsset/more.png',
-                              scale: 3.5,
+                                      )
+                                    : Navigator.push(
+                                        context,
+                                        PageFromRight(
+                                          page: ChatInfoScreen(
+                                            user: model.toUser,
+                                            conversation: model.conversation,
+                                          ),
+                                        ),
+                                      );
+                                //  Get.to(
+                                //   ChatInfoScreen(
+                                //     user: model.toUser,
+                                //     conversation: model.conversation,
+                                //   ),
+                                // );
+                              },
+                              child: Image.asset(
+                                '$staticAsset/more.png',
+                                scale: 3.5,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
 
-                ////
-                /// Chats
-                ///
-                Padding(
-                  padding: const EdgeInsets.only(top: 120),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Container(
-                          height: 1.sh,
-                          padding: EdgeInsets.fromLTRB(24, 0, 14, 0),
-                          decoration: BoxDecoration(
-                            color: whiteColor,
+                  ////
+                  /// Chats
+                  ///
+                  Padding(
+                    padding: const EdgeInsets.only(top: 120),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Container(
+                            height: 1.sh,
+                            padding: EdgeInsets.fromLTRB(24, 0, 14, 0),
+                            decoration: BoxDecoration(
+                              color: whiteColor,
+                            ),
+                            child: model.state == ViewState.idle
+                                ? ListView.separated(
+                                    physics: BouncingScrollPhysics(),
+                                    shrinkWrap: true,
+                                    reverse: true,
+                                    itemCount: model.messages.length,
+                                    itemBuilder: (context, index) {
+                                      return model.messages[index].type ==
+                                              "text"
+                                          ? TextMessageCard(
+                                              message: model.messages[index],
+                                              user: model.currentUser.appUser,
+                                            )
+                                          : model.messages[index].type ==
+                                                      "added" ||
+                                                  model.messages[index].type ==
+                                                      "created"
+                                              ? JoinORLeaveGroup(
+                                                  message:
+                                                      model.messages[index],
+                                                  currentUser:
+                                                      model.currentUser.appUser,
+                                                )
+                                              : model.messages[index].type ==
+                                                      "image"
+                                                  ? ImageMessageCard(
+                                                      message:
+                                                          model.messages[index],
+                                                      appUser: model
+                                                          .currentUser.appUser,
+                                                    )
+                                                  : Container();
+                                      // return _chatMessage(model, index);
+                                    },
+                                    separatorBuilder: (context, index) =>
+                                        SizedBox(
+                                      height: 15.h,
+                                    ),
+                                  )
+                                : Center(
+                                    child: Text(
+                                      'No messages',
+                                      style: subHeadingText1,
+                                    ),
+                                  ),
                           ),
-                          child: model.state == ViewState.idle
-                              ? ListView.separated(
-                                  physics: BouncingScrollPhysics(),
-                                  shrinkWrap: true,
-                                  reverse: true,
-                                  itemCount: model.messages.length,
-                                  itemBuilder: (context, index) {
-                                    return model.messages[index].type == "text"
-                                        ? TextMessageCard(
-                                            message: model.messages[index],
-                                            user: model.currentUser.appUser,
-                                          )
-                                        : model.messages[index].type ==
-                                                    "added" ||
-                                                model.messages[index].type ==
-                                                    "created"
-                                            ? JoinORLeaveGroup(
-                                                message: model.messages[index],
-                                                currentUser:
-                                                    model.currentUser.appUser,
-                                              )
-                                            : model.messages[index].type ==
-                                                    "image"
-                                                ? ImageMessageCard(
-                                                    message:
-                                                        model.messages[index],
-                                                    appUser: model
-                                                        .currentUser.appUser,
-                                                  )
-                                                : Container();
-                                    // return _chatMessage(model, index);
-                                  },
-                                  separatorBuilder: (context, index) =>
-                                      SizedBox(
-                                    height: 15.h,
-                                  ),
-                                )
-                              : Center(
-                                  child: Text(
-                                    'No messages',
-                                    style: subHeadingText1,
-                                  ),
-                                ),
                         ),
-                      ),
-                      Container(
-                        color: whiteColor,
-                        width: 1.sw,
-                        child: _chatFeild(model, context),
-                      )
-                    ],
+                        Container(
+                          color: whiteColor,
+                          width: 1.sw,
+                          child: _chatFeild(model, context),
+                        )
+                      ],
+                    ),
                   ),
-                ),
 
-                ///
-                /// Text field
-                ///
+                  ///
+                  /// Text field
+                  ///
 
-                ///
-                /// Send Image
-                ///
-                model.isSelect ? sendImageContainer(model) : Container(),
-              ],
+                  ///
+                  /// Send Image
+                  ///
+                  model.message.file != null
+                      ? sendImageContainer(model)
+                      : Container(),
+                ],
+              ),
             ),
           ),
         );
@@ -313,70 +337,72 @@ class _ChattingScreenState extends State<ChattingScreen> {
   }
 
   sendImageContainer(ChattingProvider model) {
-    return Column(
-      children: [
-        Spacer(),
-        Padding(
-          padding: EdgeInsets.only(
-            bottom: 80,
-            left: 32,
-            right: 32,
-            top: 0,
-          ),
-          child: Stack(
+    return model.isShowImagePreview == false
+        ? Container()
+        : Column(
             children: [
-              Container(
-                height: 0.45.sh,
-                decoration: BoxDecoration(
-                    color: greyColor2,
-                    image: model.image != null
-                        ? DecorationImage(
-                            image: FileImage(model.image!),
-                            fit: BoxFit.cover,
-                          )
-                        : null,
-                    borderRadius: BorderRadius.circular(12.r)),
-                width: 1.sw,
-                alignment: Alignment.bottomCenter,
-                child: model.image == null
-                    ? ElevatedButton(
-                        onPressed: () {
-                          model.pickImage();
-                        },
-                        child: Text('Pick Image'),
-                      )
-                    : Container(),
-              ),
-              model.image != null
-                  ? Padding(
-                      padding: const EdgeInsets.only(
-                        top: 10,
-                        left: 10,
-                      ),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: primaryColor,
-                        ),
-                        child: IconButton(
-                          onPressed: () {
-                            model.image = null;
+              Spacer(),
+              Padding(
+                padding: EdgeInsets.only(
+                  bottom: 80,
+                  left: 32,
+                  right: 32,
+                  top: 0,
+                ),
+                child: Stack(
+                  children: [
+                    Container(
+                      height: 0.45.sh,
+                      decoration: BoxDecoration(
+                          color: greyColor2,
+                          image: model.message.file != null
+                              ? DecorationImage(
+                                  image: FileImage(model.message.file!),
+                                  fit: BoxFit.cover,
+                                )
+                              : null,
+                          borderRadius: BorderRadius.circular(12.r)),
+                      width: 1.sw,
+                      alignment: Alignment.bottomCenter,
+                      child: model.image == null
+                          ? ElevatedButton(
+                              onPressed: () {
+                                model.pickImage();
+                              },
+                              child: Text('Pick Image'),
+                            )
+                          : Container(),
+                    ),
+                    model.message.file != null
+                        ? Padding(
+                            padding: const EdgeInsets.only(
+                              top: 10,
+                              left: 10,
+                            ),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: primaryColor,
+                              ),
+                              child: IconButton(
+                                onPressed: () {
+                                  model.removeImage();
 
-                            model.setState(ViewState.idle);
-                          },
-                          icon: Icon(
-                            Icons.close,
-                          ),
-                          color: whiteColor,
-                        ),
-                      ),
-                    )
-                  : Container(),
+                                  model.setState(ViewState.idle);
+                                },
+                                icon: Icon(
+                                  Icons.close,
+                                ),
+                                color: whiteColor,
+                              ),
+                            ),
+                          )
+                        : Container(),
+                  ],
+                ),
+              ),
             ],
-          ),
-        ),
-      ],
-    );
+          );
   }
 
   _chatFeild(ChattingProvider model, context) {
@@ -558,36 +584,48 @@ class ImageMessageCard extends StatelessWidget {
                           : blackColor,
                     ),
                   ))
-              : Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      height: 200,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12.r),
-                        image: DecorationImage(
-                          image: NetworkImage(
-                            message.imageUrl!,
-                          ),
-                          fit: BoxFit.cover,
+              : Container(
+                  height: 220,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        height: 200,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12.r),
+                          image: message.file != null
+                              ? DecorationImage(
+                                  image: FileImage(
+                                    message.file!,
+                                  ),
+                                  fit: BoxFit.cover,
+                                )
+                              : DecorationImage(
+                                  image: NetworkImage(
+                                    message.imageUrl!,
+                                  ),
+                                  fit: BoxFit.cover,
+                                ),
                         ),
                       ),
-                    ),
-                    message.textMessage!.isNotEmpty
-                        ? Padding(
-                            padding: const EdgeInsets.only(left: 10, right: 10),
-                            child: Text(
-                              message.textMessage!,
-                              style: subtitleText.copyWith(
-                                fontSize: 15.sp,
-                                color: message.fromUserId == appUser.id
-                                    ? whiteColor
-                                    : blackColor,
+                      message.textMessage != null
+                          ? Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 10, right: 10),
+                              child: Text(
+                                message.textMessage!,
+                                style: subtitleText.copyWith(
+                                  fontSize: 15.sp,
+                                  color: message.fromUserId == appUser.id
+                                      ? whiteColor
+                                      : blackColor,
+                                ),
                               ),
-                            ),
-                          )
-                        : Container(),
-                  ],
+                            )
+                          : Container(),
+                    ],
+                  ),
                 ),
         ),
         sizeBox10,
@@ -599,7 +637,7 @@ class ImageMessageCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 40),
               child: Text(
-                onlyTime.format(message.sendat!),
+                onlyTime.format(message.sendat ?? DateTime.now()),
                 style: miniText.copyWith(
                   color: greyColor2,
                 ),

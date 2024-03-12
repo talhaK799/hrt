@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -26,16 +27,16 @@ class ChattingProvider extends BaseViewModel {
   TextEditingController messageController = TextEditingController();
   AppUser toUser = AppUser();
   Message message = Message();
-
   Conversation conversationTo = Conversation();
   Conversation conversationFrom = Conversation();
   Conversation conversation = Conversation();
-
   Stream<QuerySnapshot>? messageStream;
+  StreamSubscription<QuerySnapshot>? messageStreamSubscription;
   bool isSelect = false;
   File? image;
   List<Matches> matches = [];
   List<AppUser> matchedUsers = [];
+  bool isShowImagePreview = false;
 
   ChattingProvider(userId, conversation) {
     this.conversation = conversation;
@@ -139,17 +140,16 @@ class ChattingProvider extends BaseViewModel {
 
   getAllMessages() async {
     // conversation.conversationId = toUser.id;
-    print('gettin all messages  ${conversation.conversationId}');
+    if (conversation.conversationId != null) {}
     setState(ViewState.busy);
     messageStream = db.getRealTimeMessages(conversation.conversationId);
     setState(ViewState.idle);
-    messageStream!.listen(
+    messageStreamSubscription = messageStream!.listen(
       (event) {
         messages = [];
         if (event.docs.length > 0) {
           event.docs.forEach((element) {
             messages.add(Message.fromJson(element.data(), element.id));
-            print('message===> ${messages.first.textMessage}');
           });
           notifyListeners();
         } else {
@@ -164,19 +164,24 @@ class ChattingProvider extends BaseViewModel {
 
   disposestream() {
     // super.dispose();.
-
+    messageStreamSubscription?.cancel();
     messageStream = null;
   }
 
-  // selectImage() {
-  //   isSelect = !isSelect;
-  //   notifyListeners();
-  // }
+  removeImage() {
+    isSelect = false;
+    image = null;
+    message.file = null;
+    isShowImagePreview = false;
+    notifyListeners();
+  }
 
   pickImage() async {
     image = await filePicker.pickImage();
 
     if (image != null) {
+      isShowImagePreview = true;
+      message.file = image;
       isSelect = !isSelect;
     }
 
@@ -187,6 +192,7 @@ class ChattingProvider extends BaseViewModel {
     image = await filePicker.pickImageWithCompressionFromCamera();
 
     if (image != null) {
+      message.file = image;
       isSelect = !isSelect;
     }
 
@@ -254,6 +260,7 @@ class ChattingProvider extends BaseViewModel {
       message.type = 'text';
       // messages.add(message);
       messages.insert(0, message);
+      isShowImagePreview = false;
       notifyListeners();
 
       db.newMessages(conversationFrom, conversationTo, message,
@@ -271,12 +278,13 @@ class ChattingProvider extends BaseViewModel {
       message.fromUserId = currentUser.appUser.id;
       message.toUserId = toUser.id;
       message.sendAt = FieldValue.serverTimestamp();
-
-      message.imageUrl = await storage.uploadImage(image!, 'Chat Images');
-      print('image url : ${message.imageUrl}');
+      message.file = image;
       message.type = 'image';
       // messages.add(message);
       messages.insert(0, message);
+      isShowImagePreview = false;
+      // message.file = null;
+      message.imageUrl = await storage.uploadImage(image!, 'Chat Images');
       notifyListeners();
 
       db.newMessages(conversationFrom, conversationTo, message,
@@ -302,7 +310,6 @@ class ChattingProvider extends BaseViewModel {
     isSelect = false;
     notifyListeners();
 
-    print('message : ${message.textMessage}');
     if (message.textMessage != null && image == null) {
       message.fromUserId = currentUser.appUser.id;
       message.toUserId = conversation.conversationId;
@@ -313,8 +320,6 @@ class ChattingProvider extends BaseViewModel {
       // notifyListeners();
       db.sendGroupMessage(conversation, message);
 
-      print("new message added");
-
       messageController.clear();
       message = Message();
       notifyListeners();
@@ -322,12 +327,14 @@ class ChattingProvider extends BaseViewModel {
       message.fromUserId = currentUser.appUser.id;
       message.toUserId = toUser.id;
       message.sendAt = FieldValue.serverTimestamp();
-
-      message.imageUrl = await storage.uploadImage(image!, 'Chat Images');
-      print('image url : ${message.imageUrl}');
+      message.file = image;
       message.type = 'image';
       // messages.add(message);
       messages.insert(0, message);
+      isShowImagePreview = false;
+      // message.file = null;
+
+      message.imageUrl = await storage.uploadImage(image!, 'Chat Images');
       // notifyListeners();
       db.sendGroupMessage(conversation, message);
 

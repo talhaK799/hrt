@@ -65,7 +65,7 @@ class SelectGenderScreen extends StatelessWidget {
                         height: 20.h,
                       ),
                       Text(
-                        'Who are you looking for?',
+                        'What are you looking for?',
                         style: headingText.copyWith(
                           color: blackColor,
                           fontSize: 20.sp,

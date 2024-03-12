@@ -19,9 +19,12 @@ class MembersScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => CreateGroupProvider(),
-      child: Consumer<CreateGroupProvider>(builder: (context, model, child) {
+    return
+        // ChangeNotifierProvider(
+        //   create: (context) => CreateGroupProvider(),
+        //   child:
+        Consumer<CreateGroupProvider>(
+      builder: (context, model, child) {
         return ModalProgressHUD(
           inAsyncCall: model.state == ViewState.busy,
           child: Scaffold(
@@ -55,6 +58,7 @@ class MembersScreen extends StatelessWidget {
                           },
                           onChange: (val) {
                             model.conversation.name = val.trim();
+                            model.setState(ViewState.idle);
                           },
                           hintText: 'Enter your group name',
                         ),
@@ -114,6 +118,7 @@ class MembersScreen extends StatelessWidget {
                         title: 'CREATE',
                         onTap: () {
                           if (model.conversation.name != null) {
+                            print(model.conversation.name);
                             model.createGroup();
                           } else {
                             Get.snackbar("Error!", "Please enter group name");
@@ -130,8 +135,9 @@ class MembersScreen extends StatelessWidget {
             ),
           ),
         );
-      }),
+      },
     );
+    // );
   }
 
   // _groupNameTextField() {

@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/models/app_user.dart';
 import 'package:hart/core/models/matches.dart';
@@ -61,19 +62,17 @@ class ConnectionsProvider extends BaseViewModel {
         bool isUpdatedMatch = await db.updateRequest(match);
         bool isUpdated = await db.updateUserProfile(currentUser.appUser);
 
-        print(
-            'profile update ==> ${isUpdated} requestUpdate==>${isUpdatedMatch}');
         if (isUpdated && isUpdatedMatch) {
           currentUser.likingUsers.remove(user);
-          // Get.to(
-          //   ConnectPopupScreen(),
+
+          Get.snackbar("Alert!", "You have a new connection with ${user.name}");
+
+          // Navigator.push(
+          //   context,
+          //   PageFromRight(
+          //     page: ConnectPopupScreen(),
+          //   ),
           // );
-          Navigator.push(
-            context,
-            PageFromRight(
-              page: ConnectPopupScreen(),
-            ),
-          );
         }
         notifyListeners();
       } else {

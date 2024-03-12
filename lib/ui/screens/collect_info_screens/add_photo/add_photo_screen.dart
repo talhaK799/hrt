@@ -99,7 +99,7 @@ class AddPhotoScreen extends StatelessWidget {
                       CustomButton(
                         title: 'CONTINUE',
                         onTap: () {
-                          model.addUserImages();
+                          model.addUserImages(context);
                         },
                       ),
                       SizedBox(

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/models/app_user.dart';
@@ -24,11 +25,10 @@ class CreateGroupProvider extends BaseViewModel {
   bool isCreated = false;
 
   CreateGroupProvider() {
-    init();
+    // init();
   }
 
-  init() async {
-    setState(ViewState.busy);
+  init() {
     message = Message();
     conversation = Conversation();
     isEnable = false;
@@ -36,8 +36,13 @@ class CreateGroupProvider extends BaseViewModel {
     likedUsers = [];
     matchedUsers = [];
     selectedUsers = [];
-    await getLikedUsers();
-    setState(ViewState.idle);
+    getConnectedUser();
+  }
+
+  getConnectedUser() async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await getLikedUsers();
+    });
   }
 
   check(ind) {
@@ -46,6 +51,12 @@ class CreateGroupProvider extends BaseViewModel {
       isEnable = true;
     } else {
       isEnable = false;
+    }
+    selectedUsers = [];
+    for (var i = 0; i < matchedUsers.length; i++) {
+      if (matchedUsers[i].isSelected == true) {
+        selectedUsers.add(matchedUsers[i]);
+      }
     }
 
     // for (var i = 0; i < matchedUsers.length; i++) {
@@ -68,13 +79,12 @@ class CreateGroupProvider extends BaseViewModel {
     for (var i = 0; i < likedUsers.length; i++) {
       likedUsers[i].isSelected = false;
       if (likedUsers[i].likedUsers!.contains(currentUser.appUser.id)) {
-        print('current user${i + 1} likes===>${likedUsers[i].id}');
-        print('other user likes current user===>${likedUsers[i].id}');
         if (!matchedUsers.contains(likedUsers[i])) {
           matchedUsers.add(likedUsers[i]);
         }
       }
     }
+    setState(ViewState.idle);
     // filterSelectedUsers();
   }
 

@@ -6,6 +6,7 @@ import '../../core/constants/strings.dart';
 class CustomBackButton extends StatelessWidget {
   bool? isWhite;
   bool? data;
+
   CustomBackButton({
     this.isWhite = false,
     this.data,
