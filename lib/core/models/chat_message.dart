@@ -13,6 +13,8 @@ class Message {
   FieldValue? sendAt;
   DateTime? sendat;
   String? type;
+  bool? isReaded;
+  List<String>? readingMemebers;
 
   Message({
     this.file,
@@ -23,6 +25,8 @@ class Message {
     this.imageUrl,
     this.toUserId,
     this.type,
+    this.isReaded,
+    this.readingMemebers,
   });
 
   Message.fromJson(json, id) {
@@ -31,10 +35,19 @@ class Message {
     this.toUserId = json["toUserId"];
     this.imageUrl = json["imageUrl"] ?? "";
     this.textMessage = json["textMessage"] ?? "";
-    this.sendat = sendAt != null
-        ? DateTime.parse(json["sendAt"].toDate().toString())
-        : DateTime.now();
+    this.sendat =
+        DateTime.parse(json["sendAt"].toDate().toString()) ?? DateTime.now();
     this.type = json["type"];
+    this.isReaded = json["isReaded"] ?? false;
+    if (json["readingMemebers"] != null) {
+      readingMemebers = [];
+      json["readingMemebers"].forEach((element) {
+        readingMemebers!.add(element);
+      });
+    } else {
+      readingMemebers = [];
+    }
+    ;
   }
 
   toJson() {
@@ -45,6 +58,8 @@ class Message {
       "imageUrl": this.imageUrl,
       "sendAt": this.sendAt,
       "type": this.type,
+      "isReaded": this.isReaded ?? false,
+      "readingMemebers": this.readingMemebers ?? [],
     };
   }
 }

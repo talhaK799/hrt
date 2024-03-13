@@ -46,6 +46,7 @@ class ConversationProvider extends BaseViewModel {
     for (var i = 0; i < likedUsers.length; i++) {
       likedUsers[i].isSelected = false;
       if (likedUsers[i].likedUsers!.contains(currentUser.appUser.id)) {
+        print('${likedUsers[i].id} likes ===> ${currentUser.appUser.id}');
         if (currentUser.conversations.isNotEmpty) {
           for (var j = 0; j < currentUser.conversations.length; j++) {
             if (currentUser.conversations[j].isGroupChat == false) {

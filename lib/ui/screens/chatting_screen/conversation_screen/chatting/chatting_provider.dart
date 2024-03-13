@@ -145,12 +145,19 @@ class ChattingProvider extends BaseViewModel {
     messageStream = db.getRealTimeMessages(conversation.conversationId);
     setState(ViewState.idle);
     messageStreamSubscription = messageStream!.listen(
-      (event) {
+      (event) async {
         messages = [];
         if (event.docs.length > 0) {
           event.docs.forEach((element) {
             messages.add(Message.fromJson(element.data(), element.id));
           });
+          for (var msg in messages) {
+            print('messages time ===> ${msg.sendat}');
+            if (msg.toUserId == currentUser.appUser.id) {
+              msg.isReaded = true;
+              db.readMessages(conversation.conversationId, msg);
+            }
+          }
           notifyListeners();
         } else {
           messages = [];
@@ -258,6 +265,7 @@ class ChattingProvider extends BaseViewModel {
       message.toUserId = toUser.id;
       message.sendAt = FieldValue.serverTimestamp();
       message.type = 'text';
+      message.isReaded = false;
       // messages.add(message);
       messages.insert(0, message);
       isShowImagePreview = false;
@@ -279,6 +287,8 @@ class ChattingProvider extends BaseViewModel {
       message.toUserId = toUser.id;
       message.sendAt = FieldValue.serverTimestamp();
       message.file = image;
+
+      message.isReaded = false;
       message.type = 'image';
       // messages.add(message);
       messages.insert(0, message);
@@ -305,7 +315,6 @@ class ChattingProvider extends BaseViewModel {
   /// ================================================= ///
   /// ================ Group Chat ===================== ///
   /// ================================================= ///
-  ///
   sendGroupMessage() async {
     isSelect = false;
     notifyListeners();
@@ -314,6 +323,7 @@ class ChattingProvider extends BaseViewModel {
       message.fromUserId = currentUser.appUser.id;
       message.toUserId = conversation.conversationId;
       message.sendAt = FieldValue.serverTimestamp();
+      
       message.type = 'text';
       // messages.add(message);
       messages.insert(0, message);

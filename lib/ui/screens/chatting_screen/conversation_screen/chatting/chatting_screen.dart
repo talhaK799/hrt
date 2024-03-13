@@ -11,12 +11,10 @@ import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/models/app_user.dart';
 import 'package:hart/core/models/chat_message.dart';
 import 'package:hart/core/models/conversation.dart';
-import 'package:hart/ui/custom_widgets/custom_back_button.dart';
 import 'package:hart/ui/custom_widgets/custom_button.dart';
 import 'package:hart/ui/custom_widgets/custom_loader.dart';
 import 'package:hart/ui/custom_widgets/right_navigation.dart';
 import 'package:hart/ui/screens/chatting_screen/conversation_screen/chatting/chatting_provider.dart';
-import 'package:hart/ui/screens/chatting_screen/create_group/create_group_screen.dart';
 import 'package:hart/ui/screens/chatting_screen/group_chatting/group_info_screens/group_details/group_detail_screen.dart';
 import 'package:hart/ui/screens/chatting_screen/user_details/user_detail_screen.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -66,7 +64,7 @@ class _ChattingScreenState extends State<ChattingScreen> {
             canPop: true,
             onPopInvoked: (didPop) {
               model.disposestream();
-              Get.back();
+              // Get.back();
             },
             child: Scaffold(
               backgroundColor: primaryColor,
@@ -87,9 +85,7 @@ class _ChattingScreenState extends State<ChattingScreen> {
                           behavior: HitTestBehavior.opaque,
                           onTap: () {
                             model.disposestream();
-                            Get.back(
-                                // result: model.toUser.isFirstTimeChat,
-                                );
+                            Get.back();
                           },
                           child: Image.asset(
                             '$staticAsset/Back.png',
@@ -592,22 +588,60 @@ class ImageMessageCard extends StatelessWidget {
                     children: [
                       Container(
                         height: 200,
+                        width: 1.sw,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12.r),
-                          image: message.file != null
-                              ? DecorationImage(
-                                  image: FileImage(
-                                    message.file!,
-                                  ),
-                                  fit: BoxFit.cover,
-                                )
-                              : DecorationImage(
-                                  image: NetworkImage(
-                                    message.imageUrl!,
-                                  ),
-                                  fit: BoxFit.cover,
-                                ),
+                          // image: message.file != null
+                          //     ? DecorationImage(
+                          //         image: FileImage(
+                          //           message.file!,
+                          //         ),
+                          //         fit: BoxFit.cover,
+                          //       )
+                          //     : DecorationImage(
+                          //         image: NetworkImage(
+                          //           message.imageUrl!,
+
+                          //         ),
+                          //         fit: BoxFit.cover,
+                          //       ),
                         ),
+                        child: message.file != null
+                            ? Image.file(
+                                message.file!,
+                                fit: BoxFit.cover,
+                              )
+                            : Image.network(
+                                message.imageUrl!,
+                                fit: BoxFit.cover,
+                                loadingBuilder: (BuildContext context,
+                                    Widget child,
+                                    ImageChunkEvent? loadingProgress) {
+                                  if (loadingProgress == null) {
+                                    return child; // Return the image widget if it's fully loaded.
+                                  }
+                                  return Container(
+                                    height: 0.35.sh,
+                                    color: Colors.grey.withOpacity(0.1),
+                                    child: Center(
+                                      // Display a linear progress indicator until the image is fully loaded.
+                                      child: CircularProgressIndicator(
+                                        color: message.fromUserId == appUser.id
+                                            ? whiteColor
+                                            : primaryColor,
+                                        value: loadingProgress
+                                                    .expectedTotalBytes !=
+                                                null
+                                            ? loadingProgress
+                                                    .cumulativeBytesLoaded /
+                                                loadingProgress
+                                                    .expectedTotalBytes!
+                                            : null,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
                       ),
                       message.textMessage != null
                           ? Padding(
@@ -644,13 +678,13 @@ class ImageMessageCard extends StatelessWidget {
               ),
             ),
             sizeBoxw10,
-            // model.messages[index].isSender == false
-            //     ? Image.asset(
-            //         '$staticAsset/Check.png',
-            //         scale: 3,
-            //       )
-            //     :
-            Container(),
+            15.horizontalSpace,
+            message.fromUserId == appUser.id && message.isReaded == true
+                ? Image.asset(
+                    "$staticAsset/Check.png",
+                    scale: 3.5,
+                  )
+                : Container()
           ],
         )
       ],
@@ -702,11 +736,30 @@ class TextMessageCard extends StatelessWidget {
               ),
             ),
             // sizeBox10,
-            Text(
-              onlyTime.format(message.sendat ?? DateTime.now()),
-              style: miniText.copyWith(
-                color: greyColor2,
-              ),
+            Row(
+              mainAxisAlignment: message.fromUserId == user.id
+                  ? MainAxisAlignment.end
+                  : MainAxisAlignment.start,
+              children: [
+                Text(
+                  onlyTime.format(message.sendat ?? DateTime.now()),
+                  style: miniText.copyWith(
+                    color: greyColor2,
+                  ),
+                ),
+                15.horizontalSpace,
+                message.fromUserId == user.id
+                    ? message.isReaded == true
+                        ? Image.asset(
+                            "$staticAsset/Check.png",
+                            scale: 3.5,
+                          )
+                        : Image.asset(
+                            "$staticAsset/Check2.png",
+                            scale: 3.5,
+                          )
+                    : Container()
+              ],
             ),
             // sizeBoxw10
           ],

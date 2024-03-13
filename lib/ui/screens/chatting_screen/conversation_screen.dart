@@ -99,8 +99,8 @@ class ConversationScreen extends StatelessWidget {
                                                 onTap: () async {
                                                   // print(
                                                   //     'chat user Id ${model.currentUser.matchedUsers[index].id!}');
-                                                  model.firstTime =
-                                                      await Navigator.push(
+
+                                                  Navigator.push(
                                                     context,
                                                     PageFromRight(
                                                       page: ChattingScreen(
@@ -208,18 +208,6 @@ class ConversationScreen extends StatelessWidget {
                                                     ),
                                                   ),
                                                 ),
-                                                // Get.to(
-                                                //   ChattingScreen(
-                                                //     toUserId: model
-                                                //             .currentUser
-                                                //             .conversations[index]
-                                                //             .toUserId ??
-                                                //         '',
-                                                //     conversation: model
-                                                //         .currentUser
-                                                //         .conversations[index],
-                                                //   ),
-                                                // ),
                                               );
                                             },
                                             separatorBuilder:
