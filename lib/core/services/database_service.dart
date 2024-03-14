@@ -321,12 +321,14 @@ class DatabaseService {
     List<AppUser> list = [];
     print("likedUsers: ${appUser.likedUsers!.length}");
     try {
-      final snapshot = appUser.likedUsers!.isEmpty
-          ? await _db
-              .collection('app_user')
-              // .where("id", whereIn: appUser.likedUsers)
-              .get()
-          : await _db
+      final snapshot =
+          // appUser.likedUsers!.isEmpty
+          //     ? await _db
+          //         .collection('app_user')
+          //         // .where("id", whereIn: appUser.likedUsers)
+          //         .get()
+          //     :R
+          await _db
               .collection('app_user')
               .where("id", whereIn: appUser.likedUsers)
               .get();
@@ -574,11 +576,11 @@ class DatabaseService {
     }
   }
 
-  Stream<QuerySnapshot>? getRealTimeMessages(currentUserId) {
+  Stream<QuerySnapshot>? getRealTimeMessages(conversationId) {
     try {
       Stream<QuerySnapshot> messageSnapshot = _db
           .collection("messages")
-          .doc(currentUserId)
+          .doc(conversationId)
           .collection("realtime-messages")
           .orderBy('sendAt', descending: true)
           .snapshots();
@@ -586,6 +588,36 @@ class DatabaseService {
     } catch (e) {
       print('Exception@GetUserMessagesStream=>$e');
       return null;
+    }
+  }
+
+  readMessages(conversationId, Message message) async {
+    try {
+      await _db
+          .collection("messages")
+          .doc(conversationId)
+          .collection("realtime-messages")
+          .doc(message.messageId)
+          .update({
+        "isReaded": true,
+      });
+    } catch (e) {
+      print('Exception@UpdateUserMessagesStream=>$e');
+    }
+  }
+
+  readGroupMessages(conversationId, Message message) async {
+    try {
+      await _db
+          .collection("messages")
+          .doc(conversationId)
+          .collection("realtime-messages")
+          .doc(message.messageId)
+          .update({
+        "readingMemebers": message.readingMemebers,
+      });
+    } catch (e) {
+      print('Exception@UpdateUserMessagesStream=>$e');
     }
   }
 
@@ -667,6 +699,27 @@ class DatabaseService {
           .doc("${conversation.conversationId}")
           .collection("realtime-messages")
           .add(message.toJson());
+
+      for (var memberId in conversation.joinedUsers!) {
+        await _db
+            .collection("Conversations")
+            .doc("${memberId}")
+            .collection("MyConversation")
+            .doc("${conversation.groupId}")
+            .update({
+          "lastMessage": conversation.lastMessage,
+          "lastMessageAt": conversation.lastMessageAt,
+        });
+      }
+
+      //   await _db
+      //     .collection("Conversations")
+      //     .doc("${conversation.toUserId}")
+      //     .collection("MyConversation")
+      //     .doc("${conversation.groupId}")
+      //     .update({
+      //   "lastMessage": conversation.lastMessage,
+      // });
       return true;
     } catch (e) {
       print('Exception@DatabaseServices/addNewMessage ==> $e');

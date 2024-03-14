@@ -145,12 +145,29 @@ class ChattingProvider extends BaseViewModel {
     messageStream = db.getRealTimeMessages(conversation.conversationId);
     setState(ViewState.idle);
     messageStreamSubscription = messageStream!.listen(
-      (event) {
+      (event) async {
         messages = [];
         if (event.docs.length > 0) {
           event.docs.forEach((element) {
             messages.add(Message.fromJson(element.data(), element.id));
           });
+          for (var msg in messages) {
+            /// single user conversation
+            if (msg.toUserId == currentUser.appUser.id) {
+              msg.readingMemebers = [];
+              print('messages toUser  ===> ${msg.toUserId}');
+              msg.isReaded = true;
+              db.readMessages(conversation.conversationId, msg);
+
+              /// Group converstion
+            } else if (msg.toUserId == conversation.conversationId) {
+              print('messages toUser group ===> ${msg.toUserId}');
+              if (!msg.readingMemebers!.contains(currentUser.appUser.id)) {
+                msg.readingMemebers!.add(currentUser.appUser.id!);
+                db.readGroupMessages(conversation.conversationId, msg);
+              }
+            }
+          }
           notifyListeners();
         } else {
           messages = [];
@@ -258,6 +275,8 @@ class ChattingProvider extends BaseViewModel {
       message.toUserId = toUser.id;
       message.sendAt = FieldValue.serverTimestamp();
       message.type = 'text';
+      message.isReaded = false;
+      // message.readingMemebers = null;
       // messages.add(message);
       messages.insert(0, message);
       isShowImagePreview = false;
@@ -279,6 +298,9 @@ class ChattingProvider extends BaseViewModel {
       message.toUserId = toUser.id;
       message.sendAt = FieldValue.serverTimestamp();
       message.file = image;
+
+      message.isReaded = false;
+      // message.readingMemebers = null;
       message.type = 'image';
       // messages.add(message);
       messages.insert(0, message);
@@ -305,15 +327,18 @@ class ChattingProvider extends BaseViewModel {
   /// ================================================= ///
   /// ================ Group Chat ===================== ///
   /// ================================================= ///
-  ///
   sendGroupMessage() async {
     isSelect = false;
     notifyListeners();
+    conversation.lastMessage = message.textMessage;
+    conversation.lastMessageAt = FieldValue.serverTimestamp();
 
     if (message.textMessage != null && image == null) {
       message.fromUserId = currentUser.appUser.id;
       message.toUserId = conversation.conversationId;
       message.sendAt = FieldValue.serverTimestamp();
+      message.readingMemebers = [];
+      // message.isReaded = null;
       message.type = 'text';
       // messages.add(message);
       messages.insert(0, message);
@@ -329,6 +354,8 @@ class ChattingProvider extends BaseViewModel {
       message.sendAt = FieldValue.serverTimestamp();
       message.file = image;
       message.type = 'image';
+      message.readingMemebers = [];
+      // message.isReaded = null;
       // messages.add(message);
       messages.insert(0, message);
       isShowImagePreview = false;

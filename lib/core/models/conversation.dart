@@ -97,9 +97,12 @@ class Conversation {
 
   Conversation.fromJson(json) {
     this.conversationId = json["conversationId"];
-    this.lastMessageat = lastMessageAt != null
-        ? DateTime.parse(json['lastMessageAt'].toDate().toString())
-        : DateTime.now();
+    this.lastMessageat =
+        // lastMessageAt != null
+        // ? DateTime.parse(
+        json['lastMessageAt'].toDate() ?? DateTime.now();
+    // )
+    // : DateTime.now();
     this.imageUrl = json['imageUrl'];
     this.name = json['name'] ?? 'Group';
     this.lastMessage = json['lastMessage'] ?? "";

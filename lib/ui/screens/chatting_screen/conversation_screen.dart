@@ -99,8 +99,8 @@ class ConversationScreen extends StatelessWidget {
                                                 onTap: () async {
                                                   // print(
                                                   //     'chat user Id ${model.currentUser.matchedUsers[index].id!}');
-                                                  model.firstTime =
-                                                      await Navigator.push(
+
+                                                  Navigator.push(
                                                     context,
                                                     PageFromRight(
                                                       page: ChattingScreen(
@@ -208,18 +208,6 @@ class ConversationScreen extends StatelessWidget {
                                                     ),
                                                   ),
                                                 ),
-                                                // Get.to(
-                                                //   ChattingScreen(
-                                                //     toUserId: model
-                                                //             .currentUser
-                                                //             .conversations[index]
-                                                //             .toUserId ??
-                                                //         '',
-                                                //     conversation: model
-                                                //         .currentUser
-                                                //         .conversations[index],
-                                                //   ),
-                                                // ),
                                               );
                                             },
                                             separatorBuilder:
@@ -293,19 +281,23 @@ class ConversationScreen extends StatelessWidget {
         style: subHeadingTextStyle2,
       ),
       subtitle: Text(
-        model.currentUser.conversations[index].isGroupChat == true
-            ? ""
-            : model.currentUser.conversations[index].lastMessage ?? '',
+        // model.currentUser.conversations[index].isGroupChat == true
+        //     ? model.currentUser.conversations[index].lastMessage??""
+        // :
+        model.currentUser.conversations[index].lastMessage ?? '',
         style: subtitleText.copyWith(color: greyColor2),
       ),
       trailing: Column(
         children: [
           Text(
-            model.currentUser.conversations[index].isGroupChat == true
-                ? ""
-                : onlyTime.format(
-                    model.currentUser.conversations[index].lastMessageat ??
-                        DateTime.now()),
+            // model.currentUser.conversations[index].isGroupChat == true
+            //     ? onlyTime.format(
+            //         model.currentUser.conversations[index].lastMessageat ??
+            //             DateTime.now())
+            // :
+            onlyTime.format(
+                model.currentUser.conversations[index].lastMessageat ??
+                    DateTime.now()),
             style: miniText,
           ),
         ],

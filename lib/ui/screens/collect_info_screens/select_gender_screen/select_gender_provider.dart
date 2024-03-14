@@ -72,7 +72,7 @@ class SelectGenderProvider extends BaseViewModel {
     }
     currentUser.lookingFor = selections;
     // print('first element==> ${selections.first}');
-    setState(ViewState.busy);
+    // setState(ViewState.busy);
 
     // bool isUpdated = await _db.updateUserProfile(currentUser);
     // setState(ViewState.idle);
@@ -86,11 +86,11 @@ class SelectGenderProvider extends BaseViewModel {
         //   FantasiesScreen(),
         // );
         Navigator.push(
-                  context,
-                  PageFromRight(
-                    page: FantasiesScreen(),
-                  ),
-                );
+          context,
+          PageFromRight(
+            page: FantasiesScreen(),
+          ),
+        );
       } else {
         customSnackBar('alert!', 'Selection Required');
       }

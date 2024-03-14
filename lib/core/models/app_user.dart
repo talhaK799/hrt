@@ -7,6 +7,7 @@ class AppUser {
   bool? isEmailVerified;
   bool? isPhoneNoVerified;
   bool? isPremiumUser;
+  bool? isGroupAdmin;
   bool? isLiked;
   bool? isDesLiked;
   bool? isNotificationsOn;
@@ -67,6 +68,7 @@ class AppUser {
     this.uplift,
     this.nickName,
     this.isPremiumUser,
+    this.isGroupAdmin,
     this.identity,
     this.isFacebook,
     this.lookingFor,
@@ -110,6 +112,7 @@ class AppUser {
     data['isLiked'] = isLiked ?? false;
     data['isDesLiked'] = isDesLiked ?? false;
     data['isPremiumUser'] = isPremiumUser ?? false;
+    data['isGroupAdmin'] = isGroupAdmin ?? false;
     data['isPrivatePhoto'] = isPrivatePhoto ?? false;
     data['dob'] = dob ?? '';
     data['age'] = age ?? 0;
@@ -145,6 +148,7 @@ class AppUser {
       isUplifted = json['isUplifted'] ?? false;
       isDesLiked = json['isDesLiked'] ?? false;
       isPremiumUser = json['isPremiumUser'] ?? false;
+      isGroupAdmin = json['isGroupAdmin'] ?? false;
       isNotificationsOn = json['isNotificationsOn'] ?? false;
       isPrivatePhoto = json['isPrivatePhoto'] ?? false;
       isFirstTimeChat = json['isFirstTimeChat'] ?? false;

@@ -14,41 +14,43 @@ class AboutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(24, 55, 24, 0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CustomAppBar(title: 'About'),
-            sizeBox30,
-            ListView(
-              shrinkWrap: true,
-              children: [
-                GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: () {
-                    Navigator.push(
-                        context, PageFromRight(page: PrivacyPolicyScreen()));
-                  },
-                  child: CustomListItem(
-                    text: 'Privacy policy',
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(24, 55, 24, 0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CustomAppBar(title: 'About'),
+              sizeBox30,
+              ListView(
+                shrinkWrap: true,
+                children: [
+                  GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onTap: () {
+                      Navigator.push(
+                          context, PageFromRight(page: PrivacyPolicyScreen()));
+                    },
+                    child: CustomListItem(
+                      text: 'Privacy policy',
+                    ),
                   ),
-                ),
-                sizeBox20,
-                GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: () {
-                    Navigator.push(
-                        context, PageFromRight(page: TermsAndConditions()));
-                  },
-                  child: CustomListItem(
-                    text: 'Term of service',
+                  sizeBox20,
+                  GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onTap: () {
+                      Navigator.push(
+                          context, PageFromRight(page: TermsAndConditions()));
+                    },
+                    child: CustomListItem(
+                      text: 'Term of service',
+                    ),
                   ),
-                ),
-                sizeBox20,
-              ],
-            )
-          ],
+                  sizeBox20,
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );

@@ -77,40 +77,44 @@ class DobProvider extends BaseViewModel {
   }
 
   addDob(context) async {
-    age = now!.year - pickedDate!.year;
-
-    if (age >= 18) {
-      // setState(ViewState.busy);
-      currentUser.appUser.dob = dob;
-      currentUser.appUser.age = age;
-      // bool isProfUpdated = await db.updateUserProfile(currentUser.appUser);
-      // if (isProfUpdated) {
-      print('updatrion==> $updation');
-      if (updation) {
-        // Get.back(result: dob);
-        Navigator.pop(context, dob);
-      } else {
-        Navigator.push(context, PageFromRight(page: NickNameScreen()));
-      }
-      // }
-      // setState(ViewState.idle);
+    if (pickedDate == null) {
+      Get.snackbar('alert', "date must be selected");
     } else {
-      Get.snackbar(
-        'Alert!!',
-        'Age must be 18 or above',
-        colorText: primaryColor,
-        messageText: Text(
+      age = now!.year - pickedDate!.year;
+
+      if (age >= 18) {
+        // setState(ViewState.busy);
+        currentUser.appUser.dob = dob;
+        currentUser.appUser.age = age;
+        // bool isProfUpdated = await db.updateUserProfile(currentUser.appUser);
+        // if (isProfUpdated) {
+        print('updatrion==> $updation');
+        if (updation) {
+          // Get.back(result: dob);
+          Navigator.pop(context, dob);
+        } else {
+          Navigator.push(context, PageFromRight(page: NickNameScreen()));
+        }
+        // }
+        // setState(ViewState.idle);
+      } else {
+        Get.snackbar(
+          'Alert!!',
           'Age must be 18 or above',
-          style: miniText.copyWith(
-            color: lightRed,
-            fontSize: 15.sp,
+          colorText: primaryColor,
+          messageText: Text(
+            'Age must be 18 or above',
+            style: miniText.copyWith(
+              color: lightRed,
+              fontSize: 15.sp,
+            ),
           ),
-        ),
-      );
+        );
+      }
+
+      print('this is the age $age');
+
+      notifyListeners();
     }
-
-    print('this is the age $age');
-
-    notifyListeners();
   }
 }

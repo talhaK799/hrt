@@ -11,12 +11,10 @@ import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/models/app_user.dart';
 import 'package:hart/core/models/chat_message.dart';
 import 'package:hart/core/models/conversation.dart';
-import 'package:hart/ui/custom_widgets/custom_back_button.dart';
 import 'package:hart/ui/custom_widgets/custom_button.dart';
 import 'package:hart/ui/custom_widgets/custom_loader.dart';
 import 'package:hart/ui/custom_widgets/right_navigation.dart';
 import 'package:hart/ui/screens/chatting_screen/conversation_screen/chatting/chatting_provider.dart';
-import 'package:hart/ui/screens/chatting_screen/create_group/create_group_screen.dart';
 import 'package:hart/ui/screens/chatting_screen/group_chatting/group_info_screens/group_details/group_detail_screen.dart';
 import 'package:hart/ui/screens/chatting_screen/user_details/user_detail_screen.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -66,7 +64,7 @@ class _ChattingScreenState extends State<ChattingScreen> {
             canPop: true,
             onPopInvoked: (didPop) {
               model.disposestream();
-              Get.back();
+              // Get.back();
             },
             child: Scaffold(
               backgroundColor: primaryColor,
@@ -87,9 +85,7 @@ class _ChattingScreenState extends State<ChattingScreen> {
                           behavior: HitTestBehavior.opaque,
                           onTap: () {
                             model.disposestream();
-                            Get.back(
-                                // result: model.toUser.isFirstTimeChat,
-                                );
+                            Get.back();
                           },
                           child: Image.asset(
                             '$staticAsset/Back.png',
@@ -220,16 +216,20 @@ class _ChattingScreenState extends State<ChattingScreen> {
                                           ? TextMessageCard(
                                               message: model.messages[index],
                                               user: model.currentUser.appUser,
+                                              conversaion: model.conversation,
                                             )
                                           : model.messages[index].type ==
                                                       "added" ||
                                                   model.messages[index].type ==
                                                       "created"
                                               ? JoinORLeaveGroup(
-                                                  message:
-                                                      model.messages[index],
-                                                  currentUser:
-                                                      model.currentUser.appUser,
+                                                  message: model
+                                                              .currentUser
+                                                              .appUser
+                                                              .isGroupAdmin ==
+                                                          true
+                                                      ? "Group Created"
+                                                      : "You were Added",
                                                 )
                                               : model.messages[index].type ==
                                                       "image"
@@ -238,6 +238,8 @@ class _ChattingScreenState extends State<ChattingScreen> {
                                                           model.messages[index],
                                                       appUser: model
                                                           .currentUser.appUser,
+                                                      conversaion:
+                                                          model.conversation,
                                                     )
                                                   : Container();
                                       // return _chatMessage(model, index);
@@ -542,7 +544,12 @@ class _ChattingScreenState extends State<ChattingScreen> {
 class ImageMessageCard extends StatelessWidget {
   final Message message;
   final AppUser appUser;
-  ImageMessageCard({required this.message, required this.appUser});
+  final Conversation conversaion;
+  ImageMessageCard({
+    required this.message,
+    required this.appUser,
+    required this.conversaion,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -592,22 +599,60 @@ class ImageMessageCard extends StatelessWidget {
                     children: [
                       Container(
                         height: 200,
+                        width: 1.sw,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12.r),
-                          image: message.file != null
-                              ? DecorationImage(
-                                  image: FileImage(
-                                    message.file!,
-                                  ),
-                                  fit: BoxFit.cover,
-                                )
-                              : DecorationImage(
-                                  image: NetworkImage(
-                                    message.imageUrl!,
-                                  ),
-                                  fit: BoxFit.cover,
-                                ),
+                          // image: message.file != null
+                          //     ? DecorationImage(
+                          //         image: FileImage(
+                          //           message.file!,
+                          //         ),
+                          //         fit: BoxFit.cover,
+                          //       )
+                          //     : DecorationImage(
+                          //         image: NetworkImage(
+                          //           message.imageUrl!,
+
+                          //         ),
+                          //         fit: BoxFit.cover,
+                          //       ),
                         ),
+                        child: message.file != null
+                            ? Image.file(
+                                message.file!,
+                                fit: BoxFit.cover,
+                              )
+                            : Image.network(
+                                message.imageUrl!,
+                                fit: BoxFit.cover,
+                                loadingBuilder: (BuildContext context,
+                                    Widget child,
+                                    ImageChunkEvent? loadingProgress) {
+                                  if (loadingProgress == null) {
+                                    return child; // Return the image widget if it's fully loaded.
+                                  }
+                                  return Container(
+                                    height: 0.35.sh,
+                                    color: Colors.grey.withOpacity(0.1),
+                                    child: Center(
+                                      // Display a linear progress indicator until the image is fully loaded.
+                                      child: CircularProgressIndicator(
+                                        color: message.fromUserId == appUser.id
+                                            ? whiteColor
+                                            : primaryColor,
+                                        value: loadingProgress
+                                                    .expectedTotalBytes !=
+                                                null
+                                            ? loadingProgress
+                                                    .cumulativeBytesLoaded /
+                                                loadingProgress
+                                                    .expectedTotalBytes!
+                                            : null,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
                       ),
                       message.textMessage != null
                           ? Padding(
@@ -644,13 +689,31 @@ class ImageMessageCard extends StatelessWidget {
               ),
             ),
             sizeBoxw10,
-            // model.messages[index].isSender == false
-            //     ? Image.asset(
-            //         '$staticAsset/Check.png',
-            //         scale: 3,
-            //       )
-            //     :
-            Container(),
+            15.horizontalSpace,
+            conversaion.isGroupChat == true
+                ? message.fromUserId == appUser.id
+                    ? conversaion.joinedUsers!.length ==
+                            message.readingMemebers!.length
+                        ? Image.asset(
+                            "$staticAsset/Check.png",
+                            scale: 3.5,
+                          )
+                        : Image.asset(
+                            "$staticAsset/Check2.png",
+                            scale: 3.5,
+                          )
+                    : Container()
+                : message.fromUserId == appUser.id
+                    ? message.isReaded == true
+                        ? Image.asset(
+                            "$staticAsset/Check.png",
+                            scale: 3.5,
+                          )
+                        : Image.asset(
+                            "$staticAsset/Check2.png",
+                            scale: 3.5,
+                          )
+                    : Container()
           ],
         )
       ],
@@ -661,7 +724,12 @@ class ImageMessageCard extends StatelessWidget {
 class TextMessageCard extends StatelessWidget {
   final Message message;
   final AppUser user;
-  TextMessageCard({required this.message, required this.user});
+  final Conversation conversaion;
+  TextMessageCard({
+    required this.message,
+    required this.user,
+    required this.conversaion,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -702,11 +770,43 @@ class TextMessageCard extends StatelessWidget {
               ),
             ),
             // sizeBox10,
-            Text(
-              onlyTime.format(message.sendat ?? DateTime.now()),
-              style: miniText.copyWith(
-                color: greyColor2,
-              ),
+            Row(
+              mainAxisAlignment: message.fromUserId == user.id
+                  ? MainAxisAlignment.end
+                  : MainAxisAlignment.start,
+              children: [
+                Text(
+                  onlyTime.format(message.sendat ?? DateTime.now()),
+                  style: miniText.copyWith(
+                    color: greyColor2,
+                  ),
+                ),
+                15.horizontalSpace,
+                conversaion.isGroupChat == true
+                    ? message.fromUserId == user.id
+                        ? conversaion.joinedUsers!.length ==
+                                message.readingMemebers!.length
+                            ? Image.asset(
+                                "$staticAsset/Check.png",
+                                scale: 3.5,
+                              )
+                            : Image.asset(
+                                "$staticAsset/Check2.png",
+                                scale: 3.5,
+                              )
+                        : Container()
+                    : message.fromUserId == user.id
+                        ? message.isReaded == true
+                            ? Image.asset(
+                                "$staticAsset/Check.png",
+                                scale: 3.5,
+                              )
+                            : Image.asset(
+                                "$staticAsset/Check2.png",
+                                scale: 3.5,
+                              )
+                        : Container()
+              ],
             ),
             // sizeBoxw10
           ],
@@ -717,10 +817,9 @@ class TextMessageCard extends StatelessWidget {
 }
 
 class JoinORLeaveGroup extends StatelessWidget {
-  final Message message;
-  final AppUser currentUser;
+  final String message;
 
-  JoinORLeaveGroup({required this.message, required this.currentUser});
+  JoinORLeaveGroup({required this.message});
 
   @override
   Widget build(BuildContext context) {
@@ -732,7 +831,7 @@ class JoinORLeaveGroup extends StatelessWidget {
           SizedBox(width: 7),
           Expanded(child: Divider(thickness: 1)),
           SizedBox(width: 7),
-          Text("${message.textMessage}"),
+          Text("$message"),
           SizedBox(width: 7),
           Expanded(child: Divider(thickness: 1)),
           SizedBox(width: 7),
