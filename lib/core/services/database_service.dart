@@ -606,6 +606,21 @@ class DatabaseService {
     }
   }
 
+  readGroupMessages(conversationId, Message message) async {
+    try {
+      await _db
+          .collection("messages")
+          .doc(conversationId)
+          .collection("realtime-messages")
+          .doc(message.messageId)
+          .update({
+        "readingMemebers": message.readingMemebers,
+      });
+    } catch (e) {
+      print('Exception@UpdateUserMessagesStream=>$e');
+    }
+  }
+
   createGroup(Conversation conversation, Message message) async {
     try {
       await _db
@@ -684,6 +699,27 @@ class DatabaseService {
           .doc("${conversation.conversationId}")
           .collection("realtime-messages")
           .add(message.toJson());
+
+      for (var memberId in conversation.joinedUsers!) {
+        await _db
+            .collection("Conversations")
+            .doc("${memberId}")
+            .collection("MyConversation")
+            .doc("${conversation.groupId}")
+            .update({
+          "lastMessage": conversation.lastMessage,
+          "lastMessageAt": conversation.lastMessageAt,
+        });
+      }
+
+      //   await _db
+      //     .collection("Conversations")
+      //     .doc("${conversation.toUserId}")
+      //     .collection("MyConversation")
+      //     .doc("${conversation.groupId}")
+      //     .update({
+      //   "lastMessage": conversation.lastMessage,
+      // });
       return true;
     } catch (e) {
       print('Exception@DatabaseServices/addNewMessage ==> $e');

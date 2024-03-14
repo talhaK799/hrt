@@ -9,6 +9,7 @@ import 'package:hart/locator.dart';
 import 'package:hart/ui/custom_widgets/dialogs/auth_dialog.dart';
 import 'package:hart/ui/custom_widgets/right_navigation.dart';
 import 'package:hart/ui/screens/collect_info_screens/dob_screen/dob_screen.dart';
+import 'package:hart/ui/screens/root_screen/root_screen.dart';
 
 class AuthProvider extends BaseViewModel {
   final _auth = locator<AuthService>();
@@ -27,12 +28,21 @@ class AuthProvider extends BaseViewModel {
       // Get.to(
       //   DOBScreen(),
       // );
-      Navigator.push(
-        context,
-        PageFromRight(
-          page: DOBScreen(),
-        ),
-      );
+      if (_auth.appUser.isProfileCompleted == true) {
+        Navigator.push(
+          context,
+          PageFromRight(
+            page: RootScreen(),
+          ),
+        );
+      } else {
+        Navigator.push(
+          context,
+          PageFromRight(
+            page: DOBScreen(),
+          ),
+        );
+      }
     } else {
       showMyDialog(
         context,
@@ -54,12 +64,21 @@ class AuthProvider extends BaseViewModel {
         // Get.to(
         //   DOBScreen(),
         // );
-        Navigator.push(
-          context,
-          PageFromRight(
-            page: DOBScreen(),
-          ),
-        );
+        if (_auth.appUser.isProfileCompleted == true) {
+          Navigator.push(
+            context,
+            PageFromRight(
+              page: RootScreen(),
+            ),
+          );
+        } else {
+          Navigator.push(
+            context,
+            PageFromRight(
+              page: DOBScreen(),
+            ),
+          );
+        }
       } else {
         showMyDialog(
           context,
@@ -82,13 +101,21 @@ class AuthProvider extends BaseViewModel {
       // Get.to(
       //   DOBScreen(),
       // );
-
-      Navigator.push(
-        context,
-        PageFromRight(
-          page: DOBScreen(),
-        ),
-      );
+      if (_auth.appUser.isProfileCompleted == true) {
+        Navigator.push(
+          context,
+          PageFromRight(
+            page: RootScreen(),
+          ),
+        );
+      } else {
+        Navigator.push(
+          context,
+          PageFromRight(
+            page: DOBScreen(),
+          ),
+        );
+      }
     } else {
       showMyDialog(
         context,

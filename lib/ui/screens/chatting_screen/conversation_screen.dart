@@ -281,19 +281,23 @@ class ConversationScreen extends StatelessWidget {
         style: subHeadingTextStyle2,
       ),
       subtitle: Text(
-        model.currentUser.conversations[index].isGroupChat == true
-            ? ""
-            : model.currentUser.conversations[index].lastMessage ?? '',
+        // model.currentUser.conversations[index].isGroupChat == true
+        //     ? model.currentUser.conversations[index].lastMessage??""
+        // :
+        model.currentUser.conversations[index].lastMessage ?? '',
         style: subtitleText.copyWith(color: greyColor2),
       ),
       trailing: Column(
         children: [
           Text(
-            model.currentUser.conversations[index].isGroupChat == true
-                ? ""
-                : onlyTime.format(
-                    model.currentUser.conversations[index].lastMessageat ??
-                        DateTime.now()),
+            // model.currentUser.conversations[index].isGroupChat == true
+            //     ? onlyTime.format(
+            //         model.currentUser.conversations[index].lastMessageat ??
+            //             DateTime.now())
+            // :
+            onlyTime.format(
+                model.currentUser.conversations[index].lastMessageat ??
+                    DateTime.now()),
             style: miniText,
           ),
         ],

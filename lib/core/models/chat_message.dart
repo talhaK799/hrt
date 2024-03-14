@@ -14,7 +14,7 @@ class Message {
   DateTime? sendat;
   String? type;
   bool? isReaded;
-  List<String>? readingMemebers;
+  List<String>? readingMemebers = [];
 
   Message({
     this.file,
@@ -36,7 +36,11 @@ class Message {
     this.imageUrl = json["imageUrl"] ?? "";
     this.textMessage = json["textMessage"] ?? "";
     this.sendat =
-        DateTime.parse(json["sendAt"].toDate().toString()) ?? DateTime.now();
+        // DateTime.parse(
+        json["sendAt"].toDate()
+            // )
+            ??
+            DateTime.now();
     this.type = json["type"];
     this.isReaded = json["isReaded"] ?? false;
     if (json["readingMemebers"] != null) {

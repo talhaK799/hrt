@@ -49,13 +49,13 @@ class GroupDetailScreen extends StatelessWidget {
                         // );
 
                         Navigator.push(
-                  context,
-                  PageFromRight(
-                    page: AddPeopleScreen(
-                            group: group,
+                          context,
+                          PageFromRight(
+                            page: AddPeopleScreen(
+                              group: group,
+                            ),
                           ),
-                  ),
-                );
+                        );
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -127,11 +127,12 @@ class GroupDetailScreen extends StatelessWidget {
                             //   UserDetailScreen(user: model.groupMembers[index]),
                             // );
                             Navigator.push(
-                  context,
-                  PageFromRight(
-                    page: UserDetailScreen(user: model.groupMembers[index]),
-                  ),
-                );
+                              context,
+                              PageFromRight(
+                                page: UserDetailScreen(
+                                    user: model.groupMembers[index]),
+                              ),
+                            );
                           },
                           leading: model.groupMembers[index].images!.isEmpty
                               ? CircleAvatar(
@@ -150,10 +151,18 @@ class GroupDetailScreen extends StatelessWidget {
                             model.groupMembers[index].name!,
                             style: subHeadingTextStyle2,
                           ),
-                          subtitle: Text(
-                            model.groupMembers[index].nickName!,
-                            style: subtitleText,
-                          ),
+                          subtitle:
+                              model.groupMembers[index].isGroupAdmin == true
+                                  ? Text(
+                                      'Admin',
+                                      style: subtitleText.copyWith(
+                                        color: primaryColor,
+                                      ),
+                                    )
+                                  : Text(
+                                      model.groupMembers[index].nickName!,
+                                      style: subtitleText,
+                                    ),
                           trailing: Image.asset(
                             '$staticAsset/arrow.png',
                             scale: 3,

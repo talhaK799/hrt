@@ -216,16 +216,20 @@ class _ChattingScreenState extends State<ChattingScreen> {
                                           ? TextMessageCard(
                                               message: model.messages[index],
                                               user: model.currentUser.appUser,
+                                              conversaion: model.conversation,
                                             )
                                           : model.messages[index].type ==
                                                       "added" ||
                                                   model.messages[index].type ==
                                                       "created"
                                               ? JoinORLeaveGroup(
-                                                  message:
-                                                      model.messages[index],
-                                                  currentUser:
-                                                      model.currentUser.appUser,
+                                                  message: model
+                                                              .currentUser
+                                                              .appUser
+                                                              .isGroupAdmin ==
+                                                          true
+                                                      ? "Group Created"
+                                                      : "You were Added",
                                                 )
                                               : model.messages[index].type ==
                                                       "image"
@@ -234,6 +238,8 @@ class _ChattingScreenState extends State<ChattingScreen> {
                                                           model.messages[index],
                                                       appUser: model
                                                           .currentUser.appUser,
+                                                      conversaion:
+                                                          model.conversation,
                                                     )
                                                   : Container();
                                       // return _chatMessage(model, index);
@@ -538,7 +544,12 @@ class _ChattingScreenState extends State<ChattingScreen> {
 class ImageMessageCard extends StatelessWidget {
   final Message message;
   final AppUser appUser;
-  ImageMessageCard({required this.message, required this.appUser});
+  final Conversation conversaion;
+  ImageMessageCard({
+    required this.message,
+    required this.appUser,
+    required this.conversaion,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -679,12 +690,30 @@ class ImageMessageCard extends StatelessWidget {
             ),
             sizeBoxw10,
             15.horizontalSpace,
-            message.fromUserId == appUser.id && message.isReaded == true
-                ? Image.asset(
-                    "$staticAsset/Check.png",
-                    scale: 3.5,
-                  )
-                : Container()
+            conversaion.isGroupChat == true
+                ? message.fromUserId == appUser.id
+                    ? conversaion.joinedUsers!.length ==
+                            message.readingMemebers!.length
+                        ? Image.asset(
+                            "$staticAsset/Check.png",
+                            scale: 3.5,
+                          )
+                        : Image.asset(
+                            "$staticAsset/Check2.png",
+                            scale: 3.5,
+                          )
+                    : Container()
+                : message.fromUserId == appUser.id
+                    ? message.isReaded == true
+                        ? Image.asset(
+                            "$staticAsset/Check.png",
+                            scale: 3.5,
+                          )
+                        : Image.asset(
+                            "$staticAsset/Check2.png",
+                            scale: 3.5,
+                          )
+                    : Container()
           ],
         )
       ],
@@ -695,7 +724,12 @@ class ImageMessageCard extends StatelessWidget {
 class TextMessageCard extends StatelessWidget {
   final Message message;
   final AppUser user;
-  TextMessageCard({required this.message, required this.user});
+  final Conversation conversaion;
+  TextMessageCard({
+    required this.message,
+    required this.user,
+    required this.conversaion,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -748,17 +782,30 @@ class TextMessageCard extends StatelessWidget {
                   ),
                 ),
                 15.horizontalSpace,
-                message.fromUserId == user.id
-                    ? message.isReaded == true
-                        ? Image.asset(
-                            "$staticAsset/Check.png",
-                            scale: 3.5,
-                          )
-                        : Image.asset(
-                            "$staticAsset/Check2.png",
-                            scale: 3.5,
-                          )
-                    : Container()
+                conversaion.isGroupChat == true
+                    ? message.fromUserId == user.id
+                        ? conversaion.joinedUsers!.length ==
+                                message.readingMemebers!.length
+                            ? Image.asset(
+                                "$staticAsset/Check.png",
+                                scale: 3.5,
+                              )
+                            : Image.asset(
+                                "$staticAsset/Check2.png",
+                                scale: 3.5,
+                              )
+                        : Container()
+                    : message.fromUserId == user.id
+                        ? message.isReaded == true
+                            ? Image.asset(
+                                "$staticAsset/Check.png",
+                                scale: 3.5,
+                              )
+                            : Image.asset(
+                                "$staticAsset/Check2.png",
+                                scale: 3.5,
+                              )
+                        : Container()
               ],
             ),
             // sizeBoxw10
@@ -770,10 +817,9 @@ class TextMessageCard extends StatelessWidget {
 }
 
 class JoinORLeaveGroup extends StatelessWidget {
-  final Message message;
-  final AppUser currentUser;
+  final String message;
 
-  JoinORLeaveGroup({required this.message, required this.currentUser});
+  JoinORLeaveGroup({required this.message});
 
   @override
   Widget build(BuildContext context) {
@@ -785,7 +831,7 @@ class JoinORLeaveGroup extends StatelessWidget {
           SizedBox(width: 7),
           Expanded(child: Divider(thickness: 1)),
           SizedBox(width: 7),
-          Text("${message.textMessage}"),
+          Text("$message"),
           SizedBox(width: 7),
           Expanded(child: Divider(thickness: 1)),
           SizedBox(width: 7),
