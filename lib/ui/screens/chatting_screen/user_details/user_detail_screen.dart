@@ -7,6 +7,7 @@ import 'package:hart/core/constants/style.dart';
 import 'package:hart/core/models/app_user.dart';
 import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/ui/custom_widgets/custom_back_button.dart';
+import 'package:hart/ui/custom_widgets/custom_button.dart';
 import 'package:hart/ui/screens/chatting_screen/user_details/user_detail_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -136,13 +137,120 @@ class UserDetailScreen extends StatelessWidget {
                         SizedBox(
                           height: 10.h,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 100),
-                          child: Text(
-                            'Lorem ipsum dolor sit amet consectetur. Nulla ut proin diam est ac quam pretium lacus mollis. Pretium quam ac nibh nibh. Nec neque pulvinar risus sit consectetur cursus ut etiam risus...',
-                            style: buttonTextStyle2,
-                          ),
+                        Text(
+                          user.about ?? " ",
+                          style: buttonTextStyle2,
                         ),
+                        20.verticalSpace,
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.report,
+                                color: greyColor2,
+                              ),
+                              10.horizontalSpace,
+                              GestureDetector(
+                                onTap: () {
+                                  ///
+                                  /// Report bottomsheet
+                                  ///
+                                  showModalBottomSheet(
+                                    context: context,
+                                    isScrollControlled: true,
+                                    constraints: BoxConstraints(
+                                      maxHeight:
+                                          MediaQuery.of(context).size.height *
+                                              0.75,
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.only(
+                                          topRight: Radius.circular(20),
+                                          topLeft: Radius.circular(20)),
+                                    ),
+                                    builder: (context) {
+                                      return StatefulBuilder(
+                                          builder: (context, setState) {
+                                        return Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 15),
+                                          child: Column(
+                                            children: [
+                                              Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 10),
+                                                child: Text(
+                                                  "Why are you reporting",
+                                                  style: headingText.copyWith(
+                                                    color: primaryColor,
+                                                  ),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                child: ListView.builder(
+                                                  padding: EdgeInsets.zero,
+                                                  itemCount: model
+                                                      .reportsOptions.length,
+                                                  itemBuilder:
+                                                      (context, index) =>
+                                                          ListTile(
+                                                    title: Text(
+                                                        "${model.reportsOptions[index]}"),
+                                                    trailing:
+                                                        model.reportsOptionsIndex ==
+                                                                index
+                                                            ? Icon(Icons
+                                                                .circle_rounded)
+                                                            : Icon(Icons
+                                                                .circle_outlined),
+                                                    onTap: () {
+                                                      setState(
+                                                        () {
+                                                          model.reportsOptionsIndex =
+                                                              index;
+                                                        },
+                                                      );
+
+                                                      // model.selectReportOption(index);
+                                                    },
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(height: 20.h),
+                                              Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                  horizontal: 40,
+                                                ),
+                                                child: CustomButton(
+                                                  title: 'Report',
+                                                  onTap: () {
+                                                    FocusManager
+                                                        .instance.primaryFocus
+                                                        ?.unfocus();
+                                                    model.reportUser(user);
+                                                  },
+                                                ),
+                                              ),
+                                              SizedBox(height: 30.h),
+                                            ],
+                                          ),
+                                        );
+                                      });
+                                    },
+                                  );
+                                },
+                                child: Text(
+                                  'Report Profile ',
+                                  style: bodyTextStyle.copyWith(
+                                    color: greyColor2,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        )
                       ],
                     ),
                   )

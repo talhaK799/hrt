@@ -64,7 +64,7 @@ class MembersScreen extends StatelessWidget {
                         ),
                         sizeBox20,
                         Text(
-                          'Name your group',
+                          'Selected Members',
                           style: bodyTextStyle,
                         ),
                         Expanded(

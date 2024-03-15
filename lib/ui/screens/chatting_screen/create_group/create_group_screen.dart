@@ -124,20 +124,20 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                               title: 'Continue',
                               onTap: () {
                                 FocusManager.instance.primaryFocus?.unfocus();
-                                if (model.matchedUsers.length < 2) {
-                                  Get.snackbar(
-                                    'Alert!',
-                                    'Two or more memebers must be selected',
-                                    colorText: primaryColor,
-                                  );
-                                } else {
-                                  Navigator.push(
-                                    context,
-                                    PageFromRight(
-                                      page: MembersScreen(),
-                                    ),
-                                  );
-                                }
+                                // if (model.matchedUsers.length < 2) {
+                                //   Get.snackbar(
+                                //     'Alert!',
+                                //     'Two or more memebers must be selected',
+                                //     colorText: primaryColor,
+                                //   );
+                                // } else {
+                                Navigator.push(
+                                  context,
+                                  PageFromRight(
+                                    page: MembersScreen(),
+                                  ),
+                                );
+                                // }
                               },
                             )
                           : CustomButton(
