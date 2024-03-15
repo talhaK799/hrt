@@ -219,6 +219,16 @@ class DatabaseService {
       return false;
     }
   }
+  reportedConversations(ReportedUser user) async {
+    try {
+      await _db.collection('Reported Conversations').add(user.toJson());
+      return true;
+    } catch (e, s) {
+      debugPrint('Exception @DatabaseService/reportUser');
+      debugPrint(s.toString());
+      return false;
+    }
+  }
 
   updateUserProfile(AppUser appUser) async {
     // print("appuaser premiume check: ${appUser.isPremiumUser}");
