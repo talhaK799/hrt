@@ -48,8 +48,8 @@ class _ChattingScreenState extends State<ChattingScreen> {
   }
 
   void _init() async {
-    print(
-        "conversations list ====> ${widget.conversation.leftedUsers!.length}");
+    // print(
+    // "conversations list ====> ${widget.conversation.leftedUsers!.length}");
     // await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
   }
 
@@ -264,24 +264,54 @@ class _ChattingScreenState extends State<ChattingScreen> {
                                   ),
                           ),
                         ),
-                        widget.conversation.leftedUsers!
-                                .contains(model.currentUser.appUser.id)
-                            ? Container(
-                                padding: EdgeInsets.all(30),
-                                alignment: Alignment.center,
-                                width: 1.sw,
-                                color: whiteColor,
-                                child: Text(
-                                  'you cannot chat any more',
-                                  style: bodyTextStyle.copyWith(
-                                      color: primaryColor),
-                                ),
-                              )
-                            : Container(
-                                color: whiteColor,
-                                width: 1.sw,
-                                child: _chatFeild(model, context),
-                              )
+                        widget.conversation.isGroupChat == true
+                            ? widget.conversation.leftedUsers!
+                                    .contains(model.currentUser.appUser.id)
+                                // ||
+                                // model.currentUser.appUser.blockedUsers!
+                                //     .contains(widget.conversation.toUserId)
+                                // ||
+                                // model.conversation.appUser!.blockedUsers!.contains(model.currentUser.appUser.id)
+                                ? Container(
+                                    padding: EdgeInsets.all(30),
+                                    alignment: Alignment.center,
+                                    width: 1.sw,
+                                    color: whiteColor,
+                                    child: Text(
+                                      'you cannot chat any more',
+                                      style: bodyTextStyle.copyWith(
+                                          color: primaryColor),
+                                    ),
+                                  )
+                                : Container(
+                                    color: whiteColor,
+                                    width: 1.sw,
+                                    child: _chatFeild(model, context),
+                                  )
+                            : model.currentUser.appUser.blockedUsers!.contains(
+                                        model.toUser.id) ||
+                                    model.toUser.blockedUsers!
+                                        .contains(model.currentUser.appUser.id)
+                                ? Container(
+                                    padding: EdgeInsets.all(30),
+                                    alignment: Alignment.center,
+                                    width: 1.sw,
+                                    color: whiteColor,
+                                    child: Text(
+                                      model.currentUser.appUser.blockedUsers!
+                                              .contains(
+                                                  widget.conversation.toUserId)
+                                          ? "the conversation has been blocked "
+                                          : 'you cannot chat any more',
+                                      style: bodyTextStyle.copyWith(
+                                          color: primaryColor),
+                                    ),
+                                  )
+                                : Container(
+                                    color: whiteColor,
+                                    width: 1.sw,
+                                    child: _chatFeild(model, context),
+                                  )
                       ],
                     ),
                   ),

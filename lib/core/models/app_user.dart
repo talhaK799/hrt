@@ -39,7 +39,7 @@ class AppUser {
   List<String>? images;
   List<String>? likedUsers;
   List<String>? disLikedUsers;
-  List<String>? users;
+  List<String>? blockedUsers = [];
   bool? isFirstTimeChat;
   bool? isSelected;
   String? about;
@@ -77,7 +77,7 @@ class AppUser {
     this.disLikedUsers,
     this.likedUsers,
     this.age,
-    this.users,
+    this.blockedUsers,
     this.isFirstTimeChat = false,
     this.isSelected = false,
     this.isProfileCompleted,
@@ -126,6 +126,7 @@ class AppUser {
     data['images'] = images ?? [];
     data['likedUsers'] = likedUsers ?? [];
     data['disLikedUsers'] = disLikedUsers ?? [];
+    data['blockedUsers'] = blockedUsers ?? [];
     data["isApple"] = isApple ?? false;
     data["about"] = this.about;
     return data;
@@ -172,6 +173,14 @@ class AppUser {
         });
       } else {
         lookingFor = [];
+      }
+      if (json["blockedUsers"] != null) {
+        blockedUsers = [];
+        json["blockedUsers"].forEach((element) {
+          blockedUsers!.add(element);
+        });
+      } else {
+        blockedUsers = [];
       }
       if (json["muteIds"] != null) {
         muteIds = [];

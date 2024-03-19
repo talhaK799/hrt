@@ -109,7 +109,9 @@ class ConversationScreen extends StatelessWidget {
                                                             .matchedUsers[index]
                                                             .id!,
                                                         conversation:
-                                                            Conversation(),
+                                                            Conversation(
+                                                          leftedUsers: [],
+                                                        ),
                                                       ),
                                                     ),
                                                   );

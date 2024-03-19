@@ -82,6 +82,27 @@ class ChatInfoScreen extends StatelessWidget {
                       ),
                     ],
                   ),
+
+                  sizeBox20,
+                  GestureDetector(
+                    onTap: () {
+                      blockUser(
+                        context,
+                        model,
+                      );
+                    },
+                    child: Text(
+                      model.currentUser.appUser.blockedUsers!
+                              .contains(model.chat.toUserId)
+                          ? 'Unblock'
+                          : 'Block',
+                      style: bodyTextStyle.copyWith(
+                        color: primaryColor,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+
                   // sizeBox20,
                   // Text(
                   //   'Disconnect',
@@ -138,5 +159,45 @@ class ChatInfoScreen extends StatelessWidget {
         );
       }),
     );
+  }
+
+  Future<dynamic> blockUser(BuildContext context, ChatInfoProvider model) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            backgroundColor: whiteColor,
+            title: Text(
+              'Are you sure?',
+              style: bodyTextStyle.copyWith(color: primaryColor),
+            ),
+            content: Text('Do you realy want to disconnect form this chat'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  model.blockUser();
+                  // Get.back();
+                },
+                child: Text(
+                  'YES',
+                  style: buttonTextStyle2.copyWith(
+                    color: lightRed,
+                  ),
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  Get.back();
+                },
+                child: Text(
+                  'NO',
+                  style: buttonTextStyle2.copyWith(
+                    color: lightRed,
+                  ),
+                ),
+              )
+            ],
+          );
+        });
   }
 }
