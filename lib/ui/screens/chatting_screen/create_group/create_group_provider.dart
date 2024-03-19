@@ -107,12 +107,13 @@ class CreateGroupProvider extends BaseViewModel {
       conversation.lastMessageAt = FieldValue.serverTimestamp();
       conversation.fromUserId = currentUser.appUser.id;
       conversation.isGroupChat = true;
+      conversation.groupAdmin = currentUser.appUser.id;
       // conversation.imageUrl = currentUser.appUser.images!.first;
       conversation.isMessageSeen = false;
       conversation.leftedUsers = [];
       conversation.joinedUsers = [];
       conversation.joinedUsers!.add(currentUser.appUser.id!);
-      message.fromUserId = currentUser.appUser.id;
+      // message.fromUserId = currentUser.appUser.id;
       message.sendAt = FieldValue.serverTimestamp();
       message.textMessage = "Group created";
       message.type = "GroupCreated";

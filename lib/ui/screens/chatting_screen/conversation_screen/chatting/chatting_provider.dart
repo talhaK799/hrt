@@ -40,6 +40,8 @@ class ChattingProvider extends BaseViewModel {
 
   ChattingProvider(userId, conversation) {
     this.conversation = conversation;
+
+    print("conversations list ====> ${this.conversation.leftedUsers!.length}");
     this.conversation.isGroupChat = this.conversation.isGroupChat ?? false;
     message = Message();
     toUser = AppUser();

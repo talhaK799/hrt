@@ -47,15 +47,7 @@ class GroupDetailScreen extends StatelessWidget {
                         //     group: group,
                         //   ),
                         // );
-
-                        Navigator.push(
-                          context,
-                          PageFromRight(
-                            page: AddPeopleScreen(
-                              group: group,
-                            ),
-                          ),
-                        );
+                        model.addpeople(context);
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -92,7 +84,10 @@ class GroupDetailScreen extends StatelessWidget {
                     sizeBox20,
                     GestureDetector(
                       onTap: () {
-                        model.leaveGroup();
+                        leavegroup(
+                          context,
+                          model,
+                        );
                       },
                       child: Text(
                         'Leave',
@@ -120,7 +115,13 @@ class GroupDetailScreen extends StatelessWidget {
                         return ListTile(
                           contentPadding: EdgeInsets.zero,
                           onLongPress: () {
-                            _removeUser(context, model, index);
+                            model.groupMembers[index].id ==
+                                    model.group.groupAdmin
+                                ? () {}
+                                : model.currentUser.appUser.id ==
+                                        model.group.groupAdmin
+                                    ? _removeUser(context, model, index)
+                                    : () {};
                           },
                           onTap: () {
                             // Get.to(
@@ -151,18 +152,18 @@ class GroupDetailScreen extends StatelessWidget {
                             model.groupMembers[index].name!,
                             style: subHeadingTextStyle2,
                           ),
-                          subtitle:
-                              model.groupMembers[index].isGroupAdmin == true
-                                  ? Text(
-                                      'Admin',
-                                      style: subtitleText.copyWith(
-                                        color: primaryColor,
-                                      ),
-                                    )
-                                  : Text(
-                                      model.groupMembers[index].nickName!,
-                                      style: subtitleText,
-                                    ),
+                          subtitle: model.groupMembers[index].id ==
+                                  model.group.groupAdmin
+                              ? Text(
+                                  'Admin',
+                                  style: subtitleText.copyWith(
+                                    color: primaryColor,
+                                  ),
+                                )
+                              : Text(
+                                  model.groupMembers[index].nickName!,
+                                  style: subtitleText,
+                                ),
                           trailing: Image.asset(
                             '$staticAsset/arrow.png',
                             scale: 3,
@@ -200,6 +201,46 @@ class GroupDetailScreen extends StatelessWidget {
                 onPressed: () {
                   model.removeMember(index);
                   Get.back();
+                },
+                child: Text(
+                  'YES',
+                  style: buttonTextStyle2.copyWith(
+                    color: lightRed,
+                  ),
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  Get.back();
+                },
+                child: Text(
+                  'NO',
+                  style: buttonTextStyle2.copyWith(
+                    color: lightRed,
+                  ),
+                ),
+              )
+            ],
+          );
+        });
+  }
+
+  Future<dynamic> leavegroup(BuildContext context, GroupDetailProvider model) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            backgroundColor: whiteColor,
+            title: Text(
+              'Are you sure?',
+              style: bodyTextStyle.copyWith(color: primaryColor),
+            ),
+            content: Text('Do you realy want to leave this group'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  model.leaveGroup();
+                  // Get.back();
                 },
                 child: Text(
                   'YES',

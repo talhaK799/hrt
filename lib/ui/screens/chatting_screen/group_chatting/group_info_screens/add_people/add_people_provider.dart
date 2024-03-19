@@ -16,6 +16,7 @@ class AddPeopleProvider extends BaseViewModel {
   final db = DatabaseService();
   final currentUser = locator<AuthService>();
   List<AppUser> matchedUsers = [];
+  List<AppUser> likedUsers = [];
   List<AppUser> addingUsers = [];
   Conversation group = Conversation();
 
@@ -33,10 +34,17 @@ class AddPeopleProvider extends BaseViewModel {
   getMembers() async {
     matchedUsers = [];
     setState(ViewState.busy);
-    matchedUsers = await db.getMatchedUsers(currentUser.appUser);
+    likedUsers = await db.getMatchedUsers(currentUser.appUser);
+    for (var i = 0; i < likedUsers.length; i++) {
+      likedUsers[i].isSelected = false;
+      if (likedUsers[i].likedUsers!.contains(currentUser.appUser.id)) {
+        if (!matchedUsers.contains(likedUsers[i])) {
+          matchedUsers.add(likedUsers[i]);
+        }
+      }
+    }
     setState(ViewState.idle);
     for (var i = 0; i < matchedUsers.length; i++) {
-      matchedUsers[i].isSelected = false;
       if (!group.joinedUsers!.contains(matchedUsers[i].id)) {
         /// should update joined users in every users of joined user list
         addingUsers.add(matchedUsers[i]);
@@ -71,9 +79,10 @@ class AddPeopleProvider extends BaseViewModel {
     filterSelectedUsers();
     if (selectedUsers.isNotEmpty) {
       setState(ViewState.busy);
-      group.lastMessage = "Member added";
+      group.lastMessage = "Added";
       group.conversationId = group.conversationId ?? uuid.v4();
-      group.groupId = uuid.v4();
+      group.groupId = group.groupId ?? uuid.v4();
+      print("group id ===> ${group.groupId}");
       group.lastMessageAt = FieldValue.serverTimestamp();
       group.fromUserId = currentUser.appUser.id;
       group.isGroupChat = true;
