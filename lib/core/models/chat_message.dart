@@ -37,10 +37,10 @@ class Message {
     this.textMessage = json["textMessage"] ?? "";
     this.sendat =
         // DateTime.parse(
-        json["sendAt"].toDate()
-            // )
-            ??
-            DateTime.now();
+        json["sendAt"].toDate();
+    // )
+    // ??
+    // DateTime.now();
     this.type = json["type"];
     this.isReaded = json["isReaded"] ?? false;
     if (json["readingMemebers"] != null) {

@@ -1,6 +1,7 @@
 // class Conversation {
 //   String? id;
 //   String? name;
+//   String? groupAdmin;
 //   String? lastMessage;
 //   DateTime? lastMessageAt;
 //   String? imageUrl;
@@ -11,6 +12,7 @@
 //     this.id,
 //     this.lastMessage,
 //     this.name,
+//     this.groupAdmin,
 //     this.imageUrl,
 //     this.lastMessageAt,
 //     this.isMessageSeen,
@@ -21,6 +23,8 @@
 //     final Map<String, dynamic> data = Map<String, dynamic>();
 //     data['id'] = id;
 //     data['name'] = name;
+//     data['name'] = name;
+//     data['groupAdmin'] = groupAdmin;
 //     data['lastMessage'] = lastMessage;
 //     data['lastMessageAt'] = lastMessageAt;
 //     data["imageUrl"] = imageUrl;
@@ -32,6 +36,8 @@
 //   Conversation.fromJson(json) {
 //     this.id = json["id"];
 //     this.name = json['name'];
+//     this.name = json['name'];
+//     this.groupAdmin = json['groupAdmin'];
 //     this.lastMessageAt = json['lastMessageAt'].toDate();
 //     this.lastMessage = json['lastMessage'];
 //     this.imageUrl = json['imageUrl'];
@@ -51,12 +57,13 @@ class Conversation {
   bool? isMessageSeen;
   int? noOfUnReadMsgs;
   bool? isGroupChat;
-  List<String>? joinedUsers;
-  List<String>? leftedUsers;
+  List<String>? joinedUsers = [];
+  List<String>? leftedUsers = [];
   String? fromUserId;
   String? toUserId;
   String? groupId;
   String? name;
+  String? groupAdmin;
   String? imageUrl;
   AppUser? appUser;
 
@@ -75,6 +82,7 @@ class Conversation {
     this.groupId,
     this.imageUrl,
     this.name,
+    this.groupAdmin,
   });
 
   Map<String, dynamic> toJson() {
@@ -88,6 +96,7 @@ class Conversation {
     data["toUserId"] = toUserId;
     data["imageUrl"] = imageUrl;
     data['name'] = name;
+    data['groupAdmin'] = groupAdmin;
     data["joinedUsers"] = joinedUsers;
     data["leftedUsers"] = leftedUsers;
     data["groupId"] = groupId;
@@ -105,6 +114,7 @@ class Conversation {
     // : DateTime.now();
     this.imageUrl = json['imageUrl'];
     this.name = json['name'] ?? 'Group';
+    this.groupAdmin = json['groupAdmin'] ?? 'Group';
     this.lastMessage = json['lastMessage'] ?? "";
     this.isMessageSeen = json["isMessageSeen"] ?? false;
     this.noOfUnReadMsgs = json["noOfUnReadMsgs"] ?? 0;

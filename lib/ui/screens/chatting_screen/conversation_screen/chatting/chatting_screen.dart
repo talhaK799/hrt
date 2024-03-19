@@ -48,6 +48,8 @@ class _ChattingScreenState extends State<ChattingScreen> {
   }
 
   void _init() async {
+    print(
+        "conversations list ====> ${widget.conversation.leftedUsers!.length}");
     // await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
   }
 
@@ -144,45 +146,50 @@ class _ChattingScreenState extends State<ChattingScreen> {
                             //     color: whiteColor,
                             //   ),
                             // ),
-                            trailing: GestureDetector(
-                              behavior: HitTestBehavior.translucent,
-                              onTap: () {
-                                model.conversation.isGroupChat == true
-                                    ?
-                                    // Get.to(
-                                    //     GroupDetailScreen(
-                                    //       group: model.conversation,
-                                    //     ),
-                                    //   )
-                                    Navigator.push(
-                                        context,
-                                        PageFromRight(
-                                          page: GroupDetailScreen(
-                                            group: model.conversation,
-                                          ),
-                                        ),
-                                      )
-                                    : Navigator.push(
-                                        context,
-                                        PageFromRight(
-                                          page: ChatInfoScreen(
-                                            user: model.toUser,
-                                            conversation: model.conversation,
-                                          ),
-                                        ),
-                                      );
-                                //  Get.to(
-                                //   ChatInfoScreen(
-                                //     user: model.toUser,
-                                //     conversation: model.conversation,
-                                //   ),
-                                // );
-                              },
-                              child: Image.asset(
-                                '$staticAsset/more.png',
-                                scale: 3.5,
-                              ),
-                            ),
+                            trailing: widget.conversation.leftedUsers!
+                                    .contains(model.currentUser.appUser.id)
+                                ? null
+                                : GestureDetector(
+                                    behavior: HitTestBehavior.translucent,
+                                    onTap: () {
+                                      model.conversation.isGroupChat == true
+                                          ?
+                                          // Get.to(
+                                          //     GroupDetailScreen(
+                                          //       group: model.conversation,
+                                          //     ),
+                                          //   )
+
+                                          Navigator.push(
+                                              context,
+                                              PageFromRight(
+                                                page: GroupDetailScreen(
+                                                  group: model.conversation,
+                                                ),
+                                              ),
+                                            )
+                                          : Navigator.push(
+                                              context,
+                                              PageFromRight(
+                                                page: ChatInfoScreen(
+                                                  user: model.toUser,
+                                                  conversation:
+                                                      model.conversation,
+                                                ),
+                                              ),
+                                            );
+                                      //  Get.to(
+                                      //   ChatInfoScreen(
+                                      //     user: model.toUser,
+                                      //     conversation: model.conversation,
+                                      //   ),
+                                      // );
+                                    },
+                                    child: Image.asset(
+                                      '$staticAsset/more.png',
+                                      scale: 3.5,
+                                    ),
+                                  ),
                           ),
                         ),
                       ],
@@ -257,11 +264,24 @@ class _ChattingScreenState extends State<ChattingScreen> {
                                   ),
                           ),
                         ),
-                        Container(
-                          color: whiteColor,
-                          width: 1.sw,
-                          child: _chatFeild(model, context),
-                        )
+                        widget.conversation.leftedUsers!
+                                .contains(model.currentUser.appUser.id)
+                            ? Container(
+                                padding: EdgeInsets.all(30),
+                                alignment: Alignment.center,
+                                width: 1.sw,
+                                color: whiteColor,
+                                child: Text(
+                                  'you cannot chat any more',
+                                  style: bodyTextStyle.copyWith(
+                                      color: primaryColor),
+                                ),
+                              )
+                            : Container(
+                                color: whiteColor,
+                                width: 1.sw,
+                                child: _chatFeild(model, context),
+                              )
                       ],
                     ),
                   ),
