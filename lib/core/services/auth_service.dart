@@ -487,6 +487,11 @@ class AuthService extends ChangeNotifier {
   }
 
   logout(id) async {
+    appUsers = [];
+    previousUsers = [];
+    matchedUsers = [];
+    matches = [];
+    conversations = [];
     await googleSignIn.signOut();
     await _facebookSignIn.logOut();
     await _auth.signOut();

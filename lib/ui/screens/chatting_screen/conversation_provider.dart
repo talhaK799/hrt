@@ -42,17 +42,23 @@ class ConversationProvider extends BaseViewModel {
   }
 
   filterMatches() async {
-    currentUser.matchedUsers = [];
+    // currentUser.matchedUsers = [];
     for (var i = 0; i < likedUsers.length; i++) {
       likedUsers[i].isSelected = false;
       if (likedUsers[i].likedUsers!.contains(currentUser.appUser.id)) {
-        print('${likedUsers[i].id} likes ===> ${currentUser.appUser.id}');
+        print('${likedUsers[i].id} likes $i ===> ${currentUser.appUser.id}');
         if (currentUser.conversations.isNotEmpty) {
           for (var j = 0; j < currentUser.conversations.length; j++) {
             if (currentUser.conversations[j].isGroupChat == false) {
               if (likedUsers[i].id ==
                   currentUser.conversations[j].appUser!.id) {
+                print(
+                    'match user ==> ${likedUsers[i].id}======>${currentUser.conversations[j].appUser!.id} ');
+                break;
                 // dont add to match collection
+                // if (currentUser.matchedUsers.contains(likedUsers[i])) {
+                //   currentUser.matchedUsers.remove(likedUsers[i]);
+                // }
               } else {
                 currentUser.matchedUsers.add(likedUsers[i]);
               }
@@ -74,7 +80,7 @@ class ConversationProvider extends BaseViewModel {
     }
     // currentUser.likedUsers = [];
     // acceptedMatches = [];
-    currentUser.matchedUsers = [];
+    // currentUser.matchedUsers = [];
     likedUsers = [];
 
     likedUsers = await db.getMatchedUsers(currentUser.appUser);
@@ -110,7 +116,7 @@ class ConversationProvider extends BaseViewModel {
       //     // }
       //   }
       // }
-      filterMatches();
+      // filterMatches();
 
       print("Match users ===> ${currentUser.matchedUsers.length}");
 
@@ -125,7 +131,7 @@ class ConversationProvider extends BaseViewModel {
     try {
       stream = await db.getAllConverationList(currentUser.appUser.id!);
       stream!.listen((event) {
-        currentUser.conversations = [];
+        // currentUser.conversations = [];
         if (event.docs.length > 0) {
           event.docs.forEach((element) {
             // if (!currentUser.conversations

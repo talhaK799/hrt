@@ -37,11 +37,13 @@ class ChattingProvider extends BaseViewModel {
   List<Matches> matches = [];
   List<AppUser> matchedUsers = [];
   bool isShowImagePreview = false;
+  AppUser blockingUser = AppUser();
 
   ChattingProvider(userId, conversation) {
+    print('chat user  $userId===> ');
     this.conversation = conversation;
 
-    print("conversations list ====> ${this.conversation.leftedUsers!.length}");
+    // print("conversations list ====> ${this.conversation.leftedUsers!.length}");
     this.conversation.isGroupChat = this.conversation.isGroupChat ?? false;
     message = Message();
     toUser = AppUser();
