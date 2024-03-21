@@ -33,16 +33,16 @@ class ConversationProvider extends BaseViewModel {
     // currentUser.appUser = await db.getAppUser(currentUser.appUser.id);
     if (currentUser.matchedUsers.isEmpty && currentUser.conversations.isEmpty) {
       setState(ViewState.busy);
-      await getConversations();
-      await getMatches();
-      currentUser.appUser.onlineTime = DateTime.now();
-      db.updateUserProfile(currentUser.appUser);
-      setState(ViewState.idle);
     }
+    await getConversations();
+    await getMatches();
+    currentUser.appUser.onlineTime = DateTime.now();
+    db.updateUserProfile(currentUser.appUser);
+    setState(ViewState.idle);
   }
 
   filterMatches() async {
-    // currentUser.matchedUsers = [];
+    List<AppUser> matchedUsers = [];
     await Future.delayed(Duration(seconds: 2));
     for (var i = 0; i < likedUsers.length; i++) {
       likedUsers[i].isSelected = false;
@@ -55,36 +55,37 @@ class ConversationProvider extends BaseViewModel {
                   currentUser.conversations[j].appUser!.id) {
                 print(
                     'match user ==> ${likedUsers[i].id}======>${currentUser.conversations[j].appUser!.id} ');
-                if (currentUser.matchedUsers.contains(likedUsers[i])) {
-                  currentUser.matchedUsers.remove(likedUsers[i]);
+                if (matchedUsers.contains(likedUsers[i])) {
+                  matchedUsers.remove(likedUsers[i]);
                 }
                 break;
               } else {
-                if (!currentUser.matchedUsers.contains(likedUsers[i])) {
-                  currentUser.matchedUsers.add(likedUsers[i]);
+                if (!matchedUsers.contains(likedUsers[i])) {
+                  matchedUsers.add(likedUsers[i]);
                 }
               }
             }
           }
         } else {
-          if (!currentUser.matchedUsers.contains(likedUsers[i])) {
-            currentUser.matchedUsers.add(likedUsers[i]);
+          if (!matchedUsers.contains(likedUsers[i])) {
+            matchedUsers.add(likedUsers[i]);
           }
         }
       }
     }
+    currentUser.matchedUsers = matchedUsers;
     notifyListeners();
   }
 
   getMatches() async {
     if (currentUser.matchedUsers.isEmpty && currentUser.isChatloaded == false) {
       setState(ViewState.busy);
-      await Future.delayed(Duration(seconds: 2));
+      await Future.delayed(Duration(seconds: 1));
       currentUser.isChatloaded = true;
     }
     // currentUser.likedUsers = [];
     // acceptedMatches = [];
-    currentUser.matchedUsers = [];
+    // currentUser.matchedUsers = [];
     likedUsers = [];
 
     likedUsers = await db.getMatchedUsers(currentUser.appUser);

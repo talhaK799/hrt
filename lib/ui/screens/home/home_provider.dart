@@ -126,8 +126,8 @@ class HomeProvider extends BaseViewModel {
       notifyListeners();
       if (currentUser.globalUsersList.isEmpty &&
           currentUser.isHomeloaded == false) {
-        // setState(ViewState.busy);
-        await Future.delayed(Duration(seconds: 2));
+        setState(ViewState.busy);
+        await Future.delayed(Duration(seconds: 1));
         currentUser.isHomeloaded = true;
       }
       log('getting all AppUsers');
@@ -172,6 +172,7 @@ class HomeProvider extends BaseViewModel {
       print("AllUsers: ${appUsers.length}");
       currentUser.globalUsersList = appUsers;
       print('number of filtered users ${appUsers.length}');
+      notifyListeners();
     } catch (e) {
       print("@errorGetAllAppUsersHome: $e");
     }
