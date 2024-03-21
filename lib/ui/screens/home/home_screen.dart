@@ -11,8 +11,6 @@ import 'package:hart/core/models/app_user.dart';
 import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/ui/custom_widgets/custom_button.dart';
 import 'package:hart/ui/custom_widgets/custom_loaders/red_hart_10sec.dart';
-import 'package:hart/ui/custom_widgets/right_navigation.dart';
-import 'package:hart/ui/screens/home/country_city_picker.dart';
 import 'package:hart/ui/screens/home/home_provider.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
@@ -20,9 +18,7 @@ import 'package:syncfusion_flutter_sliders/sliders.dart';
 import 'package:vibration/vibration.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({
-    super.key,
-  });
+  HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -42,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ? model.filteredUsers.isEmpty
                       ? primaryColor
                       : whiteColor
-                  : model.appUsers.isEmpty
+                  : model.currentUser.globalUsersList.isEmpty
                       ? primaryColor
                       : whiteColor,
               body: Stack(
@@ -94,8 +90,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ? model.filteredUsers.length > 0
                                         ? model.filteredUsers.length
                                         : 1
-                                    : model.appUsers.length > 0
-                                        ? model.appUsers.length
+                                    : model.currentUser.globalUsersList.length >
+                                            0
+                                        ? model
+                                            .currentUser.globalUsersList.length
                                         : 1,
                                 itemBuilder: (context, index) {
                                   model.index = index;
@@ -110,16 +108,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 )
                                       : model.state == ViewState.busy
                                           ? Container()
-                                          : model.appUsers.isEmpty
+                                          : model.currentUser.globalUsersList
+                                                  .isEmpty
                                               ? _staticScreen(context)
                                               : _homeScreenData(
                                                   model,
-// <<<<<<< text_changes
-//                                                   model.appUsers[index],
-//                                                 );
-// =======
-                                                  model.appUsers[index]);
-// >>>>>>> dev
+                                                  model.currentUser
+                                                      .globalUsersList[index]);
                                 },
                                 onPageChanged: (val) => model.changePage(val),
                               ),
@@ -130,7 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ? model.filteredUsers.isEmpty
                           ? Container()
                           : _likeButtons(model)
-                      : model.appUsers.isEmpty
+                      : model.currentUser.globalUsersList.isEmpty
                           ? Container()
                           : _likeButtons(model),
 

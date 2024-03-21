@@ -26,6 +26,9 @@ class AuthExceptionsService {
       case "operation-not-allowed":
         errorMessage = "Signing in with Email and Password is not enabled.";
         break;
+      case "invalid-credential":
+        errorMessage = "Your credentials are invalid!";
+        break;
 
       //Todo: Handle no internet exception as well.
 

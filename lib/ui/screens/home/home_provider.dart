@@ -74,6 +74,8 @@ class HomeProvider extends BaseViewModel {
   }
 
   init() async {
+    print(
+        "******************* Global users List: ${currentUser.globalUsersList.length}**************");
     if (currentUser.isHomeloaded == false) {
       print("make State busy for the first time");
       setState(ViewState.busy);
@@ -119,10 +121,11 @@ class HomeProvider extends BaseViewModel {
 
   getAllAppUsers() async {
     try {
-      print("all users: ${currentUser.appUsers.length}");
+      print("all users: ${currentUser.globalUsersList.length}");
       // appUsers = currentUser.appUsers;
       notifyListeners();
-      if (currentUser.appUsers.isEmpty && currentUser.isHomeloaded == false) {
+      if (currentUser.globalUsersList.isEmpty &&
+          currentUser.isHomeloaded == false) {
         // setState(ViewState.busy);
         await Future.delayed(Duration(seconds: 2));
         currentUser.isHomeloaded = true;
@@ -133,11 +136,11 @@ class HomeProvider extends BaseViewModel {
       // appUsers = [];
       currentUser.appUser =
           await db.getAppUser(currentUser.appUser.id); // Current User
-      currentUser.appUsers =
+      currentUser.globalUsersList =
           await db.getAllUsers(currentUser.appUser); // All Users
-      log('number of all Appusers ${currentUser.appUsers.length}');
+      log('number of all Appusers ${currentUser.globalUsersList.length}');
       await checkUpliftedUser();
-      for (var user in currentUser.appUsers) {
+      for (var user in currentUser.globalUsersList) {
         print('user ${user.id} onLineTime  ===> ${user.onlineTime.toString()}');
 
         if (currentUser.appUser.likedUsers == null ||
@@ -167,8 +170,7 @@ class HomeProvider extends BaseViewModel {
       }
 
       print("AllUsers: ${appUsers.length}");
-
-      currentUser.appUsers = appUsers;
+      currentUser.globalUsersList = appUsers;
       print('number of filtered users ${appUsers.length}');
     } catch (e) {
       print("@errorGetAllAppUsersHome: $e");

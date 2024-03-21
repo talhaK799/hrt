@@ -11,7 +11,6 @@ import 'package:hart/core/services/localization_services.dart';
 import 'package:hart/core/services/locato_storage_service.dart';
 import 'package:hart/core/view_models/theme_provider.dart';
 import 'package:hart/locator.dart';
-import 'package:hart/ui/screens/auth_screens/firebase_phone_login/phone_login_provider.dart';
 import 'package:hart/ui/screens/chatting_screen/create_group/create_group_provider.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:hart/ui/screens/collect_info_screens/verifications/phone_no_screen/phone_no_provider.dart';
