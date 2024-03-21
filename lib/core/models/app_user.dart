@@ -39,7 +39,7 @@ class AppUser {
   List<String>? images;
   List<String>? likedUsers;
   List<String>? disLikedUsers;
-  List<String>? blockedUsers = [];
+  List<String> blockedUsers = [];
   bool? isFirstTimeChat;
   bool? isSelected;
   String? about;
@@ -77,7 +77,7 @@ class AppUser {
     this.disLikedUsers,
     this.likedUsers,
     this.age,
-    this.blockedUsers,
+    this.blockedUsers = const [],
     this.isFirstTimeChat = false,
     this.isSelected = false,
     this.isProfileCompleted,

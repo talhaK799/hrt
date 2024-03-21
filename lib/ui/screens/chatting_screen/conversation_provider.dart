@@ -43,6 +43,7 @@ class ConversationProvider extends BaseViewModel {
 
   filterMatches() async {
     // currentUser.matchedUsers = [];
+    await Future.delayed(Duration(seconds: 2));
     for (var i = 0; i < likedUsers.length; i++) {
       likedUsers[i].isSelected = false;
       if (likedUsers[i].likedUsers!.contains(currentUser.appUser.id)) {
@@ -54,18 +55,21 @@ class ConversationProvider extends BaseViewModel {
                   currentUser.conversations[j].appUser!.id) {
                 print(
                     'match user ==> ${likedUsers[i].id}======>${currentUser.conversations[j].appUser!.id} ');
+                if (currentUser.matchedUsers.contains(likedUsers[i])) {
+                  currentUser.matchedUsers.remove(likedUsers[i]);
+                }
                 break;
-                // dont add to match collection
-                // if (currentUser.matchedUsers.contains(likedUsers[i])) {
-                //   currentUser.matchedUsers.remove(likedUsers[i]);
-                // }
               } else {
-                currentUser.matchedUsers.add(likedUsers[i]);
+                if (!currentUser.matchedUsers.contains(likedUsers[i])) {
+                  currentUser.matchedUsers.add(likedUsers[i]);
+                }
               }
             }
           }
         } else {
-          currentUser.matchedUsers.add(likedUsers[i]);
+          if (!currentUser.matchedUsers.contains(likedUsers[i])) {
+            currentUser.matchedUsers.add(likedUsers[i]);
+          }
         }
       }
     }
@@ -80,12 +84,12 @@ class ConversationProvider extends BaseViewModel {
     }
     // currentUser.likedUsers = [];
     // acceptedMatches = [];
-    // currentUser.matchedUsers = [];
+    currentUser.matchedUsers = [];
     likedUsers = [];
 
     likedUsers = await db.getMatchedUsers(currentUser.appUser);
     print("Liked users ===> ${likedUsers.length}");
-    filterMatches();
+    await filterMatches();
 
     notifyListeners();
 
@@ -129,9 +133,9 @@ class ConversationProvider extends BaseViewModel {
   getConversations() async {
     print('current id ${currentUser.appUser.id}');
     try {
-      stream = await db.getAllConverationList(currentUser.appUser.id!);
+      stream = db.getAllConverationList(currentUser.appUser.id!);
       stream!.listen((event) {
-        // currentUser.conversations = [];
+        currentUser.conversations = [];
         if (event.docs.length > 0) {
           event.docs.forEach((element) {
             // if (!currentUser.conversations

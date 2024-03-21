@@ -100,7 +100,7 @@ class ConversationScreen extends StatelessWidget {
                                                   // print(
                                                   //     'chat user Id ${model.currentUser.matchedUsers[index].id!}');
 
-                                                  Navigator.push(
+                                                  await Navigator.push(
                                                     context,
                                                     PageFromRight(
                                                       page: ChattingScreen(
@@ -115,7 +115,7 @@ class ConversationScreen extends StatelessWidget {
                                                       ),
                                                     ),
                                                   );
-                                                  model.filterMatches();
+                                                  // model.filterMatches();
                                                   // Get.to(
                                                   //   ChattingScreen(
                                                   //     toUserId: model
@@ -184,6 +184,7 @@ class ConversationScreen extends StatelessWidget {
                                   sizeBox20,
                                   model.currentUser.conversations.isNotEmpty
                                       ? Expanded(
+                                          // height: 300,
                                           child: ListView.separated(
                                             padding: EdgeInsets.zero,
                                             physics: BouncingScrollPhysics(),
@@ -220,17 +221,16 @@ class ConversationScreen extends StatelessWidget {
                                         )
                                       : model.state == ViewState.busy
                                           ? Container()
-                                          : Expanded(
-                                              child: Container(
-                                                color: whiteColor,
-                                                width: double.infinity,
-                                                child: Center(
-                                                  child: Text(
-                                                    'No Conversations Found',
-                                                    style: subHeadingText1
-                                                        .copyWith(
-                                                            fontSize: 16.sp),
-                                                  ),
+                                          : Container(
+                                              height: 350,
+                                              color: whiteColor,
+                                              width: double.infinity,
+                                              child: Center(
+                                                child: Text(
+                                                  'No Conversations Found',
+                                                  style:
+                                                      subHeadingText1.copyWith(
+                                                          fontSize: 16.sp),
                                                 ),
                                               ),
                                             ),
