@@ -288,8 +288,8 @@ class _ChattingScreenState extends State<ChattingScreen> {
                                     width: 1.sw,
                                     child: _chatFeild(model, context),
                                   )
-                            : model.currentUser.appUser.blockedUsers!.contains(
-                                        model.toUser.id) ||
+                            : model.currentUser.appUser.blockedUsers!
+                                        .contains(model.toUser.id) ||
                                     model.toUser.blockedUsers!
                                         .contains(model.currentUser.appUser.id)
                                 ? Container(
@@ -439,7 +439,6 @@ class _ChattingScreenState extends State<ChattingScreen> {
                               child: IconButton(
                                 onPressed: () {
                                   model.removeImage();
-
                                   model.setState(ViewState.idle);
                                 },
                                 icon: Icon(
@@ -518,6 +517,14 @@ class _ChattingScreenState extends State<ChattingScreen> {
                 style: subHeadingTextStyle.copyWith(
                   color: greyColor2,
                 ),
+                textInputAction: TextInputAction.send,
+                onFieldSubmitted: (val) {
+                  model.messageController.text.isNotEmpty || model.image != null
+                      ? model.conversation.isGroupChat == true
+                          ? model.sendGroupMessage()
+                          : model.sendNewMessage()
+                      : null;
+                },
                 controller: model.messageController,
                 onChanged: (val) {
                   model.message.textMessage = val;

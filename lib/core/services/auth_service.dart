@@ -30,7 +30,7 @@ class AuthService extends ChangeNotifier {
   bool isConnectionloaded = false;
   bool isChatloaded = false;
 
-  List<AppUser> appUsers = [];
+  List<AppUser> globalUsersList = [];
   List<AppUser> previousUsers = [];
   List<AppUser> matchedUsers = [];
   List<Matches> matches = [];
@@ -487,7 +487,7 @@ class AuthService extends ChangeNotifier {
   }
 
   logout(id) async {
-    appUsers = [];
+    globalUsersList = [];
     previousUsers = [];
     matchedUsers = [];
     matches = [];
