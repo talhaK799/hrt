@@ -116,7 +116,7 @@ class CreateGroupProvider extends BaseViewModel {
       // message.fromUserId = currentUser.appUser.id;
       message.sendAt = FieldValue.serverTimestamp();
       message.textMessage = "Group created";
-      message.type = "GroupCreated";
+      message.type = "created";
 
       for (var i = 0; i < selectedUsers.length; i++) {
         conversation.joinedUsers!.add(selectedUsers[i].id!);

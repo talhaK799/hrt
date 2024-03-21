@@ -52,9 +52,12 @@ class ConnectionsProvider extends BaseViewModel {
 
   like(AppUser user, Matches match, context) async {
     print('user  id ${currentUser.appUser.id} liked ${user.id}');
+
     if (await !currentUser.appUser.likedUsers!.contains(user.id)) {
-      if (currentUser.appUser.likedUsers!.length <=
-          (currentUser.appUser.likesCount ?? 0)) {
+      if (currentUser.appUser.isPremiumUser == false ||
+          (currentUser.appUser.isPremiumUser == false &&
+              currentUser.appUser.likedUsers!.length <=
+                  (currentUser.appUser.likesCount ?? 0))) {
         currentUser.appUser.likedUsers!.add(user.id!);
         match.isAccepted = true;
         match.isRejected = false;
