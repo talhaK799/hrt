@@ -109,7 +109,9 @@ class Conversation {
     this.lastMessageat =
         // lastMessageAt != null
         // ? DateTime.parse(
-        json['lastMessageAt'].toDate() ?? DateTime.now();
+        json['lastMessageAt'] == null
+            ? DateTime.now()
+            : json['lastMessageAt'].toDate();
     // )
     // : DateTime.now();
     this.imageUrl = json['imageUrl'];

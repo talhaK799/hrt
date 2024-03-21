@@ -86,8 +86,11 @@ class _ChattingScreenState extends State<ChattingScreen> {
                         GestureDetector(
                           behavior: HitTestBehavior.opaque,
                           onTap: () {
-                            model.disposestream();
+                            if(model.state==ViewState.idle){
+                              model.disposestream();
                             Get.back();
+                            }
+                            
                           },
                           child: Image.asset(
                             '$staticAsset/Back.png',
@@ -288,9 +291,9 @@ class _ChattingScreenState extends State<ChattingScreen> {
                                     width: 1.sw,
                                     child: _chatFeild(model, context),
                                   )
-                            : model.currentUser.appUser.blockedUsers!.contains(
-                                        model.toUser.id) ||
-                                    model.toUser.blockedUsers!
+                            : model.currentUser.appUser.blockedUsers
+                                        .contains(model.toUser.id) ||
+                                    model.toUser.blockedUsers
                                         .contains(model.currentUser.appUser.id)
                                 ? Container(
                                     padding: EdgeInsets.all(30),
@@ -298,7 +301,7 @@ class _ChattingScreenState extends State<ChattingScreen> {
                                     width: 1.sw,
                                     color: whiteColor,
                                     child: Text(
-                                      model.currentUser.appUser.blockedUsers!
+                                      model.currentUser.appUser.blockedUsers
                                               .contains(
                                                   widget.conversation.toUserId)
                                           ? "the conversation has been blocked "

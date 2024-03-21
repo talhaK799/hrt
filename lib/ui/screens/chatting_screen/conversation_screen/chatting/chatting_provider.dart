@@ -33,6 +33,7 @@ class ChattingProvider extends BaseViewModel {
   Stream<QuerySnapshot>? messageStream;
   StreamSubscription<QuerySnapshot>? messageStreamSubscription;
   bool isSelect = false;
+
   File? image;
   List<Matches> matches = [];
   List<AppUser> matchedUsers = [];
@@ -289,7 +290,7 @@ class ChattingProvider extends BaseViewModel {
       db.newMessages(conversationFrom, conversationTo, message,
           currentUser.appUser.id!, toUser.id!);
       if (messages.isEmpty) {
-        getAllMessages();
+        await getAllMessages();
       }
 
       // notifyListeners();
