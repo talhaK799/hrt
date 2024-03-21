@@ -14,6 +14,7 @@ class Message {
   DateTime? sendat;
   String? type;
   bool? isReaded;
+  bool? isSent;
   List<String>? readingMemebers = [];
 
   Message({
@@ -26,6 +27,7 @@ class Message {
     this.toUserId,
     this.type,
     this.isReaded,
+    this.isSent,
     this.readingMemebers,
   });
 
@@ -43,6 +45,7 @@ class Message {
     // DateTime.now();
     this.type = json["type"];
     this.isReaded = json["isReaded"] ?? false;
+    // this.isSent = json["isSent"] ?? false;
     if (json["readingMemebers"] != null) {
       readingMemebers = [];
       json["readingMemebers"].forEach((element) {
@@ -63,6 +66,7 @@ class Message {
       "sendAt": this.sendAt,
       "type": this.type,
       "isReaded": this.isReaded ?? false,
+      // "isSent": this.isSent ?? false,
       "readingMemebers": this.readingMemebers ?? [],
     };
   }

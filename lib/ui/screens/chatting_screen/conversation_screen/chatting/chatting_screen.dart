@@ -86,11 +86,10 @@ class _ChattingScreenState extends State<ChattingScreen> {
                         GestureDetector(
                           behavior: HitTestBehavior.opaque,
                           onTap: () {
-                            if(model.state==ViewState.idle){
+                            if (model.state == ViewState.idle) {
                               model.disposestream();
-                            Get.back();
+                              Get.back();
                             }
-                            
                           },
                           child: Image.asset(
                             '$staticAsset/Back.png',
@@ -233,11 +232,10 @@ class _ChattingScreenState extends State<ChattingScreen> {
                                                   model.messages[index].type ==
                                                       "created"
                                               ? JoinORLeaveGroup(
-                                                  message: model
-                                                              .currentUser
-                                                              .appUser
-                                                              .isGroupAdmin ==
-                                                          true
+                                                  message: model.currentUser
+                                                              .appUser.id ==
+                                                          widget.conversation
+                                                              .groupAdmin
                                                       ? "Group Created"
                                                       : "You were Added",
                                                 )
@@ -291,11 +289,9 @@ class _ChattingScreenState extends State<ChattingScreen> {
                                     width: 1.sw,
                                     child: _chatFeild(model, context),
                                   )
-
                             : model.currentUser.appUser.blockedUsers
                                         .contains(model.toUser.id) ||
                                     model.toUser.blockedUsers
-
                                         .contains(model.currentUser.appUser.id)
                                 ? Container(
                                     padding: EdgeInsets.all(30),
@@ -760,10 +756,15 @@ class ImageMessageCard extends StatelessWidget {
                             "$staticAsset/Check.png",
                             scale: 3.5,
                           )
-                        : Image.asset(
-                            "$staticAsset/Check2.png",
-                            scale: 3.5,
-                          )
+                        : message.isSent == true
+                            ? Icon(
+                                Icons.access_time,
+                                size: 20,
+                              )
+                            : Image.asset(
+                                "$staticAsset/Check2.png",
+                                scale: 3.5,
+                              )
                     : Container()
                 : message.fromUserId == appUser.id
                     ? message.isReaded == true
@@ -771,7 +772,12 @@ class ImageMessageCard extends StatelessWidget {
                             "$staticAsset/Check.png",
                             scale: 3.5,
                           )
-                        : Image.asset(
+                        :message.isSent == true
+                            ? Icon(
+                                Icons.access_time,
+                                size: 20,
+                              )
+                            :  Image.asset(
                             "$staticAsset/Check2.png",
                             scale: 3.5,
                           )

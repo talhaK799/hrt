@@ -299,6 +299,7 @@ class ChattingProvider extends BaseViewModel {
       message = Message();
       notifyListeners();
     } else if (image != null) {
+      message.isSent = true;
       message.fromUserId = currentUser.appUser.id;
       message.toUserId = toUser.id;
       message.sendAt = FieldValue.serverTimestamp();
@@ -319,6 +320,8 @@ class ChattingProvider extends BaseViewModel {
       if (messages.isEmpty) {
         getAllMessages();
       }
+
+      message.isSent = false;
 
       messageController.clear();
       image = null;
@@ -354,6 +357,7 @@ class ChattingProvider extends BaseViewModel {
       message = Message();
       notifyListeners();
     } else if (image != null) {
+      message.isSent = true;
       message.fromUserId = currentUser.appUser.id;
       message.toUserId = toUser.id;
       message.sendAt = FieldValue.serverTimestamp();
@@ -369,6 +373,9 @@ class ChattingProvider extends BaseViewModel {
       message.imageUrl = await storage.uploadImage(image!, 'Chat Images');
       // notifyListeners();
       db.sendGroupMessage(conversation, message);
+
+      message.isSent = false;
+      setState(ViewState.idle);
 
       print('image sent');
       messageController.clear();

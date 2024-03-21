@@ -17,7 +17,6 @@ class ChatInfoProvider extends BaseViewModel {
 
   ChatInfoProvider(chating) {
     chat = chating;
-    
   }
 
   changeMute(val) async {
@@ -37,16 +36,16 @@ class ChatInfoProvider extends BaseViewModel {
   }
 
   blockUser() async {
-    if (!currentUser.appUser.blockedUsers!.contains(chat.toUserId)) {
+    if (!currentUser.appUser.blockedUsers.contains(chat.toUserId)) {
       isBlocked = true;
-      currentUser.appUser.blockedUsers!.add(chat.toUserId!);
+      currentUser.appUser.blockedUsers.add(chat.toUserId!);
     } else {
       isBlocked = false;
-      currentUser.appUser.blockedUsers!.remove(chat.toUserId);
+      currentUser.appUser.blockedUsers.remove(chat.toUserId);
     }
 
     await _db.updateUserProfile(currentUser.appUser);
-    print('muteId==> ${currentUser.appUser.blockedUsers!.length}');
+    print('muteId==> ${currentUser.appUser.blockedUsers.length}');
     Get.to(RootScreen(
       index: 2,
     ));
