@@ -319,7 +319,8 @@ class HomeProvider extends BaseViewModel {
         match.isProgressed = true;
         bool isReqUpdated = await db.updateRequest(match);
         if (isReqUpdated) {
-          Get.snackbar("Alert!", "You have a new connection with ${user.name}");
+          customSnackBar(
+              "Alert!", "You have a new connection with ${user.name}");
           // Navigator.push(
           //   context,
           //   PageFromRight(

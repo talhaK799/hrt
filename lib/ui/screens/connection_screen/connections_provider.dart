@@ -8,6 +8,7 @@ import 'package:hart/core/models/matches.dart';
 import 'package:hart/core/services/auth_service.dart';
 import 'package:hart/core/view_models/base_view_model.dart';
 import 'package:hart/locator.dart';
+import 'package:hart/ui/custom_widgets/dialogs/custom_snackbar.dart';
 import 'package:hart/ui/custom_widgets/right_navigation.dart';
 import 'package:hart/ui/screens/connection_screen/connect_popup/connect_popup_screen.dart';
 import 'package:hart/ui/screens/profile_screen/maestro_screen/maestro_screen.dart';
@@ -68,7 +69,8 @@ class ConnectionsProvider extends BaseViewModel {
         if (isUpdated && isUpdatedMatch) {
           currentUser.likingUsers.remove(user);
 
-          Get.snackbar("Alert!", "You have a new connection with ${user.name}");
+          customSnackBar(
+              "Alert!", "You have a new connection with ${user.name}");
 
           // Navigator.push(
           //   context,

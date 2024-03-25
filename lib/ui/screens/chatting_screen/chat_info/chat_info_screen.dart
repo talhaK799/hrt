@@ -86,16 +86,13 @@ class ChatInfoScreen extends StatelessWidget {
                   sizeBox20,
                   GestureDetector(
                     onTap: () {
-                      blockUser(
+                      disonnect(
                         context,
                         model,
                       );
                     },
                     child: Text(
-                      model.currentUser.appUser.blockedUsers!
-                              .contains(model.chat.toUserId)
-                          ? 'Unblock'
-                          : 'Block',
+                      'Disconnect',
                       style: bodyTextStyle.copyWith(
                         color: primaryColor,
                         fontWeight: FontWeight.w700,
@@ -161,7 +158,7 @@ class ChatInfoScreen extends StatelessWidget {
     );
   }
 
-  Future<dynamic> blockUser(BuildContext context, ChatInfoProvider model) {
+  Future<dynamic> disonnect(BuildContext context, ChatInfoProvider model) {
     return showDialog(
         context: context,
         builder: (context) {
@@ -175,7 +172,7 @@ class ChatInfoScreen extends StatelessWidget {
             actions: [
               TextButton(
                 onPressed: () {
-                  model.blockUser();
+                  model.disconnectUser();
                   // Get.back();
                 },
                 child: Text(

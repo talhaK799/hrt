@@ -219,6 +219,7 @@ class DatabaseService {
       return false;
     }
   }
+
   reportedConversations(ReportedUser user) async {
     try {
       await _db.collection('Reported Conversations').add(user.toJson());
@@ -586,6 +587,29 @@ class DatabaseService {
     }
   }
 
+  deleteConversation(Conversation conversation) async {
+    try {
+      await _db
+          .collection("Conversations")
+          .doc(conversation.fromUserId)
+          .collection('MyConversation')
+          .doc(conversation.toUserId)
+          .delete();
+
+      await _db
+          .collection("Conversations")
+          .doc(conversation.toUserId)
+          .collection('MyConversation')
+          .doc(conversation.fromUserId)
+          .delete();
+
+      return true;
+    } catch (e) {
+      print("Exception@database/deleteConversation ==> $e");
+      return false;
+    }
+  }
+
   Stream<QuerySnapshot>? getRealTimeMessages(conversationId) {
     try {
       Stream<QuerySnapshot> messageSnapshot = _db
@@ -677,6 +701,24 @@ class DatabaseService {
           .doc("${conversation.conversationId}")
           .collection("realtime-messages")
           .add(message.toJson());
+      return true;
+    } catch (e, s) {
+      debugPrint('Exception @DatabaseService/GroupUpdate ==>$e');
+      debugPrint(s.toString());
+      return false;
+    }
+  }
+  deleteGroup(Conversation conversation) async {
+    // print("appuaser premiume check: ${appUser.isPremiumUser}");
+    print('user id==> ${conversation.fromUserId}');
+    print('group id==> ${conversation.groupId}');
+    try {
+      await _db
+          .collection('Conversations')
+          .doc(conversation.fromUserId)
+          .collection("MyConversation")
+          .doc("${conversation.groupId}")
+          .delete();
       return true;
     } catch (e, s) {
       debugPrint('Exception @DatabaseService/GroupUpdate ==>$e');

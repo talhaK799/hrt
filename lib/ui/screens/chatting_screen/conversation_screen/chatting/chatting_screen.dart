@@ -86,9 +86,11 @@ class _ChattingScreenState extends State<ChattingScreen> {
                         GestureDetector(
                           behavior: HitTestBehavior.opaque,
                           onTap: () {
-                            if (model.state == ViewState.idle) {
+                            if (model.message.isSent == false) {
                               model.disposestream();
                               Get.back();
+                            } else {
+                              print("sent ==> ${model.message.isSent}");
                             }
                           },
                           child: Image.asset(
@@ -772,15 +774,15 @@ class ImageMessageCard extends StatelessWidget {
                             "$staticAsset/Check.png",
                             scale: 3.5,
                           )
-                        :message.isSent == true
+                        : message.isSent == true
                             ? Icon(
                                 Icons.access_time,
                                 size: 20,
                               )
-                            :  Image.asset(
-                            "$staticAsset/Check2.png",
-                            scale: 3.5,
-                          )
+                            : Image.asset(
+                                "$staticAsset/Check2.png",
+                                scale: 3.5,
+                              )
                     : Container()
           ],
         )
