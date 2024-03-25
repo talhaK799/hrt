@@ -6,6 +6,7 @@ import 'package:hart/core/constants/style.dart';
 import 'package:hart/core/enums/view_state.dart';
 import 'package:hart/core/others/screen_utils.dart';
 import 'package:hart/ui/custom_widgets/custom_app_bar.dart';
+import 'package:hart/ui/custom_widgets/dialogs/custom_snackbar.dart';
 import 'package:hart/ui/custom_widgets/right_navigation.dart';
 import 'package:hart/ui/screens/chatting_screen/create_group/create_group_provider.dart';
 import 'package:hart/ui/screens/chatting_screen/create_group/group_members/members_screen.dart';
@@ -124,20 +125,20 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                               title: 'Continue',
                               onTap: () {
                                 FocusManager.instance.primaryFocus?.unfocus();
-                                // if (model.matchedUsers.length < 2) {
-                                //   Get.snackbar(
-                                //     'Alert!',
-                                //     'Two or more memebers must be selected',
-                                //     colorText: primaryColor,
-                                //   );
-                                // } else {
-                                Navigator.push(
-                                  context,
-                                  PageFromRight(
-                                    page: MembersScreen(),
-                                  ),
-                                );
-                                // }
+                                if (model.selectedUsers.length < 3) {
+                                  customSnackBar(
+                                    'Alert!',
+                                    'At least three or more memebers must be selected',
+                                    // colorText: primaryColor,
+                                  );
+                                } else {
+                                  Navigator.push(
+                                    context,
+                                    PageFromRight(
+                                      page: MembersScreen(),
+                                    ),
+                                  );
+                                }
                               },
                             )
                           : CustomButton(

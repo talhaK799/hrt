@@ -78,12 +78,19 @@ class GroupDetailProvider extends BaseViewModel {
     }
 
     setState(ViewState.idle);
+    Conversation g = group;
+    g.fromUserId = groupMembers[index].id;
+    print("grp id ==> ${g.groupId}");
+    bool isdeleted = await _db.deleteGroup(g);
     groupMembers.removeAt(index);
-    Get.to(
-      RootScreen(
-        index: 2,
-      ),
-    );
+    if (isdeleted) {
+      Get.to(
+        RootScreen(
+          index: 2,
+        ),
+      );
+    }
+
     notifyListeners();
   }
 
@@ -109,12 +116,18 @@ class GroupDetailProvider extends BaseViewModel {
     }
 
     setState(ViewState.idle);
+    Conversation g = group;
+    g.fromUserId = currentUser.appUser.id;
+    print("grp id ==> ${g.groupId} and user id==> ${g.fromUserId}");
+    bool isdeleted = await _db.deleteGroup(g);
     groupMembers.remove(currentUser.appUser);
-    Get.to(
-      RootScreen(
-        index: 2,
-      ),
-    );
+    if (isdeleted) {
+      Get.to(
+        RootScreen(
+          index: 2,
+        ),
+      );
+    }
     notifyListeners();
   }
 

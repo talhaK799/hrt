@@ -50,7 +50,7 @@ class ChattingProvider extends BaseViewModel {
     toUser = AppUser();
     this.conversation.isGroupChat == false ? getUser(userId) : null;
     this.conversation.isGroupChat == true ? getAllMessages() : getAllMessages();
-    disableScreenShot();
+    // disableScreenShot();
     // notifyListeners();
   }
 
@@ -276,6 +276,8 @@ class ChattingProvider extends BaseViewModel {
       ///
       /// messages
       ///
+
+      message.isSent = true;
       message.fromUserId = currentUser.appUser.id;
       message.toUserId = toUser.id;
       message.sendAt = FieldValue.serverTimestamp();
@@ -293,10 +295,12 @@ class ChattingProvider extends BaseViewModel {
         await getAllMessages();
       }
 
+      message.isSent = false;
+
       // notifyListeners();
 
       messageController.clear();
-      message = Message();
+      message = Message(isSent: false);
       notifyListeners();
     } else if (image != null) {
       message.isSent = true;
@@ -325,7 +329,7 @@ class ChattingProvider extends BaseViewModel {
 
       messageController.clear();
       image = null;
-      message = Message();
+      message = Message(isSent: false);
       // notifyListeners();
     } else {
       print("message is null");
@@ -342,6 +346,7 @@ class ChattingProvider extends BaseViewModel {
     conversation.lastMessageAt = FieldValue.serverTimestamp();
 
     if (message.textMessage != null && image == null) {
+      message.isSent = true;
       message.fromUserId = currentUser.appUser.id;
       message.toUserId = conversation.conversationId;
       message.sendAt = FieldValue.serverTimestamp();
@@ -351,10 +356,12 @@ class ChattingProvider extends BaseViewModel {
       // messages.add(message);
       messages.insert(0, message);
       // notifyListeners();
-      db.sendGroupMessage(conversation, message);
+      await db.sendGroupMessage(conversation, message);
+
+      message.isSent = false;
 
       messageController.clear();
-      message = Message();
+      message = Message(isSent: false);
       notifyListeners();
     } else if (image != null) {
       message.isSent = true;
@@ -380,7 +387,7 @@ class ChattingProvider extends BaseViewModel {
       print('image sent');
       messageController.clear();
       image = null;
-      message = Message();
+      message = Message(isSent: false);
       notifyListeners();
     } else {
       print("message is null");

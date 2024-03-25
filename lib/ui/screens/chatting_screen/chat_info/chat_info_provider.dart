@@ -5,6 +5,7 @@ import 'package:hart/core/services/auth_service.dart';
 import 'package:hart/core/services/database_service.dart';
 import 'package:hart/core/view_models/base_view_model.dart';
 import 'package:hart/locator.dart';
+import 'package:hart/ui/custom_widgets/dialogs/custom_snackbar.dart';
 import 'package:hart/ui/screens/root_screen/root_screen.dart';
 
 class ChatInfoProvider extends BaseViewModel {
@@ -35,20 +36,29 @@ class ChatInfoProvider extends BaseViewModel {
     notifyListeners();
   }
 
-  blockUser() async {
-    if (!currentUser.appUser.blockedUsers.contains(chat.toUserId)) {
-      isBlocked = true;
-      currentUser.appUser.blockedUsers.add(chat.toUserId!);
-    } else {
-      isBlocked = false;
-      currentUser.appUser.blockedUsers.remove(chat.toUserId);
+  disconnectUser() async {
+    bool isDeleted = await _db.deleteConversation(chat);
+    if (isDeleted) {
+      customSnackBar('Alert', 'You have disconnected from this chat');
+      Get.to(RootScreen(
+        index: 2,
+      ));
     }
 
-    await _db.updateUserProfile(currentUser.appUser);
-    print('muteId==> ${currentUser.appUser.blockedUsers.length}');
-    Get.to(RootScreen(
-      index: 2,
-    ));
     notifyListeners();
+    // if (!currentUser.appUser.blockedUsers.contains(chat.toUserId)) {
+    //   isBlocked = true;
+    //   currentUser.appUser.blockedUsers.add(chat.toUserId!);
+    // } else {
+    //   isBlocked = false;
+    //   currentUser.appUser.blockedUsers.remove(chat.toUserId);
+    // }
+
+    // await _db.updateUserProfile(currentUser.appUser);
+    // print('muteId==> ${currentUser.appUser.blockedUsers.length}');
+    // Get.to(RootScreen(
+    //   index: 2,
+    // ));
+    // notifyListeners();
   }
 }

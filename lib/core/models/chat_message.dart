@@ -14,7 +14,7 @@ class Message {
   DateTime? sendat;
   String? type;
   bool? isReaded;
-  bool? isSent;
+  bool isSent = false;
   List<String>? readingMemebers = [];
 
   Message({
@@ -27,11 +27,12 @@ class Message {
     this.toUserId,
     this.type,
     this.isReaded,
-    this.isSent,
+    this.isSent = false,
     this.readingMemebers,
   });
 
   Message.fromJson(json, id) {
+    isSent = false;
     this.messageId = id;
     this.fromUserId = json["fromUserId"];
     this.toUserId = json["toUserId"];
