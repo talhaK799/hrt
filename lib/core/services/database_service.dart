@@ -708,6 +708,7 @@ class DatabaseService {
       return false;
     }
   }
+
   deleteGroup(Conversation conversation) async {
     // print("appuaser premiume check: ${appUser.isPremiumUser}");
     print('user id==> ${conversation.fromUserId}');
@@ -764,18 +765,26 @@ class DatabaseService {
         });
       }
 
-      //   await _db
-      //     .collection("Conversations")
-      //     .doc("${conversation.toUserId}")
-      //     .collection("MyConversation")
-      //     .doc("${conversation.groupId}")
-      //     .update({
-      //   "lastMessage": conversation.lastMessage,
-      // });
       return true;
     } catch (e) {
       print('Exception@DatabaseServices/addNewMessage ==> $e');
       return false;
+    }
+  }
+
+  updateMessage(conversationId, Message message) async {
+    print("@updateMessage: ${message.messageId}");
+    try {
+      await _db
+          .collection("messages")
+          .doc(conversationId)
+          .collection("realtime-messages")
+          .doc(message.messageId)
+          .update({
+        "isOpened": true,
+      });
+    } catch (e) {
+      print('Exception@UpdateUserMessagesStream=>$e');
     }
   }
 

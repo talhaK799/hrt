@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hart/core/constants/colors.dart';
@@ -15,6 +16,7 @@ import 'package:hart/ui/custom_widgets/custom_button.dart';
 import 'package:hart/ui/custom_widgets/custom_loader.dart';
 import 'package:hart/ui/custom_widgets/right_navigation.dart';
 import 'package:hart/ui/screens/chatting_screen/conversation_screen/chatting/chatting_provider.dart';
+import 'package:hart/ui/screens/chatting_screen/conversation_screen/full_screen_image.dart';
 import 'package:hart/ui/screens/chatting_screen/group_chatting/group_info_screens/group_details/group_detail_screen.dart';
 import 'package:hart/ui/screens/chatting_screen/user_details/user_detail_screen.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -250,6 +252,7 @@ class _ChattingScreenState extends State<ChattingScreen> {
                                                           .currentUser.appUser,
                                                       conversaion:
                                                           model.conversation,
+                                                      model: model,
                                                     )
                                                   : Container();
                                       // return _chatMessage(model, index);
@@ -394,68 +397,110 @@ class _ChattingScreenState extends State<ChattingScreen> {
   sendImageContainer(ChattingProvider model) {
     return model.isShowImagePreview == false
         ? Container()
-        : Column(
-            children: [
-              Spacer(),
-              Padding(
-                padding: EdgeInsets.only(
-                  bottom: 80,
-                  left: 32,
-                  right: 32,
-                  top: 0,
-                ),
-                child: Stack(
-                  children: [
-                    Container(
-                      height: 0.45.sh,
-                      decoration: BoxDecoration(
-                          color: greyColor2,
-                          image: model.message.file != null
-                              ? DecorationImage(
-                                  image: FileImage(model.message.file!),
-                                  fit: BoxFit.cover,
-                                )
-                              : null,
-                          borderRadius: BorderRadius.circular(12.r)),
-                      width: 1.sw,
-                      alignment: Alignment.bottomCenter,
-                      child: model.image == null
-                          ? ElevatedButton(
-                              onPressed: () {
-                                model.pickImage();
-                              },
-                              child: Text('Pick Image'),
-                            )
-                          : Container(),
+        : Consumer<ChattingProvider>(
+            builder: (context, model, child) {
+              return Column(
+                children: [
+                  Spacer(),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      bottom: 80,
+                      left: 32,
+                      right: 32,
+                      top: 0,
                     ),
-                    model.message.file != null
-                        ? Padding(
-                            padding: const EdgeInsets.only(
-                              top: 10,
-                              left: 10,
-                            ),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: primaryColor,
-                              ),
-                              child: IconButton(
-                                onPressed: () {
-                                  model.removeImage();
-                                  model.setState(ViewState.idle);
-                                },
-                                icon: Icon(
-                                  Icons.close,
+                    child: Stack(
+                      children: [
+                        Container(
+                          height: 0.45.sh,
+                          decoration: BoxDecoration(
+                              color: greyColor2,
+                              image: model.message.file != null
+                                  ? DecorationImage(
+                                      image: FileImage(model.message.file!),
+                                      fit: BoxFit.cover,
+                                    )
+                                  : null,
+                              borderRadius: BorderRadius.circular(12.r)),
+                          width: 1.sw,
+                          alignment: Alignment.bottomCenter,
+                          child: model.image == null
+                              ? ElevatedButton(
+                                  onPressed: () {
+                                    model.pickImage();
+                                  },
+                                  child: Text('Pick Image'),
+                                )
+                              : Container(),
+                        ),
+                        model.message.file != null
+                            ? Padding(
+                                padding: const EdgeInsets.only(
+                                    top: 10, left: 10, right: 10),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    ///
+                                    /// remove image
+                                    ///
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: primaryColor,
+                                      ),
+                                      child: IconButton(
+                                        onPressed: () {
+                                          model.removeImage();
+                                          model.setState(ViewState.idle);
+                                        },
+                                        icon: Icon(
+                                          Icons.close,
+                                        ),
+                                        color: whiteColor,
+                                      ),
+                                    ),
+
+                                    ///
+                                    /// send image to be opened for one time
+                                    ///
+                                    Container(
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: model.message.isOneTime == true
+                                              ? primaryColor
+                                              : Colors.transparent,
+                                          border:
+                                              Border.all(color: primaryColor)),
+                                      padding: EdgeInsets.zero,
+                                      child: IconButton(
+                                        padding: EdgeInsets.zero,
+                                        onPressed: () {
+                                          model.message.isOneTime =
+                                              model.message.isOneTime == true
+                                                  ? false
+                                                  : true;
+                                          model.setState(ViewState.idle);
+                                        },
+                                        icon: Text("1",
+                                            style: headingText.copyWith(
+                                                color:
+                                                    model.message.isOneTime ==
+                                                            true
+                                                        ? whiteColor
+                                                        : primaryColor)),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                color: whiteColor,
-                              ),
-                            ),
-                          )
-                        : Container(),
-                  ],
-                ),
-              ),
-            ],
+                              )
+                            : Container(),
+                      ],
+                    ),
+                  ),
+                ],
+              );
+            },
           );
   }
 
@@ -605,134 +650,256 @@ class ImageMessageCard extends StatelessWidget {
   final Message message;
   final AppUser appUser;
   final Conversation conversaion;
+  final ChattingProvider model;
   ImageMessageCard({
     required this.message,
     required this.appUser,
     required this.conversaion,
+    required this.model,
   });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
-          margin: message.fromUserId == appUser.id
-              ? EdgeInsets.only(
-                  left: 100,
-                )
-              : EdgeInsets.only(
-                  right: 100,
-                ),
-          padding:
-              message.type == 'image' ? EdgeInsets.all(3) : EdgeInsets.all(15),
-          decoration: BoxDecoration(
-            color: message.fromUserId == appUser.id ? primaryColor : greyColor,
-            borderRadius: message.fromUserId == appUser.id
-                ? BorderRadius.only(
-                    topLeft: Radius.circular(12.r),
-                    topRight: Radius.circular(12.r),
-                    bottomLeft: Radius.circular(12.r),
-                  )
-                : BorderRadius.only(
-                    topLeft: Radius.circular(12.r),
-                    topRight: Radius.circular(12.r),
-                    bottomRight: Radius.circular(12.r),
+        (message.isOneTime == true && message.file == null)
+            ? GestureDetector(
+                onTap: () {
+                  if (message.isOpened == false &&
+                      message.fromUserId != appUser.id) {
+                    model.updateMessage(message);
+                    Get.to(FullScreenImage(message.imageUrl));
+                  }
+                },
+                child: Container(
+                  margin: message.fromUserId == appUser.id
+                      ? EdgeInsets.only(left: 100)
+                      : EdgeInsets.only(right: 100),
+                  padding: message.type == 'image'
+                      ? EdgeInsets.all(3)
+                      : EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                    color: message.fromUserId == appUser.id
+                        ? primaryColor
+                        : greyColor,
+                    borderRadius: message.fromUserId == appUser.id
+                        ? BorderRadius.only(
+                            topLeft: Radius.circular(12.r),
+                            topRight: Radius.circular(12.r),
+                            bottomLeft: Radius.circular(12.r),
+                          )
+                        : BorderRadius.only(
+                            topLeft: Radius.circular(12.r),
+                            topRight: Radius.circular(12.r),
+                            bottomRight: Radius.circular(12.r),
+                          ),
                   ),
-          ),
-          child: message.type == 'text'
-              ? Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    message.textMessage!,
-                    style: subtitleText.copyWith(
-                      fontSize: 15.sp,
-                      color: message.fromUserId == appUser.id
-                          ? whiteColor
-                          : blackColor,
-                    ),
-                  ))
-              : Container(
-                  height: 220,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        height: 200,
-                        width: 1.sw,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12.r),
-                          // image: message.file != null
-                          //     ? DecorationImage(
-                          //         image: FileImage(
-                          //           message.file!,
-                          //         ),
-                          //         fit: BoxFit.cover,
-                          //       )
-                          //     : DecorationImage(
-                          //         image: NetworkImage(
-                          //           message.imageUrl!,
-
-                          //         ),
-                          //         fit: BoxFit.cover,
-                          //       ),
+                  child: message.type == 'text'
+                      ? Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            message.textMessage!,
+                            style: subtitleText.copyWith(
+                              fontSize: 15.sp,
+                              color: message.fromUserId == appUser.id
+                                  ? whiteColor
+                                  : blackColor,
+                            ),
+                          ))
+                      : Container(
+                          height: message.isOpened == true ? 60 : 80,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                  height: 60,
+                                  width: 1.sw,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12.r),
+                                  ),
+                                  child: Center(
+                                      child: Row(
+                                    children: [
+                                      20.horizontalSpace,
+                                      Container(
+                                        height: 30.h,
+                                        width: 30.w,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            border:
+                                                Border.all(color: whiteColor)),
+                                        child: Center(
+                                            child: message.isOpened == true
+                                                ? Icon(
+                                                    Icons.check,
+                                                    color: whiteColor,
+                                                    size: 17,
+                                                  )
+                                                : Icon(
+                                                    Icons.download,
+                                                    color: whiteColor,
+                                                    size: 17,
+                                                  )),
+                                      ),
+                                      20.horizontalSpace,
+                                      Text(
+                                        message.isOpened == true
+                                            ? "Opened"
+                                            : "Photo",
+                                        style: bodyTextStyle.copyWith(
+                                            color: whiteColor),
+                                      ),
+                                    ],
+                                  ))),
+                              message.isOpened == true
+                                  ? Container()
+                                  : message.textMessage != null
+                                      ? Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 10, right: 10),
+                                          child: Text(
+                                            message.textMessage!,
+                                            style: subtitleText.copyWith(
+                                              fontSize: 15.sp,
+                                              color: message.fromUserId ==
+                                                      appUser.id
+                                                  ? whiteColor
+                                                  : blackColor,
+                                            ),
+                                          ),
+                                        )
+                                      : Container(),
+                            ],
+                          ),
                         ),
-                        child: message.file != null
-                            ? Image.file(
-                                message.file!,
-                                fit: BoxFit.cover,
-                              )
-                            : Image.network(
-                                message.imageUrl!,
-                                fit: BoxFit.cover,
-                                loadingBuilder: (BuildContext context,
-                                    Widget child,
-                                    ImageChunkEvent? loadingProgress) {
-                                  if (loadingProgress == null) {
-                                    return child; // Return the image widget if it's fully loaded.
-                                  }
-                                  return Container(
-                                    height: 0.35.sh,
-                                    color: Colors.grey.withOpacity(0.1),
-                                    child: Center(
-                                      // Display a linear progress indicator until the image is fully loaded.
-                                      child: CircularProgressIndicator(
-                                        color: message.fromUserId == appUser.id
-                                            ? whiteColor
-                                            : primaryColor,
-                                        value: loadingProgress
-                                                    .expectedTotalBytes !=
-                                                null
-                                            ? loadingProgress
-                                                    .cumulativeBytesLoaded /
-                                                loadingProgress
-                                                    .expectedTotalBytes!
-                                            : null,
+                ),
+              )
+            : Container(
+                margin: message.fromUserId == appUser.id
+                    ? EdgeInsets.only(
+                        left: 100,
+                      )
+                    : EdgeInsets.only(
+                        right: 100,
+                      ),
+                padding: message.type == 'image'
+                    ? EdgeInsets.all(3)
+                    : EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                  color: message.fromUserId == appUser.id
+                      ? primaryColor
+                      : greyColor,
+                  borderRadius: message.fromUserId == appUser.id
+                      ? BorderRadius.only(
+                          topLeft: Radius.circular(12.r),
+                          topRight: Radius.circular(12.r),
+                          bottomLeft: Radius.circular(12.r),
+                        )
+                      : BorderRadius.only(
+                          topLeft: Radius.circular(12.r),
+                          topRight: Radius.circular(12.r),
+                          bottomRight: Radius.circular(12.r),
+                        ),
+                ),
+                child: message.type == 'text'
+                    ? Align(
+                        alignment: Alignment.topLeft,
+                        child: Text(
+                          message.textMessage!,
+                          style: subtitleText.copyWith(
+                            fontSize: 15.sp,
+                            color: message.fromUserId == appUser.id
+                                ? whiteColor
+                                : blackColor,
+                          ),
+                        ))
+                    : Container(
+                        height: 220,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              height: 200,
+                              width: 1.sw,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12.r),
+                                // image: message.file != null
+                                //     ? DecorationImage(
+                                //         image: FileImage(
+                                //           message.file!,
+                                //         ),
+                                //         fit: BoxFit.cover,
+                                //       )
+                                //     : DecorationImage(
+                                //         image: NetworkImage(
+                                //           message.imageUrl!,
+
+                                //         ),
+                                //         fit: BoxFit.cover,
+                                //       ),
+                              ),
+                              child: message.file != null
+                                  ? Image.file(
+                                      message.file!,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : ClipRRect(
+                                      borderRadius: BorderRadius.circular(12.r),
+                                      child: Image.network(
+                                        message.imageUrl!,
+                                        fit: BoxFit.cover,
+                                        loadingBuilder: (BuildContext context,
+                                            Widget child,
+                                            ImageChunkEvent? loadingProgress) {
+                                          if (loadingProgress == null) {
+                                            return child; // Return the image widget if it's fully loaded.
+                                          }
+                                          return Container(
+                                            height: 0.35.sh,
+                                            color: Colors.grey.withOpacity(0.1),
+                                            child: Center(
+                                              // Display a linear progress indicator until the image is fully loaded.
+                                              child: CircularProgressIndicator(
+                                                color: message.fromUserId ==
+                                                        appUser.id
+                                                    ? whiteColor
+                                                    : primaryColor,
+                                                value: loadingProgress
+                                                            .expectedTotalBytes !=
+                                                        null
+                                                    ? loadingProgress
+                                                            .cumulativeBytesLoaded /
+                                                        loadingProgress
+                                                            .expectedTotalBytes!
+                                                    : null,
+                                              ),
+                                            ),
+                                          );
+                                        },
                                       ),
                                     ),
-                                  );
-                                },
-                              ),
+                            ),
+                            message.textMessage != null
+                                ? Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 10, right: 10),
+                                    child: Text(
+                                      message.textMessage!,
+                                      style: subtitleText.copyWith(
+                                        fontSize: 15.sp,
+                                        color: message.fromUserId == appUser.id
+                                            ? whiteColor
+                                            : blackColor,
+                                      ),
+                                    ),
+                                  )
+                                : Container(),
+                          ],
+                        ),
                       ),
-                      message.textMessage != null
-                          ? Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 10, right: 10),
-                              child: Text(
-                                message.textMessage!,
-                                style: subtitleText.copyWith(
-                                  fontSize: 15.sp,
-                                  color: message.fromUserId == appUser.id
-                                      ? whiteColor
-                                      : blackColor,
-                                ),
-                              ),
-                            )
-                          : Container(),
-                    ],
-                  ),
-                ),
-        ),
+              ),
         sizeBox10,
         Row(
           mainAxisAlignment: message.fromUserId == appUser.id

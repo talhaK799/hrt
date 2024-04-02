@@ -66,82 +66,9 @@ class ChattingProvider extends BaseViewModel {
     toUser = await db.getAppUser(userId);
 
     setState(ViewState.idle);
-    // notifyListeners();
-    // getAllMessages();
-    // if (this.conversation.conversationId != null && toUser.id != null) {
-    //   getAllMessages(this.conversation.conversationId!);
-    // }
   }
 
   List<Message> messages = [];
-
-  // sendMessage() async {
-  //   // message.textMessage = '';
-
-  //   ///
-  //   /// message from
-  //   ///
-
-  //   isSelect = false;
-  //   notifyListeners();
-  //   conversationFrom.id = currentUser.appUser.id;
-  //   conversationFrom.lastMessage = message.textMessage;
-  //   conversationFrom.lastMessageAt = DateTime.now();
-  //   conversationFrom.imageUrl = currentUser.appUser.images!.first;
-  //   conversationFrom.name = currentUser.appUser.name;
-  //   conversationFrom.isMessageSeen = false;
-  //   conversationFrom.noOfUnReadMsgs = 0;
-
-  //   ///
-  //   /// message to
-  //   ///
-  //   conversationTo.id = toUser.id;
-  //   conversationTo.lastMessage = message.textMessage;
-  //   conversationTo.lastMessageAt = DateTime.now();
-  //   conversationTo.name = toUser.name;
-  //   conversationTo.imageUrl = toUser.images!.first;
-  //   conversationTo.isMessageSeen = true;
-  //   conversationTo.noOfUnReadMsgs = 0;
-
-  //   print('message : ${message.textMessage}');
-  //   if (message.textMessage != null && image == null) {
-  //     ///
-  //     /// messages
-  //     ///
-  //     message.fromUserId = currentUser.appUser.id;
-  //     message.toUserId = toUser.id;
-  //     message.sendAt = DateTime.now();
-  //     message.type = 'text';
-  //     print('Text message');
-
-  //     await db.addNewUserMessage(conversationFrom, conversationTo, message);
-
-  //     // message.type = "text";
-  //     // _databaseService.updateUserMessageReceived(true, conversationTo.id);
-  //     print("new message added");
-
-  //     messageController.clear();
-  //     message = Message();
-  //     notifyListeners();
-  //   } else if (image != null) {
-  //     message.fromUserId = currentUser.appUser.id;
-  //     message.toUserId = toUser.id;
-  //     message.sendAt = DateTime.now();
-
-  //     message.imageUrl = await storage.uploadImage(image!, 'Chat Images');
-  //     print('image url : ${message.imageUrl}');
-  //     message.type = 'image';
-  //     await db.addNewUserMessage(conversationFrom, conversationTo, message);
-
-  //     print('image sent');
-  //     messageController.clear();
-  //     image = null;
-  //     message = Message();
-  //     notifyListeners();
-  //   } else {
-  //     print("message is null");
-  //   }
-  // }
 
   getAllMessages() async {
     // conversation.conversationId = toUser.id;
@@ -154,6 +81,7 @@ class ChattingProvider extends BaseViewModel {
         messages = [];
         if (event.docs.length > 0) {
           event.docs.forEach((element) {
+            print("messageId: ${element.id}");
             messages.add(Message.fromJson(element.data(), element.id));
           });
           for (var msg in messages) {
@@ -180,6 +108,8 @@ class ChattingProvider extends BaseViewModel {
         }
       },
     );
+
+    print(messages.length);
 
     // notifyListeners();
   }
@@ -324,9 +254,7 @@ class ChattingProvider extends BaseViewModel {
       if (messages.isEmpty) {
         getAllMessages();
       }
-
       message.isSent = false;
-
       messageController.clear();
       image = null;
       message = Message(isSent: false);
@@ -392,5 +320,13 @@ class ChattingProvider extends BaseViewModel {
     } else {
       print("message is null");
     }
+  }
+
+  updateMessage(Message message) {
+    print(conversation.conversationId);
+    print(message.messageId);
+    message.isOpened = true;
+    notifyListeners();
+    db.updateMessage(conversation.conversationId, message);
   }
 }

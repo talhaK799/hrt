@@ -15,6 +15,8 @@ class Message {
   String? type;
   bool? isReaded;
   bool isSent = false;
+  bool? isOneTime = false;
+  bool? isOpened = false;
   List<String>? readingMemebers = [];
 
   Message({
@@ -28,7 +30,9 @@ class Message {
     this.type,
     this.isReaded,
     this.isSent = false,
+    this.isOneTime = false,
     this.readingMemebers,
+    this.isOpened = false,
   });
 
   Message.fromJson(json, id) {
@@ -38,15 +42,11 @@ class Message {
     this.toUserId = json["toUserId"];
     this.imageUrl = json["imageUrl"] ?? "";
     this.textMessage = json["textMessage"] ?? "";
-    this.sendat =
-        // DateTime.parse(
-        json["sendAt"].toDate();
-    // )
-    // ??
-    // DateTime.now();
+    this.sendat = json["sendAt"].toDate();
     this.type = json["type"];
     this.isReaded = json["isReaded"] ?? false;
-    // this.isSent = json["isSent"] ?? false;
+    this.isOpened = json["isOpened"] ?? false;
+    this.isOneTime = json["insOneTime"] ?? false;
     if (json["readingMemebers"] != null) {
       readingMemebers = [];
       json["readingMemebers"].forEach((element) {
@@ -55,7 +55,6 @@ class Message {
     } else {
       readingMemebers = [];
     }
-    ;
   }
 
   toJson() {
@@ -67,7 +66,8 @@ class Message {
       "sendAt": this.sendAt,
       "type": this.type,
       "isReaded": this.isReaded ?? false,
-      // "isSent": this.isSent ?? false,
+      "isOpened": this.isOpened ?? false,
+      "insOneTime": this.isOneTime ?? false,
       "readingMemebers": this.readingMemebers ?? [],
     };
   }
