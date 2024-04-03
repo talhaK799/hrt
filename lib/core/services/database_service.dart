@@ -772,17 +772,26 @@ class DatabaseService {
     }
   }
 
-  updateMessage(conversationId, Message message) async {
+  updateMessage(Conversation conversation, Message message) async {
     print("@updateMessage: ${message.messageId}");
     try {
-      await _db
-          .collection("messages")
-          .doc(conversationId)
-          .collection("realtime-messages")
-          .doc(message.messageId)
-          .update({
-        "isOpened": true,
-      });
+      conversation.isGroupChat == true
+          ? await _db
+              .collection("messages")
+              .doc(conversation.conversationId!)
+              .collection("realtime-messages")
+              .doc(message.messageId)
+              .update({
+                "seenByMembers":message.seenByMembers
+              })
+          : await _db
+              .collection("messages")
+              .doc(conversation.conversationId!)
+              .collection("realtime-messages")
+              .doc(message.messageId)
+              .update({
+              "isOpened": true,
+            });
     } catch (e) {
       print('Exception@UpdateUserMessagesStream=>$e');
     }

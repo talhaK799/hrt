@@ -665,10 +665,19 @@ class ImageMessageCard extends StatelessWidget {
         (message.isOneTime == true && message.file == null)
             ? GestureDetector(
                 onTap: () {
-                  if (message.isOpened == false &&
-                      message.fromUserId != appUser.id) {
-                    model.updateMessage(message);
-                    Get.to(FullScreenImage(message.imageUrl));
+                  // model.conversation.isGroupChat==true?
+                  if (model.conversation.isGroupChat == true) {
+                    if (!message.seenByMembers!.contains(appUser.id) &&
+                        message.fromUserId != appUser.id) {
+                      model.updateMessage(message);
+                      Get.to(FullScreenImage(message.imageUrl));
+                    }
+                  } else {
+                    if (message.isOpened == false &&
+                        message.fromUserId != appUser.id) {
+                      model.updateMessage(message);
+                      Get.to(FullScreenImage(message.imageUrl));
+                    }
                   }
                 },
                 child: Container(
@@ -707,7 +716,12 @@ class ImageMessageCard extends StatelessWidget {
                             ),
                           ))
                       : Container(
-                          height: message.isOpened == true ? 60 : 80,
+                          height: message.isOpened == true
+                              // ||
+                              //         !message.seenByMembers!
+                              //             .contains(model.currentUser.appUser.id)
+                              ? 60
+                              : 80,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisSize: MainAxisSize.min,
@@ -730,7 +744,18 @@ class ImageMessageCard extends StatelessWidget {
                                             border:
                                                 Border.all(color: whiteColor)),
                                         child: Center(
-                                            child: message.isOpened == true
+                                            child: message.isOpened == true ||
+                                                    message.seenByMembers!
+                                                        .contains(appUser.id) ||
+                                                    message.seenByMembers!
+                                                                .length ==
+                                                            conversaion
+                                                                    .joinedUsers!
+                                                                    .length -
+                                                                1 &&
+                                                        conversaion
+                                                                .isGroupChat ==
+                                                            true
                                                 ? Icon(
                                                     Icons.check,
                                                     color: whiteColor,
@@ -744,7 +769,15 @@ class ImageMessageCard extends StatelessWidget {
                                       ),
                                       20.horizontalSpace,
                                       Text(
-                                        message.isOpened == true
+                                        message.isOpened == true ||
+                                                message.seenByMembers!
+                                                    .contains(appUser.id) ||
+                                                message.seenByMembers!.length ==
+                                                        conversaion.joinedUsers!
+                                                                .length -
+                                                            1 &&
+                                                    conversaion.isGroupChat ==
+                                                        true
                                             ? "Opened"
                                             : "Photo",
                                         style: bodyTextStyle.copyWith(
@@ -752,7 +785,10 @@ class ImageMessageCard extends StatelessWidget {
                                       ),
                                     ],
                                   ))),
-                              message.isOpened == true
+                              message.isOpened == true ||
+                                      message.seenByMembers!.length ==
+                                              conversaion.joinedUsers!.length &&
+                                          conversaion.isGroupChat == true
                                   ? Container()
                                   : message.textMessage != null
                                       ? Padding(

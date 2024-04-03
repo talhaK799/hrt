@@ -18,6 +18,7 @@ class Message {
   bool? isOneTime = false;
   bool? isOpened = false;
   List<String>? readingMemebers = [];
+  List<String>? seenByMembers = [];
 
   Message({
     this.file,
@@ -32,6 +33,7 @@ class Message {
     this.isSent = false,
     this.isOneTime = false,
     this.readingMemebers,
+    this.seenByMembers,
     this.isOpened = false,
   });
 
@@ -55,6 +57,14 @@ class Message {
     } else {
       readingMemebers = [];
     }
+    if (json["seenByMembers"] != null) {
+      seenByMembers = [];
+      json["seenByMembers"].forEach((element) {
+        seenByMembers!.add(element);
+      });
+    } else {
+      seenByMembers = [];
+    }
   }
 
   toJson() {
@@ -69,6 +79,7 @@ class Message {
       "isOpened": this.isOpened ?? false,
       "insOneTime": this.isOneTime ?? false,
       "readingMemebers": this.readingMemebers ?? [],
+      "seenByMembers": this.seenByMembers ?? [],
     };
   }
 }

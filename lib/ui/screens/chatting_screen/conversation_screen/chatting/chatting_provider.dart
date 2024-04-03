@@ -50,6 +50,7 @@ class ChattingProvider extends BaseViewModel {
     toUser = AppUser();
     this.conversation.isGroupChat == false ? getUser(userId) : null;
     this.conversation.isGroupChat == true ? getAllMessages() : getAllMessages();
+
     // disableScreenShot();
     // notifyListeners();
   }
@@ -83,6 +84,7 @@ class ChattingProvider extends BaseViewModel {
           event.docs.forEach((element) {
             print("messageId: ${element.id}");
             messages.add(Message.fromJson(element.data(), element.id));
+            notifyListeners();
           });
           for (var msg in messages) {
             /// single user conversation
@@ -323,10 +325,22 @@ class ChattingProvider extends BaseViewModel {
   }
 
   updateMessage(Message message) {
+    // print("current Conversation user id ===> ${conversation.appUser!.id}");
     print(conversation.conversationId);
     print(message.messageId);
-    message.isOpened = true;
-    notifyListeners();
-    db.updateMessage(conversation.conversationId, message);
+    if (conversation.isGroupChat == true) {
+      message.isOpened = false;
+      if (!message.seenByMembers!.contains(currentUser.appUser.id)) {
+        message.seenByMembers!.add(currentUser.appUser.id!);
+        db.updateMessage(conversation, message);
+      }
+
+      notifyListeners();
+    } else {
+      message.isOpened = true;
+      notifyListeners();
+      db.updateMessage(conversation, message);
+      notifyListeners();
+    }
   }
 }
