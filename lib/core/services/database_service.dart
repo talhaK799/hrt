@@ -781,9 +781,7 @@ class DatabaseService {
               .doc(conversation.conversationId!)
               .collection("realtime-messages")
               .doc(message.messageId)
-              .update({
-                "seenByMembers":message.seenByMembers
-              })
+              .update({"seenByMembers": message.seenByMembers})
           : await _db
               .collection("messages")
               .doc(conversation.conversationId!)
